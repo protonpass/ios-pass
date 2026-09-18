@@ -28,12 +28,10 @@ import Entities
 /// table is empty for precisely the users this question is asked about. Side-effect free, so both
 /// the app's repair check and the AutoFill banner can call it.
 public protocol UserHasRemoteFoldersUseCase: Sendable {
-    @concurrent
     func execute(userId: String) async throws -> Bool
 }
 
 public extension UserHasRemoteFoldersUseCase {
-    @concurrent
     func callAsFunction(userId: String) async throws -> Bool {
         try await execute(userId: userId)
     }
@@ -52,41 +50,76 @@ public struct UserHasRemoteFolders: UserHasRemoteFoldersUseCase {
         self.batchSize = batchSize
     }
 
-    @concurrent
     public func execute(userId: String) async throws -> Bool {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        let shares = try await shareRepository.getShares(userId: userId)
+            .map(\.share)
             .filter { $0.shareType == .vault }
 
         let ordered = shares.filter(\.shared) + shares.filter { !$0.shared }
 
+        var anyShareUnanswered = false
         for batch in ordered.chunked(into: batchSize) {
-            let batchHasFolder = try await anyShareHasFolder(userId: userId, shares: batch)
-            if batchHasFolder {
+            let outcome = await scan(userId: userId, shares: batch)
+            if outcome.foundFolder {
                 return true
             }
+            anyShareUnanswered = anyShareUnanswered || outcome.anyShareFailed
+        }
+
+        if anyShareUnanswered {
+            throw UserHasRemoteFoldersError.incompleteScan
         }
         return false
     }
 }
 
+public enum UserHasRemoteFoldersError: Error {
+    /// At least one share could not be reached, so the absence of folders is unproven.
+    case incompleteScan
+}
+
 private extension UserHasRemoteFolders {
-    func anyShareHasFolder(userId: String, shares: [Share]) async throws -> Bool {
-        try await withThrowingTaskGroup(of: Bool.self) { group in
+    /// A failing share is isolated rather than aborting the scan, so one revoked or deleted share
+    /// left in the local table cannot hide folders present in all the others.
+    func scan(userId: String,
+              shares: [Share]) async -> (foundFolder: Bool, anyShareFailed: Bool) {
+        await withTaskGroup(of: ShareFolderCheck.self) { group in
             for share in shares {
                 group.addTask { [remoteFolderDatasource] in
-                    let page = try await remoteFolderDatasource.getFolders(userId: userId,
-                                                                           shareId: share.shareID,
-                                                                           sinceToken: nil,
-                                                                           pageSize: 1)
-                    return !page.folders.isEmpty
+                    do {
+                        let page = try await remoteFolderDatasource
+                            .getFolders(userId: userId,
+                                        shareId: share.shareID,
+                                        sinceToken: nil,
+                                        pageSize: 1)
+                        return page.folders.isEmpty ? .noFolder : .hasFolder
+                    } catch {
+                        return .failed
+                    }
                 }
             }
 
-            for try await hasFolder in group where hasFolder {
-                group.cancelAll()
-                return true
+            var anyShareFailed = false
+            for await check in group {
+                switch check {
+                case .hasFolder:
+                    group.cancelAll()
+                    return (foundFolder: true, anyShareFailed: anyShareFailed)
+
+                case .noFolder:
+                    continue
+
+                case .failed:
+                    anyShareFailed = true
+                }
             }
-            return false
+            return (foundFolder: false, anyShareFailed: anyShareFailed)
         }
     }
+}
+
+private enum ShareFolderCheck: Sendable {
+    case hasFolder
+    case noFolder
+    case failed
 }

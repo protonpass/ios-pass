@@ -25,6 +25,7 @@ import Core
 import CoreMocks
 import Entities
 import Foundation
+import ProtonCoreLogin
 import Testing
 import UseCasesMocks
 
@@ -33,10 +34,16 @@ struct ShouldShowFolderSyncBannerTests {
     private let store = PreferencesStore()
     private let hasFolders = HasFoldersStub()
     private let userManager = UserManagerProtocolMock()
+    private let storage: UserDefaults
+    private let userId: String
     private let flagName = "PassForceSyncFolders"
 
     init() {
-        userManager.stubbedCurrentActiveUser = .init(.random())
+        let userData = UserData.random()
+        userId = userData.user.ID
+        userManager.stubbedCurrentActiveUser = .init(userData)
+        storage = UserDefaults(suiteName: "folderSyncBannerTests")!
+        storage.removePersistentDomain(forName: "folderSyncBannerTests")
     }
 
     private func makeSut(flagOn: Bool = true,
@@ -46,8 +53,8 @@ struct ShouldShowFolderSyncBannerTests {
                                    getFeatureFlagStatus:
                                    FeatureFlagStub(enabled: flagOn ? [flagName] : []),
                                    userHasRemoteFolders: hasFolders,
-                                   updateUserPreferences: UpdatePreferencesStub(store: store),
                                    userManager: userManager,
+                                   storage: storage,
                                    logManager: LogManagerProtocolMock(),
                                    recheckDelay: recheckDelay)
     }
@@ -56,13 +63,15 @@ struct ShouldShowFolderSyncBannerTests {
     func `No banner once the repair has completed`() async {
         store.setState(done: true)
 
-        #expect(await makeSut()() == false)
+        let shown = await makeSut().execute()
+        #expect(shown == false)
         #expect(hasFolders.callCount == 0)
     }
 
     @Test
     func `No banner and no network call when the flag is off`() async {
-        #expect(await makeSut(flagOn: false)() == false)
+        let shown = await makeSut(flagOn: false).execute()
+        #expect(shown == false)
         #expect(hasFolders.callCount == 0)
         #expect(store.writtenStates.isEmpty)
     }
@@ -71,7 +80,8 @@ struct ShouldShowFolderSyncBannerTests {
     func `No banner when there is no active user`() async {
         userManager.stubbedCurrentActiveUser = .init(nil)
 
-        #expect(await makeSut()() == false)
+        let shown = await makeSut().execute()
+        #expect(shown == false)
         #expect(hasFolders.callCount == 0)
     }
 
@@ -79,18 +89,31 @@ struct ShouldShowFolderSyncBannerTests {
     func `Banner shown and the positive cached when folders exist`() async {
         hasFolders.result = true
 
-        #expect(await makeSut()() == true)
-        #expect(store.state.foldersDetected)
-        // The extension must never touch the app's repair budget.
+        let shown = await makeSut().execute()
+        #expect(shown == true)
+        #expect(storage.bool(forKey: ShouldShowFolderSyncBanner.foldersFoundKey(userId)))
+        // The extension must not write the preferences row at all: that write would carry its
+        // stale copy of every other field, including resurrecting `done`.
+        #expect(store.writtenStates.isEmpty)
         #expect(store.state.attempts == 0)
         #expect(!store.state.done)
     }
 
     @Test
-    func `A cached positive skips the network`() async {
+    func `A positive found by the app is honoured without a lookup`() async {
         store.setState(foldersDetected: true)
 
-        #expect(await makeSut()() == true)
+        let shown = await makeSut().execute()
+        #expect(shown == true)
+        #expect(hasFolders.callCount == 0)
+    }
+
+    @Test
+    func `A cached positive skips the network`() async {
+        storage.set(true, forKey: ShouldShowFolderSyncBanner.foldersFoundKey(userId))
+
+        let shown = await makeSut().execute()
+        #expect(shown == true)
         #expect(hasFolders.callCount == 0)
     }
 
@@ -98,27 +121,31 @@ struct ShouldShowFolderSyncBannerTests {
     func `A negative is not cached, so the banner can still appear later`() async {
         hasFolders.result = false
 
-        #expect(await makeSut()() == false)
-        #expect(!store.state.foldersDetected)
-        #expect(!store.state.done)
+        let shown = await makeSut().execute()
+        #expect(shown == false)
+        #expect(!storage.bool(forKey: ShouldShowFolderSyncBanner.foldersFoundKey(userId)))
+        #expect(store.writtenStates.isEmpty)
     }
 
     @Test
     func `Back-to-back presentations do not refire the lookup`() async {
         let sut = makeSut(recheckDelay: 30 * 60)
 
-        #expect(await sut() == false)
-        #expect(await sut() == false)
-        #expect(await sut() == false)
+        for _ in 0..<3 {
+            let shown = await sut.execute()
+            #expect(shown == false)
+        }
         // Without the throttle this would be one fan-out per AutoFill presentation.
         #expect(hasFolders.callCount == 1)
     }
 
     @Test
     func `The lookup runs again once the recheck window has elapsed`() async {
-        store.setState(lastExtensionCheck: Date().addingTimeInterval(-31 * 60))
+        storage.set(Date().addingTimeInterval(-31 * 60),
+                    forKey: ShouldShowFolderSyncBanner.lastCheckKey(userId))
 
-        #expect(await makeSut(recheckDelay: 30 * 60)() == false)
+        let shown = await makeSut(recheckDelay: 30 * 60).execute()
+        #expect(shown == false)
         #expect(hasFolders.callCount == 1)
     }
 
@@ -127,8 +154,10 @@ struct ShouldShowFolderSyncBannerTests {
         hasFolders.error = FolderSyncTestError.boom
         let sut = makeSut(recheckDelay: 30 * 60)
 
-        #expect(await sut() == false)
-        #expect(await sut() == false)
+        for _ in 0..<2 {
+            let shown = await sut.execute()
+            #expect(shown == false)
+        }
         #expect(hasFolders.callCount == 1)
     }
 }

@@ -102,7 +102,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
-    private var fullSyncingUserId: String?
+    private var fullSyncTask: Task<Void, Never>?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -152,7 +152,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     }
 
     public var isFullSyncing: Bool {
-        fullSyncingUserId != nil
+        fullSyncTask != nil
     }
 
     public func reset() {
@@ -220,17 +220,38 @@ public extension AppContentManager {
     }
 
     /// Delete everything and download again
+    ///
+    /// Several unrelated triggers can land here at once (settings, server-forced refresh, crash
+    /// resume, folder repair). A second caller joins the sync already in flight instead of
+    /// starting a parallel wipe, and must not return early: callers present a non-dismissible
+    /// progress screen that only closes on a `vaultSyncEventStream` terminal event, so returning
+    /// without awaiting the real completion would strand that screen forever.
     func fullSync(userId: String) async {
-        // Several unrelated triggers can land here at once (settings, server-forced refresh,
-        // crash resume, folder repair). Re-entering would wipe local data underneath a sync
-        // that is already downloading.
-        guard fullSyncingUserId == nil else {
-            logger.info("Full sync already in progress, ignoring request for user \(userId)")
+        if let fullSyncTask {
+            logger.info("Full sync already in progress, joining it for user \(userId)")
+            await fullSyncTask.value
             return
         }
-        fullSyncingUserId = userId
-        defer { fullSyncingUserId = nil }
 
+        let task = Task { [weak self] in
+            guard let self else { return }
+
+            defer { fullSyncTask = nil }
+            await performFullSync(userId: userId)
+        }
+        fullSyncTask = task
+        await task.value
+    }
+
+    func localFullSync(userId: String) async throws {
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        state = .loading
+        try await loadContents(userId: userId, for: shares)
+    }
+}
+
+private extension AppContentManager {
+    func performFullSync(userId: String) async {
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
@@ -311,12 +332,6 @@ public extension AppContentManager {
         incompleteFullSyncUserId = nil
         await markFolderForceSyncDone()
         vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
-    }
-
-    func localFullSync(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        state = .loading
-        try await loadContents(userId: userId, for: shares)
     }
 }
 

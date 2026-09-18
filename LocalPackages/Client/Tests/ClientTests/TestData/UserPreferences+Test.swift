@@ -31,6 +31,7 @@ extension UserPreferences {
               lastSelectedShareId: nil,
               lastSelectedFolderId: nil,
               lastCreatedItemShareId: nil,
-              dismissedAliasesSyncSheet: .random())
+              dismissedAliasesSyncSheet: .random(),
+              folderForceSync: .default)
     }
 }
