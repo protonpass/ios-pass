@@ -21,13 +21,14 @@
 import Client
 import Core
 import Entities
+import Foundation
 
 /// Whether an extension should tell the user to open the main app to repair folder data.
 ///
-/// Extensions never run a full sync, so the repair can only happen in the app. This answers the
-/// same three questions as `ShouldForceSyncForFoldersUseCase` — not already synced, flags on, and
-/// folders actually exist — but records no attempt, because showing a banner is not a repair
-/// attempt and consuming the budget here would starve the app's real ones.
+/// Extensions never run a full sync, so the repair can only happen in the app. This asks the same
+/// questions as `ShouldForceSyncForFoldersUseCase` — not already synced, flag on, and folders
+/// actually exist — but keeps its own rate limit and records no attempt, because showing a banner
+/// is not a repair attempt and consuming that budget would starve the app's real ones.
 public protocol ShouldShowFolderSyncBannerUseCase: Sendable {
     @concurrent
     func execute() async -> Bool
@@ -47,18 +48,21 @@ public struct ShouldShowFolderSyncBanner: ShouldShowFolderSyncBannerUseCase {
     private let updateUserPreferences: any UpdateUserPreferencesUseCase
     private let userManager: any UserManagerProtocol
     private let logger: Logger
+    private let recheckDelay: TimeInterval
 
     public init(getUserPreferences: any GetUserPreferencesUseCase,
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 userHasRemoteFolders: any UserHasRemoteFoldersUseCase,
                 updateUserPreferences: any UpdateUserPreferencesUseCase,
                 userManager: any UserManagerProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                recheckDelay: TimeInterval = 30 * 60) {
         self.getUserPreferences = getUserPreferences
         self.getFeatureFlagStatus = getFeatureFlagStatus
         self.userHasRemoteFolders = userHasRemoteFolders
         self.updateUserPreferences = updateUserPreferences
         self.userManager = userManager
+        self.recheckDelay = recheckDelay
         logger = .init(manager: logManager)
     }
 
@@ -68,14 +72,21 @@ public struct ShouldShowFolderSyncBanner: ShouldShowFolderSyncBannerUseCase {
 
         var state = getUserPreferences().folderForceSync
         guard !state.done,
-              getFeatureFlagStatus(for: FeatureFlagType.passFolder),
               getFeatureFlagStatus(for: FeatureFlagType.folderForceSync) else { return false }
 
         if state.foldersDetected {
             return true
         }
 
+        if let lastCheck = state.lastExtensionCheck,
+           Date().timeIntervalSince(lastCheck) < recheckDelay {
+            return false
+        }
+
         do {
+            state.lastExtensionCheck = Date()
+            try await updateUserPreferences(\.folderForceSync, value: state)
+
             let hasFolders = try await userHasRemoteFolders(userId: userId)
             guard hasFolders else { return false }
             state.foldersDetected = true
