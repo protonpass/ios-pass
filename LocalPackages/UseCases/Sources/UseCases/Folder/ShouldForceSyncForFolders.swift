@@ -28,12 +28,10 @@ import Foundation
 /// Returns `true` at most once per user: a successful full sync marks the user done, and this
 /// returning `false` for a user with no folders marks them done too.
 public protocol ShouldForceSyncForFoldersUseCase: Sendable {
-    @concurrent
     func execute(userId: String) async throws -> Bool
 }
 
 public extension ShouldForceSyncForFoldersUseCase {
-    @concurrent
     func callAsFunction(userId: String) async throws -> Bool {
         try await execute(userId: userId)
     }
@@ -64,7 +62,6 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
         self.retryDelay = retryDelay
     }
 
-    @concurrent
     public func execute(userId: String) async throws -> Bool {
         var state = getUserPreferences().folderForceSync
         guard !state.done, state.attempts < maxAttempts else { return false }

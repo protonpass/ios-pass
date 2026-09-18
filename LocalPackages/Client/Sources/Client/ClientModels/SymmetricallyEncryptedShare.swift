@@ -28,4 +28,9 @@ public struct SymmetricallyEncryptedShare: Hashable, Sendable {
 
     /// Original `Share` object as returned by the server
     public let share: Share
+
+    public init(encryptedContent: String?, share: Share) {
+        self.encryptedContent = encryptedContent
+        self.share = share
+    }
 }

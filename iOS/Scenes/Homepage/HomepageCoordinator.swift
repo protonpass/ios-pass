@@ -396,16 +396,23 @@ private extension HomepageCoordinator {
 
     /// One-shot repair for users upgrading from a build without folder support, which could not
     /// decrypt items inside folders and so dropped them.
+    ///
+    /// Only ever run this for the active user: the repair state lives in that user's preferences
+    /// and `PreferencesManager` resolves the active user internally, so running it for anyone else
+    /// would read and write the wrong account's row.
+    ///
+    /// Deliberately not driven from the sync event loop. It presents a non-dismissible progress
+    /// screen and wipes local data before re-downloading, which must not happen on a timer while
+    /// the user is mid-task.
     func forceSyncForFoldersIfNeeded(userId: String) async {
-        // The first guard covers the window before the check records its attempt; the second
-        // avoids wrapping an already-running sync in a stopped event loop and a second
-        // progress sheet.
+        guard userId == userManager.activeUserId else { return }
         guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
         checkingFolderForceSync = true
         defer { checkingFolderForceSync = false }
 
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
+            guard !appContentManager.isFullSyncing else { return }
             router.present(for: .fullSync)
             logger.info("Force syncing for folders migration")
             await fullContentSync(userId: userId, shouldStopEventLoop: true)
@@ -1926,13 +1933,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
             }
         } else {
             logger.info("Has no new events for userId \(userId). Do nothing.")
-        }
-
-        // Carries the periodic folder repair check. Cheaper than a dedicated timer: the check
-        // short-circuits on in-memory reads, and its own throttle does the real pacing.
-        Task { [weak self] in
-            guard let self else { return }
-            await forceSyncForFoldersIfNeeded(userId: userId)
         }
     }
 

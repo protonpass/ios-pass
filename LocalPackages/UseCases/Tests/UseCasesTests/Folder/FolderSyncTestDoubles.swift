@@ -45,14 +45,12 @@ final class PreferencesStore: @unchecked Sendable {
     func setState(done: Bool = false,
                   attempts: Int = 0,
                   lastAttempt: Date? = nil,
-                  foldersDetected: Bool = false,
-                  lastExtensionCheck: Date? = nil) {
+                  foldersDetected: Bool = false) {
         lock.withLock {
             preferences.folderForceSync = .init(done: done,
                                                 attempts: attempts,
                                                 lastAttempt: lastAttempt,
-                                                foldersDetected: foldersDetected,
-                                                lastExtensionCheck: lastExtensionCheck)
+                                                foldersDetected: foldersDetected)
         }
     }
 
@@ -99,7 +97,6 @@ final class HasFoldersStub: UserHasRemoteFoldersUseCase, @unchecked Sendable {
     private(set) var callCount = 0
     private let lock = NSLock()
 
-    @concurrent
     func execute(userId: String) async throws -> Bool {
         lock.withLock { callCount += 1 }
         if let error {
