@@ -18,10 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
+import Core
 import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
+import UseCases
 
 struct FolderForceSyncSection: View {
     @State private var viewModel = FolderForceSyncSectionViewModel()
@@ -48,6 +51,7 @@ private final class FolderForceSyncSectionViewModel {
 
     private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
     private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    private let userManager = dependency(\ServiceContainer.userManager)
 
     init() {
         state = getUserPreferences().folderForceSync
@@ -58,12 +62,17 @@ private final class FolderForceSyncSectionViewModel {
     }
 
     /// Resets the whole struct, not just `done`: a stale `lastAttempt` blocks the next attempt for
-    /// half an hour, and a stale `foldersDetected` makes the AutoFill banner short-circuit on the
-    /// cached positive instead of re-running the remote check.
+    /// half an hour, and a stale `foldersDetected` short-circuits the remote check. The AutoFill
+    /// banner keeps its own state outside the preferences row, so that has to be cleared too.
     func reset() {
         Task { [weak self] in
             guard let self else { return }
             try? await updateUserPreferences(\.folderForceSync, value: .default)
+            if let userId = userManager.activeUserId {
+                kSharedUserDefaults.removeObject(forKey: ShouldShowFolderSyncBanner.lastCheckKey(userId))
+                kSharedUserDefaults
+                    .removeObject(forKey: ShouldShowFolderSyncBanner.foldersFoundKey(userId))
+            }
             state = getUserPreferences().folderForceSync
         }
     }

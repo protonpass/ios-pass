@@ -32,6 +32,8 @@ private final class FolderDatasourceStub: RemoteFolderDatasourceProtocol, @unche
     /// `shareId` -> number of folders the backend would report.
     var foldersByShare: [String: Int] = [:]
     var error: (any Error)?
+    /// Shares whose request should fail, to check one bad share cannot hide the others.
+    var failingShareIds: Set<String> = []
     /// Held inside `getFolders` so requests in the same batch genuinely overlap.
     var delay: Duration = .zero
     private(set) var queriedShareIds: [String] = []
@@ -57,6 +59,9 @@ private final class FolderDatasourceStub: RemoteFolderDatasourceProtocol, @unche
         }
         if let error {
             throw error
+        }
+        if failingShareIds.contains(shareId) {
+            throw TestError.boom
         }
         let count = foldersByShare[shareId] ?? 0
         let folders = (0..<count).map { _ in Folder.random() }
@@ -109,19 +114,23 @@ struct UserHasRemoteFoldersTests {
     }
 
     /// `Share.random` defaults to `targetType: 2` (item), so vaults must be requested explicitly.
-    private func vault(_ shareId: String) -> Share {
-        .random(shareID: shareId, targetType: 1)
+    private func vault(_ shareId: String) -> SymmetricallyEncryptedShare {
+        .init(encryptedContent: nil, share: .random(shareID: shareId, targetType: 1))
     }
 
-    private func sharedVault(_ shareId: String) -> Share {
-        .random(shareID: shareId, targetType: 1, shared: true)
+    private func sharedVault(_ shareId: String) -> SymmetricallyEncryptedShare {
+        .init(encryptedContent: nil, share: .random(shareID: shareId, targetType: 1, shared: true))
+    }
+
+    private func itemShare(_ shareId: String) -> SymmetricallyEncryptedShare {
+        .init(encryptedContent: nil, share: .random(shareID: shareId, targetType: 2))
     }
 
     @Test
     func `Returns false when the user has no shares`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = []
+        shareRepository.stubbedGetSharesResult = []
 
-        let result = try await sut(userId: userId)
+        let result = try await sut.execute(userId: userId)
 
         #expect(!result)
         #expect(datasource.queriedShareIds.isEmpty)
@@ -129,9 +138,9 @@ struct UserHasRemoteFoldersTests {
 
     @Test
     func `Returns false when no share has folders`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [vault("a"), vault("b")]
+        shareRepository.stubbedGetSharesResult = [vault("a"), vault("b")]
 
-        let result = try await sut(userId: userId)
+        let result = try await sut.execute(userId: userId)
 
         #expect(!result)
         #expect(Set(datasource.queriedShareIds) == ["a", "b"])
@@ -139,66 +148,90 @@ struct UserHasRemoteFoldersTests {
 
     @Test
     func `Returns true when any share has folders`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [vault("a"), vault("b"), vault("c")]
+        shareRepository.stubbedGetSharesResult = [vault("a"), vault("b"), vault("c")]
         datasource.foldersByShare = ["b": 1]
 
-        let result = try await sut(userId: userId)
+        let result = try await sut.execute(userId: userId)
 
         #expect(result)
     }
 
     @Test
     func `Item shares are never queried, only vaults`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [
+        shareRepository.stubbedGetSharesResult = [
             vault("vault"),
-            .random(shareID: "item", targetType: 2)
+            itemShare("item")
         ]
 
-        _ = try await sut(userId: userId)
+        _ = try await sut.execute(userId: userId)
 
         #expect(datasource.queriedShareIds == ["vault"])
     }
 
     @Test
     func `Asks for a single folder per share, since existence is all that matters`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [vault("a")]
+        shareRepository.stubbedGetSharesResult = [vault("a")]
 
-        _ = try await sut(userId: userId)
+        _ = try await sut.execute(userId: userId)
 
         #expect(datasource.requestedPageSizes == [1])
     }
 
     @Test
-    func `Propagates datasource errors so the caller can count a failed attempt`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [vault("a")]
+    func `An unanswered share is never reported as having no folders`() async throws {
+        shareRepository.stubbedGetSharesResult = [vault("a")]
         datasource.error = TestError.boom
 
-        await #expect(throws: TestError.self) {
-            try await sut(userId: userId)
+        // Reporting false would let the caller mark the repair permanently unnecessary.
+        await #expect(throws: UserHasRemoteFoldersError.self) {
+            try await sut.execute(userId: userId)
         }
     }
 
     @Test
+    func `One failing share does not hide folders in the others`() async throws {
+        shareRepository.stubbedGetSharesResult = [vault("bad"), vault("good")]
+        datasource.foldersByShare = ["good": 1]
+        datasource.failingShareIds = ["bad"]
+
+        let result = try await sut.execute(userId: userId)
+        #expect(result == true)
+    }
+
+    @Test
+    func `Every healthy share is still checked when one fails`() async throws {
+        shareRepository.stubbedGetSharesResult = [vault("bad"), vault("a"), vault("b")]
+        datasource.failingShareIds = ["bad"]
+
+        await #expect(throws: UserHasRemoteFoldersError.self) {
+            try await sut.execute(userId: userId)
+        }
+        #expect(Set(datasource.queriedShareIds) == ["bad", "a", "b"])
+    }
+
+    @Test
     func `A positive batch leaves the remaining batches unrequested`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = (0..<6).map { vault("s\($0)") }
+        shareRepository.stubbedGetSharesResult = (0..<6).map { vault("s\($0)") }
         datasource.foldersByShare = ["s1": 1]
         let sut = UserHasRemoteFolders(shareRepository: shareRepository,
                                        remoteFolderDatasource: datasource,
                                        batchSize: 2)
 
-        #expect(try await sut(userId: userId) == true)
+        let result = try await sut.execute(userId: userId)
+        #expect(result == true)
         #expect(Set(datasource.queriedShareIds) == ["s0", "s1"])
     }
 
     @Test
     func `Concurrent requests never exceed the batch size`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = (0..<6).map { vault("s\($0)") }
+        shareRepository.stubbedGetSharesResult = (0..<6).map { vault("s\($0)") }
         datasource.delay = .milliseconds(20)
         let sut = UserHasRemoteFolders(shareRepository: shareRepository,
                                        remoteFolderDatasource: datasource,
                                        batchSize: 2)
 
-        #expect(try await sut(userId: userId) == false)
+        let result = try await sut.execute(userId: userId)
+        #expect(result == false)
         #expect(datasource.peakConcurrency <= 2)
         // All shares still get checked when none of them has a folder.
         #expect(datasource.queriedShareIds.count == 6)
@@ -206,7 +239,7 @@ struct UserHasRemoteFoldersTests {
 
     @Test
     func `Shared vaults are checked before private ones`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = [
+        shareRepository.stubbedGetSharesResult = [
             vault("private1"),
             vault("private2"),
             sharedVault("shared")
@@ -217,19 +250,20 @@ struct UserHasRemoteFoldersTests {
                                        remoteFolderDatasource: datasource,
                                        batchSize: 1)
 
-        #expect(try await sut(userId: userId) == true)
+        let result = try await sut.execute(userId: userId)
+        #expect(result == true)
         #expect(datasource.queriedShareIds == ["shared"])
     }
 
     @Test
     func `Requests within a batch run concurrently, not one after another`() async throws {
-        shareRepository.stubbedGetDecryptedSharesResult = (0..<4).map { vault("s\($0)") }
+        shareRepository.stubbedGetSharesResult = (0..<4).map { vault("s\($0)") }
         datasource.delay = .milliseconds(20)
         let sut = UserHasRemoteFolders(shareRepository: shareRepository,
                                        remoteFolderDatasource: datasource,
                                        batchSize: 4)
 
-        _ = try await sut(userId: userId)
+        _ = try await sut.execute(userId: userId)
 
         #expect(datasource.peakConcurrency == 4)
     }
