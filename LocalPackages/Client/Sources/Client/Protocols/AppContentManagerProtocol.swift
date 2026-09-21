@@ -29,7 +29,8 @@ public protocol AppContentManagerProtocol: Sendable {
 
     func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?)
     func refresh(userId: String) async
-    func fullSync(userId: String) async
+    @discardableResult
+    func fullSync(userId: String) async -> Bool
     func localFullSync(userId: String) async throws
     func getShareContent(for shareId: String) -> ShareContent?
     func getItems(shareId: String, containerId: String?) -> [ItemUiModel]

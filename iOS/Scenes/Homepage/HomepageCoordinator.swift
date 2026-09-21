@@ -51,7 +51,7 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorDidFailLocallyAuthenticating(_ errorMessage: String?)
 }
 
-final class HomepageCoordinator: Coordinator, DeinitPrintable {
+final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresenting {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
@@ -312,13 +312,19 @@ private extension HomepageCoordinator {
                         sendAllEventsIfApplicable()
                         eventLoop.start()
                         eventLoop.forceSync()
-                        await forceSyncForFoldersIfNeededForActiveUser()
                         refreshOrganizationAndOverrideSecuritySettings()
                         refreshAccessAndMonitorStateSync()
                         refreshSettings()
                         refreshFeatureFlags()
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
+                        // Detached on purpose: the repair can run for minutes, and awaiting it
+                        // here would hold back forced organisation security settings for that
+                        // whole time.
+                        Task { [weak self] in
+                            guard let self else { return }
+                            await forceSyncForFoldersIfNeededForActiveUser()
+                        }
                         try await sendUserMonitoringStats()
                     } catch {
                         logger.error(message: "Failed to set up after entering foreground", error: error)
@@ -405,7 +411,6 @@ private extension HomepageCoordinator {
     /// screen and wipes local data before re-downloading, which must not happen on a timer while
     /// the user is mid-task.
     func forceSyncForFoldersIfNeeded(userId: String) async {
-        guard userId == userManager.activeUserId else { return }
         guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
         checkingFolderForceSync = true
         defer { checkingFolderForceSync = false }
@@ -413,11 +418,9 @@ private extension HomepageCoordinator {
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
             guard !appContentManager.isFullSyncing else { return }
-            router.present(for: .fullSync)
-            logger.info("Force syncing for folders migration")
-            await fullContentSync(userId: userId, shouldStopEventLoop: true)
-            logger.info("Done force syncing for folders migration")
-            await router.display(element: .successMessage(config: .refresh))
+            await presentFullSync(userId: userId,
+                                  shouldStopEventLoop: true,
+                                  reason: "folders migration")
         } catch {
             logger.error(message: "Failed folder force sync check", error: error)
         }
@@ -1914,11 +1917,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async {
-        await router.present(for: .fullSync)
-        logger.info("Full syncing triggered by user events")
-        await fullContentSync(userId: userId, shouldStopEventLoop: false)
-        logger.info("Done full syncing triggered by user events")
-        await router.display(element: .successMessage(config: .refresh))
+        await presentFullSync(userId: userId,
+                              shouldStopEventLoop: false,
+                              reason: "user events")
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

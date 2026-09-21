@@ -40,6 +40,7 @@ public extension ShouldForceSyncForFoldersUseCase {
 public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
     private let getUserPreferences: any GetUserPreferencesUseCase
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
+    private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
     private let userHasRemoteFolders: any UserHasRemoteFoldersUseCase
     private let updateUserPreferences: any UpdateUserPreferencesUseCase
     private let reachability: any ReachabilityServicing
@@ -48,6 +49,7 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
 
     public init(getUserPreferences: any GetUserPreferencesUseCase,
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
+                refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
                 userHasRemoteFolders: any UserHasRemoteFoldersUseCase,
                 updateUserPreferences: any UpdateUserPreferencesUseCase,
                 reachability: any ReachabilityServicing,
@@ -55,6 +57,7 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
                 retryDelay: TimeInterval = 30 * 60) {
         self.getUserPreferences = getUserPreferences
         self.getFeatureFlagStatus = getFeatureFlagStatus
+        self.refreshFeatureFlags = refreshFeatureFlags
         self.userHasRemoteFolders = userHasRemoteFolders
         self.updateUserPreferences = updateUserPreferences
         self.reachability = reachability
@@ -64,14 +67,29 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
 
     public func execute(userId: String) async throws -> Bool {
         var state = getUserPreferences().folderForceSync
-        guard !state.done, state.attempts < maxAttempts else { return false }
-        guard getFeatureFlagStatus(for: FeatureFlagType.passFolderForceSync) else { return false }
+        guard !state.done else { return false }
+
+        // Running out of attempts is terminal, not a pause: an unreachable share makes every
+        // scan throw `incompleteScan`, and without recording the give-up the extension banner
+        // would keep telling the user to run a sync the app has already abandoned.
+        guard state.attempts < maxAttempts else {
+            state.done = true
+            try await updateUserPreferences(\.folderForceSync, value: state)
+            return false
+        }
         guard reachability.isNetworkAvailable.value else { return false }
 
         if let lastAttempt = state.lastAttempt,
            Date().timeIntervalSince(lastAttempt) < retryDelay {
             return false
         }
+
+        // The repair wipes local data, so the kill switch has to be read live: cached flags are
+        // a session behind, which would let a disabled rollout keep wiping for one more
+        // foreground. Placed after every cheap guard, so only a user actually about to be
+        // repaired pays for the fetch.
+        await refreshFeatureFlags.execute()
+        guard getFeatureFlagStatus(for: FeatureFlagType.passFolderForceSync) else { return false }
 
         state.attempts += 1
         state.lastAttempt = Date()
