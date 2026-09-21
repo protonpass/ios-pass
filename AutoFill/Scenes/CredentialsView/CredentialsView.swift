@@ -348,8 +348,6 @@ private struct ItemRow: View {
     }
 }
 
-/// Prompts the user to open the main app, which is the only place the folder repair full sync
-/// can run. Purely informational: there is nothing actionable inside the extension.
 struct FolderSyncRequiredBanner: View {
     var body: some View {
         Text("Please open the Proton Pass app and run a full data sync to improve performance")
