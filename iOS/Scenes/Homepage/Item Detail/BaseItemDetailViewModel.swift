@@ -131,7 +131,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var isAllowedToClone: Bool {
-        guard itemIsLinkToVault else { return false }
+        guard itemIsLinkToVault, isAllowedToEdit else { return false }
         switch itemContent.type {
         case .alias:
             return false
