@@ -238,7 +238,8 @@ public extension UseCasesContainer {
 
 public extension UseCasesContainer {
     var getPendingUserInvitations: Factory<any GetPendingUserInvitationsUseCase> {
-        self { GetPendingUserInvitations(repository: self.inviteRepository) }
+        self { GetPendingUserInvitations(repository: self.inviteRepository,
+                                         userManager: self.userManager) }
     }
 
     var refreshInvitations: Factory<any RefreshInvitationsUseCase> {
@@ -266,7 +267,8 @@ public extension UseCasesContainer {
     }
 
     var updateCachedInvitations: Factory<any UpdateCachedInvitationsUseCase> {
-        self { UpdateCachedInvitations(repository: self.inviteRepository) }
+        self { UpdateCachedInvitations(repository: self.inviteRepository,
+                                       userManager: self.userManager) }
     }
 
     var revokeInvitation: Factory<any RevokeInvitationUseCase> {
