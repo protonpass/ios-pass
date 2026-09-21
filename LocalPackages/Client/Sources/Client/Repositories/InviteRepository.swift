@@ -26,6 +26,8 @@ import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
+    /// This publisher returns a dictionary containing invites link to a user id as key.
+    /// This enables filtering of invites displayed on main screen per user / account connected to the device
     var currentPendingInvites: CurrentValueSubject<[String: [Invite]], Never> { get }
 
     func loadLocalInvites(userId: String) async throws
