@@ -125,6 +125,8 @@ class BaseCreateEditItemViewModel: ObservableObject {
     private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
     private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
     private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\UseCasesContainer.generateDatedFileName) private var generateDatedFileName
@@ -217,7 +219,13 @@ class BaseCreateEditItemViewModel: ObservableObject {
 
         case let .clone(itemContent), let .edit(itemContent):
             if let shareContent = shareContents.shares[itemContent.shareId] {
-                let folder: FolderUiModel? = if let folderId = itemContent.item.folderID {
+                let flagEnabled = getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+                let folderSupportState = FolderSupportState(flagEnabled: flagEnabled,
+                                                            plan: accessRepository.access.value?.access.plan)
+                // Cloning creates a new item so plans without folder support fall back to the vault,
+                // while editing keeps the item in its current folder
+                let keepFolder = mode.isEditMode || folderSupportState.canCreateAndModifyFolders
+                let folder: FolderUiModel? = if keepFolder, let folderId = itemContent.item.folderID {
                     shareContent.folder(for: folderId)
                 } else {
                     nil
