@@ -318,13 +318,8 @@ private extension HomepageCoordinator {
                         refreshFeatureFlags()
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
-                        // Detached on purpose: the repair can run for minutes, and awaiting it
-                        // here would hold back forced organisation security settings for that
-                        // whole time.
-                        Task { [weak self] in
-                            guard let self else { return }
-                            await forceSyncForFoldersIfNeededForActiveUser()
-                        }
+                        forceSyncForFoldersIfNeededForActiveUser()
+
                         try await sendUserMonitoringStats()
                     } catch {
                         logger.error(message: "Failed to set up after entering foreground", error: error)
@@ -391,12 +386,15 @@ private extension HomepageCoordinator {
         }
     }
 
-    func forceSyncForFoldersIfNeededForActiveUser() async {
-        do {
-            let userId = try await userManager.getActiveUserId()
-            await forceSyncForFoldersIfNeeded(userId: userId)
-        } catch {
-            logger.error(message: "Failed to resolve active user for folder force sync", error: error)
+    func forceSyncForFoldersIfNeededForActiveUser() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                await forceSyncForFoldersIfNeeded(userId: userId)
+            } catch {
+                logger.error(message: "Failed to resolve active user for folder force sync", error: error)
+            }
         }
     }
 
@@ -1259,7 +1257,8 @@ extension HomepageCoordinator {
     }
 
     func presentSignInToAnotherDeviceView() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 guard let userData = try await userManager.getActiveUserData(),
                       let passphrase = userData.getMailboxPassword,
