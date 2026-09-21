@@ -805,6 +805,7 @@ public extension UseCasesContainer {
     var shouldForceSyncForFolders: Factory<any ShouldForceSyncForFoldersUseCase> {
         self { ShouldForceSyncForFolders(getUserPreferences: self.getUserPreferences(),
                                          getFeatureFlagStatus: self.getFeatureFlagStatus(),
+                                         refreshFeatureFlags: self.refreshFeatureFlags(),
                                          userHasRemoteFolders: self.userHasRemoteFolders(),
                                          updateUserPreferences: self.updateUserPreferences(),
                                          reachability: ServiceContainer.shared

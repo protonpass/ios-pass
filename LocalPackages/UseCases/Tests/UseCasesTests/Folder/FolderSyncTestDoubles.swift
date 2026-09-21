@@ -34,12 +34,20 @@ enum FolderSyncTestError: Error {
 /// Shared preference store, so writes made by a use case are visible to its subsequent reads.
 /// That is what the throttle and budget cases exercise.
 final class PreferencesStore: @unchecked Sendable {
-    var preferences = UserPreferences.default
-    private(set) var writtenStates: [FolderForceSyncState] = []
+    private var _preferences = UserPreferences.default
+    private var _writtenStates: [FolderForceSyncState] = []
     private let lock = NSLock()
 
+    var preferences: UserPreferences {
+        lock.withLock { _preferences }
+    }
+
+    var writtenStates: [FolderForceSyncState] {
+        lock.withLock { _writtenStates }
+    }
+
     var state: FolderForceSyncState {
-        lock.withLock { preferences.folderForceSync }
+        lock.withLock { _preferences.folderForceSync }
     }
 
     func setState(done: Bool = false,
@@ -47,17 +55,17 @@ final class PreferencesStore: @unchecked Sendable {
                   lastAttempt: Date? = nil,
                   foldersDetected: Bool = false) {
         lock.withLock {
-            preferences.folderForceSync = .init(done: done,
-                                                attempts: attempts,
-                                                lastAttempt: lastAttempt,
-                                                foldersDetected: foldersDetected)
+            _preferences.folderForceSync = .init(done: done,
+                                                 attempts: attempts,
+                                                 lastAttempt: lastAttempt,
+                                                 foldersDetected: foldersDetected)
         }
     }
 
     func record(_ state: FolderForceSyncState) {
         lock.withLock {
-            preferences.folderForceSync = state
-            writtenStates.append(state)
+            _preferences.folderForceSync = state
+            _writtenStates.append(state)
         }
     }
 }
@@ -83,26 +91,61 @@ struct UpdatePreferencesStub: UpdateUserPreferencesUseCase {
 
 /// Keyed by flag so flags can be varied independently, which the single stubbed result on the
 /// generated mock cannot express.
-struct FeatureFlagStub: GetFeatureFlagStatusUseCase {
-    let enabled: Set<String>
+final class FeatureFlagStub: GetFeatureFlagStatusUseCase, @unchecked Sendable {
+    private var _enabled: Set<String>
+    private let lock = NSLock()
+
+    init(enabled: Set<String>) {
+        _enabled = enabled
+    }
+
+    var enabled: Set<String> {
+        get { lock.withLock { _enabled } }
+        set { lock.withLock { _enabled = newValue } }
+    }
 
     func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
-        enabled.contains(flag.rawValue)
+        lock.withLock { _enabled.contains(flag.rawValue) }
     }
 }
 
 final class HasFoldersStub: UserHasRemoteFoldersUseCase, @unchecked Sendable {
     var result = false
     var error: (any Error)?
-    private(set) var callCount = 0
+    private var _callCount = 0
     private let lock = NSLock()
 
+    var callCount: Int {
+        lock.withLock { _callCount }
+    }
+
     func execute(userId: String) async throws -> Bool {
-        lock.withLock { callCount += 1 }
+        lock.withLock { _callCount += 1 }
         if let error {
             throw error
         }
         return result
+    }
+}
+
+final class RefreshFeatureFlagsStub: RefreshFeatureFlagsUseCase, @unchecked Sendable {
+    /// Applied when the refresh runs, so a test can model the kill switch flipping server side
+    /// between the cached read and the live one.
+    var onRefresh: (@Sendable () -> Void)?
+    private var _callCount = 0
+    private let lock = NSLock()
+
+    var callCount: Int {
+        lock.withLock { _callCount }
+    }
+
+    func execute() {
+        Task { await execute() }
+    }
+
+    func execute() async {
+        lock.withLock { _callCount += 1 }
+        onRefresh?()
     }
 }
 

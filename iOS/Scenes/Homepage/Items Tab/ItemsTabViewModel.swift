@@ -171,10 +171,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func continueFullSyncIfNeeded() {
         Task { [weak self] in
             guard let self else { return }
-            if let userId = appContentManager.incompleteFullSyncUserId {
-                router.present(for: .fullSync)
-                await appContentManager.fullSync(userId: userId)
-            }
+            // `incompleteFullSyncUserId` is shared with the extensions and survives an account
+            // switch, so it can name a user who is no longer active. Resuming for them would
+            // sync one account while recording the repair against another, since preferences
+            // always resolve to the active user. Left set on purpose: the repair is still owed
+            // and resumes when that user is active again.
+            guard let userId = appContentManager.incompleteFullSyncUserId,
+                  userId == userManager.activeUserId else { return }
+            router.present(for: .fullSync)
+            await appContentManager.fullSync(userId: userId)
         }
     }
 
