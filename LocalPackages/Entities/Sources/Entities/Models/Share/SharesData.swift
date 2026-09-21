@@ -101,24 +101,21 @@ public struct SharesData: Hashable, Sendable {
     public func items(for selection: ShareSelection) -> [ItemUiModel] {
         switch selection {
         case .all:
-            visibleShareContents.flatMap(\.allItems)
+            return visibleShareContents.flatMap(\.allItems)
 
         case let .precise(selection):
-            shares[selection.share.id]?
+            return shares[selection.share.id]?
                 .items(in: selection.folder?.folderId ?? selection.share.shareId) ?? []
 
         case .sharedByMe:
-            itemsSharedByMe
+            return itemsSharedByMe
 
         case .sharedWithMe:
-            itemsSharedWithMe
+            return itemsSharedWithMe
 
         case .trash:
-            trashedItems(excluding: Set(hiddenSharesIds))
+            let hiddenShareIds = Set(hiddenSharesIds)
+            return trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
         }
-    }
-
-    private func trashedItems(excluding hiddenShareIds: Set<String>) -> [ItemUiModel] {
-        trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
     }
 }
