@@ -470,6 +470,7 @@
 		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
+		4AA0CE0B4103FB1D30CA8A51 /* FullSyncPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293DC09927C851E965112CE3 /* FullSyncPresenting.swift */; };
 		5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
 		5B24B1DD3007C859009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1DC3007C859009B081A /* Stores */; };
 		5B24B1DF3007C86D009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1DE3007C86D009B081A /* Stores */; };
@@ -562,6 +563,7 @@
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
 		5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */; };
 		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */; };
+		5BF0DA1A2F5A100000000002 /* FolderForceSyncSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF0DA1A2F5A100000000001 /* FolderForceSyncSection.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF9F9562C183F0700EF0627 /* SecureLinkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9F9542C183F0700EF0627 /* SecureLinkListView.swift */; };
@@ -972,6 +974,7 @@
 		5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareContent+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSuggestionsSection.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
+		293DC09927C851E965112CE3 /* FullSyncPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncPresenting.swift; sourceTree = "<group>"; };
 		5B24B0532FFCFC50009B081A /* DIComposition */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DIComposition; path = LocalPackages/DIComposition; sourceTree = "<group>"; };
 		5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryView.swift; sourceTree = "<group>"; };
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
@@ -1044,6 +1047,7 @@
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
 		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
 		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEditDetails.swift"; sourceTree = "<group>"; };
+		5BF0DA1A2F5A100000000001 /* FolderForceSyncSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderForceSyncSection.swift; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
 		5BF9F9542C183F0700EF0627 /* SecureLinkListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListView.swift; sourceTree = "<group>"; };
 		5BF9F9552C183F0700EF0627 /* SecureLinkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListViewModel.swift; sourceTree = "<group>"; };
@@ -1318,6 +1322,7 @@
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
 				358152022C57C3EB0054F755 /* CredentialsSection.swift */,
 				5BC20BB42E9CED1E0094388C /* DismissibleUIElementsSection.swift */,
+				5BF0DA1A2F5A100000000001 /* FolderForceSyncSection.swift */,
 				357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */,
 				536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
@@ -2237,6 +2242,7 @@
 			isa = PBXGroup;
 			children = (
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
+				293DC09927C851E965112CE3 /* FullSyncPresenting.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -3442,6 +3448,7 @@
 				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
 				5BC20BB52E9CED1E0094388C /* DismissibleUIElementsSection.swift in Sources */,
+				5BF0DA1A2F5A100000000002 /* FolderForceSyncSection.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
 				3541C07B2B68CAB2006B35D9 /* EditSpotlightSearchableContentView.swift in Sources */,
 				5B4E53DF2BD7B8B600E8D54A /* DetailMonitoredItemViewModel.swift in Sources */,
@@ -3604,6 +3611,7 @@
 				5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */,
 				53AEB2E32DDF68B40088DA4B /* TotpTextFieldToolbar.swift in Sources */,
 				5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */,
+				4AA0CE0B4103FB1D30CA8A51 /* FullSyncPresenting.swift in Sources */,
 				356FBD482949246A0063978C /* Coordinator+Extensions.swift in Sources */,
 				35EDB30B2C13101600FE441C /* ExtraPasswordLockView.swift in Sources */,
 				35EDB30D2C13101600FE441C /* EnableExtraPasswordViewModel.swift in Sources */,

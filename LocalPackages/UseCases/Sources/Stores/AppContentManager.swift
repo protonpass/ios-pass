@@ -102,6 +102,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
+    private var fullSyncTask: (userId: String, task: Task<Bool, Never>)?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -150,7 +151,13 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         getAllShares().numberOfOwnedVault <= 1
     }
 
+    public var isFullSyncing: Bool {
+        fullSyncTask != nil
+    }
+
     public func reset() {
+        fullSyncTask?.task.cancel()
+        fullSyncTask = nil
         state = .loading
         shareSelection = .all
         itemCount = .zero
@@ -215,7 +222,48 @@ public extension AppContentManager {
     }
 
     /// Delete everything and download again
-    func fullSync(userId: String) async {
+    ///
+    /// Several unrelated triggers can land here at once (settings, server-forced refresh, crash
+    /// resume, folder repair). A caller for the *same* user joins the sync already in flight
+    /// instead of starting a parallel wipe, and must not return early: callers present a
+    /// non-dismissible progress screen that only closes on a `vaultSyncEventStream` terminal
+    /// event, so returning without awaiting the real completion would strand that screen forever.
+    /// A caller for a different user waits its turn and then runs its own sync - joining would
+    /// report that user as synced without having downloaded anything for them.
+    ///
+    /// The loop is load-bearing: several callers can be parked on the same `await`, and they
+    /// resume one at a time on the main actor. `fullSyncTask` is assigned synchronously after
+    /// `Task { }` with no suspension in between, so whoever resumes second observes the new task
+    /// and joins it rather than starting a duplicate.
+    @discardableResult
+    func fullSync(userId: String) async -> Bool {
+        while let inFlight = fullSyncTask {
+            logger.info("Full sync already in progress, joining it for user \(userId)")
+            let succeeded = await inFlight.task.value
+            if inFlight.userId == userId {
+                return succeeded
+            }
+        }
+
+        let task = Task { [weak self] in
+            guard let self else { return false }
+
+            defer { fullSyncTask = nil }
+            return await performFullSync(userId: userId)
+        }
+        fullSyncTask = (userId, task)
+        return await task.value
+    }
+
+    func localFullSync(userId: String) async throws {
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        state = .loading
+        try await loadContents(userId: userId, for: shares)
+    }
+}
+
+private extension AppContentManager {
+    func performFullSync(userId: String) async -> Bool {
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
@@ -290,17 +338,13 @@ public extension AppContentManager {
             try await getLastEventIdIfNotExist(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
-            return
+            return false
         }
 
         incompleteFullSyncUserId = nil
+        await markFolderForceSyncDone()
         vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
-    }
-
-    func localFullSync(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        state = .loading
-        try await loadContents(userId: userId, for: shares)
+        return true
     }
 }
 
@@ -553,6 +597,17 @@ extension AppContentManager: LimitationCounterProtocol {
 // MARK: - Private APIs
 
 private extension AppContentManager {
+    func markFolderForceSyncDone() async {
+        guard var state = preferencesManager.userPreferences.value?.folderForceSync,
+              !state.done else { return }
+        state.done = true
+        do {
+            try await preferencesManager.updateUserPreferences(\.folderForceSync, value: state)
+        } catch {
+            logger.error(error)
+        }
+    }
+
     func setUp() {
         $state
             .removeDuplicates()

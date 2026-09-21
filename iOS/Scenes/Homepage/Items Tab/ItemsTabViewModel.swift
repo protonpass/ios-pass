@@ -171,10 +171,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func continueFullSyncIfNeeded() {
         Task { [weak self] in
             guard let self else { return }
-            if let userId = appContentManager.incompleteFullSyncUserId {
-                router.present(for: .fullSync)
-                await appContentManager.fullSync(userId: userId)
-            }
+            guard let userId = appContentManager.incompleteFullSyncUserId,
+                  userId == userManager.activeUserId else { return }
+            router.present(for: .fullSync)
+            await appContentManager.fullSync(userId: userId)
         }
     }
 
