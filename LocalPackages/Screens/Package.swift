@@ -30,7 +30,7 @@ let package = Package(
         .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0"),
         .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.6.1"),
         .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3")),
-        .package(url: "https://github.com/hmlongco/Factory", exact: "3.3.2"),
+        .package(url: "https://github.com/hmlongco/Factory", exact: "3.4.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
