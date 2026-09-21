@@ -233,7 +233,7 @@ struct ShouldForceSyncForFoldersTests {
             .execute(userId: userId)
 
         #expect(result == false)
-        #expect(refreshFlags.callCount == 1)
+        #expect(refreshFlags.callCount == 0)
         #expect(hasFolders.callCount == 0)
     }
 
