@@ -168,7 +168,7 @@ struct ItemsTabView: View {
         }
         .animation(.default, value: viewModel.isEditMode)
         .overlay(alignment: .bottomTrailing) {
-            if #available(iOS 26.0, *), !viewModel.createButtonHidden, !viewModel.isEditMode {
+            if #available(iOS 26.0, *), viewModel.canCreateItem, !viewModel.isEditMode {
                 createButton
             }
         }
@@ -205,11 +205,11 @@ private extension ItemsTabView {
                              onCreate: viewModel.createVault)
                     .padding(.bottom, safeAreaInsets.bottom)
             } else {
-                emptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty)
+                emptyVaultView(canCreateItems: viewModel.canCreateItem)
             }
 
-        case let .precise(selection):
-            emptyVaultView(canCreateItems: selection.share.canEdit)
+        case .precise:
+            emptyVaultView(canCreateItems: viewModel.canCreateItem)
 
         case .trash:
             EmptyTrashView()
@@ -233,7 +233,8 @@ private extension ItemsTabView {
     }
 
     func emptyVaultView(canCreateItems: Bool) -> some View {
-        EmptyVaultView(canCreateAliases: viewModel.aliasesAllowed,
+        EmptyVaultView(isFolderSelected: viewModel.appContentManager.shareSelection.isFolderSelection,
+                       canCreateAliases: viewModel.aliasesAllowed,
                        canCreateItems: canCreateItems,
                        onCreate: { viewModel.createNewItem(type: $0) })
             .task {

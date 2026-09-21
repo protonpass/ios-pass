@@ -25,23 +25,33 @@ import Combine
 import Entities
 
 public protocol GetPendingUserInvitationsUseCase: Sendable {
-    func execute() -> CurrentValueSubject<[Invite], Never>
+    func execute() -> AnyPublisher<[Invite], Never>
 }
 
 public extension GetPendingUserInvitationsUseCase {
-    func callAsFunction() -> CurrentValueSubject<[Invite], Never> {
+    func callAsFunction() -> AnyPublisher<[Invite], Never> {
         execute()
     }
 }
 
 public final class GetPendingUserInvitations: GetPendingUserInvitationsUseCase {
     private let repository: any InviteRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(repository: any InviteRepositoryProtocol) {
+    public init(repository: any InviteRepositoryProtocol,
+                userManager: any UserManagerProtocol) {
         self.repository = repository
+        self.userManager = userManager
     }
 
-    public func execute() -> CurrentValueSubject<[Invite], Never> {
+    public func execute() -> AnyPublisher<[Invite], Never> {
         repository.currentPendingInvites
+            .combineLatest(userManager.currentActiveUser)
+            .map { invites, activeUser in
+                guard let userId = activeUser?.user.ID else { return [] }
+                return invites[userId] ?? []
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
     }
 }

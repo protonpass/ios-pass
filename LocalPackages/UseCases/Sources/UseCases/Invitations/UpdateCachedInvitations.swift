@@ -34,12 +34,16 @@ public extension UpdateCachedInvitationsUseCase {
 
 public final class UpdateCachedInvitations: UpdateCachedInvitationsUseCase {
     private let repository: any InviteRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(repository: any InviteRepositoryProtocol) {
+    public init(repository: any InviteRepositoryProtocol,
+                userManager: any UserManagerProtocol) {
         self.repository = repository
+        self.userManager = userManager
     }
 
     public func execute(for inviteToken: String) async {
-        await repository.removeCachedInvite(containing: inviteToken)
+        guard let userId = try? await userManager.getActiveUserId() else { return }
+        await repository.removeCachedInvite(userId: userId, containing: inviteToken)
     }
 }

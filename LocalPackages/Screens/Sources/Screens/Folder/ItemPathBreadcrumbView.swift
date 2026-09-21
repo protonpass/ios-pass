@@ -43,7 +43,6 @@ public struct ItemPathBreadcrumbView: View {
     public init(vaultContent: VaultContent, path: [FolderUiModel]) {
         self.vaultContent = vaultContent
         self.path = path
-        expanded = expanded
     }
 
     public var body: some View {
@@ -55,7 +54,6 @@ public struct ItemPathBreadcrumbView: View {
             }
             .padding(DesignConstant.sectionPadding)
             .roundedDetailSection()
-            .animation(.default, value: expanded)
         }
     }
 }
@@ -71,10 +69,15 @@ private extension ItemPathBreadcrumbView {
         }
     }
 
+    var breadcrumbLayout: AnyLayout {
+        expanded ? AnyLayout(FlowLayout(spacing: 8)) : AnyLayout(HStackLayout(spacing: 8))
+    }
+
     var breadcrumb: some View {
-        AnyLayout(FlowLayout(spacing: 8)) {
+        breadcrumbLayout {
             Label(title: {
                 Text(vaultContent.name)
+                    .lineLimit(1)
                     .foregroundStyle(PassColor.textWeak)
             }, icon: {
                 vaultContent.vaultSmallIcon
@@ -88,17 +91,14 @@ private extension ItemPathBreadcrumbView {
                 switch element {
                 case .ellipsis:
                     ellipsis
-                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity),
-                                                removal: .move(edge: .leading).combined(with: .opacity)))
 
                 case let .folder(folder):
                     folderElement(folder: folder)
-                        .transition(.asymmetric(insertion: .move(edge: .leading).combined(with: .opacity),
-                                                removal: .move(edge: .leading).combined(with: .opacity)))
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .animation(.default, value: expanded)
     }
 
     var ellipsis: some View {
@@ -122,6 +122,7 @@ private extension ItemPathBreadcrumbView {
                 .frame(width: 16, height: 16)
             Label {
                 Text(verbatim: folder.content.name)
+                    .lineLimit(1)
                     .fontWeight(isLast ? .bold : .regular)
                     .foregroundStyle(isLast ? PassColor.textNorm : PassColor.textWeak)
             } icon: {

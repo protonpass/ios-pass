@@ -445,7 +445,6 @@ public extension AppContentManager {
         self.filterOption = filterOption
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
 
@@ -461,30 +460,8 @@ public extension AppContentManager {
             break // Proceed to share selection logic
         }
 
-        let hiddenShareIds = sharesData.hiddenSharesIds // shares.values.compactMap(\.share).hiddenShareIds
-
         // 2. Determine base items based on share selection
-        // (hidden shares are computed lazily only when needed)
-        let baseItems: [ItemUiModel] = switch shareSelection {
-        case .all:
-            sharesData.visibleShareContents.flatMap(\.allItems)
-
-        case let .precise(selection):
-            if let shareContent = sharesData.shares[selection.share.id] {
-                shareContent.items(in: selection.folder?.folderId ?? selection.share.shareId) ?? []
-            } else {
-                []
-            }
-
-        case .sharedByMe:
-            sharesData.itemsSharedByMe
-
-        case .sharedWithMe:
-            sharesData.itemsSharedWithMe
-
-        case .trash:
-            sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
-        }
+        let baseItems = sharesData.items(for: shareSelection)
 
         // 3. Apply final type filter if needed
         switch filterOption {
@@ -601,9 +578,11 @@ private extension AppContentManager {
 
     func updateItemCount() {
         guard let sharesData = state.loadedContent else { return }
+        let items = sharesData.items(for: shareSelection)
+
         switch shareSelection {
         case .all:
-            itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.allItems),
+            itemCount = ItemCount(items: items,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
 
@@ -612,7 +591,6 @@ private extension AppContentManager {
                 itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
                 return
             }
-            let items = share.allItems
             let shouldCount = !share.share.isVaultRepresentation
 
             if share.share.owner {
@@ -622,17 +600,17 @@ private extension AppContentManager {
             }
 
         case .sharedByMe:
-            itemCount = ItemCount(items: sharesData.itemsSharedByMe,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: 0)
 
         case .sharedWithMe:
-            itemCount = ItemCount(items: sharesData.itemsSharedWithMe,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: 0,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
 
         case .trash:
-            itemCount = ItemCount(items: sharesData.trashedItems,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: 0,
                                   sharedWithMe: 0)
         }

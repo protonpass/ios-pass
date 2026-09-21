@@ -52,7 +52,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
-    @Published private(set) var createButtonHidden = false
+    @Published private(set) var canCreateItem = true
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
@@ -99,6 +99,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
     private var refreshTask: Task<Void, Never>?
+    private var pendingInvites = [Invite]()
 
     var vaultCreationAllowed: Bool {
         checkVaultCreationAllowance(userData: userData,
@@ -295,6 +296,7 @@ private extension ItemsTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
                 guard let self else { return }
+                pendingInvites = invites
                 refreshBanners(invites)
             }
             .store(in: &cancellables)
@@ -303,7 +305,7 @@ private extension ItemsTabViewModel {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
-                refreshBanners(getPendingUserInvitations().value)
+                refreshBanners(pendingInvites)
             }
             .store(in: &cancellables)
 
@@ -399,8 +401,8 @@ extension ItemsTabViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func hideCreateButton(_ isHidden: Bool) {
-        createButtonHidden = isHidden
+    func setCanCreateItem(_ canCreate: Bool) {
+        canCreateItem = canCreate
     }
 
     func filterAndSortItems() {

@@ -31,8 +31,7 @@ public struct FlowLayout: Layout {
                              subviews: Subviews,
                              cache: inout ()) -> CGSize {
         let containerWidth = proposal.width ?? .infinity
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
-        return Self.layout(sizes: sizes,
+        return Self.layout(sizes: Self.sizes(of: subviews, containerWidth: containerWidth),
                            spacing: spacing,
                            containerWidth: containerWidth).size
     }
@@ -41,15 +40,23 @@ public struct FlowLayout: Layout {
                               proposal: ProposedViewSize,
                               subviews: Subviews,
                               cache: inout ()) {
-        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let sizes = Self.sizes(of: subviews, containerWidth: bounds.width)
         let offsets =
             Self.layout(sizes: sizes,
                         spacing: spacing,
                         containerWidth: bounds.width).offsets
-        for (offset, subview) in zip(offsets, subviews) {
+        for (subview, (offset, size)) in zip(subviews, zip(offsets, sizes)) {
             subview.place(at: .init(x: offset.x + bounds.minX,
                                     y: offset.y + bounds.minY),
-                          proposal: .unspecified)
+                          proposal: .init(size))
+        }
+    }
+
+    private static func sizes(of subviews: Subviews, containerWidth: CGFloat) -> [CGSize] {
+        subviews.map { subview in
+            let ideal = subview.sizeThatFits(.unspecified)
+            guard ideal.width > containerWidth else { return ideal }
+            return subview.sizeThatFits(.init(width: containerWidth, height: nil))
         }
     }
 

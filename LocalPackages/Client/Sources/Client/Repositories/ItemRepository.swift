@@ -135,8 +135,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func move(items: [any ItemIdentifiable], toShareId: String, destinationFolderId: String?) async throws
 
-    func move(currentShareId: String, toShareId: String, destinationFolderId: String?) async throws
-
     // periphery:ignore
     /// Delete all local items
     func deleteAllItemsLocally() async throws
@@ -755,17 +753,8 @@ public extension ItemRepository {
                                    destinationFolderId: destinationFolderId)
         }
         try await refreshPinnedItemDataStream()
-        logger.info("Bulk moved \(items.count) items to share \(toShareId)")
-    }
-
-    func move(currentShareId: String,
-              toShareId: String,
-              destinationFolderId: String?) async throws {
-        logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
-        let items = try await getItems(shareId: currentShareId, state: .active)
-        try await parallelMove(items: items, to: toShareId, destinationFolderId: destinationFolderId)
         itemsWereUpdated.send()
-        logger.trace("Moved share \(currentShareId) to share \(toShareId)")
+        logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 
     func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {

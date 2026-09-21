@@ -59,15 +59,15 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: "F-dest")
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 1)
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
+        #expect(repository.invokedMoveCount == 1)
+        let args = try #require(repository.invokedMoveParameters)
         #expect(args.items.map(\.itemId).sorted() == ["I1", "I2"])
         #expect(args.toShareId == destinationShareId)
         #expect(args.destinationFolderId == "F-dest")
     }
 
     @Test
-    func `allItemsInFolder flattens items from subfolders recursively`() async throws {
+    func `allItemsInFolder leaves items of subfolders in place`() async throws {
         // Hierarchy: F-root (direct item I-direct)
         //   |__ F-child (item I-nested)
         //         |__ F-grandchild (item I-deep)
@@ -91,8 +91,8 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        let args = try #require(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncParameters29)
-        #expect(args.items.map(\.itemId).sorted() == ["I-deep", "I-direct", "I-nested"])
+        let args = try #require(repository.invokedMoveParameters)
+        #expect(args.items.map(\.itemId) == ["I-direct"])
         #expect(args.destinationFolderId == nil)
         #expect(args.toShareId == destinationShareId)
     }
@@ -107,18 +107,72 @@ struct MoveItemsBetweenVaultsTests {
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
     }
 
     @Test
-    func `allItemsInFolder with no share content does not call the repository`() async throws {
+    func `allItemsInFolder with no share content does not call the repository and throws an error`() async throws {
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         appContentManager.stubbedGetShareContentResult = nil
 
-        try await sut.execute(context: .allItemsInFolder(folder),
+        await #expect(throws: PassError.self) {
+            try await sut.execute(context: .allItemsInFolder(folder),
+                                  to: destinationShareId,
+                                  destinationFolderId: nil)
+        }
+    }
+
+    // MARK: - .allItems
+
+    @Test
+    func `allItems leaves items of folders in place`() async throws {
+        let vault = Share.random(shareID: sourceShareId)
+        let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
+        let root = ItemUiModel.mock(itemId: "I-root", shareId: sourceShareId, folderId: nil)
+        let inFolder = ItemUiModel.mock(itemId: "I-in-folder", shareId: sourceShareId, folderId: "F1")
+        appContentManager.stubbedGetShareContentResult = ShareContent(share: vault,
+                                                                      elements: [
+                                                                          .folder(folder),
+                                                                          .item(root),
+                                                                          .item(inFolder)
+                                                                      ])
+
+        try await sut.execute(context: .allItems(vault),
+                              to: destinationShareId,
+                              destinationFolderId: "F-dest")
+
+        let args = try #require(repository.invokedMoveParameters)
+        #expect(args.items.map(\.itemId) == ["I-root"])
+        #expect(args.toShareId == destinationShareId)
+        #expect(args.destinationFolderId == "F-dest")
+    }
+
+    @Test
+    func `allItems with items only in folders does not call the repository`() async throws {
+        let vault = Share.random(shareID: sourceShareId)
+        let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
+        let inFolder = ItemUiModel.mock(itemId: "I-in-folder", shareId: sourceShareId, folderId: "F1")
+        appContentManager.stubbedGetShareContentResult = ShareContent(share: vault,
+                                                                      elements: [
+                                                                          .folder(folder),
+                                                                          .item(inFolder)
+                                                                      ])
+
+        try await sut.execute(context: .allItems(vault),
                               to: destinationShareId,
                               destinationFolderId: nil)
 
-        #expect(repository.invokedMoveItemsToShareIdDestinationFolderIdAsyncCount29 == 0)
+        #expect(repository.invokedMoveCount == 0)
+    }
+
+    @Test
+    func `allItems with no share content does not call the repository and throws and error`() async throws {
+        appContentManager.stubbedGetShareContentResult = nil
+
+        await #expect(throws: PassError.self) {
+            try await sut.execute(context: .allItems(.random(shareID: sourceShareId)),
+                                  to: destinationShareId,
+                                  destinationFolderId: nil)
+        }
     }
 }

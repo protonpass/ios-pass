@@ -20,6 +20,7 @@
 
 import UseCases
 import Client
+import Entities
 
 @MainActor
 public final class MoveItemsBetweenContainersUseCaseMock: @unchecked Sendable, MoveItemsBetweenContainersUseCase {
