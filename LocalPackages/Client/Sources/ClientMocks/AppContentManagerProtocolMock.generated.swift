@@ -62,27 +62,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
             return stubbedHasOnlyOneOwnedVault
         }
     }
-    // MARK: - isFullSyncing
-    public var invokedIsFullSyncingSetter = false
-    public var invokedIsFullSyncingSetterCount = 0
-    public var invokedIsFullSyncing: Bool?
-    public var invokedIsFullSyncingList = [Bool?]()
-    public var invokedIsFullSyncingGetter = false
-    public var invokedIsFullSyncingGetterCount = 0
-    public var stubbedIsFullSyncing: Bool!
-
-    public var isFullSyncing: Bool {
-        set {
-            invokedIsFullSyncingSetter = true
-            invokedIsFullSyncingSetterCount += 1
-            invokedIsFullSyncing = newValue
-            invokedIsFullSyncingList.append(newValue)
-        } get {
-            invokedIsFullSyncingGetter = true
-            invokedIsFullSyncingGetterCount += 1
-            return stubbedIsFullSyncing
-        }
-    }
     // MARK: - select
     public var closureSelect: () -> () = {}
     public var invokedSelectfunction = false
@@ -115,12 +94,14 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedFullSyncCount = 0
     public var invokedFullSyncParameters: (userId: String, Void)?
     public var invokedFullSyncParametersList = [(userId: String, Void)]()
+    public nonisolated(unsafe) var stubbedFullSyncResult: Bool!
 
-    public func fullSync(userId: String) async {
+    public func fullSync(userId: String) async -> Bool {
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         invokedFullSyncParameters = (userId, ())
         closureFullSync()
+        return stubbedFullSyncResult
     }
     // MARK: - localFullSync
     public var localFullSyncUserIdThrowableError4: Error?

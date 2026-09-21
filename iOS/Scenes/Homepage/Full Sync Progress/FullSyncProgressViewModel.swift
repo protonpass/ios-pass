@@ -36,6 +36,7 @@ final class FullSyncProgressViewModel: ObservableObject {
     private let appContentManager = dependency(\ServiceContainer.appContentManager)
     private let processVaultSyncEvent = dependency(\UseCasesContainer.processVaultSyncEvent)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let userManager = dependency(\ServiceContainer.userManager)
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 
@@ -87,7 +88,7 @@ extension FullSyncProgressViewModel {
     }
 
     func retry() async {
-        guard let userId else {
+        guard let userId = try? await userManager.getActiveUserId() else {
             assertionFailure("Failed to full sync. No userID found")
             return
         }

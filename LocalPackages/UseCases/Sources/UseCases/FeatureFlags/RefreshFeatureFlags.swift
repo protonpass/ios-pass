@@ -24,6 +24,10 @@ import ProtonCoreFeatureFlags
 
 public protocol RefreshFeatureFlagsUseCase: Sendable {
     func execute()
+
+    /// Await this instead of `execute()` when a decision depends on the flags being current
+    /// rather than on whatever the last session cached.
+    func execute() async
 }
 
 public extension RefreshFeatureFlagsUseCase {
@@ -51,32 +55,36 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
     public func execute() {
         Task { [weak self] in
             guard let self else { return }
-            // `""` means "no active user": flags are then fetched on the unauthenticated session,
-            // which is a supported flow. Distinguish it from `getActiveUserId` actually failing,
-            // otherwise the two are indistinguishable in the logs.
-            var userId = ""
-            do {
-                userId = try await userManager.getActiveUserId()
-            } catch {
-                logger.info("""
-                No active user, refreshing feature flags on the unauthenticated session: \
-                \(String(describing: error))
-                """)
-            }
-            do {
-                let apiservice = try apiServicing.getApiService(userId: userId)
-                featureFlagsRepository.setApiService(apiservice)
+            await execute()
+        }
+    }
 
-                if !userId.isEmpty {
-                    featureFlagsRepository.setUserId(userId)
-                }
+    public func execute() async {
+        // `""` means "no active user": flags are then fetched on the unauthenticated session,
+        // which is a supported flow. Distinguish it from `getActiveUserId` actually failing,
+        // otherwise the two are indistinguishable in the logs.
+        var userId = ""
+        do {
+            userId = try await userManager.getActiveUserId()
+        } catch {
+            logger.info("""
+            No active user, refreshing feature flags on the unauthenticated session: \
+            \(String(describing: error))
+            """)
+        }
+        do {
+            let apiservice = try apiServicing.getApiService(userId: userId)
+            featureFlagsRepository.setApiService(apiservice)
 
-                logger.trace("Refreshing feature flags for user \(userId)")
-                try await featureFlagsRepository.fetchFlags()
-                logger.trace("Finished updating local flags for user \(userId)")
-            } catch {
-                logger.error(message: "Failed to refresh feature flags for user \(userId)", error: error)
+            if !userId.isEmpty {
+                featureFlagsRepository.setUserId(userId)
             }
+
+            logger.trace("Refreshing feature flags for user \(userId)")
+            try await featureFlagsRepository.fetchFlags()
+            logger.trace("Finished updating local flags for user \(userId)")
+        } catch {
+            logger.error(message: "Failed to refresh feature flags for user \(userId)", error: error)
         }
     }
 }

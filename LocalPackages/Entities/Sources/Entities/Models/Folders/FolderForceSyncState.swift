@@ -33,10 +33,15 @@ import Foundation
 /// would trigger another destructive full sync. Extension-side state lives in the shared
 /// `UserDefaults` instead.
 public struct FolderForceSyncState: Codable, Equatable, Sendable {
-    /// A full sync has completed for this user, so no repair is needed any more.
+    /// Terminal: the repair is over for this user and must never run again.
+    ///
+    /// Set either because a full sync completed, or because the attempt budget ran out and the
+    /// repair was abandoned. `attempts >= maxAttempts` distinguishes the two. Both readings are
+    /// deliberate - the extension banner keys off this flag, so a give-up has to silence it the
+    /// same way a success does.
     public var done: Bool
 
-    /// Consumed repair attempts. Reaching the maximum stops further automatic attempts.
+    /// Consumed repair attempts. Reaching the maximum abandons the repair and sets `done`.
     public var attempts: Int
 
     /// When the last attempt was made, used to space attempts out.
