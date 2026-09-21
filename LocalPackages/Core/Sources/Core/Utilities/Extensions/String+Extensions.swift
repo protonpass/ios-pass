@@ -193,6 +193,7 @@ public extension String {
         folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
     }
 
+    @MainActor
     func coloredPassword() -> AttributedString {
         let attributedChars = map { char in
             var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)

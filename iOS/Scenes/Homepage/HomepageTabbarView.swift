@@ -72,6 +72,7 @@ enum HomepageTab: String, CaseIterable, Hashable {
 }
 
 private extension MonitorState {
+    @MainActor
     func icon(selected: Bool) -> UIImage {
         switch self {
         case let .active(state):

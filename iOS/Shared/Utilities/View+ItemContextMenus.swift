@@ -404,6 +404,7 @@ struct ItemContextMenuOption: Identifiable {
         .init(title: "Edit", icon: IconProvider.pencil, action: action)
     }
 
+    @MainActor
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
         .init(title: item.pinTitle, icon: item.pinIcon, action: action)

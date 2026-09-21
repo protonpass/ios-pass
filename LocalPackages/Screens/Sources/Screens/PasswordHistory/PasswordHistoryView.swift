@@ -234,17 +234,17 @@ private struct GeneratedPasswordRow: View {
         Menu(content: {
             Button { action(.copy) } label: {
                 Label(title: { Text("Copy password", bundle: .module) },
-                      icon: { IconProvider.key })
+                      icon: { IconProvider.key as Image })
             }
 
             Button { action(.createLogin) } label: {
                 Label(title: { Text("Create login", bundle: .module) },
-                      icon: { IconProvider.user })
+                      icon: { IconProvider.user as Image })
             }
 
             Button { action(.remove) } label: {
                 Label(title: { Text("Remove from history", bundle: .module) },
-                      icon: { IconProvider.trashCross })
+                      icon: { IconProvider.trashCross as Image })
             }
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,

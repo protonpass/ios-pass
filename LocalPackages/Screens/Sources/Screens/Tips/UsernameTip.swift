@@ -23,6 +23,8 @@ import TipKit
 
 public nonisolated struct UsernameTip: Tip {
     private let bundle: Bundle
+    private let titleColor: Color
+    private let messageColor: Color
     public var id: String {
         PassTip.username.id
     }
@@ -36,12 +38,12 @@ public nonisolated struct UsernameTip: Tip {
 
     public var title: Text {
         Text("Add username field", bundle: bundle)
-            .foregroundStyle(PassColor.textNorm)
+            .foregroundStyle(titleColor)
     }
 
     public var message: Text? {
         Text("Tap here to add a field for a username.", bundle: bundle)
-            .foregroundStyle(PassColor.textWeak)
+            .foregroundStyle(messageColor)
     }
 
     public var image: Image? {
@@ -56,5 +58,7 @@ public nonisolated struct UsernameTip: Tip {
     @MainActor
     public init() {
         bundle = Foundation.Bundle.module
+        titleColor = PassColor.textNorm
+        messageColor = PassColor.textWeak
     }
 }

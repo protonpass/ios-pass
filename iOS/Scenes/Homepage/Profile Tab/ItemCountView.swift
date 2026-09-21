@@ -168,6 +168,7 @@ private extension CounterChip {
 }
 
 private extension ItemContentType {
+    @MainActor
     var toConfiguration: CounterChip.Configuration {
         .init(icon: regularIcon,
               iconTint: thumbnailTintColor,

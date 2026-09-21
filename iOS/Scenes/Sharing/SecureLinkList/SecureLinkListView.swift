@@ -145,7 +145,7 @@ private extension SecureLinkListView {
                                    Label(title: {
                                        Text("Remove all inactive links")
                                    }, icon: {
-                                       IconProvider.crossCircle
+                                       IconProvider.crossCircle as Image
                                    })
                                })
                     } label: {
@@ -304,7 +304,7 @@ private extension SecureLinkListView {
                        Label(title: {
                            Text(isInactive ? "Remove inactive link" : "Remove link")
                        }, icon: {
-                           IconProvider.crossCircle
+                           IconProvider.crossCircle as Image
                        })
                    })
         } label: {

@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+@MainActor
 enum SecureRowType {
     case info, warning, danger, success, upsell
 

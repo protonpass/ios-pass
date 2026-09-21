@@ -161,6 +161,7 @@ private extension CreateEditItemToolbar {
     }
 }
 
+@MainActor
 private enum ContainerType {
     case folder(String)
     case vault(VaultContent)

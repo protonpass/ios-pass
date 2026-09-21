@@ -27,10 +27,14 @@ public struct SpotlightTip: Tip {
     }
 
     private let bundle: Bundle
+    private let titleColor: Color
+    private let messageColor: Color
 
     @MainActor
     public init() {
         bundle = Foundation.Bundle.module
+        titleColor = PassColor.textNorm
+        messageColor = PassColor.textWeak
     }
 
     @Parameter
@@ -46,13 +50,13 @@ public struct SpotlightTip: Tip {
 
     public var title: Text {
         Text("Enable Spotlight search", bundle: bundle)
-            .foregroundStyle(PassColor.textNorm)
+            .foregroundStyle(titleColor)
     }
 
     public var message: Text? {
         Text("Seamlessly search for items via your home screen. Open Settings → Spotlight to enable.",
              bundle: bundle)
-            .foregroundStyle(PassColor.textWeak)
+            .foregroundStyle(messageColor)
     }
 
     public var image: Image? {

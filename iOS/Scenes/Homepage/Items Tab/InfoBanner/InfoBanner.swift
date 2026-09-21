@@ -26,6 +26,7 @@ import SwiftUI
 enum InfoBanner: Equatable, Hashable {
     case invite([Invite])
 
+    @MainActor
     var detail: InfoBannerDetail {
         switch self {
         case let .invite(invite):
@@ -42,6 +43,7 @@ enum InfoBanner: Equatable, Hashable {
 }
 
 private extension InfoBannerDetail {
+    @MainActor
     static var `default`: InfoBannerDetail {
         .init(title: "",
               description: "",
@@ -53,6 +55,7 @@ private extension InfoBannerDetail {
 }
 
 private extension Invite {
+    @MainActor
     var infoBannerDetail: InfoBannerDetail {
         switch self {
         case let .user(invite):
@@ -100,6 +103,7 @@ struct InfoBannerDetail {
     let closeButtonColor: Color
     let typeOfCtaButton: CtaButtonType
 
+    @MainActor
     init(title: String,
          description: String,
          icon: Image?,
