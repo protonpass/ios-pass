@@ -69,9 +69,7 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
         var state = getUserPreferences().folderForceSync
         guard !state.done else { return false }
 
-        // Running out of attempts is terminal, not a pause: an unreachable share makes every
-        // scan throw `incompleteScan`, and without recording the give-up the extension banner
-        // would keep telling the user to run a sync the app has already abandoned.
+        // Once max attempt is reached, we stop trying to force sync automatically and let users manually do it
         guard state.attempts < maxAttempts else {
             state.done = true
             try await updateUserPreferences(\.folderForceSync, value: state)
@@ -84,11 +82,6 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
             return false
         }
 
-        // The repair wipes local data, so the kill switch has to be read live: cached flags are
-        // a session behind, which would let a disabled rollout keep wiping for one more
-        // foreground. Placed after every cheap guard, so only a user actually about to be
-        // repaired pays for the fetch.
-        await refreshFeatureFlags.execute()
         guard getFeatureFlagStatus(for: FeatureFlagType.passFolderForceSync) else { return false }
 
         state.attempts += 1

@@ -59,7 +59,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         }
     }
 
-    public func execute() async {
+    func execute() async {
         // `""` means "no active user": flags are then fetched on the unauthenticated session,
         // which is a supported flow. Distinguish it from `getActiveUserId` actually failing,
         // otherwise the two are indistinguishable in the logs.

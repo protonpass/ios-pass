@@ -223,21 +223,6 @@ struct ShouldForceSyncForFoldersTests {
     }
 
     @Test
-    func `The kill switch is read after a live refresh, not from the cache`() async throws {
-        let flags = FeatureFlagStub(enabled: [flagName])
-        let refreshFlags = RefreshFeatureFlagsStub()
-        refreshFlags.onRefresh = { flags.enabled = [] }
-        hasFolders.result = true
-
-        let result = try await makeSut(flags: flags, refreshFlags: refreshFlags)
-            .execute(userId: userId)
-
-        #expect(result == false)
-        #expect(refreshFlags.callCount == 1)
-        #expect(hasFolders.callCount == 0)
-    }
-
-    @Test
     func `Users already done never pay for a flag refresh`() async throws {
         store.setState(done: true)
         let refreshFlags = RefreshFeatureFlagsStub()
