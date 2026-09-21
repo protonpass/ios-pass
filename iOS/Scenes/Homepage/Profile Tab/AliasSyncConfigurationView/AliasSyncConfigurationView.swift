@@ -301,19 +301,19 @@ private struct MailboxElementRow: View {
             Menu(content: {
                 if mailbox.verificationNeeded {
                     Label(title: { Text("Verify") },
-                          icon: { IconProvider.checkmarkCircle })
+                          icon: { IconProvider.checkmarkCircle as Image })
                         .buttonEmbeded(action: verify)
                 }
 
                 if mailbox.verified, !mailbox.isDefault {
                     Label(title: { Text("Make default") },
-                          icon: { IconProvider.star })
+                          icon: { IconProvider.star as Image })
                         .buttonEmbeded(action: setDefault)
                 }
 
                 if mailbox.pendingEmail == nil {
                     Label(title: { Text("Change mailbox email") },
-                          icon: { IconProvider.pencil })
+                          icon: { IconProvider.pencil as Image })
                         .buttonEmbeded(action: changeEmail)
                 } else {
                     Label("Cancel mailbox change", systemImage: "xmark.circle")
@@ -323,7 +323,7 @@ private struct MailboxElementRow: View {
                 if !mailbox.isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
-                          icon: { IconProvider.trash })
+                          icon: { IconProvider.trash as Image })
                         .buttonEmbeded(action: delete)
                 }
             }, label: {

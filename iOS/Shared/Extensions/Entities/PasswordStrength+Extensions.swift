@@ -25,6 +25,7 @@ import Screens
 import SwiftUI
 
 extension PasswordStrength? {
+    @MainActor
     func sectionTitle(reuseCount: Int?) -> String {
         if let self {
             if let reuseCount {
@@ -37,6 +38,7 @@ extension PasswordStrength? {
         }
     }
 
+    @MainActor
     var sectionTitleColor: Color {
         // swiftlint:disable:next discouraged_optional_self
         self?.color ?? PassColor.textWeak

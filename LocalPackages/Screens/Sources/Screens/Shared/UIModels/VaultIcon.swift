@@ -29,6 +29,7 @@ public nonisolated enum VaultIcon: CaseIterable {
     case icon11, icon12, icon13, icon14, icon15, icon16, icon17, icon18, icon19, icon20
     case icon21, icon22, icon23, icon24, icon25, icon26, icon27, icon28, icon29, icon30
 
+    @MainActor
     public var bigImage: Image {
         switch self {
         case .icon1: PassIcon.vaultIcon1Big
@@ -64,6 +65,7 @@ public nonisolated enum VaultIcon: CaseIterable {
         }
     }
 
+    @MainActor
     public var smallImage: Image {
         switch self {
         case .icon1: PassIcon.vaultIcon1Small

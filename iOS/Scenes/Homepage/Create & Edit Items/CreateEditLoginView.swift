@@ -551,13 +551,13 @@ private extension CreateEditLoginView {
                        backgroundColor: viewModel.itemContentType.normMinor1Color,
                        accessibilityLabel: "Alias action menu") {
                 Button { viewModel.generateAlias() } label: {
-                    Label(title: { Text("Edit alias") }, icon: { IconProvider.pencil })
+                    Label(title: { Text("Edit alias") }, icon: { IconProvider.pencil as Image })
                 }
 
                 Button { viewModel.removeAlias() }
                     label: {
                         Label(title: { Text("Remove alias") },
-                              icon: { IconProvider.crossCircle })
+                              icon: { IconProvider.crossCircle as Image })
                     }
             }
         }

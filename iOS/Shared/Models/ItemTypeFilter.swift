@@ -25,6 +25,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 extension ItemTypeFilterOption {
+    @MainActor
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
@@ -49,6 +50,7 @@ struct ItemTypeFilterOptionUiModel {
 }
 
 private extension ItemContentType {
+    @MainActor
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         let count: Int = switch self {
         case .login:

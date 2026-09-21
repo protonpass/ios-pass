@@ -150,7 +150,7 @@ private struct VaultTrailingMenu: View {
                     Label(title: {
                         Text("Share", bundle: .module)
                     }, icon: {
-                        IconProvider.userPlus
+                        IconProvider.userPlus as Image
                     })
                 })
             }
@@ -162,7 +162,7 @@ private struct VaultTrailingMenu: View {
                     Label(title: {
                         Text(vault.isManager ? "Manage access" : "View members", bundle: .module)
                     }, icon: {
-                        IconProvider.users
+                        IconProvider.users as Image
                     })
                 })
             }
@@ -174,7 +174,7 @@ private struct VaultTrailingMenu: View {
                     Label(title: {
                         Text("Move all items", bundle: .module)
                     }, icon: {
-                        IconProvider.folderArrowIn
+                        IconProvider.folderArrowIn as Image
                     })
                 })
             }
@@ -189,7 +189,7 @@ private struct VaultTrailingMenu: View {
                            Label(title: {
                                Text("Delete vault", bundle: .module)
                            }, icon: {
-                               IconProvider.trash
+                               IconProvider.trash as Image
                            })
                        })
             } else if vault.groupID == nil {
@@ -200,7 +200,7 @@ private struct VaultTrailingMenu: View {
                            Label(title: {
                                Text("Leave vault", bundle: .module)
                            }, icon: {
-                               IconProvider.trash
+                               IconProvider.trash as Image
                            })
                        })
             }
@@ -221,7 +221,7 @@ private struct TrashTrailingMenu: View {
                     Label(title: {
                         Text("Restore all items", bundle: .module)
                     }, icon: {
-                        IconProvider.clockRotateLeft
+                        IconProvider.clockRotateLeft as Image
                     })
                 }
 
@@ -235,7 +235,7 @@ private struct TrashTrailingMenu: View {
                            Label(title: {
                                Text("Empty trash", bundle: .module)
                            }, icon: {
-                               IconProvider.trashCross
+                               IconProvider.trashCross as Image
                            })
                        })
             }, label: { ThreeDotsMenuLabel() })
