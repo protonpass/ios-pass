@@ -26,7 +26,6 @@ import Entities
 public protocol AppContentManagerProtocol: Sendable {
     nonisolated var currentShares: CurrentValueSubject<[Share], Never> { get }
     var hasOnlyOneOwnedVault: Bool { get }
-    var isFullSyncing: Bool { get }
 
     func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?)
     func refresh(userId: String) async
