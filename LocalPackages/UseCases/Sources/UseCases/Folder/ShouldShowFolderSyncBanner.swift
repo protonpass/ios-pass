@@ -74,7 +74,7 @@ public struct ShouldShowFolderSyncBanner: ShouldShowFolderSyncBannerUseCase {
 
         let state = getUserPreferences().folderForceSync
         guard !state.done,
-              getFeatureFlagStatus(for: FeatureFlagType.folderForceSync) else { return false }
+              getFeatureFlagStatus(for: FeatureFlagType.passFolderForceSync) else { return false }
 
         // Either process may have established this already.
         if state.foldersDetected || storage.bool(forKey: Self.foldersFoundKey(userId)) {
