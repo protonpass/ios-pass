@@ -354,6 +354,7 @@
 		40EC90962D1AE426004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */; };
+		4AA0CE0B4103FB1D30CA8A51 /* FullSyncPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293DC09927C851E965112CE3 /* FullSyncPresenting.swift */; };
 		531A480E2D80832300DDC7FB /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480D2D80831E00DDC7FB /* SshDetailView.swift */; };
 		531A48102D80833D00DDC7FB /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480F2D80833C00DDC7FB /* SshDetailViewModel.swift */; };
 		531A48122D80852800DDC7FB /* SshKeyComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */; };
@@ -470,7 +471,6 @@
 		5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		5B1F5CEB2A5ED6D000A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
-		4AA0CE0B4103FB1D30CA8A51 /* FullSyncPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293DC09927C851E965112CE3 /* FullSyncPresenting.swift */; };
 		5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
 		5B24B1DD3007C859009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1DC3007C859009B081A /* Stores */; };
 		5B24B1DF3007C86D009B081A /* Stores in Frameworks */ = {isa = PBXBuildFile; productRef = 5B24B1DE3007C86D009B081A /* Stores */; };
@@ -670,6 +670,7 @@
 		1F8265C32D6E6C19009D565A /* api */ = {isa = PBXFileReference; lastKnownFileType = folder; path = api; sourceTree = "<group>"; };
 		1F8265C52D6E6C53009D565A /* scenarios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenarios; sourceTree = "<group>"; };
 		1F8265C72D6E6D16009D565A /* MockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTests.swift; sourceTree = "<group>"; };
+		293DC09927C851E965112CE3 /* FullSyncPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncPresenting.swift; sourceTree = "<group>"; };
 		350134FC2C9C505B008D803A /* AutoFillCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredentials.swift; sourceTree = "<group>"; };
 		350AF86D299683940045B7B6 /* NoteEditSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditSection.swift; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
@@ -974,7 +975,6 @@
 		5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareContent+Extensions.swift"; sourceTree = "<group>"; };
 		5B1F0F062EC1DF5C0015982A /* InviteSuggestionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteSuggestionsSection.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
-		293DC09927C851E965112CE3 /* FullSyncPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncPresenting.swift; sourceTree = "<group>"; };
 		5B24B0532FFCFC50009B081A /* DIComposition */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DIComposition; path = LocalPackages/DIComposition; sourceTree = "<group>"; };
 		5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryView.swift; sourceTree = "<group>"; };
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
@@ -1091,27 +1091,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
-		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = FolderMoveListView;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
+		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FolderMoveListView; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5798,7 +5779,7 @@
 			repositoryURL = "https://github.com/hmlongco/Factory";
 			requirement = {
 				kind = exactVersion;
-				version = 3.3.2;
+				version = 3.4.0;
 			};
 		};
 		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
