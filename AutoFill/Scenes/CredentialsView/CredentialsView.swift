@@ -49,6 +49,7 @@ struct CredentialsView: View {
         .task {
             await viewModel.fetchItems()
             await viewModel.sync(ignoreError: true)
+            await viewModel.refreshFolderSyncBanner()
         }
         .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
                              onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
@@ -100,6 +101,12 @@ private extension CredentialsView {
                           placeholder: viewModel.searchBarPlaceholder,
                           cancelMode: .always,
                           onCancel: { viewModel.handleCancel() })
+
+                if viewModel.showFolderSyncBanner {
+                    FolderSyncRequiredBanner()
+                        .padding([.horizontal])
+                        .padding([.bottom], 10)
+                }
             }
             switch viewModel.state {
             case .idle:
@@ -338,6 +345,17 @@ private struct ItemRow: View {
         }
         .plainListRow()
         .padding(.horizontal)
+    }
+}
+
+struct FolderSyncRequiredBanner: View {
+    var body: some View {
+        Text("Please open the Proton Pass app and run a full data sync to improve performance")
+            .foregroundStyle(PassColor.textNorm)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding()
+            .background(PassColor.interactionNormMinor1)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 

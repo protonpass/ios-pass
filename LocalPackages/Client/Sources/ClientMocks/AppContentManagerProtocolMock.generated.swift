@@ -94,12 +94,14 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedFullSyncCount = 0
     public var invokedFullSyncParameters: (userId: String, Void)?
     public var invokedFullSyncParametersList = [(userId: String, Void)]()
+    public nonisolated(unsafe) var stubbedFullSyncResult: Bool!
 
-    public func fullSync(userId: String) async {
+    public func fullSync(userId: String) async -> Bool {
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         invokedFullSyncParameters = (userId, ())
         closureFullSync()
+        return stubbedFullSyncResult
     }
     // MARK: - localFullSync
     public var localFullSyncUserIdThrowableError4: Error?

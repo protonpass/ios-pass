@@ -40,6 +40,7 @@ protocol AutoFillViewModelDelegate: AnyObject {
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @Published var results: [T] = []
+    @Published private(set) var showFolderSyncBanner = false
 
     @Published var selectedUser: UserUiModel? {
         didSet {
@@ -62,6 +63,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @LazyInjected(\ToolingContainer.logger) var logger
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
     @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\UseCasesContainer.shouldShowFolderSyncBanner) private var shouldShowFolderSyncBanner
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?
@@ -178,6 +180,20 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
             await logger.error(error)
             await changeToErrorState(error)
         }
+    }
+
+    ///
+    /// `@concurrent` so the lookup leaves the main actor, matching `fetchItems()`. It cannot go on
+    /// the use case instead: `@concurrent` on a protocol requirement reached through an existential
+    /// crashes SILGen in swiftlang 6.3.3.
+    @concurrent
+    func refreshFolderSyncBanner() async {
+        let show = await shouldShowFolderSyncBanner()
+        await setShowFolderSyncBanner(show)
+    }
+
+    private func setShowFolderSyncBanner(_ show: Bool) {
+        showFolderSyncBanner = show
     }
 }
 
