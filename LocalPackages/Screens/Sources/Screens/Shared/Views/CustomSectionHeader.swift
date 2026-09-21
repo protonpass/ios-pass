@@ -30,14 +30,6 @@ public struct CustomSectionHeader: View {
     let onEditTitle: () -> Void
     let onRemove: () -> Void
 
-    private var pencilIcon: Image {
-        IconProvider.pencil
-    }
-
-    private var crossIcon: Image {
-        IconProvider.crossCircle
-    }
-
     public init(title: TextContent,
                 collapsed: Bool,
                 editable: Bool,
@@ -70,11 +62,11 @@ public struct CustomSectionHeader: View {
             if editable {
                 Menu(content: {
                     Label(title: { Text("Edit section's title", bundle: .module) },
-                          icon: { pencilIcon })
+                          icon: { IconProvider.pencil as Image })
                         .buttonEmbeded(action: onEditTitle)
 
                     Label(title: { Text("Remove section", bundle: .module) },
-                          icon: { crossIcon })
+                          icon: { IconProvider.crossCircle as Image })
                         .buttonEmbeded(action: onRemove)
                 }, label: {
                     IconProvider.threeDotsVertical
