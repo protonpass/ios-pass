@@ -127,6 +127,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var authenticated = false
+    private var folderSupportState: FolderSupportState = .notSupported
 
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
@@ -243,23 +244,32 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
+        Publishers.CombineLatest3(appContentManager.$shareSelection,
+                                  appContentManager.$state,
+                                  accessRepository.access)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selection, _ in
+            .sink { [weak self] selection, _, access in
                 guard let self else { return }
+                // A nil plan yields `.notSupported`, so a not-yet-loaded plan can't let free
+                // users slip an item into a folder they can only read
+                folderSupportState = .init(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                                           plan: access?.access.plan)
                 var createButtonDisabled = false
                 switch selection {
                 case .all, .trash:
                     createButtonDisabled = !appContentManager.hasEditableContainers
 
                 case let .precise(selection):
-                    createButtonDisabled = !selection.share.canEdit
+                    // Upsellable folder selections stay enabled so the tap can offer the upgrade
+                    let folderAllowed = folderSupportState.canCreateAndModifyFolders ||
+                        folderSupportState.shouldUpsell
+                    createButtonDisabled = !selection.canCreateItem(folderAllowed: folderAllowed)
 
                 default:
                     createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
-                itemsTabViewModel?.hideCreateButton(createButtonDisabled)
+                itemsTabViewModel?.setCanCreateItem(!createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -943,8 +953,14 @@ extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
+        // Ahead of the folder upsell: the generator creates nothing, so it is unaffected by
+        // folder entitlements.
         if itemType == .password {
             presentPasswordGenerator()
+            return
+        }
+        if appContentManager.shareSelection.isFolderSelection, folderSupportState.shouldUpsell {
+            router.present(for: .upgradeFlow)
             return
         }
         Task { [weak self] in

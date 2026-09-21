@@ -32,41 +32,6 @@ import Observation
 import ProtonCoreLogin
 import Stores
 
-enum FolderSupportState: Sendable {
-    /// Flag is not enabled
-    case notSupported
-    /// Flag is enabled but plan doesn't and upsell is needed (e.g free users)
-    case supportedButShouldUpsell
-    /// Flag is enabled and plan fully allows
-    case supportedAndAllowed
-    /// Flag is enabled but plan doesn't allow (e.g Pass Essentials)
-    case supportedButNotAllowed
-
-    var canCreateAndModifyFolders: Bool {
-        if case .supportedAndAllowed = self {
-            true
-        } else {
-            false
-        }
-    }
-
-    var isSupported: Bool {
-        if case .notSupported = self {
-            false
-        } else {
-            true
-        }
-    }
-
-    var shouldUpsell: Bool {
-        if case .supportedButShouldUpsell = self {
-            true
-        } else {
-            false
-        }
-    }
-}
-
 private extension VaultsAndFoldersMenuViewModel {
     struct Count {
         let all: Int
@@ -228,13 +193,15 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     }
 
     func canMoveItems(vault: Share) -> Bool {
-        canUserPerformActionOnVault(for: vault)
+        guard let content = shareContent(for: vault.shareId),
+              canUserPerformActionOnVault(for: content.share) else { return false }
+        return content.items(in: vault.shareId)?.isEmpty == false
     }
 
     func canMoveItems(folder: FolderUiModel) -> Bool {
         guard let content = shareContent(for: folder.shareId),
               canUserPerformActionOnVault(for: content.share) else { return false }
-        return !content.flattenedItems(from: folder.folderId).isEmpty
+        return content.items(in: folder.folderId)?.isEmpty == false
     }
 
     func canSelectVault(selection: ShareSelection) -> Bool {
@@ -258,12 +225,12 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
         folderAction = nil
     }
 
+    /// Mirrors what the expanded row renders: the root folder tree, or the create folder call to action.
     func shouldShowToggleArrow(for content: ShareContent) -> Bool {
-        guard content.isReadOnly else {
+        if content.folders(in: content.id)?.isEmpty == false {
             return true
         }
-
-        return content.totalFolderCount > 0
+        return canOfferFolderCreation(in: content)
     }
 
     func shareContent(for shareId: String) -> ShareContent? {
@@ -585,22 +552,15 @@ private extension VaultsAndFoldersMenuViewModel {
     }
 
     func apply(plan: Plan?) {
-        guard let plan else { return }
         self.plan = plan
 
-        if let newFolderLimits = plan.folderLimits,
+        if let newFolderLimits = plan?.folderLimits,
            newFolderLimits != folderLimits {
             folderLimits = newFolderLimits
         }
 
-        guard getFeatureFlagStatus(for: FeatureFlagType.passFolder) else { return }
-        folderSupportState = if plan.folderAllowed {
-            .supportedAndAllowed
-        } else if plan.shouldUpsell {
-            .supportedButShouldUpsell
-        } else {
-            .supportedButNotAllowed
-        }
+        folderSupportState = .init(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                                   plan: plan)
     }
 
     func recomputeVaults() {
