@@ -33,14 +33,19 @@ struct ShouldForceSyncForFoldersTests {
     private let store = PreferencesStore()
     private let hasFolders = HasFoldersStub()
     private let userId = "test_user_id"
+    private let flagName = "PassForceSyncFolders"
 
     private func makeSut(flagOn: Bool = true,
                          online: Bool = true,
                          maxAttempts: Int = 10,
-                         retryDelay: TimeInterval = 30 * 60) -> any ShouldForceSyncForFoldersUseCase {
+                         retryDelay: TimeInterval = 30 * 60,
+                         flags: FeatureFlagStub? = nil,
+                         refreshFlags: RefreshFeatureFlagsStub = .init())
+        -> any ShouldForceSyncForFoldersUseCase {
         ShouldForceSyncForFolders(getUserPreferences: GetPreferencesStub(store: store),
                                   getFeatureFlagStatus:
-                                  FeatureFlagStub(enabled: flagOn ? ["PassForceSyncFolders"] : []),
+                                  flags ?? FeatureFlagStub(enabled: flagOn ? [flagName] : []),
+                                  refreshFeatureFlags: refreshFlags,
                                   userHasRemoteFolders: hasFolders,
                                   updateUserPreferences: UpdatePreferencesStub(store: store),
                                   reachability: ReachabilityStub(available: online),
@@ -65,7 +70,9 @@ struct ShouldForceSyncForFoldersTests {
         let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
         #expect(result == false)
         #expect(hasFolders.callCount == 0)
-        #expect(store.writtenStates.isEmpty)
+        // The give-up is written, not silent: the extension banner reads `done` and would
+        // otherwise keep asking for a sync the app has stopped attempting.
+        #expect(store.state.done)
     }
 
     @Test
@@ -155,7 +162,8 @@ struct ShouldForceSyncForFoldersTests {
 
         let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
         #expect(result == false)
-        #expect(store.writtenStates.isEmpty)
+        #expect(store.state.done)
+        #expect(store.state.foldersDetected)
     }
 
     @Test
@@ -201,5 +209,42 @@ struct ShouldForceSyncForFoldersTests {
         let result = try await makeSut(retryDelay: 0).execute(userId: userId)
         #expect(result == false)
         #expect(hasFolders.callCount == callsBefore)
+    }
+
+    @Test
+    func `Exhausting the budget records the give-up, so the banner stops asking`() async throws {
+        store.setState(attempts: 10)
+
+        let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
+
+        #expect(result == false)
+        #expect(store.state.done)
+        #expect(store.state.attempts == 10)
+    }
+
+    @Test
+    func `The kill switch is read after a live refresh, not from the cache`() async throws {
+        let flags = FeatureFlagStub(enabled: [flagName])
+        let refreshFlags = RefreshFeatureFlagsStub()
+        refreshFlags.onRefresh = { flags.enabled = [] }
+        hasFolders.result = true
+
+        let result = try await makeSut(flags: flags, refreshFlags: refreshFlags)
+            .execute(userId: userId)
+
+        #expect(result == false)
+        #expect(refreshFlags.callCount == 1)
+        #expect(hasFolders.callCount == 0)
+    }
+
+    @Test
+    func `Users already done never pay for a flag refresh`() async throws {
+        store.setState(done: true)
+        let refreshFlags = RefreshFeatureFlagsStub()
+
+        let result = try await makeSut(refreshFlags: refreshFlags).execute(userId: userId)
+
+        #expect(result == false)
+        #expect(refreshFlags.callCount == 0)
     }
 }

@@ -73,7 +73,7 @@ public struct UserHasRemoteFolders: UserHasRemoteFoldersUseCase {
     }
 }
 
-enum UserHasRemoteFoldersError: Error {
+public enum UserHasRemoteFoldersError: Error {
     /// At least one share could not be reached, so the absence of folders is unproven.
     case incompleteScan
 }

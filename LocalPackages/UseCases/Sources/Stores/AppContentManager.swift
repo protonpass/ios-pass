@@ -102,7 +102,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
-    private var fullSyncTask: Task<Void, Never>?
+    private var fullSyncTask: (userId: String, task: Task<Bool, Never>)?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -156,6 +156,8 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     }
 
     public func reset() {
+        fullSyncTask?.task.cancel()
+        fullSyncTask = nil
         state = .loading
         shareSelection = .all
         itemCount = .zero
@@ -222,25 +224,35 @@ public extension AppContentManager {
     /// Delete everything and download again
     ///
     /// Several unrelated triggers can land here at once (settings, server-forced refresh, crash
-    /// resume, folder repair). A second caller joins the sync already in flight instead of
-    /// starting a parallel wipe, and must not return early: callers present a non-dismissible
-    /// progress screen that only closes on a `vaultSyncEventStream` terminal event, so returning
-    /// without awaiting the real completion would strand that screen forever.
-    func fullSync(userId: String) async {
-        if let fullSyncTask {
+    /// resume, folder repair). A caller for the *same* user joins the sync already in flight
+    /// instead of starting a parallel wipe, and must not return early: callers present a
+    /// non-dismissible progress screen that only closes on a `vaultSyncEventStream` terminal
+    /// event, so returning without awaiting the real completion would strand that screen forever.
+    /// A caller for a different user waits its turn and then runs its own sync - joining would
+    /// report that user as synced without having downloaded anything for them.
+    ///
+    /// The loop is load-bearing: several callers can be parked on the same `await`, and they
+    /// resume one at a time on the main actor. `fullSyncTask` is assigned synchronously after
+    /// `Task { }` with no suspension in between, so whoever resumes second observes the new task
+    /// and joins it rather than starting a duplicate.
+    @discardableResult
+    func fullSync(userId: String) async -> Bool {
+        while let inFlight = fullSyncTask {
             logger.info("Full sync already in progress, joining it for user \(userId)")
-            await fullSyncTask.value
-            return
+            let succeeded = await inFlight.task.value
+            if inFlight.userId == userId {
+                return succeeded
+            }
         }
 
         let task = Task { [weak self] in
-            guard let self else { return }
+            guard let self else { return false }
 
             defer { fullSyncTask = nil }
-            await performFullSync(userId: userId)
+            return await performFullSync(userId: userId)
         }
-        fullSyncTask = task
-        await task.value
+        fullSyncTask = (userId, task)
+        return await task.value
     }
 
     func localFullSync(userId: String) async throws {
@@ -251,7 +263,7 @@ public extension AppContentManager {
 }
 
 private extension AppContentManager {
-    func performFullSync(userId: String) async {
+    func performFullSync(userId: String) async -> Bool {
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
@@ -326,12 +338,13 @@ private extension AppContentManager {
             try await getLastEventIdIfNotExist(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
-            return
+            return false
         }
 
         incompleteFullSyncUserId = nil
         await markFolderForceSyncDone()
         vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
+        return true
     }
 }
 
@@ -584,13 +597,6 @@ extension AppContentManager: LimitationCounterProtocol {
 // MARK: - Private APIs
 
 private extension AppContentManager {
-    /// A completed full sync has re-downloaded every folder and every item keyed to one, which is
-    /// exactly what the folder repair exists to achieve. Recording it here covers every entry
-    /// point at once: login, added account, settings, server-forced refresh and the repair itself.
-    ///
-    /// `updateUserPreferences` resolves the active user internally and ignores the id passed to
-    /// `fullSync`. Every current caller full-syncs the active user, so this is consistent; a
-    /// future non-active-user full sync would need to write that user's row explicitly.
     func markFolderForceSyncDone() async {
         guard var state = preferencesManager.userPreferences.value?.folderForceSync,
               !state.done else { return }
