@@ -24,10 +24,6 @@ import ProtonCoreFeatureFlags
 
 public protocol RefreshFeatureFlagsUseCase: Sendable {
     func execute()
-
-    /// Await this instead of `execute()` when a decision depends on the flags being current
-    /// rather than on whatever the last session cached.
-    func execute() async
 }
 
 public extension RefreshFeatureFlagsUseCase {
@@ -59,7 +55,7 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         }
     }
 
-    func execute() async {
+    private func execute() async {
         // `""` means "no active user": flags are then fetched on the unauthenticated session,
         // which is a supported flow. Distinguish it from `getActiveUserId` actually failing,
         // otherwise the two are indistinguishable in the logs.
