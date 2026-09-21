@@ -93,7 +93,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                        accessibilityLabel: "Custom field menu") {
                 Button(action: onEditTitle) {
                     Label(title: { Text("Edit name") },
-                          icon: { IconProvider.pencil })
+                          icon: { IconProvider.pencil as Image })
                 }
 
                 Button(action: {
@@ -101,7 +101,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                     onRemove()
                 }, label: {
                     Label(title: { Text("Remove field") },
-                          icon: { IconProvider.crossCircle })
+                          icon: { IconProvider.crossCircle as Image })
                 })
             }
         }

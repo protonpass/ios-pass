@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Stores
 import SwiftUI
+import UseCases
 
 public struct ContainerDestinationSelectionView: View {
     @Binding private var selectedContainer: ShareSelectionPayload

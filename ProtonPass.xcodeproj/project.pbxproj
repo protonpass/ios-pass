@@ -354,6 +354,7 @@
 		40EC90962D1AE426004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */; };
+		4AA0CE0B4103FB1D30CA8A51 /* FullSyncPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293DC09927C851E965112CE3 /* FullSyncPresenting.swift */; };
 		531A480E2D80832300DDC7FB /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480D2D80831E00DDC7FB /* SshDetailView.swift */; };
 		531A48102D80833D00DDC7FB /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A480F2D80833C00DDC7FB /* SshDetailViewModel.swift */; };
 		531A48122D80852800DDC7FB /* SshKeyComponent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48112D80852500DDC7FB /* SshKeyComponent+Extensions.swift */; };
@@ -670,6 +671,7 @@
 		1F8265C32D6E6C19009D565A /* api */ = {isa = PBXFileReference; lastKnownFileType = folder; path = api; sourceTree = "<group>"; };
 		1F8265C52D6E6C53009D565A /* scenarios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenarios; sourceTree = "<group>"; };
 		1F8265C72D6E6D16009D565A /* MockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTests.swift; sourceTree = "<group>"; };
+		293DC09927C851E965112CE3 /* FullSyncPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSyncPresenting.swift; sourceTree = "<group>"; };
 		350134FC2C9C505B008D803A /* AutoFillCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredentials.swift; sourceTree = "<group>"; };
 		350AF86D299683940045B7B6 /* NoteEditSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditSection.swift; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
@@ -5763,7 +5765,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 37.5.5;
+				version = 37.6.1;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {
@@ -5779,7 +5781,7 @@
 			repositoryURL = "https://github.com/hmlongco/Factory";
 			requirement = {
 				kind = exactVersion;
-				version = 3.3.2;
+				version = 3.4.0;
 			};
 		};
 		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
