@@ -65,7 +65,7 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
     public func execute(userId: String) async throws -> Bool {
         var state = getUserPreferences().folderForceSync
         guard !state.done, state.attempts < maxAttempts else { return false }
-        guard getFeatureFlagStatus(for: FeatureFlagType.folderForceSync) else { return false }
+        guard getFeatureFlagStatus(for: FeatureFlagType.passFolderForceSync) else { return false }
         guard reachability.isNetworkAvailable.value else { return false }
 
         if let lastAttempt = state.lastAttempt,
