@@ -28,7 +28,7 @@ let package = Package(
         .package(name: "DesignSystem", path: "../DesignSystem"),
         .package(name: "DIComposition", path: "../DIComposition"),
         .package(url: "https://github.com/protonpass/swift-macro", exact: "1.0.0"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.5.5"),
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.6.1"),
         .package(url: "https://github.com/protonpass/DocScanner", .upToNextMajor(from: "0.2.3")),
         .package(url: "https://github.com/hmlongco/Factory", exact: "3.3.2"),
     ],

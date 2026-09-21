@@ -53,6 +53,7 @@ enum ExtraBulkActionOption {
         }
     }
 
+    @MainActor
     var icon: Image {
         switch self {
         case .pin:

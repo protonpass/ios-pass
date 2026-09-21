@@ -1091,8 +1091,27 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
-		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FolderMoveListView; sourceTree = "<group>"; };
+		538548E92D58ACF300AEFB66 /* Action */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Action;
+			sourceTree = "<group>";
+		};
+		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = FolderMoveListView;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5763,7 +5782,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 37.5.5;
+				version = 37.6.1;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {

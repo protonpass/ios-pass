@@ -161,6 +161,7 @@ private struct EventView: View {
     }
 }
 
+@MainActor
 private extension TelemetryEventType {
     var icon: Image {
         switch self {
