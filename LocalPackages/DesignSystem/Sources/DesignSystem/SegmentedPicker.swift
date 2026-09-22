@@ -38,9 +38,6 @@ public struct SegmentedPicker<Selection: Hashable>: View {
     private let mainColor: Color
     private let backgroundColor: Color
 
-    /// Takes the caller's own `Binding` unchanged. Deriving one here with `Binding(get:set:)`
-    /// would allocate a fresh `AnyLocation` per `body` evaluation, and because `Binding` is not
-    /// `Equatable` that makes this view compare unequal every time and re-render needlessly.
     public init(selection: Binding<Selection>,
                 options: [SegmentedPickerOption<Selection>],
                 highlightTextColor: Color = PassColor.textNorm,
