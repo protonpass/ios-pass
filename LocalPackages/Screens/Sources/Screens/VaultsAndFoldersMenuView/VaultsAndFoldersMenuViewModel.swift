@@ -239,7 +239,7 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
 
     func canAddFolderAtVaultRoot(for vault: Share) -> Bool {
         guard let content = shareContent(for: vault.id) else { return false }
-        return content.canAddFolder(in: vault.id, limits: folderLimits)
+        return canOfferFolderCreation(in: content)
     }
 
     func canAddSubFolder(in folder: FolderUiModel, content: ShareContent) -> Bool {

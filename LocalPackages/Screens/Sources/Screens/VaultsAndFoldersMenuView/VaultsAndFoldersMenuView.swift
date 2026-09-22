@@ -287,7 +287,7 @@ private struct VaultsScrollView: View {
                     .scaledToFit()
                     .foregroundStyle(PassColor.interactionNormMajor2)
                     .frame(height: 20)
-                Text("Create folder")
+                Text("Create folder", bundle: .module)
                     .font(.callout)
                     .fontWeight(.semibold)
                     .foregroundStyle(PassColor.interactionNormMajor2)
@@ -318,7 +318,7 @@ private struct FolderMenuView: View {
                                                                               shareContent: content))
                 }, label: {
                     Label(title: {
-                        Text("Move folder")
+                        Text("Move folder", bundle: .module)
                     }, icon: {
                         IconProvider.folderArrowIn
                             .renderingMode(.template)
@@ -331,7 +331,7 @@ private struct FolderMenuView: View {
                         viewModel.folderAction = .createNewFolder(content.share, parentFolderId: folder.folderId)
                     }, label: {
                         Label(title: {
-                            Text("Create sub-folder")
+                            Text("Create sub-folder", bundle: .module)
                         }, icon: {
                             IconProvider.folderPlus
                                 .renderingMode(.template)
@@ -344,7 +344,7 @@ private struct FolderMenuView: View {
                     viewModel.folderAction = .edit(folder)
                 }, label: {
                     Label(title: {
-                        Text("Rename")
+                        Text("Rename", bundle: .module)
                     }, icon: {
                         IconProvider.pencil
                             .renderingMode(.template)
@@ -358,7 +358,7 @@ private struct FolderMenuView: View {
                     viewModel.moveAllItemsInFolder(folder)
                 }, label: {
                     Label(title: {
-                        Text("Move all items")
+                        Text("Move all items", bundle: .module)
                     }, icon: {
                         IconProvider.folderArrowIn
                             .renderingMode(.template)
