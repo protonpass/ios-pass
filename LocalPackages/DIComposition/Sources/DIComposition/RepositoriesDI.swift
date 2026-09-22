@@ -315,7 +315,6 @@ public extension RepositoryContainer {
             PassKeyManager(shareKeyRepository: self.shareKeyRepository(),
                            itemKeyDatasource: self.remoteItemKeyDatasource(),
                            folderKeyDatasource: self.localFolderKeyDatasource(),
-                           userManager: self.userManager,
                            logManager: self.logManager,
                            symmetricKeyProvider: self.symmetricKeyProvider)
         }
