@@ -21,8 +21,6 @@
 import Entities
 
 public enum ItemContentProtobufFactory {
-    /// Delegates to the real encoder rather than reimplementing it: an independent copy
-    /// silently drops every field added to `ItemContentData` afterwards.
     public static func createItemContentProtobuf(name: String,
                                                  note: String,
                                                  itemUuid: String,
