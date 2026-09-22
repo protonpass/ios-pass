@@ -121,8 +121,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
                 allowedAndroidApps = data.allowedAndroidApps
                 passkeys = data.passkeys
-                // Leave the blank placeholder row in place for an item with no website at all
                 if let websites = data.resolvedAutofillUrls.nilIfEmpty {
+                    // Leave the blank placeholder row in place for an item with no website at all
                     autofillUrls = websites.map { .init(value: $0) }
                 }
             }
@@ -183,8 +183,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 return nil
             }
 
-            // `urls` is derived, never edited: the two arrays disagreeing is what silently
-            // deletes websites, and other clients still read `urls` as authoritative.
             let sanitizedUrls = sanitizedAutofillUrls.map(\.url)
 
             var passkeys = passkeys
