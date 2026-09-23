@@ -447,6 +447,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасники)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасників)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасник)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасників)"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -521,7 +551,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/kuukausi"
+            "value" : "%@/kk"
           }
         },
         "fr" : {
@@ -551,7 +581,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/월간"
+            "value" : "%@/월"
           }
         },
         "nb" : {
@@ -566,6 +596,12 @@
             "value" : "%@/maand"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/miesiąc"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -576,6 +612,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/lună"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/месяц"
           }
         },
         "sk" : {
@@ -600,6 +642,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/ay"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / місяць"
           }
         },
         "zh-Hans" : {
@@ -749,6 +797,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ з %2$@"
           }
         },
         "zh-Hans" : {
@@ -1194,6 +1248,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma ad SimpleLogin üzerinde var ancak Proton Pass üzerinde bulunmuyor"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдоніми, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонім, присутній у SimpleLogin, але відсутній у Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
                 }
               }
             }
@@ -1671,6 +1755,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символів"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -2138,6 +2252,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld dosya"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файли"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файл"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "і%lld файлів"
                 }
               }
             }
@@ -2753,6 +2897,42 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -3232,6 +3412,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записи входу імпортовано"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запис входу імпортовано"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -3699,6 +3909,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld sözcük"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слова"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слово"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
                 }
               }
             }
@@ -6992,6 +7232,12 @@
             "value" : "\"%@\" takma adı çöpe atıldı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдонім «%@» переміщено до смітника"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9027,6 +9273,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -10032,7 +10308,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha de tenir com a mínim 13 caràcters."
+            "value" : "Ha de tenir com a mínim 13 caràcters"
           }
         },
         "cs" : {
@@ -10065,6 +10341,12 @@
             "value" : "At least 13 characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al menos 13 caracteres"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10075,12 +10357,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Au moins 13 caractères"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Almeno 13 caratteri"
           }
         },
         "ka" : {
@@ -10095,24 +10371,6 @@
             "value" : "최소 13자"
           }
         },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minst 13 tegn"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minstens 13 tekens"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pelo menos 13 caracteres"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10125,12 +10383,6 @@
             "value" : "Aspoň 13 znakov"
           }
         },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minst 13 tecken"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10141,6 +10393,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "至少 13 个字符"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最少 13 個字元"
           }
         }
       }
@@ -10872,6 +11130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Her yıl %@ ile otomatik olarak yenilenir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автоподовження за %@ щороку"
           }
         },
         "zh-Hans" : {
@@ -15110,6 +15374,12 @@
             "value" : "\"%@\" bulunamadı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося знайти «%@»"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16731,6 +17001,12 @@
             "value" : "Create folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16749,6 +17025,12 @@
             "value" : "Créer un dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16759,6 +17041,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 생성"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett mappe"
           }
         },
         "pt-BR" : {
@@ -16789,6 +17077,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити теку"
           }
         }
       }
@@ -17129,6 +17423,12 @@
             "value" : "Yeni kasa oluştur"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити нове сховище"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17377,6 +17677,12 @@
             "value" : "Create sub-folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear subcarpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17395,6 +17701,12 @@
             "value" : "Créer un sous-dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea sotto-cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17405,6 +17717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "하위 폴더 생성"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett undermappe"
           }
         },
         "pt-BR" : {
@@ -17435,6 +17753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alt klasör oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити підтеку"
           }
         }
       }
@@ -20417,6 +20741,12 @@
             "value" : "Customize password"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizar contraseña"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20487,6 +20817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolayı özelleştir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштувати пароль"
           }
         },
         "zh-Hans" : {
@@ -21711,6 +22047,12 @@
             "value" : "Delete folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21729,6 +22071,12 @@
             "value" : "Supprimer le dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21739,6 +22087,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett mappe"
           }
         },
         "pt-BR" : {
@@ -21769,6 +22123,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörü sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити теку"
           }
         }
       }
@@ -21817,6 +22177,12 @@
             "value" : "Delete folder?"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar carpeta?"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21835,6 +22201,12 @@
             "value" : "Supprimer le dossier ?"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare la cartella?"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21845,6 +22217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더를 삭제하시겠습니까?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slette mappe?"
           }
         },
         "pt-BR" : {
@@ -21875,6 +22253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör silinsin mi?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити теку?"
           }
         }
       }
@@ -22315,6 +22699,12 @@
             "value" : "Description is too long. Please keep it under %lld characters."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La descripción es demasiado larga. Mantenla por debajo de %lld caracteres."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22345,6 +22735,12 @@
             "value" : "설명이 너무 깁니다. %lld자 아래로 작성해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskrivelsen er for lang. Hold den under %lld tegn."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22373,6 +22769,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Açıklama çok uzun. Lütfen %lld karakterden kısa tutun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опис занадто довгий. Обмежте його до %lld символів."
           }
         },
         "zh-Hans" : {
@@ -25358,6 +25760,12 @@
             "value" : "Enter a folder title"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa un título de carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25376,6 +25784,12 @@
             "value" : "Saisir un titre de dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci un titolo per la cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25386,6 +25800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 제목 입력"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn en mappetittel"
           }
         },
         "pt-BR" : {
@@ -25416,6 +25836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir klasör başlığı yazın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведіть назву теки"
           }
         }
       }
@@ -25464,6 +25890,12 @@
             "value" : "Enter new folder title"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce el título de la nueva carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25482,6 +25914,12 @@
             "value" : "Saisir un nouveau titre de dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci un titolo per la cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25492,6 +25930,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새로운 폴더 제목 입력"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn ny mappetittel"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insira um título para a pasta"
           }
         },
         "ro" : {
@@ -25516,6 +25966,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni klasör başlığını yazın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведіть нову назву теки"
           }
         }
       }
@@ -26146,6 +26602,12 @@
             "value" : "Failed to send report"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al enviar el informe"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26176,6 +26638,12 @@
             "value" : "리포트 전송 실패"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke sende rapporten"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26204,6 +26672,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bildirim gönderilemedi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося надіслати звіт"
           }
         },
         "zh-Hans" : {
@@ -26846,10 +27320,22 @@
             "value" : "Files"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archivos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Archivos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiedostot"
           }
         },
         "fr" : {
@@ -26874,6 +27360,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "파일"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filer"
           }
         },
         "pt-BR" : {
@@ -26904,6 +27396,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosyalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файли"
           }
         },
         "zh-Hans" : {
@@ -28324,6 +28822,12 @@
             "value" : "Folder « %@ » deleted"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha eliminado la carpeta « %@ »"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28342,6 +28846,12 @@
             "value" : "Le dossier « %@ » a été supprimé."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartella « %@ » eliminata"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28352,6 +28862,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 « %@ » 이(가) 삭제되었습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappe \" %@ \" slettet"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A pasta « %@ » foi excluída"
           }
         },
         "ro" : {
@@ -28376,6 +28898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "« %@ » klasörü silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теку «%@» видалено"
           }
         }
       }
@@ -28424,6 +28952,12 @@
             "value" : "Folder name"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28442,6 +28976,12 @@
             "value" : "Nom du dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28452,6 +28992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 이름"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappenavn"
           }
         },
         "pt-BR" : {
@@ -28482,6 +29028,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör adı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назва теки"
           }
         }
       }
@@ -28618,6 +29170,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теки"
           }
         },
         "zh-Hans" : {
@@ -29937,6 +30495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı adı oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Згенерувати ім’я користувача"
           }
         },
         "zh-Hans" : {
@@ -34546,6 +35110,12 @@
             "value" : "Oturum açma kayıtlarını içe aktar (%1$lld/%2$lld)"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпортування записів входу (%1$lld/%2$lld)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34879,6 +35449,12 @@
             "value" : "Sıfatları ekleyin"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати прикметники"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35019,6 +35595,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adları ekleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати іменники"
           }
         },
         "zh-Hans" : {
@@ -35351,6 +35933,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fiilleri ekleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати дієслова"
           }
         },
         "zh-Hans" : {
@@ -36813,6 +37401,12 @@
             "value" : "Leetspeak"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "리트스피크"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36844,6 +37438,12 @@
           }
         },
         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
+          }
+        },
+        "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leetspeak"
@@ -38469,10 +39069,22 @@
             "value" : "Lowercase letters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letras minúsculas"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letras minúsculas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pienet kirjaimet"
           }
         },
         "fr" : {
@@ -38491,6 +39103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "მხედრული ასოები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소문자"
           }
         },
         "nb" : {
@@ -38527,6 +39145,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Küçük harfler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Малі літери"
           }
         },
         "zh-Hans" : {
@@ -39360,6 +39984,12 @@
             "value" : "Move all items"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover todos los elementos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39378,6 +40008,12 @@
             "value" : "Déplacer tous les éléments"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta tutti gli elementi"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39388,6 +40024,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "전체 항목 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt alle elementer"
           }
         },
         "pt-BR" : {
@@ -39418,6 +40060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm ögeleri taşı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемістити всі елементи"
           }
         }
       }
@@ -39466,6 +40114,12 @@
             "value" : "Move folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39484,6 +40138,12 @@
             "value" : "Déplacer le dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39494,6 +40154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt mappe"
           }
         },
         "pt-BR" : {
@@ -39524,6 +40190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörü taşı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемістити теку"
           }
         }
       }
@@ -39769,6 +40441,12 @@
             "value" : "New folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39787,6 +40465,12 @@
             "value" : "Nouveau dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39797,6 +40481,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새 폴더"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny mappe"
           }
         },
         "pt-BR" : {
@@ -39827,6 +40517,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni klasör"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нова тека"
           }
         }
       }
@@ -39873,6 +40569,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No common passwords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin contraseñas comunes"
           }
         },
         "es-419" : {
@@ -39945,6 +40647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yaygın parolalar kullanılmamalıdır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без розповсюджених паролів"
           }
         },
         "zh-Hans" : {
@@ -40385,10 +41093,22 @@
             "value" : "No repeated characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin caracteres repetidos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin caracteres repetidos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei toistuvia merkkejä"
           }
         },
         "fr" : {
@@ -40457,6 +41177,12 @@
             "value" : "Yinelenen karakterler bulunmamalı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без повторюваних символів"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40509,10 +41235,22 @@
             "value" : "No sequential characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin caracteres secuenciales"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin secuencia de caracteres"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei peräkkäisiä merkkejä"
           }
         },
         "fr" : {
@@ -40581,6 +41319,12 @@
             "value" : "Sıralı karakterler bulunmamalı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без послідовних символів"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40594,7 +41338,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тэкст на відарысе не выяўлены. Пераканайцеся, што тэкст добра чытаецца, хапае асвятлення і відарыс знаходзіцца ў фокусе камеры."
+            "value" : "Тэкст на відарысе не выяўлены. Пераканайцеся, што тэкст добра чытаецца, хапае асвятлення і відарыс знаходзіцца ў фокусе камеры, а потым паўтарыце спробу."
           }
         },
         "ca" : {
@@ -41373,7 +42117,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nespokojený"
+            "value" : "Nespokojen(a)"
           }
         },
         "da" : {
@@ -41398,6 +42142,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not satisfied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No satisfecho"
           }
         },
         "es-419" : {
@@ -41470,6 +42220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yetersiz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не влаштовує"
           }
         },
         "zh-Hans" : {
@@ -43876,6 +44632,12 @@
             "value" : "One or more files exceed the %lld MB limit. Please select smaller files."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uno o varios archivos superan el límite de %lld MB. Selecciona archivos más pequeños."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43906,6 +44668,12 @@
             "value" : "하나 이상의 파일이 %lld MB 제한을 초과합니다. 더 작은 파일을 선택해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Én eller flere filer overskrider grensen på %lld MB. Velg mindre filer."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43928,6 +44696,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir ya da birkaç dosya %lld MB sınırını aşıyor. Lütfen daha küçük dosyalar seçin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один або кілька файлів перевищують ліміт у %lld МБ. Виберіть файли меншого розміру."
           }
         },
         "zh-Hans" : {
@@ -46223,6 +46997,12 @@
             "value" : "İnternet panosunu aç"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити вебпанель"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46939,7 +47719,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parola"
+            "value" : "Parolă"
           }
         },
         "ru" : {
@@ -47631,10 +48411,22 @@
             "value" : "Photos or videos"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos o vídeos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fotos o videos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuvat tai videot"
           }
         },
         "fr" : {
@@ -47659,6 +48451,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사진 및 비디오"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilder eller videoer"
           }
         },
         "pt-BR" : {
@@ -47689,6 +48487,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fotoğraflar veya videolar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фото або відео"
           }
         },
         "zh-Hans" : {
@@ -48035,6 +48839,12 @@
             "value" : "Lütfen yöneticinizle görüşün."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніться до адміністратора."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48283,10 +49093,22 @@
             "value" : "Please limit your selection to %lld files"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limita tu selección a %lld archivos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limite su selección a %lld archivos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rajoita valintasi %lld tiedostoon"
           }
         },
         "fr" : {
@@ -48305,6 +49127,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton ზღუდავს თქვენს არჩევანს %lld ფაილზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld개 파일 이하로 선택해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begrens utvalget til %lld filer"
           }
         },
         "pt-BR" : {
@@ -48335,6 +49169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen seçiminizi %lld dosya ile sınırlayın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обмежте свій вибір до %lld файлів"
           }
         },
         "zh-Hans" : {
@@ -49648,6 +50488,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen bunun yerine hesabınızın internet panosunu kullanın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натомість скористайтеся нашою вебпанеллю керування обліковим записом"
           }
         },
         "zh-Hans" : {
@@ -51081,6 +51927,12 @@
             "value" : "Kullanıcı adını yeniden oluştur"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторно згенерувати ім’я користувача"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52466,7 +53318,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spokojený"
+            "value" : "Spokojen(a)"
           }
         },
         "da" : {
@@ -52491,6 +53343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Satisfied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfecho"
           }
         },
         "es-419" : {
@@ -52894,7 +53752,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analisar os documentos"
+            "value" : "Digitalizar documentos"
           }
         },
         "pt-BR" : {
@@ -54174,6 +55032,12 @@
             "value" : "Select a destination"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un destino"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54192,10 +55056,34 @@
             "value" : "Sélectionner une destination"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona una destinazione"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "აირჩიეთ სამიზნე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목적지 선택"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg en plassering"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione um destino"
           }
         },
         "ro" : {
@@ -56189,7 +57077,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordner %@ anzeigen"
+            "value" : "%@ Ordner anzeigen"
           }
         },
         "el" : {
@@ -56202,6 +57090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show %@ folder"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar la carpeta %@"
           }
         },
         "es-419" : {
@@ -56222,6 +57116,12 @@
             "value" : "Afficher %@ dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra %@ cartellla"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56232,6 +57132,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@개 폴더 보기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis %@ mappe"
           }
         },
         "pt-BR" : {
@@ -56398,6 +57304,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kasasını görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати сховище %@"
           }
         },
         "zh-Hans" : {
@@ -61923,10 +62835,22 @@
             "value" : "Symbols"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Símbolos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbolit"
           }
         },
         "fr" : {
@@ -63782,6 +64706,12 @@
             "value" : "This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto elimina de forma permanente la carpeta « %@ » y todo su contenido. Introduce el nombre de la carpeta para confirmar la eliminación."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63800,6 +64730,12 @@
             "value" : "Ceci supprimera définitivement le dossier « %@ » et tout son contenu. Saisissez le nom du dossier pour confirmer la suppression."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo eliminerà definitivamente la cartella « %@ » e tutti i suoi contenuti. Inserisci il nome della cartella per confermare l'eliminazione."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63810,6 +64746,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 « %@ » 와(과) 이 폴더의 내용물을 모두 지우게 됩니다. 삭제를 계속하려면 해당 폴더 이름을 입력하십시오."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil slette mappen \"%@\" og alt innholdet permanent. Skriv inn mappenavnet for å bekrefte slettingen."
           }
         },
         "pt-BR" : {
@@ -63970,6 +64912,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu işlem « %@ » kasasını ve içindekileri kalıcı olarak silecek. Silme işlemini onaylamak için kasa adını yazın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Це назавжди видалить сховище «%@» та весь його вміст. Введіть назву сховища, аби підтвердити видалення."
           }
         },
         "zh-Hans" : {
@@ -67854,10 +68802,22 @@
             "value" : "Uppercase letters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letras mayúsculas"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letras mayúsculas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isot kirjaimet"
           }
         },
         "fr" : {
@@ -67876,6 +68836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "მთავრული ასოები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대문자"
           }
         },
         "nb" : {
@@ -68156,10 +69122,22 @@
             "value" : "Use this password"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar esta contraseña"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usar esta contraseña"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä tätä salasanaa"
           }
         },
         "fr" : {
@@ -68767,6 +69745,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "« %@ » kasası silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище «%@» видалено"
           }
         },
         "zh-Hans" : {
@@ -73949,6 +74933,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma adı kalıcı olarak silmek üzeresiniz"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдоніми"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонімів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонімів"
                 }
               }
             }
