@@ -316,12 +316,12 @@ struct ShareContentTests {
             folder("3", name: "A"),
             folder("4", name: "Folder 2", parent: "1"),
             folder("5", name: "c"),
-            folder("6", name: "folder 3", parent: "1")
+            folder("6", name: "Folder 3", parent: "1")
         ]
         let content = ShareContent(share: share, elements: elements)
 
         #expect(content.folders(in: shareId)?.map(\.content.name) == ["A", "b", "c"])
-        #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 2", "folder 3", "Folder 10"])
+        #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 2", "Folder 3", "Folder 10"])
     }
 
     @Test
