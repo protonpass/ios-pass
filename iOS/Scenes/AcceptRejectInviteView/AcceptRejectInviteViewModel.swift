@@ -20,7 +20,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
 import DIComposition
 import Entities
 import FactoryKit
@@ -30,10 +29,11 @@ import Screens
 typealias AcceptRejectInviteResult = Result<ItemContent?, any Error>
 
 @MainActor
-final class AcceptRejectInviteViewModel: ObservableObject {
-    @Published private(set) var invite: Invite
-    @Published private(set) var vaultInfos: VaultContent?
-    @Published private(set) var executingAction = false
+@Observable
+final class AcceptRejectInviteViewModel {
+    let invite: Invite
+    private(set) var vaultInfos: VaultContent?
+    private(set) var executingAction = false
     private(set) var invitedGroupName = ""
 
     private let rejectInvitation = dependency(\UseCasesContainer.rejectInvitation)
@@ -41,10 +41,14 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let decodeShareVaultInformation = dependency(\UseCasesContainer.decodeShareVaultInformation)
     private let logger = dependency(\ToolingContainer.logger)
     private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
-    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+
+    @ObservationIgnored
     @LazyInjected(\ServiceContainer.userManager) private var userManager
+
+    @ObservationIgnored
     @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
 
+    @ObservationIgnored
     private let onResult: (AcceptRejectInviteResult) -> Void
 
     init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {

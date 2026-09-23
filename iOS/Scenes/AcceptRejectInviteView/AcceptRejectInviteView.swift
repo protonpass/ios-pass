@@ -23,10 +23,11 @@
 import DesignSystem
 import Entities
 import Macro
+import Screens
 import SwiftUI
 
 struct AcceptRejectInviteView: View {
-    @StateObject private var viewModel: AcceptRejectInviteViewModel
+    @State private var viewModel: AcceptRejectInviteViewModel
 
     init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(invite: invite, onResult: onResult))
@@ -110,18 +111,10 @@ private extension AcceptRejectInviteView {
 private extension AcceptRejectInviteView {
     func vaultInformation(infos: VaultContent) -> some View {
         VStack {
-            ZStack {
-                infos.display.color.color.color.opacity(0.16)
-                    .clipShape(Circle())
-
-                infos.display.icon.icon.bigImage
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundStyle(infos.display.color.color.color)
-                    .frame(width: 28, height: 28)
-            }
-            .frame(width: 64, height: 64)
+            CircleButton(icon: infos.vaultBigIcon,
+                         iconColor: infos.mainColor,
+                         backgroundColor: infos.backgroundColor,
+                         type: .custom(buttonSize: 64, iconSize: 28))
 
             Text(infos.name)
                 .font(.title2.bold())
