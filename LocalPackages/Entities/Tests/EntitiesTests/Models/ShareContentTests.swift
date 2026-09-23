@@ -304,6 +304,27 @@ struct ShareContentTests {
     }
 
     @Test
+    func `folders(in:) sorts folders alphabetically within each container`() {
+        func folder(_ id: String, name: String, parent: String? = nil) -> ShareContentElement {
+            .folder(FolderUiModel(shareId: shareId,
+                                  folder: Folder.random(vaultId: shareId, folderId: id, parentFolderId: parent),
+                                  content: FolderContent(name: name)))
+        }
+        let elements = [
+            folder("1", name: "b"),
+            folder("2", name: "Folder 10", parent: "1"),
+            folder("3", name: "A"),
+            folder("4", name: "Folder 2", parent: "1"),
+            folder("5", name: "c"),
+            folder("6", name: "Folder 3", parent: "1")
+        ]
+        let content = ShareContent(share: share, elements: elements)
+
+        #expect(content.folders(in: shareId)?.map(\.content.name) == ["A", "b", "c"])
+        #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 2", "Folder 3", "Folder 10"])
+    }
+
+    @Test
     func `folders(in:) returns nil when no folders in container`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
