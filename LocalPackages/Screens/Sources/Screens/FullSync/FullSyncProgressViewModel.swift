@@ -24,16 +24,14 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
-import Screens
 import UseCases
 
 /// Follows one full sync of one user. Failures stay on screen with a retry button,
 /// every other outcome is handed to `onFinish` so the owner can remove the progress UI.
-@MainActor
 @Observable
-final class FullSyncProgressViewModel {
-    private(set) var operation: FullSyncOperation
-    let presentation: FullSyncPresentation
+public final class FullSyncProgressViewModel {
+    public private(set) var operation: FullSyncOperation
+    public let presentation: FullSyncPresentation
 
     private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
@@ -56,15 +54,15 @@ final class FullSyncProgressViewModel {
         progresses.count(where: \.isDone)
     }
 
-    init(operation: FullSyncOperation,
-         onFinish: @escaping (FullSyncOperation, FullSyncOperation.Outcome) -> Void) {
+    public init(operation: FullSyncOperation,
+                onFinish: @escaping (FullSyncOperation, FullSyncOperation.Outcome) -> Void) {
         self.operation = operation
         presentation = operation.presentation
         self.onFinish = onFinish
         track(operation)
     }
 
-    func track(_ operation: FullSyncOperation) {
+    public func track(_ operation: FullSyncOperation) {
         self.operation = operation
         waitForOutcomeTask?.cancel()
         waitForOutcomeTask = Task { [weak self] in
