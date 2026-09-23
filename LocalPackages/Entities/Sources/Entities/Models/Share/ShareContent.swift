@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 private typealias ContainerId = String
 
 public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
@@ -63,6 +65,12 @@ public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
             case let .folder(folder):
                 foldersByContainer[element.containerId, default: []].append(folder)
                 foldersById[folder.folderId] = folder
+            }
+        }
+
+        for containerId in foldersByContainer.keys {
+            foldersByContainer[containerId]?.sort {
+                $0.content.name.localizedStandardCompare($1.content.name) == .orderedAscending
             }
         }
 
