@@ -67,8 +67,8 @@ public actor PassKeyManager: PassKeyManagerProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     private var keyCache = [String: [Int64: any CryptographicKeyProtocol]]()
-    private var loadedUsers = Set<String>()
-    private var loadingTasks = [String: Task<Void, Error>]()
+    private var keysLoaded = false
+    private var loadingTask: Task<Void, Error>?
 
     private var symmetricKey: SymmetricKey {
         get async throws {
@@ -95,7 +95,7 @@ public extension PassKeyManager {
     func getShareKey(userId: String,
                      shareId: String,
                      keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         // Check cache first with correct rotation
         if let cachedKey = getCachedKey(containerId: Self.containerId(shareId: shareId, folderId: nil),
@@ -114,7 +114,7 @@ public extension PassKeyManager {
     }
 
     func getLatestShareKey(userId: String, shareId: String) async throws -> any CryptographicKeyProtocol {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         // Check cache first for latest
         if let cachedKey = getLatestCachedKey(containerId: Self.containerId(shareId: shareId, folderId: nil)) {
@@ -130,7 +130,7 @@ public extension PassKeyManager {
     func getShareKeys(userId: String,
                       share: Share,
                       item: any ItemIdentifiable) async throws -> [any CryptographicKeyProtocol] {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         switch share.shareType {
         case .vault:
@@ -154,7 +154,7 @@ public extension PassKeyManager {
                           shareId: String,
                           folderId: String?,
                           itemId: String) async throws -> any CryptographicKeyProtocol {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
@@ -177,7 +177,7 @@ public extension PassKeyManager {
                      shareId: String,
                      folderId: String?,
                      itemId: String) async throws -> [any CryptographicKeyProtocol] {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         logger.trace("Getting all item keys itemId \(itemId), share \(shareId)")
         let encryptedKeys = try await itemKeyDatasource.getAllKeys(userId: userId,
@@ -201,7 +201,7 @@ public extension PassKeyManager {
                     folderId: String?,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
 
         // Try to get just the specific key if datasource supports it
         let encryptedKeys = try await itemKeyDatasource.getAllKeys(userId: userId,
@@ -221,7 +221,7 @@ public extension PassKeyManager {
                          shareId: String,
                          folderId: String?,
                          keyRotation: Int64? = nil) async throws -> any CryptographicKeyProtocol {
-        try await loadKeysIfNeeded(userId: userId)
+        try await loadKeysIfNeeded()
         return try await getContainerKey(userId: userId,
                                          shareId: shareId,
                                          folderId: folderId,
@@ -465,13 +465,13 @@ private extension PassKeyManager {
 // MARK: - Key Loading
 
 private extension PassKeyManager {
-    func loadKeysIfNeeded(userId: String) async throws {
-        if loadedUsers.contains(userId) {
+    func loadKeysIfNeeded() async throws {
+        if keysLoaded {
             return
         }
 
         // Prevent concurrent loading - reuse existing task if in progress
-        if let existingTask = loadingTasks[userId] {
+        if let existingTask = loadingTask {
             try await existingTask.value
             return
         }
@@ -479,13 +479,13 @@ private extension PassKeyManager {
         // Create task that calls back into actor-isolated method
         let task = Task { [weak self] in
             guard let self else { throw PassError.deallocatedSelf }
-            try await performKeysLoading(userId: userId)
+            try await performKeysLoading()
         }
 
-        loadingTasks[userId] = task
+        loadingTask = task
 
         defer {
-            loadingTasks[userId] = nil
+            loadingTask = nil
         }
         do {
             try await task.value
@@ -495,24 +495,24 @@ private extension PassKeyManager {
         }
     }
 
-    func performKeysLoading(userId: String) async throws {
+    func performKeysLoading() async throws {
         async let shareKeysRequest = shareKeyRepository.getAllLocalKeys()
         async let folderKeysRequest = folderKeyDatasource.getAllFolderKeys()
         let (shareKeys, folderKeys) = try await (shareKeysRequest, folderKeysRequest)
 
         let symmetricKey = try await symmetricKey
 
-        for key in shareKeys where key.userId == userId {
+        for key in shareKeys {
             let decryptedKey = try key.decrypt(with: symmetricKey)
             cacheKey(decryptedKey, containerId: key.id)
         }
 
-        for key in folderKeys where key.userId == userId {
+        for key in folderKeys {
             let decryptedKey = try key.decrypt(with: symmetricKey)
             cacheKey(decryptedKey, containerId: key.id)
         }
 
-        loadedUsers.insert(userId)
+        keysLoaded = true
     }
 
     func refreshShareKeys(userId: String, shareId: String) async throws {

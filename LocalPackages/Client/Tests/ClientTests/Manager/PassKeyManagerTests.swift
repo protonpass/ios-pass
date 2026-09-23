@@ -294,37 +294,29 @@ struct PassKeyManagerTests {
 
     // MARK: - Key Loading Tests
 
-    @Test("Keys are loaded only once even with concurrent calls")
+    @Test("All accounts share one preload even with concurrent calls")
     func keysLoadedOnlyOnce() async throws {
-        // Arrange
-        let shareId = "share-1"
-        let keyData = Data(repeating: 0x9A, count: 32)
-
-        let shareKey = ShareKey(createTime: 100, key: "test-key", keyRotation: 1, userKeyID: "user-key-1")
-        let encryptedKeyBase64 = keyData.encodeBase64()
-        let symmetricallyEncryptedKey = try symmetricKeyProviderFactory.key.encrypt(encryptedKeyBase64)
-        let encryptedShareKey = SymmetricallyEncryptedShareKey(
-            encryptedKey: symmetricallyEncryptedKey,
-            shareId: shareId,
-            userId: "user-1",
-            shareKey: shareKey
-        )
-        shareKeyRepository.stubbedGetAllLocalKeysResult = [encryptedShareKey]
+        let a = Data(repeating: 0x9A, count: 32)
+        let b = Data(repeating: 0x9B, count: 32)
+        shareKeyRepository.stubbedGetAllLocalKeysResult = [
+            try encryptedShare(user: "A", share: "share-A", bytes: a),
+            try encryptedShare(user: "B", share: "share-B", bytes: b)
+        ]
         folderKeyDatasource.stubbedGetAllFolderKeysAsyncResult1 = []
 
-        // Act - Multiple concurrent calls that trigger key loading
         let keyManager = sut
-        try await withThrowingTaskGroup(of: (any CryptographicKeyProtocol).self) { group in
-            for _ in 0..<3 {
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for (userId, shareId, expected) in [("A", "share-A", a), ("B", "share-B", b), ("A", "share-A", a)] {
                 group.addTask {
-                    try await keyManager.getContainerKey(userId: "user-1", shareId: shareId, folderId: nil, keyRotation: nil)
+                    let key = try await keyManager.getContainerKey(userId: userId, shareId: shareId, folderId: nil)
+                    #expect(key.keyData == expected)
                 }
             }
-            for try await _ in group {}
+            try await group.waitForAll()
         }
 
-        // Assert - getAllLocalKeys should only be called once
         #expect(shareKeyRepository.invokedGetAllLocalKeysCount == 1)
+        #expect(folderKeyDatasource.invokedGetAllFolderKeysAsyncCount1 == 1)
     }
 
     // MARK: - decryptAndStoreFolderKeys Tests
@@ -417,6 +409,8 @@ extension PassKeyManagerTests {
         #expect(keyB.keyData == b)
         #expect(try await sut.getContainerKey(userId: "A", shareId: "share-A", folderId: nil).keyData == a)
         #expect(shareKeyRepository.invokedRefreshKeysCount == 0)
+        #expect(shareKeyRepository.invokedGetAllLocalKeysCount == 1)
+        #expect(folderKeyDatasource.invokedGetAllFolderKeysAsyncCount1 == 1)
     }
 
     @Test func rootsAndSameFolderIDInDifferentSharesUseDistinctKeys() async throws {
