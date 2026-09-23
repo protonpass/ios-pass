@@ -36,21 +36,18 @@ public extension RecreateSecureLinkUseCase {
 
 public final class RecreateSecureLink: RecreateSecureLinkUseCase {
     private let passKeyManager: any PassKeyManagerProtocol
-    private let userManager: any UserManagerProtocol
 
-    public init(passKeyManager: any PassKeyManagerProtocol,
-                userManager: any UserManagerProtocol) {
+    public init(passKeyManager: any PassKeyManagerProtocol) {
         self.passKeyManager = passKeyManager
-        self.userManager = userManager
     }
 
     public func execute(for link: SecureLink, itemContent: ItemContent) async throws -> String {
-        let userId = try await userManager.getActiveUserId()
+        let userId = itemContent.userId
         let shareKey: any CryptographicKeyProtocol = if link.linkKeyEncryptedWithItemKey,
                                                         itemContent.item.itemKey != nil {
             try await passKeyManager.getItemKey(userId: userId,
                                                 shareId: link.shareID,
-                                                parentId: itemContent.parentId,
+                                                folderId: itemContent.folderId,
                                                 itemId: link.itemID,
                                                 keyRotation: link.linkKeyShareKeyRotation)
         } else {

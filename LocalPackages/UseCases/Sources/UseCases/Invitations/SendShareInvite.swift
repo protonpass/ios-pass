@@ -72,19 +72,13 @@ public final class SendShareInvite: Sendable, SendShareInviteUseCase {
         let share = try await getShare(userId: userId, from: baseInfo)
         let item = getItem(from: baseInfo)
 
-        let fullParentId = if let item, item.shareId != item.parentId {
-            item.parentId + share.shareId
-        } else {
-            share.shareId
-        }
-
         let key: any CryptographicKeyProtocol = if baseInfo.shareTargetType == .vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
         } else if let item {
             if share.shareType == .vault {
                 try await passKeyManager.getLatestItemKey(userId: userId,
                                                           shareId: share.id,
-                                                          parentId: fullParentId,
+                                                          folderId: item.folderId,
                                                           itemId: item.itemId)
             } else {
                 try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)

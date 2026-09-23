@@ -70,7 +70,7 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         } else if let itemId {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: share.id,
-                                                      parentId: share.id,
+                                                      folderId: nil,
                                                       itemId: itemId)
         } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)

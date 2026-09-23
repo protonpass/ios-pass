@@ -22,7 +22,6 @@ import Core
 @preconcurrency import CryptoKit
 import Entities
 import Foundation
-import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol PassKeyManagerProtocol: Sendable, AnyObject {
@@ -38,37 +37,35 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     func getLatestItemKey(userId: String,
                           shareId: String,
-                          parentId: String,
+                          folderId: String?,
                           itemId: String) async throws -> any CryptographicKeyProtocol
 
     func getItemKeys(userId: String,
                      shareId: String,
-                     parentId: String,
+                     folderId: String?,
                      itemId: String) async throws -> [any CryptographicKeyProtocol]
 
     func getItemKey(userId: String,
                     shareId: String,
-                    parentId: String,
+                    folderId: String?,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol
 
-    func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws
+    func decryptAndStoreFolderKeys(userId: String, shareId: String, folders: [Folder]) async throws
 
-    func getContainerKey(containerId: String,
+    func getContainerKey(userId: String,
+                         shareId: String,
+                         folderId: String?,
                          keyRotation: Int64?) async throws -> any CryptographicKeyProtocol
 }
 
 public actor PassKeyManager: PassKeyManagerProtocol {
-    private let userManager: any UserManagerProtocol
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
     private let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
     private let folderKeyDatasource: any LocalFolderKeyDatasourceProtocol
     private let logger: Logger
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
-    /// Cache structure: containerId -> (keyRotation -> decryptedKey)
-    /// This allows O(1) lookup for specific rotations and O(n) for finding latest (n = rotation count, typically
-    /// small)
     private var keyCache = [String: [Int64: any CryptographicKeyProtocol]]()
     private var keysLoaded = false
     private var loadingTask: Task<Void, Error>?
@@ -82,12 +79,10 @@ public actor PassKeyManager: PassKeyManagerProtocol {
     public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
                 itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
                 folderKeyDatasource: any LocalFolderKeyDatasourceProtocol,
-                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
-        self.userManager = userManager
         self.folderKeyDatasource = folderKeyDatasource
         logger = .init(manager: logManager)
         self.symmetricKeyProvider = symmetricKeyProvider
@@ -103,12 +98,15 @@ public extension PassKeyManager {
         try await loadKeysIfNeeded()
 
         // Check cache first with correct rotation
-        if let cachedKey = getCachedKey(id: shareId, keyRotation: keyRotation) {
+        if let cachedKey = getCachedKey(containerId: Self.containerId(shareId: shareId, folderId: nil),
+                                        keyRotation: keyRotation) {
             return cachedKey
         }
 
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
-        guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.keyRotation == keyRotation }) else {
+        guard let encryptedShareKey = allEncryptedShareKeys.first(where: {
+            $0.userId == userId && $0.shareId == shareId && $0.keyRotation == keyRotation
+        }) else {
             throw PassError.keysNotFound(shareID: shareId)
         }
 
@@ -119,12 +117,13 @@ public extension PassKeyManager {
         try await loadKeysIfNeeded()
 
         // Check cache first for latest
-        if let cachedKey = getLatestCachedKey(id: shareId) {
+        if let cachedKey = getLatestCachedKey(containerId: Self.containerId(shareId: shareId, folderId: nil)) {
             return cachedKey
         }
 
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
-        let latestShareKey = try allEncryptedShareKeys.latestKey()
+        let latestShareKey = try allEncryptedShareKeys.filter { $0.userId == userId && $0.shareId == shareId }
+            .latestKey()
         return try await symmetricDecryptAndCache(latestShareKey)
     }
 
@@ -137,13 +136,14 @@ public extension PassKeyManager {
         case .vault:
             return try await getItemKeys(userId: userId,
                                          shareId: item.shareId,
-                                         parentId: item.fullParentId,
+                                         folderId: item.folderId,
                                          itemId: item.itemId)
 
         case .item:
             let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId,
                                                                              shareId: item.shareId)
-            return try await decryptAndCacheAll(allEncryptedShareKeys)
+            return try await decryptAndCacheAll(allEncryptedShareKeys
+                .filter { $0.userId == userId && $0.shareId == item.shareId })
 
         case .unknown:
             throw PassError.unknownShareType
@@ -152,7 +152,7 @@ public extension PassKeyManager {
 
     func getLatestItemKey(userId: String,
                           shareId: String,
-                          parentId: String,
+                          folderId: String?,
                           itemId: String) async throws -> any CryptographicKeyProtocol {
         try await loadKeysIfNeeded()
 
@@ -164,7 +164,10 @@ public extension PassKeyManager {
                                                                      itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
-        let decryptedItemKey = try decryptItemKey(latestItemKey, parentId: parentId, itemId: itemId)
+        let decryptedItemKey = try decryptItemKey(latestItemKey,
+                                                  containerId: Self.containerId(shareId: shareId,
+                                                                                folderId: folderId),
+                                                  itemId: itemId)
         logger.trace("Decrypted latest item key \(keyDescription)")
 
         return decryptedItemKey
@@ -172,7 +175,7 @@ public extension PassKeyManager {
 
     func getItemKeys(userId: String,
                      shareId: String,
-                     parentId: String,
+                     folderId: String?,
                      itemId: String) async throws -> [any CryptographicKeyProtocol] {
         try await loadKeysIfNeeded()
 
@@ -184,7 +187,9 @@ public extension PassKeyManager {
         logger.trace("Decrypting \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
 
         let decryptedKeys = try encryptedKeys.map { encryptedKey in
-            try decryptItemKey(encryptedKey, parentId: parentId, itemId: itemId)
+            try decryptItemKey(encryptedKey,
+                               containerId: Self.containerId(shareId: shareId, folderId: folderId),
+                               itemId: itemId)
         }
 
         logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
@@ -193,7 +198,7 @@ public extension PassKeyManager {
 
     func getItemKey(userId: String,
                     shareId: String,
-                    parentId: String,
+                    folderId: String?,
                     itemId: String,
                     keyRotation: Int64) async throws -> any CryptographicKeyProtocol {
         try await loadKeysIfNeeded()
@@ -207,25 +212,33 @@ public extension PassKeyManager {
             throw PassError.keysNotFound(shareID: shareId)
         }
 
-        return try decryptItemKey(encryptedKey, parentId: parentId, itemId: itemId)
+        return try decryptItemKey(encryptedKey,
+                                  containerId: Self.containerId(shareId: shareId, folderId: folderId),
+                                  itemId: itemId)
     }
 
-    func getContainerKey(containerId: String,
+    func getContainerKey(userId: String,
+                         shareId: String,
+                         folderId: String?,
                          keyRotation: Int64? = nil) async throws -> any CryptographicKeyProtocol {
         try await loadKeysIfNeeded()
-        return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: false)
+        return try await getContainerKey(userId: userId,
+                                         shareId: shareId,
+                                         folderId: folderId,
+                                         keyRotation: keyRotation,
+                                         refreshed: false)
     }
 
-    func decryptAndStoreFolderKeys(shareId: String, folders: [Folder]) async throws {
+    func decryptAndStoreFolderKeys(userId: String, shareId: String, folders: [Folder]) async throws {
         guard !folders.isEmpty else { return }
-        let userId = try await userManager.getActiveUserId()
 
         let shareKey: any CryptographicKeyProtocol
-        if let cachedKey = getLatestCachedKey(id: shareId) {
+        if let cachedKey = getLatestCachedKey(containerId: Self.containerId(shareId: shareId, folderId: nil)) {
             shareKey = cachedKey
         } else {
-            try await refreshShareKeys(shareId: shareId)
-            guard let refreshedKey = getLatestCachedKey(id: shareId) else {
+            try await refreshShareKeys(userId: userId, shareId: shareId)
+            guard let refreshedKey = getLatestCachedKey(containerId: Self.containerId(shareId: shareId,
+                                                                                      folderId: nil)) else {
                 throw PassError.keysNotFound(shareID: shareId)
             }
             shareKey = refreshedKey
@@ -249,8 +262,10 @@ public extension PassKeyManager {
                     let startKey: any CryptographicKeyProtocol
 
                     if let parentId = root.parentFolderID {
-                        let fullParentId = parentId + shareId
-                        guard let cachedKey = await self.getLatestCachedKey(id: fullParentId) else {
+                        guard let cachedKey = await self
+                            .getLatestCachedKey(containerId: Self.containerId(shareId: shareId,
+                                                                              folderId: parentId))
+                        else {
                             throw PassError.crypto(.missingKeys)
                         }
                         startKey = cachedKey
@@ -281,25 +296,32 @@ public extension PassKeyManager {
 
 private extension PassKeyManager {
     /// Guarded variant that prevents infinite recursion: refreshes remote keys at most once.
-    func getContainerKey(containerId: String,
+    func getContainerKey(userId: String,
+                         shareId: String,
+                         folderId: String?,
                          keyRotation: Int64?,
                          refreshed: Bool) async throws -> any CryptographicKeyProtocol {
+        let containerId = Self.containerId(shareId: shareId, folderId: folderId)
         let key: (any CryptographicKeyProtocol)? = if let keyRotation {
-            getCachedKey(id: containerId, keyRotation: keyRotation)
+            getCachedKey(containerId: containerId, keyRotation: keyRotation)
         } else {
-            getLatestCachedKey(id: containerId)
+            getLatestCachedKey(containerId: containerId)
         }
 
         if let key {
             return key
         }
 
-        guard !refreshed else {
-            throw PassError.keysNotFound(shareID: containerId)
+        guard folderId == nil, !refreshed else {
+            throw PassError.keysNotFound(shareID: shareId)
         }
 
-        try await refreshShareKeys(shareId: containerId)
-        return try await getContainerKey(containerId: containerId, keyRotation: keyRotation, refreshed: true)
+        try await refreshShareKeys(userId: userId, shareId: shareId)
+        return try await getContainerKey(userId: userId,
+                                         shareId: shareId,
+                                         folderId: nil,
+                                         keyRotation: keyRotation,
+                                         refreshed: true)
     }
 
     func symmetricDecryptAndCache(_ encryptedKey: SymmetricallyEncryptedKeyProtocol) async throws
@@ -312,7 +334,7 @@ private extension PassKeyManager {
 
         let decryptedContainerKey = try await encryptedKey.decrypt(with: symmetricKey)
 
-        cacheKey(decryptedContainerKey, id: containerId)
+        cacheKey(decryptedContainerKey, containerId: encryptedKey.id)
 
         logger.info("Decrypted & cached container key \(keyDescription)")
         return decryptedContainerKey
@@ -332,10 +354,10 @@ private extension PassKeyManager {
     }
 
     func decryptItemKey(_ itemKey: ItemKey,
-                        parentId: String,
+                        containerId: String,
                         itemId: String) throws -> DecryptedItemKey {
-        guard let parentKey = getCachedKey(id: parentId, keyRotation: itemKey.keyRotation) else {
-            throw PassError.keysNotFound(shareID: parentId)
+        guard let parentKey = getCachedKey(containerId: containerId, keyRotation: itemKey.keyRotation) else {
+            throw PassError.keysNotFound(shareID: containerId)
         }
 
         guard let encryptedItemKeyData = itemKey.key.base64Decode() else {
@@ -346,7 +368,7 @@ private extension PassKeyManager {
                                                     key: parentKey.keyData,
                                                     associatedData: .itemKey)
 
-        return DecryptedItemKey(containerId: parentId,
+        return DecryptedItemKey(containerId: containerId,
                                 itemId: itemId,
                                 keyRotation: itemKey.keyRotation,
                                 keyData: decryptedItemKeyData)
@@ -374,8 +396,7 @@ private extension PassKeyManager {
                      parentKey: any CryptographicKeyProtocol,
                      adjacencyMap: [String?: [Folder]]) async throws -> [DecryptedFolderKey] {
         let currentDecryptedKey = try decryptFolderKey(shareId: shareId, folder: folder, parentKey: parentKey)
-        let uniqueFolderId = folder.id + shareId
-        cacheKey(currentDecryptedKey, id: uniqueFolderId)
+        cacheKey(currentDecryptedKey, containerId: Self.containerId(shareId: shareId, folderId: folder.id))
 
         guard let children = adjacencyMap[folder.id], !children.isEmpty else {
             return [currentDecryptedKey]
@@ -420,20 +441,24 @@ private extension PassKeyManager {
 // MARK: - Cache Helpers
 
 private extension PassKeyManager {
-    func getCachedKey(id: String, keyRotation: Int64) -> (any CryptographicKeyProtocol)? {
-        keyCache[id]?[keyRotation]
+    nonisolated static func containerId(shareId: String, folderId: String?) -> String {
+        folderId.map { $0 + shareId } ?? shareId
     }
 
-    func getLatestCachedKey(id: String) -> (any CryptographicKeyProtocol)? {
-        guard let rotations = keyCache[id],
+    func getCachedKey(containerId: String, keyRotation: Int64) -> (any CryptographicKeyProtocol)? {
+        keyCache[containerId]?[keyRotation]
+    }
+
+    func getLatestCachedKey(containerId: String) -> (any CryptographicKeyProtocol)? {
+        guard let rotations = keyCache[containerId],
               let maxRotation = rotations.keys.max() else {
             return nil
         }
         return rotations[maxRotation]
     }
 
-    func cacheKey(_ key: any CryptographicKeyProtocol, id: String) {
-        keyCache[id, default: [:]][key.keyRotation] = key
+    func cacheKey(_ key: any CryptographicKeyProtocol, containerId: String) {
+        keyCache[containerId, default: [:]][key.keyRotation] = key
     }
 }
 
@@ -479,23 +504,23 @@ private extension PassKeyManager {
 
         for key in shareKeys {
             let decryptedKey = try key.decrypt(with: symmetricKey)
-            cacheKey(decryptedKey, id: key.id)
+            cacheKey(decryptedKey, containerId: key.id)
         }
 
         for key in folderKeys {
             let decryptedKey = try key.decrypt(with: symmetricKey)
-            cacheKey(decryptedKey, id: key.id)
+            cacheKey(decryptedKey, containerId: key.id)
         }
 
         keysLoaded = true
     }
 
-    func refreshShareKeys(shareId: String) async throws {
-        let userId = try await userManager.getActiveUserId()
+    func refreshShareKeys(userId: String, shareId: String) async throws {
         let refreshedKeys = try await shareKeyRepository.refreshKeys(userId: userId, shareId: shareId)
 
         try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for encryptedShareKey in refreshedKeys {
+            for encryptedShareKey in refreshedKeys
+                where encryptedShareKey.userId == userId && encryptedShareKey.shareId == shareId {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
                     _ = try await symmetricDecryptAndCache(encryptedShareKey)
