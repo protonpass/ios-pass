@@ -65,10 +65,13 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
         let encrytedKeys = try await encryptKeys(invite: invite)
         logger.trace("Finished encrypting keys for invite \(inviteDebugInfo)")
         let userId = try await userManager.getActiveUserId()
+
         var itemContent: ItemContent?
-        if let share = try await inviteRepository.acceptInvite(userId: userId,
-                                                               invite: invite,
-                                                               keys: encrytedKeys) {
+        let share = try await inviteRepository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
+        // Remove right after accepting regardless of the outcome of subsequent fetches
+        // Because re-accepting wouldn't work anyway
+        try await inviteRepository.removeCachedInvite(userId: userId, invite: invite)
+        if let share {
             try await shareRepository.upsertShares(userId: userId, shares: [share])
 
             switch share.shareType {
@@ -84,7 +87,6 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
                 break
             }
         }
-        try await inviteRepository.removeCachedInvite(userId: userId, invite: invite)
         return itemContent
     }
 }
