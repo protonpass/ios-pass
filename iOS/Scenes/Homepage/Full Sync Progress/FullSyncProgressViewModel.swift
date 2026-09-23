@@ -38,8 +38,6 @@ final class FullSyncProgressViewModel {
     private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let createLogsFile = dependency(\UseCasesContainer.createLogsFile)
-
-    @ObservationIgnored
     private let onFinish: (FullSyncOperation, FullSyncOperation.Outcome) -> Void
 
     @ObservationIgnored
