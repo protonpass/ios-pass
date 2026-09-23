@@ -66,7 +66,6 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
         logger.trace("Finished encrypting keys for invite \(inviteDebugInfo)")
         let userId = try await userManager.getActiveUserId()
 
-        var itemContent: ItemContent?
         let share = try await inviteRepository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
         // Remove right after accepting regardless of the outcome of subsequent fetches
         // Because re-accepting wouldn't work anyway
@@ -77,7 +76,7 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
             switch share.shareType {
             case .item:
                 logger.trace("Fetching shared item for item invite \(inviteDebugInfo)")
-                itemContent = try await itemRepository.getSharedItem(userId: userId, share: share)
+                return try await itemRepository.getSharedItem(userId: userId, share: share)
 
             case .vault:
                 logger.trace("Fetching items for vault invite \(inviteDebugInfo)")
@@ -87,7 +86,7 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
                 break
             }
         }
-        return itemContent
+        return nil
     }
 }
 
