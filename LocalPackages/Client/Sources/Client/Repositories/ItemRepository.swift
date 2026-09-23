@@ -921,10 +921,8 @@ private extension ItemRepository {
 
         let shareKey = try await passKeyManager.getContainerKey(userId: userId,
                                                                 shareId: shareId,
-                                                                folderId: share.share
-                                                                    .shareType == .vault ? itemRevision
-                                                                    .folderID :
-                                                                    nil,
+                                                                folderId: share.share.shareType == .vault ?
+                                                                    itemRevision.folderID : nil,
                                                                 keyRotation: nil)
 
         let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
