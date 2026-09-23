@@ -117,6 +117,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
 
     // References
     private var checkingFolderForceSync = false
+    private var fullSyncProgress: (viewModel: FullSyncProgressViewModel, controller: UIViewController)?
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -174,6 +175,8 @@ private extension HomepageCoordinator {
         }
 
         authenticated = getSharedPreferences().localAuthenticationMethod == .none
+
+        observeFullSyncs()
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
@@ -416,9 +419,9 @@ private extension HomepageCoordinator {
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
             guard !appContentManager.isFullSyncing else { return }
-            await presentFullSync(userId: userId,
-                                  shouldStopEventLoop: true,
-                                  reason: "folders migration")
+            await runFullSync(userId: userId,
+                              shouldStopEventLoop: true,
+                              reason: "folders migration")
         } catch {
             logger.error(message: "Failed folder force sync check", error: error)
         }
@@ -563,6 +566,90 @@ private extension HomepageCoordinator {
     }
 }
 
+// MARK: - Full sync progress
+
+private extension HomepageCoordinator {
+    func observeFullSyncs() {
+        appContentManager.$fullSyncOperation
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .sink { [weak self] operation in
+                guard let self else { return }
+                presentFullSyncProgressIfNeeded(for: operation)
+            }
+            .store(in: &cancellables)
+
+        userManager.currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
+                guard let self,
+                      let operation = fullSyncProgress?.viewModel.operation,
+                      operation.userId != userData?.user.ID else { return }
+                dismissFullSyncProgress()
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Only one progress sheet exists at a time, and only for the active user: the event loop
+    /// also full syncs inactive accounts in the background.
+    func presentFullSyncProgressIfNeeded(for operation: FullSyncOperation) {
+        guard operation.presentation == .sheet,
+              operation.outcome == nil,
+              operation.userId == userManager.activeUserId else { return }
+
+        if let fullSyncProgress, fullSyncProgress.controller.presentingViewController != nil {
+            fullSyncProgress.viewModel.track(operation)
+            return
+        }
+
+        let viewModel = FullSyncProgressViewModel(operation: operation) { [weak self] operation, outcome in
+            guard let self else { return }
+            fullSyncDidFinish(operation, outcome: outcome)
+        }
+        let controller = UIHostingController(rootView: FullSyncProgressView(viewModel: viewModel))
+        controller.sheetPresentationController?.preferredCornerRadius = 16
+        controller.isModalInPresentation = true
+        fullSyncProgress = (viewModel, controller)
+        rootViewController.topMostViewController.present(controller, animated: true)
+    }
+
+    func fullSyncDidFinish(_ operation: FullSyncOperation, outcome: FullSyncOperation.Outcome) {
+        guard fullSyncProgress?.viewModel.operation === operation else { return }
+        dismissFullSyncProgress { [weak self] in
+            guard let self else { return }
+            switch outcome {
+            case .completed(hasUndecryptableShares: false):
+                bannerManager.displayBottomInfoMessage(#localized("Sync complete"))
+
+            case .completed(hasUndecryptableShares: true), .failed:
+                displayUndecryptableSharesBanner(false)
+
+            case .cancelled:
+                break
+            }
+        }
+    }
+
+    /// Dismisses the progress sheet itself rather than the top most sheet, which could be
+    /// anything presented above it.
+    func dismissFullSyncProgress(completion: (() -> Void)? = nil) {
+        guard let controller = fullSyncProgress?.controller else { return }
+        fullSyncProgress = nil
+        let dismiss = {
+            guard let presenter = controller.presentingViewController else {
+                completion?()
+                return
+            }
+            presenter.dismiss(animated: true, completion: completion)
+        }
+        if let transitionCoordinator = controller.transitionCoordinator {
+            transitionCoordinator.animate(alongsideTransition: nil) { _ in dismiss() }
+        } else {
+            dismiss()
+        }
+    }
+}
+
 // MARK: - Navigation & Routing & View presentation
 
 extension HomepageCoordinator {
@@ -635,9 +722,6 @@ extension HomepageCoordinator {
 
                 case let .moveItemsBetweenVaults(context):
                     itemMoveBetweenVault(context: context)
-
-                case .fullSync:
-                    present(FullSyncProgressView(mode: .fullSync), dismissible: false)
 
                 case let .shareVaultFromItemDetail(vault, itemContent):
                     presentShareElementView(for: vault, itemContent: itemContent)
@@ -1918,9 +2002,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async {
-        await presentFullSync(userId: userId,
-                              shouldStopEventLoop: false,
-                              reason: "user events")
+        await runFullSync(userId: userId,
+                          shouldStopEventLoop: false,
+                          reason: "user events")
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

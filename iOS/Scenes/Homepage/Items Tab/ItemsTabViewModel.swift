@@ -52,6 +52,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
+    @Published private(set) var inlineSyncProgress: FullSyncProgressViewModel?
     @Published private(set) var canCreateItem = true
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
@@ -69,7 +70,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let itemRepository = dependency(\RepositoryContainer.itemRepository)
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let logger = dependency(\ToolingContainer.logger)
-    private let loginMethod = dependency(\DataContainer.loginMethod)
     private let getPendingUserInvitations = dependency(\UseCasesContainer.getPendingUserInvitations)
     private let doTrashSelectedItems = dependency(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = dependency(\UseCasesContainer.restoreSelectedItems)
@@ -79,6 +79,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let canEditItem = dependency(\UseCasesContainer.canEditItem)
     private let shouldDisplayUpgradeAppBanner = dependency(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let unpinItems = dependency(\UseCasesContainer.unpinItems)
     @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
@@ -169,13 +170,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     func continueFullSyncIfNeeded() {
-        Task { [weak self] in
-            guard let self else { return }
-            guard let userId = appContentManager.incompleteFullSyncUserId,
-                  userId == userManager.activeUserId else { return }
-            router.present(for: .fullSync)
-            await appContentManager.fullSync(userId: userId)
-        }
+        guard let userId = appContentManager.incompleteFullSyncUserId,
+              userId == userManager.activeUserId else { return }
+        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
     // swiftlint:disable:next cyclomatic_complexity
@@ -236,7 +233,35 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    func trackInlineSync(_ operation: FullSyncOperation) {
+        guard operation.presentation == .inline,
+              operation.outcome == nil,
+              operation.userId == userManager.activeUserId else { return }
+
+        if let inlineSyncProgress {
+            inlineSyncProgress.track(operation)
+            return
+        }
+
+        inlineSyncProgress = FullSyncProgressViewModel(operation: operation) { [weak self] operation, outcome in
+            guard let self, inlineSyncProgress?.operation === operation else { return }
+            inlineSyncProgress = nil
+            shouldShowSyncProgress = false
+            switch outcome {
+            case .completed(hasUndecryptableShares: false):
+                router.display(element: .infosMessage(#localized("The app is now ready to use"),
+                                                      showWhenNoSheets: true))
+
+            case .completed(hasUndecryptableShares: true), .failed:
+                router.present(for: .undecryptableSharesBanner(dismissTopSheetBeforeShowing: false))
+
+            case .cancelled:
+                break
+            }
+        }
+    }
+
+    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         appContentManager.$state
             .receive(on: DispatchQueue.main)
@@ -264,14 +289,12 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        appContentManager.vaultSyncEventStream
-            .subscribe(on: DispatchQueue.main)
+        appContentManager.$fullSyncOperation
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] event in
+            .compactMap(\.self)
+            .sink { [weak self] operation in
                 guard let self else { return }
-                if case .done = event {
-                    shouldShowSyncProgress = false
-                }
+                trackInlineSync(operation)
             }
             .store(in: &cancellables)
 
@@ -309,13 +332,11 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        // Show the progress if after 5 seconds after logging in and items are not yet loaded
+        // Show the progress if the sync after logging in still runs after 5 seconds
         Task { [weak self] in
             guard let self else { return }
             try? await Task.sleep(seconds: 5)
-
-            if await loginMethod.isManualLogIn(),
-               case .loading = appContentManager.state {
+            if inlineSyncProgress != nil {
                 shouldShowSyncProgress = true
             }
         }

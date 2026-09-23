@@ -103,8 +103,33 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureFullSync()
         return stubbedFullSyncResult
     }
+    // MARK: - startFullSync
+    public var closureStartFullSync: () -> () = {}
+    public var invokedStartFullSyncfunction = false
+    public var invokedStartFullSyncCount = 0
+    public var invokedStartFullSyncParameters: (userId: String, presentation: FullSyncPresentation)?
+    public var invokedStartFullSyncParametersList = [(userId: String, presentation: FullSyncPresentation)]()
+    public nonisolated(unsafe) var stubbedStartFullSyncResult: FullSyncOperation!
+
+    public func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation {
+        invokedStartFullSyncfunction = true
+        invokedStartFullSyncCount += 1
+        invokedStartFullSyncParameters = (userId, presentation)
+        closureStartFullSync()
+        return stubbedStartFullSyncResult
+    }
+    // MARK: - waitForFullSyncsToFinish
+    public var closureWaitForFullSyncsToFinish: () -> () = {}
+    public var invokedWaitForFullSyncsToFinishfunction = false
+    public var invokedWaitForFullSyncsToFinishCount = 0
+
+    public func waitForFullSyncsToFinish() async {
+        invokedWaitForFullSyncsToFinishfunction = true
+        invokedWaitForFullSyncsToFinishCount += 1
+        closureWaitForFullSyncsToFinish()
+    }
     // MARK: - localFullSync
-    public var localFullSyncUserIdThrowableError4: Error?
+    public var localFullSyncUserIdThrowableError6: Error?
     public var closureLocalFullSync: () -> () = {}
     public var invokedLocalFullSyncfunction = false
     public var invokedLocalFullSyncCount = 0
@@ -115,7 +140,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        if let error = localFullSyncUserIdThrowableError4 {
+        if let error = localFullSyncUserIdThrowableError6 {
             throw error
         }
         closureLocalFullSync()
@@ -151,7 +176,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError7: Error?
+    public var deleteUserIdShareIdThrowableError9: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -162,7 +187,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError7 {
+        if let error = deleteUserIdShareIdThrowableError9 {
             throw error
         }
         closureDelete()

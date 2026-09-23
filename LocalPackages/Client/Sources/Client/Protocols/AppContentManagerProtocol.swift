@@ -31,6 +31,10 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async
     @discardableResult
     func fullSync(userId: String) async -> Bool
+    @discardableResult
+    func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation
+    /// Returns once no full sync is running or queued, including ones started while waiting
+    func waitForFullSyncsToFinish() async
     func localFullSync(userId: String) async throws
     func getShareContent(for shareId: String) -> ShareContent?
     func getItems(shareId: String, containerId: String?) -> [ItemUiModel]
