@@ -160,6 +160,7 @@ public extension ServiceContainer {
                                  inviteRepository: RepositoryContainer.shared.inviteRepository(),
                                  folderRepository: RepositoryContainer.shared.folderRepository(),
                                  slNoteSynchronizer: ServiceContainer.shared.simpleLoginNoteSynchronizer(),
+                                 userManager: self.userManager(),
                                  preferencesManager: ToolingContainer.shared.preferencesManager(),
                                  symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
                                  indexAllLoginItems: UseCasesContainer.shared.indexAllLoginItems(),

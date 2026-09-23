@@ -63,6 +63,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
 
     public func execute(userData: UserData, hasExtraPassword: Bool) async throws {
         syncEventLoop.stop()
+        defer { syncEventLoop.start() }
         let userId = userData.user.ID
         // We add the new user and credential to the user manager and the main authManager
         // We also update the main apiservice with the new session id through apiManager
@@ -75,6 +76,5 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         }
         await fullContentSync(userId: userId, shouldStopEventLoop: true)
         try await inviteRepository.refreshAllInvites(userId: userId)
-        syncEventLoop.start()
     }
 }

@@ -19,83 +19,70 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import DIComposition
 import Entities
 import FactoryKit
 import Foundation
-import Macro
 import Screens
-import Stores
+import UseCases
 
+/// Follows one full sync of one user. Failures stay on screen with a retry button,
+/// every other outcome is handed to `onFinish` so the owner can remove the progress UI.
 @MainActor
-final class FullSyncProgressViewModel: ObservableObject {
-    @Published private(set) var progresses = [VaultSyncProgress]()
-    @Published private(set) var error: (any Error)?
-    private let appContentManager = dependency(\ServiceContainer.appContentManager)
-    private let processVaultSyncEvent = dependency(\UseCasesContainer.processVaultSyncEvent)
+@Observable
+final class FullSyncProgressViewModel {
+    private(set) var operation: FullSyncOperation
+    let presentation: FullSyncPresentation
+
+    private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let userManager = dependency(\ServiceContainer.userManager)
-    @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
-    private var cancellables = Set<AnyCancellable>()
+    private let createLogsFile = dependency(\UseCasesContainer.createLogsFile)
 
-    private var userId: String?
-    let mode: Mode
+    @ObservationIgnored
+    private let onFinish: (FullSyncOperation, FullSyncOperation.Outcome) -> Void
 
-    enum Mode {
-        case logIn, fullSync
+    @ObservationIgnored
+    private var waitForOutcomeTask: Task<Void, Never>?
 
-        var isFullSync: Bool {
-            self == .fullSync
-        }
+    var error: (any Error)? {
+        guard case let .failed(error) = operation.outcome, !error.isInactiveUserKey else { return nil }
+        return error
     }
 
-    init(mode: Mode) {
-        self.mode = mode
-        appContentManager.vaultSyncEventStream
-            .subscribe(on: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] event in
-                guard let self else { return }
-                switch event {
-                case let .done(hasUndecryptableShares):
-                    if hasUndecryptableShares {
-                        dismissAndDisplayUndecryptableSharesBanner()
-                    } else {
-                        dismissAndNotifySyncCompletion()
-                    }
+    var progresses: [VaultSyncProgress] {
+        operation.progresses
+    }
 
-                case let .error(userId, error):
-                    if error.isInactiveUserKey {
-                        dismissAndDisplayUndecryptableSharesBanner()
-                    } else {
-                        self.userId = userId
-                        self.error = error
-                    }
+    var numberOfSyncedVaults: Int {
+        progresses.count(where: \.isDone)
+    }
 
-                default:
-                    progresses = processVaultSyncEvent(event, with: progresses)
-                }
+    init(operation: FullSyncOperation,
+         onFinish: @escaping (FullSyncOperation, FullSyncOperation.Outcome) -> Void) {
+        self.operation = operation
+        presentation = operation.presentation
+        self.onFinish = onFinish
+        track(operation)
+    }
+
+    func track(_ operation: FullSyncOperation) {
+        self.operation = operation
+        waitForOutcomeTask?.cancel()
+        waitForOutcomeTask = Task { [weak self] in
+            let outcome = await operation.result()
+            guard let self, !Task.isCancelled else { return }
+            if case let .failed(error) = outcome, !error.isInactiveUserKey {
+                return
             }
-            .store(in: &cancellables)
-    }
-}
-
-extension FullSyncProgressViewModel {
-    func numberOfSyncedVaults() -> Int {
-        progresses.filter(\.isDone).count
-    }
-
-    func retry() async {
-        guard let userId = try? await userManager.getActiveUserId() else {
-            assertionFailure("Failed to full sync. No userID found")
-            return
+            onFinish(operation, outcome)
         }
-        self.userId = nil
-        error = nil
-        progresses.removeAll()
-        await appContentManager.fullSync(userId: userId)
+    }
+
+    func retry() {
+        track(fullContentSync.start(userId: operation.userId,
+                                    presentation: presentation,
+                                    shouldStopEventLoop: true))
     }
 
     func shareHostAppLogs() {
@@ -108,22 +95,6 @@ extension FullSyncProgressViewModel {
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
-        }
-    }
-}
-
-private extension FullSyncProgressViewModel {
-    func dismissAndDisplayUndecryptableSharesBanner() {
-        router.present(for: .undecryptableSharesBanner(dismissTopSheetBeforeShowing: mode.isFullSync))
-    }
-
-    func dismissAndNotifySyncCompletion() {
-        if mode.isFullSync {
-            router.display(element: .infosMessage(#localized("Sync complete"),
-                                                  config: .init(dismissBeforeShowing: true)))
-        } else {
-            router.display(element: .infosMessage(#localized("The app is now ready to use"),
-                                                  showWhenNoSheets: true))
         }
     }
 }

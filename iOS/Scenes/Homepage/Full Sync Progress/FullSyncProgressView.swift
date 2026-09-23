@@ -24,21 +24,17 @@ import SwiftUI
 
 struct FullSyncProgressView: View {
     @State private var isShowingDetail = false
-    @StateObject private var viewModel: FullSyncProgressViewModel
-
-    init(mode: FullSyncProgressViewModel.Mode) {
-        _viewModel = .init(wrappedValue: .init(mode: mode))
-    }
+    let viewModel: FullSyncProgressViewModel
 
     var body: some View {
-        switch viewModel.mode {
-        case .fullSync:
+        switch viewModel.presentation {
+        case .sheet:
             NavigationStack {
                 realBody
                     .background(PassColor.backgroundNorm)
             }
 
-        case .logIn:
+        case .inline:
             realBody
         }
     }
@@ -53,7 +49,7 @@ private extension FullSyncProgressView {
             if let error = viewModel.error {
                 RetryableErrorView(error: error,
                                    onShareLogs: viewModel.shareHostAppLogs,
-                                   onRetry: retry)
+                                   onRetry: viewModel.retry)
                     .padding()
             } else {
                 VStack {
@@ -72,12 +68,6 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: viewModel.error == nil)
-    }
-
-    func retry() {
-        Task {
-            await viewModel.retry()
-        }
     }
 }
 
@@ -110,10 +100,10 @@ private extension FullSyncProgressView {
             if viewModel.progresses.isEmpty {
                 ProgressView()
             } else {
-                ProgressView(value: Float(viewModel.numberOfSyncedVaults()),
+                ProgressView(value: Float(viewModel.numberOfSyncedVaults),
                              total: Float(viewModel.progresses.count))
                     .frame(width: 200)
-                    .animation(.default, value: viewModel.numberOfSyncedVaults())
+                    .animation(.default, value: viewModel.numberOfSyncedVaults)
                     .progressViewStyle(.pass)
             }
         }

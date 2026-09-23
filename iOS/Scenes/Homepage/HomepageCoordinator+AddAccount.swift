@@ -106,14 +106,16 @@ private extension HomepageCoordinator {
 
                 addTelemetryEvent(with: .multiAccountAddAccount)
 
-                router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 try await addAndSwitchToNewUserAccount(userData: userData,
                                                        hasExtraPassword: hasExtraPassword)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
+                router.display(element: .globalLoading(shouldShow: false))
                 handle(error: error)
+                // Adding can fail after the new account became active, so reload whichever account is active now
+                itemsTabViewModel?.refresh()
             }
         }
     }
