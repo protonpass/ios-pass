@@ -59,8 +59,8 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
 
         let shareKeyInfo = try await passKeyManager.getContainerKey(userId: userId,
                                                                     shareId: item.shareId,
-                                                                    folderId: share.shareType == .vault ? item
-                                                                        .folderId : nil,
+                                                                    folderId: share.shareType == .vault ?
+                                                                        item.folderId : nil,
                                                                     keyRotation: nil)
 
         let linkKey = try Data.random()
