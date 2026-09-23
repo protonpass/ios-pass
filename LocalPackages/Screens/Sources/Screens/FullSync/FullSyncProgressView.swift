@@ -22,11 +22,15 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct FullSyncProgressView: View {
+public struct FullSyncProgressView: View {
     @State private var isShowingDetail = false
     let viewModel: FullSyncProgressViewModel
 
-    var body: some View {
+    public init(viewModel: FullSyncProgressViewModel) {
+        self.viewModel = viewModel
+    }
+
+    public var body: some View {
         switch viewModel.presentation {
         case .sheet:
             NavigationStack {
@@ -77,21 +81,21 @@ private extension FullSyncProgressView {
             FullSyncInProgressView()
                 .frame(width: 80)
 
-            Text("Syncing items...")
+            Text("Syncing items...", bundle: .module)
                 .font(.title3.bold())
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
                 .padding(.bottom, 8)
 
-            Text("We are downloading and decrypting your items.")
+            Text("We are downloading and decrypting your items.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
 
-            Text("This might take a few minutes.")
+            Text("This might take a few minutes.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
 
-            Text("Please keep the app open.")
+            Text("Please keep the app open.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 8)
@@ -119,7 +123,7 @@ private extension FullSyncProgressView {
             isShowingDetail = true
         }, label: {
             VStack(alignment: .center) {
-                Text("More info")
+                Text("More info", bundle: .module)
                 Label(title: { Text(verbatim: "") },
                       icon: { Image(systemName: "chevron.down") })
             }
