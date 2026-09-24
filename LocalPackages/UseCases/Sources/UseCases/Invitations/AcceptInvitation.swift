@@ -38,6 +38,7 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
+    private let folderRepository: any FolderRepositoryProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase
     private let logger: Logger
@@ -45,12 +46,14 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
     public init(inviteRepository: any InviteRepositoryProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
+                folderRepository: any FolderRepositoryProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
                 getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase,
                 logManager: any LogManagerProtocol) {
         self.inviteRepository = inviteRepository
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
+        self.folderRepository = folderRepository
         self.getEmailPublicKey = getEmailPublicKey
         self.getInviteDecryptionKeys = getInviteDecryptionKeys
         logger = .init(manager: logManager)
@@ -76,8 +79,10 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
                 return try await itemRepository.getSharedItem(userId: userId, share: share)
 
             case .vault:
-                logger.trace("Fetching items for vault invite \(inviteDebugInfo)")
-                try await itemRepository.refreshItems(userId: userId, shareId: share.shareId)
+                logger.trace("Fetching folders & items for vault invite \(inviteDebugInfo)")
+                let shareId = share.shareId
+                try await folderRepository.refreshFolders(userId: userId, shareId: shareId)
+                try await itemRepository.refreshItems(userId: userId, shareId: shareId)
 
             case .unknown:
                 break

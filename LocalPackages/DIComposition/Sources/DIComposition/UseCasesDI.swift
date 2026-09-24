@@ -71,6 +71,10 @@ private extension UseCasesContainer {
         RepositoryContainer.shared.publicKeyRepository()
     }
 
+    var folderRepository: any FolderRepositoryProtocol {
+        RepositoryContainer.shared.folderRepository()
+    }
+
     @MainActor
     var appContentManager: any AppContentManagerProtocol {
         ServiceContainer.shared.appContentManager()
@@ -255,6 +259,7 @@ public extension UseCasesContainer {
         self { AcceptInvitation(inviteRepository: self.inviteRepository,
                                 itemRepository: self.itemRepository,
                                 shareRepository: self.shareRepository,
+                                folderRepository: self.folderRepository,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                 logManager: self.logManager) }
