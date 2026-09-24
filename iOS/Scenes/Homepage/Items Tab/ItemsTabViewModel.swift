@@ -79,7 +79,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let canEditItem = dependency(\UseCasesContainer.canEditItem)
     private let shouldDisplayUpgradeAppBanner = dependency(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let pinItems = dependency(\UseCasesContainer.pinItems)
-    private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let unpinItems = dependency(\UseCasesContainer.unpinItems)
     @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
@@ -167,12 +166,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
                 handle(error: error)
             }
         }
-    }
-
-    func continueFullSyncIfNeeded() {
-        guard let userId = appContentManager.incompleteFullSyncUserId,
-              userId == userManager.activeUserId else { return }
-        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
     // swiftlint:disable:next cyclomatic_complexity

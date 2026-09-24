@@ -145,7 +145,6 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
-                viewModel.continueFullSyncIfNeeded()
             }
             .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
                                               enabled: aliasToTrash?.aliasEnabled ?? false,

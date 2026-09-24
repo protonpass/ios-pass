@@ -74,8 +74,18 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     public private(set) var filterOption = ItemTypeFilterOption.all
 
-    @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
-    public private(set) var incompleteFullSyncUserId: String?
+    /// Accounts whose last full sync wiped their local data without completing
+    public private(set) var incompleteFullSyncUserIds: Set<String> {
+        get {
+            let userIds = kSharedUserDefaults.stringArray(forKey: Constants.incompleteFullSyncUserIds) ?? []
+            let legacyUserId = kSharedUserDefaults.string(forKey: Constants.incompleteFullSyncUserId)
+            return Set(userIds + [legacyUserId].compactMap(\.self))
+        }
+        set {
+            kSharedUserDefaults.set(Array(newValue), forKey: Constants.incompleteFullSyncUserIds)
+            kSharedUserDefaults.removeObject(forKey: Constants.incompleteFullSyncUserId)
+        }
+    }
 
     public nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
 
@@ -175,7 +185,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         let tasks = fullSyncTasks.map(\.task)
         tasks.forEach { $0.cancel() }
         fullSyncOperation = nil
-        incompleteFullSyncUserId = nil
+        incompleteFullSyncUserIds = []
         for task in tasks {
             await task.value
         }
@@ -322,7 +332,7 @@ private extension AppContentManager {
         defer { stallWatchdog.cancel() }
 
         logger.info("Starting full sync \(operation.id) for user \(userId)")
-        incompleteFullSyncUserId = userId
+        incompleteFullSyncUserIds.insert(userId)
         var hasUndecryptableShares = false
         do {
             // 0. Refresh user data to handle account changes like added address keys
@@ -402,9 +412,7 @@ private extension AppContentManager {
             return .failed(error)
         }
 
-        if incompleteFullSyncUserId == userId {
-            incompleteFullSyncUserId = nil
-        }
+        incompleteFullSyncUserIds.remove(userId)
         logger.info("Finished full sync \(operation.id) for user \(userId)")
         return .completed(hasUndecryptableShares: hasUndecryptableShares)
     }

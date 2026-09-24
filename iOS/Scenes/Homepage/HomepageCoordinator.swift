@@ -581,13 +581,26 @@ private extension HomepageCoordinator {
 
         userManager.currentActiveUser
             .receive(on: DispatchQueue.main)
+            .removeDuplicates { $0?.user.ID == $1?.user.ID }
             .sink { [weak self] userData in
-                guard let self,
-                      let operation = fullSyncProgress?.viewModel.operation,
-                      operation.userId != userData?.user.ID else { return }
-                dismissFullSyncProgress()
+                guard let self else { return }
+                if let operation = fullSyncProgress?.viewModel.operation,
+                   operation.userId != userData?.user.ID {
+                    dismissFullSyncProgress()
+                }
+                if let userId = userData?.user.ID {
+                    resumeIncompleteFullSyncIfNeeded(userId: userId)
+                }
             }
             .store(in: &cancellables)
+    }
+
+    /// Runs on launch and on every account switch: an interrupted sync left the account's local
+    /// data wiped. A sync already in flight is left alone, e.g. the one right after logging in.
+    func resumeIncompleteFullSyncIfNeeded(userId: String) {
+        guard appContentManager.incompleteFullSyncUserIds.contains(userId),
+              !appContentManager.isFullSyncing else { return }
+        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
     /// Only one progress sheet exists at a time, and only for the active user: the event loop

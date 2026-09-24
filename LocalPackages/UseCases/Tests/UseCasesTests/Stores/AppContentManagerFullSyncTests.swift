@@ -50,6 +50,7 @@ struct AppContentManagerFullSyncTests {
     init() {
         currentActiveUser = .init(activeUser)
         kSharedUserDefaults.removeObject(forKey: Constants.incompleteFullSyncUserId)
+        kSharedUserDefaults.removeObject(forKey: Constants.incompleteFullSyncUserIds)
         shareRepository.stubbedGetDecryptedRemoteSharesResult = .init(shares: [], hasUndecryptableShares: false)
         shareRepository.stubbedCreateVaultResult = .random()
         shareRepository.stubbedGetDecryptedSharesResult = []
@@ -99,7 +100,7 @@ struct AppContentManagerFullSyncTests {
         }
         #expect(sut.fullSyncOperation === operation)
         #expect(!sut.isFullSyncing)
-        #expect(sut.incompleteFullSyncUserId == "user-a")
+        #expect(sut.incompleteFullSyncUserIds == ["user-a"])
     }
 
     @Test
@@ -188,7 +189,7 @@ struct AppContentManagerFullSyncTests {
         #expect(deleteLocalData.deletedUserIds.isEmpty)
         #expect(!sut.isFullSyncing)
         #expect(sut.fullSyncOperation == nil)
-        #expect(sut.incompleteFullSyncUserId == nil)
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 
     @Test
@@ -228,7 +229,7 @@ struct AppContentManagerFullSyncTests {
         #expect(!itemRepository.invokedGetAllItemsfunction)
         #expect(sut.state == .loading)
         #expect(sut.currentShares.value.isEmpty)
-        #expect(sut.incompleteFullSyncUserId == nil)
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 
     @Test
@@ -290,6 +291,27 @@ struct AppContentManagerFullSyncTests {
     }
 
     @Test
+    func `Another account completing its sync keeps an interrupted account marked`() async {
+        refresh.failingUserIds = ["user-a"]
+
+        _ = await sut.startFullSync(userId: "user-a", presentation: .sheet).result()
+        _ = await sut.startFullSync(userId: "inactive-user", presentation: .sheet).result()
+
+        #expect(sut.incompleteFullSyncUserIds == ["user-a"])
+    }
+
+    @Test
+    func `An interrupted account marked by an older version is resumed and cleared`() async {
+        kSharedUserDefaults.set("inactive-user", forKey: Constants.incompleteFullSyncUserId)
+        #expect(sut.incompleteFullSyncUserIds == ["inactive-user"])
+
+        _ = await sut.startFullSync(userId: "inactive-user", presentation: .sheet).result()
+
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
+        #expect(kSharedUserDefaults.string(forKey: Constants.incompleteFullSyncUserId) == nil)
+    }
+
+    @Test
     func `Slow steps are not a stall as long as the sync moves on`() async {
         refresh.delay = .milliseconds(600)
         deleteLocalData.delay = .milliseconds(600)
@@ -315,7 +337,7 @@ struct AppContentManagerFullSyncTests {
             return
         }
         #expect(sut.state == .loading)
-        #expect(sut.incompleteFullSyncUserId == nil)
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 }
 
