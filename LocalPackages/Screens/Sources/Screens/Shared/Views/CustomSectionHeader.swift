@@ -23,14 +23,14 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct CustomSectionHeader: View {
-    let title: TextContent
+    let title: String
     let collapsed: Bool
     let editable: Bool
     let onToggle: () -> Void
     let onEditTitle: () -> Void
     let onRemove: () -> Void
 
-    public init(title: TextContent,
+    public init(title: String,
                 collapsed: Bool,
                 editable: Bool,
                 onToggle: @escaping () -> Void,
@@ -46,7 +46,7 @@ public struct CustomSectionHeader: View {
 
     public var body: some View {
         HStack(alignment: .center) {
-            Label(title: { Text(title) },
+            Label(title: { Text(verbatim: title) },
                   icon: {
                       Image(systemName: collapsed ? "chevron.down" : "chevron.up")
                           .resizable()

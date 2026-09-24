@@ -172,9 +172,11 @@ public struct VaultsAndFoldersMenuView: View {
     func deleteMessage(for container: ActionnableContainer) -> String {
         if container.isVault {
             #localized("This will permanently delete the vault « %@ » and all its contents. Enter the vault name to confirm deletion.",
+                       bundle: .module,
                        container.name ?? "")
         } else {
             #localized("This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion.",
+                       bundle: .module,
                        container.name ?? "")
         }
     }
@@ -373,8 +375,8 @@ private struct FolderMenuView: View {
                    action: {
                        viewModel.containerToDelete = .folder(folder)
                    }, label: {
-                       Label("Delete folder",
-                             uiImage: IconProvider.trash)
+                       Label(title: { Text("Delete folder", bundle: .module) },
+                             icon: { Image(uiImage: IconProvider.trash) })
                    })
         } label: {
             IconProvider.threeDotsVertical

@@ -66,7 +66,7 @@ public extension ItemContextMenuHandler {
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: #localized("Undo"),
+                                                   dismissButtonTitle: #localized("Undo", bundle: .module),
                                                    onDismiss: undoBlock)
 
             router.display(element: .successMessage(config: .refresh(with: .update(item.type))))
@@ -105,7 +105,8 @@ public extension ItemContextMenuHandler {
                 try await pinItems([item])
             }
             let message = itemContent.item.pinned ?
-                #localized("Item successfully unpinned") : #localized("Item successfully pinned")
+                #localized("Item successfully unpinned", bundle: .module) :
+                #localized("Item successfully pinned", bundle: .module)
             await router.display(element: .successMessage(message, config: .refresh))
             logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
         }
@@ -126,7 +127,7 @@ public extension ItemContextMenuHandler {
             try await itemRepository.changeAliasStatus(userId: userId,
                                                        items: [itemContent],
                                                        enabled: false)
-            router.display(element: .infosMessage(#localized("Alias disabled"), config: .refresh))
+            router.display(element: .infosMessage(#localized("Alias disabled", bundle: .module), config: .refresh))
         }
     }
 }
@@ -137,28 +138,28 @@ public extension ItemContextMenuHandler {
     func copyEmail(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.email, message: #localized("Email copied"))
+            copy(itemContent.email, message: #localized("Email copied", bundle: .module))
         }
     }
 
     func copyItemUsername(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.loginItem?.username, message: #localized("Username copied"))
+            copy(itemContent.loginItem?.username, message: #localized("Username copied", bundle: .module))
         }
     }
 
     func copyPassword(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.loginItem?.password, message: #localized("Password copied"))
+            copy(itemContent.loginItem?.password, message: #localized("Password copied", bundle: .module))
         }
     }
 
     func copyAlias(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.aliasEmail, message: #localized("Alias address copied"))
+            copy(itemContent.aliasEmail, message: #localized("Alias address copied", bundle: .module))
         }
     }
 
@@ -169,7 +170,9 @@ public extension ItemContextMenuHandler {
             try await itemRepository.changeAliasStatus(userId: userId,
                                                        items: [itemContent],
                                                        enabled: enabled)
-            let message = enabled ? #localized("Alias enabled") : #localized("Alias disabled")
+            let message = enabled ?
+                #localized("Alias enabled", bundle: .module) :
+                #localized("Alias disabled", bundle: .module)
             router.display(element: .infosMessage(message, config: .refresh))
         }
     }
@@ -177,21 +180,22 @@ public extension ItemContextMenuHandler {
     func copyNoteContent(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.note, message: #localized("Note content copied"))
+            copy(itemContent.note, message: #localized("Note content copied", bundle: .module))
         }
     }
 
     func copyCardholderName(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.creditCardItem?.cardholderName, message: #localized("Cardholder name copied"))
+            copy(itemContent.creditCardItem?.cardholderName,
+                 message: #localized("Cardholder name copied", bundle: .module))
         }
     }
 
     func copyCardNumber(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.creditCardItem?.number, message: #localized("Card number copied"))
+            copy(itemContent.creditCardItem?.number, message: #localized("Card number copied", bundle: .module))
         }
     }
 
@@ -199,35 +203,36 @@ public extension ItemContextMenuHandler {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
             copy(itemContent.creditCardItem?.displayedExpirationDate,
-                 message: #localized("Expiration date copied"))
+                 message: #localized("Expiration date copied", bundle: .module))
         }
     }
 
     func copySecurityCode(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
+            copy(itemContent.creditCardItem?.verificationNumber,
+                 message: #localized("Security code copied", bundle: .module))
         }
     }
 
     func copyFullname(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.identityItem?.fullName, message: #localized("Full name copied"))
+            copy(itemContent.identityItem?.fullName, message: #localized("Full name copied", bundle: .module))
         }
     }
 
     func copySsid(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.wifi?.ssid, message: #localized("SSID copied"))
+            copy(itemContent.wifi?.ssid, message: #localized("SSID copied", bundle: .module))
         }
     }
 
     func copyWifiPassword(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            copy(itemContent.wifi?.password, message: #localized("WiFi password copied"))
+            copy(itemContent.wifi?.password, message: #localized("WiFi password copied", bundle: .module))
         }
     }
 }

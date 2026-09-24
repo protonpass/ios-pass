@@ -76,7 +76,7 @@ private extension UsernameGeneratorView {
             regenerateButton
                 .opacity(0)
             Spacer()
-            Text("Generate username")
+            Text("Generate username", bundle: .module)
                 .navigationTitleText()
             Spacer()
             regenerateButton
@@ -84,7 +84,7 @@ private extension UsernameGeneratorView {
     }
 
     var usernameText: some View {
-        Text(viewModel.username.coloredPassword())
+        Text(viewModel.username.coloredPassword()) // ignore:missing_bundle
             .font(.title3.monospaced())
             .frame(minHeight: max(32, maxUsernameHeight), alignment: .center)
             .fixedSize(horizontal: false, vertical: true)
@@ -108,7 +108,7 @@ private extension UsernameGeneratorView {
 
     var wordCountRow: some View {
         HStack {
-            Text("\(Int(viewModel.wordCount)) word(s)")
+            Text("\(Int(viewModel.wordCount)) word(s)", bundle: .module)
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundStyle(PassColor.textNorm)
@@ -122,7 +122,7 @@ private extension UsernameGeneratorView {
 
     var separatorRow: some View {
         HStack {
-            Text("Word separator")
+            Text("Word separator", bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
 
             Spacer()
@@ -159,13 +159,13 @@ private extension UsernameGeneratorView {
 
     var ctaButtons: some View {
         HStack {
-            CapsuleTextButton(title: #localized("Cancel"),
+            CapsuleTextButton(title: #localized("Cancel", bundle: .module),
                               titleColor: PassColor.textWeak,
                               backgroundColor: PassColor.textDisabled,
                               height: 44,
                               action: dismiss.callAsFunction)
 
-            CapsuleTextButton(title: #localized("Confirm"),
+            CapsuleTextButton(title: #localized("Confirm", bundle: .module),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.loginInteractionNormMajor1,
                               height: 44,
@@ -202,7 +202,7 @@ private extension UsernameGeneratorView {
                 isOn: Binding<Bool>,
                 disabled: Bool = false) -> some View {
         Toggle(isOn: isOn) {
-            Text(title)
+            Text(title, bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
         }
         .toggleStyle(SwitchToggleStyle.pass)
