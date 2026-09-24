@@ -248,15 +248,13 @@ public extension UseCasesContainer {
     }
 
     var rejectInvitation: Factory<any RejectInvitationUseCase> {
-        self { RejectInvitation(repository: self.inviteRepository,
-                                userManager: self.userManager) }
+        self { RejectInvitation(repository: self.inviteRepository) }
     }
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
         self { AcceptInvitation(inviteRepository: self.inviteRepository,
                                 itemRepository: self.itemRepository,
                                 shareRepository: self.shareRepository,
-                                userManager: self.userManager,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                 logManager: self.logManager) }

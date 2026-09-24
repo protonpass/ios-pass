@@ -31,14 +31,13 @@ import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
     /// Accept an invite and optionally return an item content in order to display after accepting
-    func callAsFunction(_ invite: Invite) async throws -> ItemContent?
+    func callAsFunction(userData: UserData, invite: Invite) async throws -> ItemContent?
 }
 
 public struct AcceptInvitation: AcceptInvitationUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
-    private let userManager: any UserManagerProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase
     private let logger: Logger
@@ -46,25 +45,23 @@ public struct AcceptInvitation: AcceptInvitationUseCase {
     public init(inviteRepository: any InviteRepositoryProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
-                userManager: any UserManagerProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
                 getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase,
                 logManager: any LogManagerProtocol) {
         self.inviteRepository = inviteRepository
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.userManager = userManager
         self.getEmailPublicKey = getEmailPublicKey
         self.getInviteDecryptionKeys = getInviteDecryptionKeys
         logger = .init(manager: logManager)
     }
 
-    public func callAsFunction(_ invite: Invite) async throws -> ItemContent? {
+    public func callAsFunction(userData: UserData, invite: Invite) async throws -> ItemContent? {
         let inviteDebugInfo = "email \(invite.invitedEmail), token \(invite.inviteToken)"
         logger.trace("Start accepting for invite \(inviteDebugInfo)")
-        let encrytedKeys = try await encryptKeys(invite: invite)
+        let encrytedKeys = try await encryptKeys(userData: userData, invite: invite)
         logger.trace("Finished encrypting keys for invite \(inviteDebugInfo)")
-        let userId = try await userManager.getActiveUserId()
+        let userId = userData.user.ID
 
         let share = try await inviteRepository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
         // Remove right after accepting regardless of the outcome of subsequent fetches
@@ -96,15 +93,13 @@ struct TransformKeyConfig {
 }
 
 private extension AcceptInvitation {
-    func encryptKeys(invite: Invite) async throws -> [ItemKey] {
+    func encryptKeys(userData: UserData, invite: Invite) async throws -> [ItemKey] {
         do {
-            async let userDataProcess = try userManager.getUnwrappedActiveUserData()
             async let addressKeysProcess = try getInviteDecryptionKeys(invite: invite)
             async let inviterPublicKeysProcess = try getEmailPublicKey(with: invite.inviterEmail)
 
-            let (userData, addressKeys, inviterPublicKeys) = try await (userDataProcess,
-                                                                        addressKeysProcess,
-                                                                        inviterPublicKeysProcess)
+            let (addressKeys, inviterPublicKeys) = try await (addressKeysProcess,
+                                                              inviterPublicKeysProcess)
 
             let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
             let config = try getConfig(invite: invite, addressKeys: addressKeys, userData: userData)
