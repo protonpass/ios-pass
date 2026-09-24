@@ -24,9 +24,8 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
-import Screens
 
-typealias AcceptRejectInviteResult = Result<ItemContent?, any Error>
+public typealias AcceptRejectInviteResult = Result<ItemContent?, any Error>
 
 @MainActor
 @Observable
