@@ -30,8 +30,6 @@ public protocol AppContentManagerProtocol: Sendable {
     func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?)
     func refresh(userId: String) async
     @discardableResult
-    func fullSync(userId: String) async -> Bool
-    @discardableResult
     func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation
     func localFullSync(userId: String) async throws
     func getShareContent(for shareId: String) -> ShareContent?

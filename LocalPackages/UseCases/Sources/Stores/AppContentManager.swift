@@ -233,12 +233,12 @@ public extension AppContentManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                await fullSync(userId: userId, presentation: .inline)
+                _ = await startFullSync(userId: userId, presentation: .inline).result()
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
-                await fullSync(userId: userId, presentation: .inline)
+                _ = await startFullSync(userId: userId, presentation: .inline).result()
                 logger.info("Crypto error occurred. Done full sync")
             } else {
                 logger.info("Not manual login, getting local shares & items")
@@ -253,18 +253,8 @@ public extension AppContentManager {
         }
     }
 
-    /// Delete everything and download again
-    @discardableResult
-    func fullSync(userId: String) async -> Bool {
-        await fullSync(userId: userId, presentation: .sheet)
-    }
-
-    @discardableResult
-    func fullSync(userId: String, presentation: FullSyncPresentation) async -> Bool {
-        await startFullSync(userId: userId, presentation: presentation).result().succeeded
-    }
-
-    /// Returns before any work starts so the UI can bind to the operation straight away.
+    /// Deletes everything and downloads again. Returns before any work starts so the UI can bind
+    /// to the operation straight away.
     ///
     /// A request for a user whose sync is already in flight joins it instead of wiping twice.
     /// Syncs of different users run one after the other, never in parallel.
@@ -273,13 +263,8 @@ public extension AppContentManager {
         if let joined = fullSyncTasks.first(where: {
             $0.operation.userId == userId && $0.operation.outcome == nil && !$0.task.isCancelled
         }) {
-            let operation = joined.operation
             logger.info("Full sync already in progress, joining it for user \(userId)")
-            if presentation == .sheet, operation.presentation == .inline {
-                operation.presentation = .sheet
-                fullSyncOperation = operation
-            }
-            return operation
+            return joined.operation
         }
 
         let operation = FullSyncOperation(userId: userId, presentation: presentation)
