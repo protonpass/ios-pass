@@ -4284,6 +4284,28 @@
         }
       }
     },
+    "%lld other logins use this password" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld other logins uses this password"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld other logins use this password"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld word(s)" : {
       "localizations" : {
         "be" : {
@@ -15636,6 +15658,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "逗號"
+          }
+        }
+      }
+    },
+    "Compromised password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password"
           }
         }
       }
@@ -27553,6 +27585,16 @@
         }
       }
     },
+    "Excluded Item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded Item"
+          }
+        }
+      }
+    },
     "Expiration date copied" : {
       "localizations" : {
         "be" : {
@@ -35957,6 +35999,16 @@
         }
       }
     },
+    "Ignore" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignore"
+          }
+        }
+      }
+    },
     "Import" : {
       "comment" : "Title of the button",
       "localizations" : {
@@ -41864,6 +41916,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可記得的密碼"
+          }
+        }
+      }
+    },
+    "Missing 2FA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing 2FA"
           }
         }
       }
@@ -49510,6 +49572,16 @@
         }
       }
     },
+    "Pass Monitor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Monitor"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -55033,6 +55105,16 @@
         }
       }
     },
+    "Restore alert" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore alert"
+          }
+        }
+      }
+    },
     "Restore all items" : {
       "localizations" : {
         "be" : {
@@ -55421,6 +55503,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "再試一次"
+          }
+        }
+      }
+    },
+    "Reused password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused password"
           }
         }
       }
@@ -56921,6 +57013,16 @@
         }
       }
     },
+    "See all" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See all"
+          }
+        }
+      }
+    },
     "See the shared vault" : {
       "comment" : "New user accepts the invitation",
       "localizations" : {
@@ -58397,6 +58499,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "設定您的 Proton Pass 使用搭配臉部特徵或指紋辨識以確保您具備存取權限."
+          }
+        }
+      }
+    },
+    "Set up 2FA for more security" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set up 2FA for more security"
           }
         }
       }
@@ -66983,6 +67095,16 @@
         }
       }
     },
+    "This account is vulnerable, visit the service and change your password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This account is vulnerable, visit the service and change your password"
+          }
+        }
+      }
+    },
     "This action cannot be undone" : {
       "localizations" : {
         "be" : {
@@ -67175,6 +67297,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此動作無法復原"
+          }
+        }
+      }
+    },
+    "This item is not being monitored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is not being monitored"
+          }
+        }
+      }
+    },
+    "This service offers 2FA. Enable it for added account security." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This service offers 2FA. Enable it for added account security."
           }
         }
       }
@@ -74469,6 +74611,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "弱"
+          }
+        }
+      }
+    },
+    "Weak password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak password"
           }
         }
       }

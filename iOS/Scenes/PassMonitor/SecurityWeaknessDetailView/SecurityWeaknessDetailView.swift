@@ -24,6 +24,7 @@ import Core
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecurityWeaknessDetailView: View {
