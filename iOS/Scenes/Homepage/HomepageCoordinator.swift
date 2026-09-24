@@ -947,14 +947,31 @@ extension HomepageCoordinator {
     }
 
     func presentAcceptRejectInvite(with invite: Invite) {
-        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+        weak var viewController: UIViewController?
 
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(invite.isVault ? .medium : .custom(270),
-                                     parentViewController: rootViewController)
+        let view = AcceptRejectInviteView(invite: invite) { [weak self] result in
+            viewController?.dismiss(animated: true) { [weak self] in
+                guard let self else { return }
+                switch result {
+                case let .success(itemContent):
+                    if let itemContent {
+                        router.present(for: .itemDetail(itemContent))
+                    }
+                    refresh()
 
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
+                case let .failure(error):
+                    router.display(element: .displayErrorBanner(error))
+                }
+            }
+        }
+
+        let hostingController = UIHostingController(rootView: view)
+        viewController = hostingController
+        hostingController.setDetentType(invite.isVault ? .medium : .custom(270),
+                                        parentViewController: rootViewController)
+
+        hostingController.sheetPresentationController?.prefersGrabberVisible = true
+        present(hostingController)
     }
 
     func presentLogsView(for module: PassModule) {
