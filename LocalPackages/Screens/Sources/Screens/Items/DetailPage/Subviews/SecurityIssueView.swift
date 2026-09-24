@@ -111,7 +111,7 @@ private struct SecurityIssueHeader: View {
 
     private var title: some View {
         HStack {
-            Text("Pass Monitor")
+            Text("Pass Monitor", bundle: .module)
                 .fontWeight(.semibold)
                 .foregroundStyle(PassColor.textNorm)
             Spacer()
@@ -133,7 +133,7 @@ private struct SecurityIssueSummary: View {
 
             return result
                 + separator
-                + Text(issue.shortTitle)
+                + Text(verbatim: issue.shortTitle)
                 .foregroundStyle(issue.color)
         }
         .font(.subheadline)
@@ -170,24 +170,24 @@ private struct SecurityWeaknessRow: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(alignment: .top, spacing: 8) {
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                        Text(weakness.title)
+                        Text(verbatim: weakness.title)
                             .font(.subheadline).fontWeight(.bold)
                             .foregroundStyle(weakness.color)
                         if isReusedPassword {
                             if case let .fetched(items) = reusedItems {
-                                Text("\(items.count) other logins use this password")
+                                Text("\(items.count) other logins use this password", bundle: .module)
                                     .font(.subheadline)
                                     .foregroundStyle(PassColor.textNorm)
                             }
                         } else if let infos = weakness.infos {
-                            Text(infos).font(.subheadline)
+                            Text(verbatim: infos).font(.subheadline)
                                 .foregroundStyle(PassColor.textNorm)
                         }
                     }
 
                     Spacer()
                     CapsuleTextButton(title: weakness.isExcluded
-                        ? #localized("Restore alert") : #localized("Ignore"),
+                        ? #localized("Restore alert", bundle: .module) : #localized("Ignore", bundle: .module),
                         titleColor: PassColor.interactionNormMajor2,
                         font: .subheadline,
                         backgroundColor: PassColor.loginInteractionNormMinor2,
@@ -230,7 +230,7 @@ private struct ReusedPasswordSection: View {
 
         case let .fetched(reusedItems):
             if reusedItems.count > 5 {
-                CapsuleTextButton(title: #localized("See all"),
+                CapsuleTextButton(title: #localized("See all", bundle: .module),
                                   titleColor: PassColor.loginInteractionNormMajor2,
                                   backgroundColor: PassColor.loginInteractionNormMinor2,
                                   action: onShowReusedItemList)
@@ -265,7 +265,7 @@ private struct ReusedItemsPassListView: View {
                             ItemSquircleThumbnail(data: item.thumbnailData(),
                                                   size: .small,
                                                   alternativeBackground: true)
-                            Text(item.title)
+                            Text(verbatim: item.title)
                                 .font(.subheadline)
                                 .lineLimit(1)
                                 .foregroundStyle(PassColor.textNorm)
