@@ -91,7 +91,7 @@ private extension VaultSyncProgressView {
 private extension VaultSyncProgressView {
     func detail(vaultContent: VaultContent, itemsState: VaultSyncProgress.ItemsState) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(vaultContent.name)
+            Text(verbatim: vaultContent.name)
                 .font(.headline)
                 .foregroundStyle(PassColor.textNorm)
 
@@ -137,7 +137,7 @@ private extension VaultSyncProgressView {
     func spinnerLabel(text: String) -> some View {
         HStack(spacing: 8) {
             ProgressView()
-            Text(text)
+            Text(verbatim: text)
         }
         .foregroundStyle(PassColor.textWeak)
     }
