@@ -368,7 +368,8 @@ private extension CreateEditAliasView {
 
     var advancedOptionsTipBanner: some View {
         TipBanner(configuration: .init(arrowMode: .topRight(padding: 0),
-                                       description: "Tap the gear icon to customize the alias the way you want."),
+                                       // swiftlint:disable:next line_length
+                                       description: #localized("Tap the gear icon to customize the alias the way you want.")),
                   onDismiss: viewModel.dismissAdvancedOptionsTipBanner)
     }
 

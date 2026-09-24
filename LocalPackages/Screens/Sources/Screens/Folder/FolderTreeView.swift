@@ -134,7 +134,7 @@ private extension FolderTreeView {
                         }
                     }
 
-                    Text(folder.content.name)
+                    Text(verbatim: folder.content.name)
                         .lineLimit(1)
                         .foregroundStyle(PassColor.textNorm)
                         .frame(maxWidth: .infinity, alignment: .topLeading)

@@ -55,7 +55,7 @@ public struct SelectedSyncVaultRow: View {
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)
 
-                Text(vault?.vaultContent?.name ?? #localized("None", bundle: .module))
+                Text(verbatim: vault?.vaultContent?.name ?? #localized("None", bundle: .module))
                     .if(vault?.vaultContent?.name == nil) { view in
                         view
                             .italic()

@@ -27,13 +27,13 @@ extension Theme: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .light:
-            #localized("Light")
+            #localized("Light", bundle: .module)
 
         case .dark:
-            #localized("Dark")
+            #localized("Dark", bundle: .module)
 
         case .matchSystem:
-            #localized("Match system")
+            #localized("Match system", bundle: .module)
         }
     }
 

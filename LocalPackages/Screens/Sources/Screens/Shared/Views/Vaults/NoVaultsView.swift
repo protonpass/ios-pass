@@ -38,7 +38,7 @@ public struct NoVaultsView: View {
                 .scaledToFit()
                 .frame(maxWidth: 124)
 
-            Text("You don't have any vaults.")
+            Text("You don't have any vaults.", bundle: .module)
                 .font(.title3.bold())
                 .foregroundStyle(PassColor.textNorm)
 

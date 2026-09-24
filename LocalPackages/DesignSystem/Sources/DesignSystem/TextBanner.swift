@@ -22,12 +22,12 @@
 import SwiftUI
 
 public struct TextBanner: View {
-    let text: LocalizedStringKey
+    let text: String
     let foregroundColor: Color
     let backgroundColor: Color
     let cornerRadius: CGFloat
 
-    public init(_ text: LocalizedStringKey,
+    public init(_ text: String,
                 foregroundColor: Color = PassColor.textNorm,
                 backgroundColor: Color = PassColor.interactionNormMinor1,
                 cornerRadius: CGFloat = 16) {
@@ -38,7 +38,7 @@ public struct TextBanner: View {
     }
 
     public var body: some View {
-        Text(text)
+        Text(verbatim: text)
             .padding()
             .foregroundStyle(foregroundColor)
             .background(backgroundColor)

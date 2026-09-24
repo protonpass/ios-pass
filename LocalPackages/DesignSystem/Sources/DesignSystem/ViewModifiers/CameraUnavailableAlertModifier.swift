@@ -28,12 +28,13 @@ struct CameraUnavailableAlertModifier: ViewModifier {
             .alert("Camera Unavailable",
                    isPresented: $isPresented,
                    actions: {
-                       Button(role: nil, label: { Text("OK") })
-                       Button(role: nil, action: openAppSettings, label: { Text("Settings") })
+                       Button(role: nil, label: { Text("OK", bundle: .module) })
+                       Button(role: nil, action: openAppSettings, label: { Text("Settings", bundle: .module) })
                    },
                    message: {
                        // swiftlint:disable:next line_length
-                       Text("Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings.")
+                       Text("Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings.",
+                            bundle: .module)
                    })
     }
 
