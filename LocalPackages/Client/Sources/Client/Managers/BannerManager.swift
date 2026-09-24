@@ -134,7 +134,8 @@ private extension BannerManager {
             case let .vault(reason):
                 if case .noEditableVault = reason {
                     // swiftlint:disable:next line_length
-                    return #localized("You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support.")
+                    return #localized("You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support.",
+                                      bundle: .module)
                 }
 
             default:

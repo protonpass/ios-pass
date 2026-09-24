@@ -29,14 +29,15 @@ struct OnboardingFirstLoginCreatedStep: View {
         VStack(alignment: .center, spacing: 0) {
             Spacer()
             sparkledLogin
-            Text("First login created")
+            Text("First login created", bundle: .module)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 50)
                 .padding(.bottom, DesignConstant.sectionPadding)
             // swiftlint:disable:next line_length
-            Text("You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more.")
+            Text("You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more.",
+                 bundle: .module)
                 .font(.title3)
                 .foregroundStyle(PassColor.textWeak)
             Spacer()
@@ -64,10 +65,10 @@ private extension OnboardingFirstLoginCreatedStep {
         HStack {
             KnownServiceThumbnail(service: payload.service, height: 40)
             VStack(alignment: .leading) {
-                Text(payload.title)
+                Text(verbatim: payload.title)
                     .foregroundStyle(PassColor.textNorm)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(payload.emailOrUsername)
+                Text(verbatim: payload.emailOrUsername)
                     .foregroundStyle(PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

@@ -192,7 +192,7 @@ private struct GeneratedPasswordRow: View {
                             .foregroundStyle(PassColor.textNorm)
 
                     case let .unmasked(clearPassword):
-                        Text(clearPassword.coloredPassword())
+                        Text(clearPassword.coloredPassword()) // ignore:missing_bundle
                             .foregroundStyle(PassColor.textNorm)
 
                     case .failedToUnmask:
