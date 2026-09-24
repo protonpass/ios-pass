@@ -76,7 +76,8 @@ final class AcceptRejectInviteViewModel {
 
             do {
                 executingAction = true
-                try await rejectInvitation(invite)
+                let userId = try await userManager.getActiveUserId()
+                try await rejectInvitation(userId: userId, invite: invite)
                 onResult(.success(nil))
             } catch {
                 logger.error(message: "Could not reject invitation \(invite)", error: error)
@@ -96,7 +97,9 @@ final class AcceptRejectInviteViewModel {
 
             do {
                 executingAction = true
-                let itemToBeOpened = try await acceptInvitation(invite)
+                let userData = try await userManager.getUnwrappedActiveUserData()
+                let itemToBeOpened = try await acceptInvitation(userData: userData,
+                                                                invite: invite)
                 syncEventLoop.forceSync()
                 onResult(.success(itemToBeOpened))
             } catch {
