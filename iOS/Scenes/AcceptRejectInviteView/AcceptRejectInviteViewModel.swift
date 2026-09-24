@@ -41,14 +41,8 @@ final class AcceptRejectInviteViewModel {
     private let decodeShareVaultInformation = dependency(\UseCasesContainer.decodeShareVaultInformation)
     private let logger = dependency(\ToolingContainer.logger)
     private let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
-
-    @ObservationIgnored
-    @LazyInjected(\ServiceContainer.userManager) private var userManager
-
-    @ObservationIgnored
-    @LazyInjected(\RepositoryContainer.groupRepository) private var groupRepository
-
-    @ObservationIgnored
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let groupRepository = dependency(\RepositoryContainer.groupRepository)
     private let onResult: (AcceptRejectInviteResult) -> Void
 
     init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {
