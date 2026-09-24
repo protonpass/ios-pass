@@ -89,7 +89,7 @@ public struct UserAccountSelectionMenu: View {
 
 private extension UserAccountSelectionMenu {
     func label(text: String) -> some View {
-        Label(title: { Text(text).lineLimit(1) },
+        Label(title: { Text(verbatim: text).lineLimit(1) },
               icon: { Image(systemName: "chevron.up.chevron.down") })
             .foregroundStyle(PassColor.interactionNormMajor2)
             .labelStyle(.rightIcon)

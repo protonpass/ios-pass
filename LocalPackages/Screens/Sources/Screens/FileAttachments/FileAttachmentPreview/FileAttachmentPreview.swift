@@ -21,6 +21,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 import WebKit
@@ -133,10 +134,10 @@ private extension FileAttachmentPreview {
         ToolbarItem(placement: .topBarTrailing) {
             if case let .fetched(url) = viewModel.url {
                 Menu(content: {
-                    LabelButton(title: "Save",
+                    LabelButton(title: #localized("Save", bundle: .module),
                                 icon: IconProvider.arrowDownCircle,
                                 action: { viewModel.urlToSave = url })
-                    LabelButton(title: "Share",
+                    LabelButton(title: #localized("Share", bundle: .module),
                                 icon: IconProvider.arrowUpFromSquare,
                                 action: { viewModel.urlToShare = url })
                 }, label: {

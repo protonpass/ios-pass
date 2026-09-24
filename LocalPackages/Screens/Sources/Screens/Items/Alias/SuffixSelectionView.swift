@@ -44,7 +44,7 @@ struct SuffixSelectionView: View {
                     LazyVStack(spacing: 0) {
                         ForEach(selection.suffixes, id: \.suffix) { suffix in
                             HStack {
-                                Text(suffix.suffix)
+                                Text(verbatim: suffix.suffix)
                                     .foregroundStyle(isSelected(suffix) ?
                                         tintColor : PassColor.textNorm)
                                 Spacer()
@@ -81,7 +81,7 @@ struct SuffixSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Suffix")
+                    Text("Suffix", bundle: .module)
                         .navigationTitleText()
                 }
             }
@@ -102,7 +102,7 @@ private extension SuffixSelectionView {
                   onDismiss: onDismissTip)
     }
 
-    var tipDescription: LocalizedStringKey {
-        "By adding your domain, you can create aliases like hi@my-domain.com."
+    var tipDescription: String {
+        #localized("By adding your domain, you can create aliases like hi@my-domain.com.", bundle: .module)
     }
 }

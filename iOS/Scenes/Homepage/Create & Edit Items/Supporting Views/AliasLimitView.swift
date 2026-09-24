@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import SwiftUI
 
 struct AliasLimitView: View {
@@ -26,7 +27,7 @@ struct AliasLimitView: View {
 
     var body: some View {
         // swiftlint:disable:next line_length
-        TextBanner("You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription.",
+        TextBanner(#localized("You have reached the limit of aliases you can create. Create unlimited number of aliases when you upgrade your subscription."),
                    backgroundColor: backgroundColor)
     }
 }

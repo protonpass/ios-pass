@@ -1,7 +1,7 @@
 //
-// Label+Extensions.swift
-// Proton Pass - Created on 24/05/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// VaultContent+Extensions.swift
+// Proton Pass - Created on 24/09/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,18 +17,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import SwiftUI
+import Entities
+import Macro
 
-public extension Label where Title == Text, Icon == Image {
-    init(_ titleKey: LocalizedStringKey, uiImage: UIImage) {
-        self.init(title: { Text(titleKey) },
-                  icon: { Image(uiImage: uiImage) })
-    }
-
-    init(_ titleKey: LocalizedStringKey, image: Image) {
-        self.init(title: { Text(titleKey) },
-                  icon: { image })
+public extension VaultContent {
+    static var defaultVault: VaultContent {
+        let name = #localized("Personal", bundle: .module)
+        return VaultContent(name: name, description: name, color: .color1, icon: .icon1)
     }
 }

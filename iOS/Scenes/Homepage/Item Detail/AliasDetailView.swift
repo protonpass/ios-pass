@@ -325,8 +325,8 @@ struct AliasDetailView: View {
                   onDismiss: viewModel.dismissContactsTip)
     }
 
-    private var contactTipDescription: LocalizedStringKey {
-        "Every time your alias receives an email from someone, a new contact is automatically created."
+    private var contactTipDescription: String {
+        #localized("Every time your alias receives an email from someone, a new contact is automatically created.")
     }
 
     @ViewBuilder

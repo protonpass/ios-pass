@@ -92,7 +92,7 @@ public struct StorageCounter: View {
         let formattedTotal = formatter.string(fromByteCount: Int64(total))
 
         percentage = floatPercentage > 99.9 ? 100 : Int(floatPercentage)
-        detail = #localized("%1$@ of %2$@", formattedUsed, formattedTotal)
+        detail = #localized("%1$@ of %2$@", bundle: .module, formattedUsed, formattedTotal)
         level = switch percentage {
         case 0...74:
             .low

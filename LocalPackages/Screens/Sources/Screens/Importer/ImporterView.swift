@@ -64,7 +64,7 @@ public struct ImporterView: View {
                actions: { Button("OK", action: onClose) },
                message: {
                    if let message = viewModel.importSuccessMessage {
-                       Text(message)
+                       Text(verbatim: message)
                    }
                })
         .alert(Text("Error occurred", bundle: .module),
@@ -73,7 +73,7 @@ public struct ImporterView: View {
                                  label: { Text("OK", bundle: .module) }) },
                message: {
                    if let error = viewModel.error {
-                       Text(error.localizedDebugDescription)
+                       Text(verbatim: error.localizedDebugDescription)
                    }
                })
     }
@@ -126,10 +126,10 @@ private struct LoginRow: View {
                               height: 40)
 
             VStack(alignment: .leading) {
-                Text(login.name)
+                Text(verbatim: login.name)
                     .lineLimit(2)
                     .foregroundStyle(PassColor.textNorm)
-                Text(login.emailOrUsername)
+                Text(verbatim: login.emailOrUsername)
                     .lineLimit(2)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)

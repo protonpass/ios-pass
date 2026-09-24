@@ -34,7 +34,7 @@ struct FileAttachmentViewerSection: View {
 
     var body: some View {
         Section(content: {
-            StaticToggle(.verbatim("Dismissed file attachments banner"),
+            StaticToggle("Dismissed file attachments banner",
                          isOn: dismissedFileAttachmentsBanner,
                          action: {
                              Task {

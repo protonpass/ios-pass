@@ -25,16 +25,16 @@ import SwiftUI
 public struct SshKeyDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let value: String
-    let title: LocalizedStringKey
+    let title: String
 
-    public init(value: String, title: LocalizedStringKey) {
+    public init(value: String, title: String) {
         self.value = value
         self.title = title
     }
 
     public var body: some View {
         ScrollView {
-            Text(value)
+            Text(verbatim: value)
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .monospaced()
@@ -52,7 +52,7 @@ public struct SshKeyDetailView: View {
             }
 
             ToolbarItem(placement: .principal) {
-                Text(title)
+                Text(verbatim: title)
                     .navigationTitleText()
             }
         }

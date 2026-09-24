@@ -22,6 +22,7 @@ import Client
 import Core
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import Stores
@@ -103,7 +104,7 @@ struct ItemsTabView: View {
                     Button(action: { viewModel.openAppOnAppStore() },
                            label: {
                                // swiftlint:disable:next line_length
-                               TextBanner("Your current version of the app is no longer supported. Please update to the latest version.")
+                               TextBanner(#localized("Your current version of the app is no longer supported. Please update to the latest version."))
                                    .padding()
                            })
                 }

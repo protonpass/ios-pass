@@ -80,7 +80,7 @@ public struct FileAttachmentsEditSection: View {
                 ItemDetailSectionIcon(icon: IconProvider.paperClip)
 
                 VStack(alignment: .leading) {
-                    Text("Attachments")
+                    Text("Attachments", bundle: .module)
                         .foregroundStyle(PassColor.textNorm)
 
                     if let fetchError {
@@ -91,7 +91,7 @@ public struct FileAttachmentsEditSection: View {
                     }
 
                     if !files.isEmpty {
-                        Text("\(files.count) files")
+                        Text("\(files.count) files", bundle: .module)
                             .font(.callout)
                             .foregroundStyle(PassColor.textWeak)
                     } else if !isUploading, fetchError == nil {

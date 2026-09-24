@@ -24,7 +24,6 @@ import Core
 @preconcurrency import CryptoKit
 import Entities
 import Foundation
-import Macro
 import ProtonCoreLogin
 import SwiftUI
 import UseCases
@@ -673,11 +672,7 @@ private extension AppContentManager {
 
     func createDefaultVault() async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultContent(name: #localized("Personal"),
-                                 description: #localized("Personal"),
-                                 color: .color1,
-                                 icon: .icon1)
-        try await shareRepository.createVault(userId: nil, vault: vault)
+        try await shareRepository.createVault(userId: nil, vault: .defaultVault)
         logger.info("Created default vault for user")
     }
 

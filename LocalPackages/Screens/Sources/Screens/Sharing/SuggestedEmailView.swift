@@ -46,7 +46,7 @@ public struct SuggestedEmailView: View {
 
             Spacer()
 
-            Text(name)
+            Text(verbatim: name)
                 .foregroundStyle(PassColor.textNorm)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

@@ -42,7 +42,7 @@ struct MailboxSelectionView: View {
                         ForEach(mailboxSelection.allUserMailboxes) { mailbox in
                             let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
                             HStack {
-                                Text(mailbox.email)
+                                Text(verbatim: mailbox.email)
                                     .foregroundStyle(isSelected ? tint : PassColor.textNorm)
                                 Spacer()
 
@@ -77,7 +77,7 @@ struct MailboxSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(title)
+                    Text(verbatim: title)
                         .navigationTitleText()
                 }
             }
@@ -94,7 +94,7 @@ private extension MailboxSelectionView {
                   onDismiss: onDismissTip)
     }
 
-    var tipDescription: LocalizedStringKey {
-        "Share aliases with others by adding their inbox as an additional mailbox."
+    var tipDescription: String {
+        #localized("Share aliases with others by adding their inbox as an additional mailbox.", bundle: .module)
     }
 }
