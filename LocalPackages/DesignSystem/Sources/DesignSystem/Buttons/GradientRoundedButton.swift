@@ -22,13 +22,13 @@
 import SwiftUI
 
 public struct GradientRoundedButton: View {
-    let title: LocalizedStringKey
+    let title: String
     let titleColor: Color
     let leadingBackgroundColor: Color
     let endingBackgroundColor: Color
     let action: () -> Void
 
-    public init(title: LocalizedStringKey,
+    public init(title: String,
                 titleColor: Color = .white,
                 leadingBackgroundColor: Color,
                 endingBackgroundColor: Color,
@@ -42,7 +42,7 @@ public struct GradientRoundedButton: View {
 
     public var body: some View {
         Button(action: action) {
-            Text(title)
+            Text(verbatim: title)
                 .foregroundStyle(titleColor)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(12)

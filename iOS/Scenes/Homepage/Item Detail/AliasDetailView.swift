@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -196,6 +195,7 @@ struct AliasDetailView: View {
                 }
             }
             .frame(width: 42)
+            .padding(.trailing, DesignConstant.sectionPadding)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.togglingAliasStatus)
@@ -325,8 +325,8 @@ struct AliasDetailView: View {
                   onDismiss: viewModel.dismissContactsTip)
     }
 
-    private var contactTipDescription: LocalizedStringKey {
-        "Every time your alias receives an email from someone, a new contact is automatically created."
+    private var contactTipDescription: String {
+        #localized("Every time your alias receives an email from someone, a new contact is automatically created.")
     }
 
     @ViewBuilder

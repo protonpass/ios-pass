@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import FactoryKit
+import Screens
 import UserNotifications
 
 @MainActor
@@ -27,15 +29,15 @@ final class ExtensionSettingsViewModel: ObservableObject {
     @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplication = false
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let notificationService = dependency(\ServiceContainer.notificationService)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let indexAllLoginItems = dependency(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = dependency(\UseCasesContainer.unindexAllLoginItems)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
 
     init() {
         let preferences = getSharedPreferences()
@@ -97,8 +99,12 @@ private extension ExtensionSettingsViewModel {
         logger.info("Reindexed credentials")
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

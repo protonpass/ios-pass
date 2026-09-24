@@ -22,86 +22,46 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-@MainActor
-final class TOTPCircularTimerViewModel: ObservableObject {
-    @Published private(set) var remainingSeconds = 1.0
-    @Published private(set) var percentage = 1.0
-    private var timerTask: Task<Void, Never>?
-    private(set) var data: TOTPTimerData
-
-    init(data: TOTPTimerData) {
-        self.data = data
-        percentage = CGFloat(data.remaining) / CGFloat(data.total)
-        remainingSeconds = Double(self.data.remaining)
-
-        startTimer()
-    }
-
-    deinit {
-        timerTask?.cancel()
-        timerTask = nil
-    }
-
-    func startTimer() {
-        timerTask?.cancel()
-        timerTask = nil
-
-        // Create a new timer
-        timerTask = Task { @MainActor [weak self] in
-            guard let self else { return }
-            while !Task.isCancelled {
-                try? await Task.sleep(seconds: 1)
-
-                guard !Task.isCancelled else { return }
-                remainingSeconds -= 1
-                percentage = remainingSeconds / Double(data.total)
-            }
-        }
-    }
-
-    func stopTimer() {
-        timerTask?.cancel()
-        timerTask = nil
-    }
-}
-
 public struct TOTPCircularTimer: View {
-    @ObservedObject var viewModel: TOTPCircularTimerViewModel
+    private let total: Double
 
     public init(data: TOTPTimerData) {
-        _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data))
+        total = Double(max(data.total, 1))
     }
 
     public var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            let elapsed = context.date.timeIntervalSince1970.truncatingRemainder(dividingBy: total)
+            TOTPCircularTimerContent(remainingSeconds: total - elapsed, total: total)
+        }
+    }
+}
+
+private struct TOTPCircularTimerContent: View {
+    let remainingSeconds: Double
+    let total: Double
+
+    var body: some View {
         ZStack {
             Circle()
                 .stroke(PassColor.textHint, style: StrokeStyle(lineWidth: 3))
 
             Circle()
-                .trim(from: 0, to: viewModel.percentage)
+                .trim(from: 0, to: remainingSeconds / total)
                 .stroke(color, style: StrokeStyle(lineWidth: 3))
                 .rotationEffect(.degrees(-90))
-                .animation(.default, value: viewModel.percentage)
+                .animation(.default, value: remainingSeconds)
 
-            Text(verbatim: "\(Int(viewModel.remainingSeconds))")
+            Text(verbatim: "\(Int(remainingSeconds))")
                 .font(.caption)
                 .fontWeight(.light)
                 .foregroundStyle(PassColor.textWeak)
                 .animationsDisabled()
         }
         .frame(width: 32, height: 32)
-        .onDisappear {
-            viewModel.stopTimer()
-        }
     }
 
     private var color: Color {
-        switch viewModel.remainingSeconds {
-        case 0...10:
-            PassColor.signalDanger
-
-        default:
-            PassColor.signalSuccess
-        }
+        remainingSeconds <= 10 ? PassColor.signalDanger : PassColor.signalSuccess
     }
 }

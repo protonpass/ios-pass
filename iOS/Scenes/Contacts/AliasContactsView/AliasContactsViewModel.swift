@@ -23,6 +23,7 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -94,12 +95,12 @@ final class AliasContactsViewModel: ObservableObject {
 
     @Published private(set) var plan: Plan?
 
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\ToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -281,8 +282,12 @@ private extension AliasContactsViewModel {
         }
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

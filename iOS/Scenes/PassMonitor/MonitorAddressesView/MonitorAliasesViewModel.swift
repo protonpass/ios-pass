@@ -19,10 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 @MainActor
 final class MonitorAliasesViewModel: ObservableObject {
@@ -30,14 +32,14 @@ final class MonitorAliasesViewModel: ObservableObject {
     @Published private(set) var access: Access?
     @Published private(set) var dismissedCustomDomainExplanation = false
 
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)
+    private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
+    private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -139,8 +141,12 @@ private extension MonitorAliasesViewModel {
             .store(in: &cancellables)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

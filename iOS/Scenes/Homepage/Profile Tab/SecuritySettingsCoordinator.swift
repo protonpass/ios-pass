@@ -20,20 +20,22 @@
 
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
 import Macro
+import Screens
 
 @MainActor
 final class SecuritySettingsCoordinator {
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-    private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let authenticate = dependency(\UseCasesContainer.authenticateBiometrically)
+    private let enablingPolicy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
 
     weak var delegate: (any ChildCoordinatorDelegate)?
 
@@ -62,7 +64,7 @@ extension SecuritySettingsCoordinator {
         let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
                                                   supportedMethods: supportedMethods,
                                                   onSelect: { update($0.method) })
-        let height = OptionRowHeight.compact.value * CGFloat(supportedMethods.count) + 60
+        let height = OptionRowHeight.compact.value * CGFloat(supportedMethods.count) + 80
 
         delegate?.childCoordinatorWantsToPresent(view: view,
                                                  viewOption: .customSheetWithGrabber(CGFloat(height)),
@@ -191,8 +193,12 @@ private extension SecuritySettingsCoordinator {
                                                  presentationOption: .dismissTopViewController)
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

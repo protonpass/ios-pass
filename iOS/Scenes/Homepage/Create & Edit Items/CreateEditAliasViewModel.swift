@@ -21,9 +21,11 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreLogin
+import Screens
 import SwiftUI
 
 extension Notification.Name {
@@ -81,14 +83,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     private(set) var alias: Alias?
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
-    @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\RepositoryContainer.localItemDatasource) private var localItemDatasource
+    @LazyInjected(\UseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.updateSharedPreferences) private var updateSharedPreferences
 
-    let module = resolve(\SharedToolingContainer.module)
+    let module = dependency(\ToolingContainer.module)
 
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false

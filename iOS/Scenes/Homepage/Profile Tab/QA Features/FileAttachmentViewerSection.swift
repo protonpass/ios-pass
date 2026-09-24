@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
+import DIComposition
 import FactoryKit
 import Screens
 import SwiftUI
@@ -28,11 +30,11 @@ struct FileAttachmentViewerSection: View {
     @State private var url: URL?
     @State private var dismissedFileAttachmentsBanner = false
 
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     var body: some View {
         Section(content: {
-            StaticToggle(.verbatim("Dismissed file attachments banner"),
+            StaticToggle("Dismissed file attachments banner",
                          isOn: dismissedFileAttachmentsBanner,
                          action: {
                              Task {

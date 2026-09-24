@@ -21,50 +21,11 @@
 import DesignSystem
 import Entities
 import Macro
+import Screens
 import SwiftUI
 
-extension PasswordStrength {
-    var title: String {
-        switch self {
-        case .vulnerable:
-            #localized("Vulnerable")
-
-        case .weak:
-            #localized("Weak")
-
-        case .strong:
-            #localized("Strong")
-        }
-    }
-
-    var iconName: String {
-        switch self {
-        case .vulnerable:
-            "xmark.shield.fill"
-
-        case .weak:
-            "exclamationmark.shield.fill"
-
-        case .strong:
-            "checkmark.shield.fill"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .vulnerable:
-            PassColor.signalDanger
-
-        case .weak:
-            PassColor.signalWarning
-
-        case .strong:
-            PassColor.signalSuccess
-        }
-    }
-}
-
 extension PasswordStrength? {
+    @MainActor
     func sectionTitle(reuseCount: Int?) -> String {
         if let self {
             if let reuseCount {
@@ -77,6 +38,7 @@ extension PasswordStrength? {
         }
     }
 
+    @MainActor
     var sectionTitleColor: Color {
         // swiftlint:disable:next discouraged_optional_self
         self?.color ?? PassColor.textWeak

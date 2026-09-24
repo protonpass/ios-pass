@@ -94,6 +94,13 @@ public enum Constants {
         public static let maxFolderDepth = 5
     }
 
+    public enum Report {
+        public static let minCharCount = 10
+        public static let maxCharCount = 4_000
+        public static let maxFileSizeInMb = 70
+        public static let maxFileCount = 10
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"

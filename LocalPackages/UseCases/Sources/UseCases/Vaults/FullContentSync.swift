@@ -29,11 +29,15 @@ public protocol FullContentSyncUseCase: Sendable {
     /// However, user events system could also trigger a force full refresh,
     /// this is the only case where we shouldn't stop the event loop because user events happen inside
     /// event loop, so if we stop the loop, the full sync will be cancelled.
-    func execute(userId: String, shouldStopEventLoop: Bool) async
+    /// - Returns: whether the sync completed. Failures are reported on
+    /// `vaultSyncEventStream`, not thrown, so callers that announce the outcome must check this.
+    @discardableResult
+    func execute(userId: String, shouldStopEventLoop: Bool) async -> Bool
 }
 
 public extension FullContentSyncUseCase {
-    func callAsFunction(userId: String, shouldStopEventLoop: Bool) async {
+    @discardableResult
+    func callAsFunction(userId: String, shouldStopEventLoop: Bool) async -> Bool {
         await execute(userId: userId, shouldStopEventLoop: shouldStopEventLoop)
     }
 }
@@ -48,13 +52,14 @@ public final class FullContentSync: FullContentSyncUseCase {
         self.appContentManager = appContentManager
     }
 
-    public func execute(userId: String, shouldStopEventLoop: Bool) async {
+    public func execute(userId: String, shouldStopEventLoop: Bool) async -> Bool {
         if shouldStopEventLoop {
             syncEventLoop.stop()
         }
-        await appContentManager.fullSync(userId: userId)
+        let succeeded = await appContentManager.fullSync(userId: userId)
         if shouldStopEventLoop {
             syncEventLoop.start()
         }
+        return succeeded
     }
 }

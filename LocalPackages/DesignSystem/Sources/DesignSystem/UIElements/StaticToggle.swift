@@ -21,18 +21,13 @@
 import SwiftUI
 
 public struct StaticToggle: View {
-    private let title: Title?
+    private let title: String?
     private let isOn: Bool
     private let titleColor: Color
     private let tintColor: Color
     private let action: (() -> Void)?
 
-    public enum Title {
-        case localized(LocalizedStringKey)
-        case verbatim(String)
-    }
-
-    public init(_ title: Title? = nil,
+    public init(_ title: String? = nil,
                 isOn: Bool,
                 titleColor: Color = PassColor.textNorm,
                 tintColor: Color = PassColor.interactionNorm,
@@ -47,15 +42,8 @@ public struct StaticToggle: View {
     public var body: some View {
         Toggle(isOn: .constant(isOn), label: {
             if let title {
-                switch title {
-                case let .localized(localizedStringKey):
-                    Text(localizedStringKey)
-                        .foregroundStyle(titleColor)
-
-                case let .verbatim(string):
-                    Text(verbatim: string)
-                        .foregroundStyle(titleColor)
-                }
+                Text(verbatim: title)
+                    .foregroundStyle(titleColor)
             }
         })
         .tint(tintColor)

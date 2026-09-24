@@ -20,9 +20,9 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 // swiftlint:disable enum_case_associated_values_count function_parameter_count
@@ -404,6 +404,7 @@ struct ItemContextMenuOption: Identifiable {
         .init(title: "Edit", icon: IconProvider.pencil, action: action)
     }
 
+    @MainActor
     static func pinToggleOption(item: any PinnableItemTypeIdentifiable,
                                 action: @escaping () -> Void) -> ItemContextMenuOption {
         .init(title: item.pinTitle, icon: item.pinIcon, action: action)

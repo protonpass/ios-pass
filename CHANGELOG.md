@@ -1,10 +1,31 @@
-# Version 1.20.0
-- Introduced Liquid Glass, bringing a more refined and modern visual experience
+# Version 1.21.1
+- Fixed the invitation sheet staying stuck after accepting an invite
+
+# Version 1.21.0
 - Added support for folders (behind feature flag)
+- Show penalties for password strength criteria
+- Improved the bug reporting experience with better file and input validation
 
 Others:
-- Core libraries upgraded from 36.0.3 to 37.2.0
+- Core libraries upgraded from 37.5.3 to 37.6.1
+- Bump Sentry from 9.26 to 9.29
+- Bump Factory from 3.3.2 to 3.4
+- Rust library upgraded from 1.6.1 to 2.0.0
+- Remove "PassHideShowVault" and "PassGroupInvitesV1" flags
+
+# Version 1.20.1
+Resolved SSO login issue (core libraries upgraded from 37.4.0 to 37.5.3)
+
+# Version 1.20.0
+- Introduced Liquid Glass, bringing a more refined and modern visual experience
+- Added support for username generator
+- Added support for folders (behind feature flag)
+- Search is now diacritic-insensitive
+
+Others:
+- Core libraries upgraded from 36.0.3 to 37.4.0
 - Rust library upgraded from 1.1.2 to 1.6.1
+- Surface file upload errors
 
 # Version 1.19.2
 - Added handling for newly added account keys during an active session

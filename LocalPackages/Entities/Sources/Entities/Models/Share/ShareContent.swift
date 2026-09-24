@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 private typealias ContainerId = String
 
-public struct ShareContent: Identifiable, Hashable, Sendable {
+public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
     public let share: Share
     public let itemCount: Int
     public let aliasCount: Int
@@ -32,6 +34,10 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
 
     public var id: String {
         share.id
+    }
+
+    public var isReadOnly: Bool {
+        share.shareRole == .read
     }
 
     public init(share: Share, elements: [ShareContentElement]) {
@@ -48,13 +54,23 @@ public struct ShareContent: Identifiable, Hashable, Sendable {
             switch element {
             case let .item(item):
                 itemCount += 1
-                if item.isAlias { aliasCount += 1 }
-                if item.hasTotpUri { totpCount += 1 }
+                if item.isAlias {
+                    aliasCount += 1
+                }
+                if item.hasTotpUri {
+                    totpCount += 1
+                }
                 itemsByContainer[element.containerId, default: []].append(item)
 
             case let .folder(folder):
                 foldersByContainer[element.containerId, default: []].append(folder)
                 foldersById[folder.folderId] = folder
+            }
+        }
+
+        for containerId in foldersByContainer.keys {
+            foldersByContainer[containerId]?.sort {
+                $0.content.name.localizedStandardCompare($1.content.name) == .orderedAscending
             }
         }
 
@@ -158,6 +174,18 @@ public extension ShareContent {
         return folders
     }
 
+    /// Returns Ids of `folderId` together with every folder beneath it.
+    /// Unlike `flattenedFolders(from:)`, which returns descendants only, this includes `folderId`
+    /// itself — so a caller scoping by container id still matches the folder's own items.
+    ///
+    /// An id absent from the tree yields just itself rather than an empty set. That is safe only
+    /// because the result is used as a membership filter, where an unmatched id is inert, and it
+    /// lets a stale tree narrow a scope instead of emptying it. Do not use this to authorise or
+    /// delete: there, an id resolving to nothing is not a safe default.
+    func subtreeFolderIds(from folderId: String) -> Set<String> {
+        Set(flattenedFolders(from: folderId).map(\.folderId)).union([folderId])
+    }
+
     func items(in containerId: String) -> [ItemUiModel]? {
         itemsByContainer[containerId]
     }
@@ -205,8 +233,10 @@ public extension ShareContent {
 
     /// `true` when a new folder can be added directly under `parentId` (vault id or folder id).
     func canAddFolder(in parentId: String, limits: FolderLimits) -> Bool {
-        guard !isVaultFolderLimitReached(limits: limits) else { return false }
-        guard depth(of: parentId) < limits.maxFolderDepth else { return false }
+        guard !isReadOnly,
+              !isVaultFolderLimitReached(limits: limits),
+              depth(of: parentId) < limits.maxFolderDepth else { return false }
+
         return (foldersByContainer[parentId]?.count ?? 0) < limits.maxFoldersPerLayer
     }
 
@@ -217,7 +247,9 @@ public extension ShareContent {
         var maxBelow = 0
         for child in children {
             let below = subtreeDepth(from: child.folderId)
-            if below > maxBelow { maxBelow = below }
+            if below > maxBelow {
+                maxBelow = below
+            }
         }
         return maxBelow + 1
     }
