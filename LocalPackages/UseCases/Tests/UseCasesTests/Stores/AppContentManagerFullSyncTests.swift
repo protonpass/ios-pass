@@ -44,9 +44,11 @@ struct AppContentManagerFullSyncTests {
     private let symmetricKeyProvider = GatedSymmetricKeyProvider()
     private let syncEventLoop = SyncEventLoopProtocolMock()
     private let activeUser = UserData.random()
+    private let currentActiveUser: CurrentValueSubject<UserData?, Never>
     private let sut: AppContentManager
 
     init() {
+        currentActiveUser = .init(activeUser)
         kSharedUserDefaults.removeObject(forKey: Constants.incompleteFullSyncUserId)
         shareRepository.stubbedGetDecryptedRemoteSharesResult = .init(shares: [], hasUndecryptableShares: false)
         shareRepository.stubbedCreateVaultResult = .random()
@@ -54,7 +56,7 @@ struct AppContentManagerFullSyncTests {
         itemRepository.stubbedGetAllItemsResult = []
         folderRepository.stubbedGetAllLocalFoldersResult = []
         let userManager = UserManagerProtocolMock()
-        userManager.stubbedCurrentActiveUser = .init(activeUser)
+        userManager.stubbedCurrentActiveUser = currentActiveUser
         let featureFlags = GetFeatureFlagStatusUseCaseMock()
         featureFlags.stubbedExecuteResult = false
         let logManager = LogManagerProtocolMock()
@@ -78,6 +80,7 @@ struct AppContentManagerFullSyncTests {
                                 getFeatureFlagStatus: featureFlags,
                                 dedupShare: SyncWorkStub(),
                                 refreshUserData: refresh,
+                                processVaultSyncEvent: ProcessVaultSyncEvent(),
                                 logger: Logger(manager: logManager),
                                 loginMethod: LoginMethodFlow(),
                                 fullSyncStallTimeout: .seconds(1))
@@ -242,26 +245,16 @@ struct AppContentManagerFullSyncTests {
     }
 
     @Test
-    func `The event loop restarts only once every queued sync is done`() async {
-        let gateA = refresh.pause("user-a")
-        let gateB = refresh.pause("user-b")
-        refresh.failingUserIds = ["user-a", "user-b"]
+    func `A sync that owns the event loop cancels the running iteration and keeps looping`() async {
+        refresh.failingUserIds = ["user-a"]
         let fullContentSync = FullContentSync(syncEventLoop: syncEventLoop, appContentManager: sut)
 
-        let first = fullContentSync.start(userId: "user-a", presentation: .sheet, shouldStopEventLoop: true)
-        let second = sut.startFullSync(userId: "user-b", presentation: .sheet)
-        await gateA.entered.wait()
+        let operation = fullContentSync.start(userId: "user-a", presentation: .sheet, shouldStopEventLoop: true)
+
+        #expect(sut.isFullSyncing)
         #expect(syncEventLoop.invokedStopCount == 1)
-
-        gateA.release.open()
-        _ = await first.result()
-        await gateB.entered.wait()
-        #expect(syncEventLoop.invokedStartCount == 0)
-
-        gateB.release.open()
-        _ = await second.result()
-        await waitUntil { syncEventLoop.invokedStartCount == 1 }
         #expect(syncEventLoop.invokedStartCount == 1)
+        _ = await operation.result()
     }
 
     @Test
@@ -296,10 +289,33 @@ struct AppContentManagerFullSyncTests {
         #expect(deleteLocalData.deletedUserIds == ["user-a"])
     }
 
-    private func waitUntil(_ condition: () -> Bool) async {
-        for _ in 0..<100 where !condition() {
-            await Task.yield()
+    @Test
+    func `Slow steps are not a stall as long as the sync moves on`() async {
+        refresh.delay = .milliseconds(600)
+        deleteLocalData.delay = .milliseconds(600)
+
+        let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
+
+        guard case .completed = await operation.result() else {
+            Issue.record("Each step is under the stall timeout, the sync must complete")
+            return
         }
+    }
+
+    @Test
+    func `Switching account during the final load still completes the sync`() async {
+        let operation = sut.startFullSync(userId: activeUser.user.ID, presentation: .sheet)
+        await symmetricKeyProvider.entered.wait()
+
+        currentActiveUser.send(UserData.random())
+        symmetricKeyProvider.release.open()
+
+        guard case .completed = await operation.result() else {
+            Issue.record("The switched away account is fully synced and must not be resynced later")
+            return
+        }
+        #expect(sut.state == .loading)
+        #expect(sut.incompleteFullSyncUserId == nil)
     }
 }
 
@@ -311,6 +327,7 @@ private enum FullSyncTestError: Error {
 private final class RefreshUserDataFake: RefreshUserDataUseCase {
     private(set) var calls: [String] = []
     var failingUserIds: Set<String> = []
+    var delay: Duration?
     private var gates: [String: (entered: Gate, release: Gate)] = [:]
 
     func pause(_ userId: String) -> (entered: Gate, release: Gate) {
@@ -325,6 +342,9 @@ private final class RefreshUserDataFake: RefreshUserDataUseCase {
 
     private func refresh(userId: String) async throws {
         calls.append(userId)
+        if let delay {
+            try await Task.sleep(for: delay)
+        }
         if let gate = gates[userId] {
             gate.entered.open()
             await gate.release.wait()
@@ -358,13 +378,17 @@ private final class Gate {
 @MainActor
 private final class DeleteLocalDataSpy: DeleteLocalDataBeforeFullSyncUseCase {
     private(set) var deletedUserIds: [String] = []
+    var delay: Duration?
 
     nonisolated func execute(userId: String) async throws {
-        await record(userId)
+        try await record(userId)
     }
 
-    private func record(_ userId: String) {
+    private func record(_ userId: String) async throws {
         deletedUserIds.append(userId)
+        if let delay {
+            try await Task.sleep(for: delay)
+        }
     }
 }
 

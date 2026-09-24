@@ -100,7 +100,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
-    private let processVaultSyncEvent = ProcessVaultSyncEvent()
+    private let processVaultSyncEvent: any ProcessVaultSyncEventUseCase
     private let fullSyncStallTimeout: Duration
 
     private var cancellables = Set<AnyCancellable>()
@@ -134,9 +134,10 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
+                processVaultSyncEvent: any ProcessVaultSyncEventUseCase,
                 logger: Logger,
                 loginMethod: LoginMethodFlow,
-                fullSyncStallTimeout: Duration = .seconds(120)) {
+                fullSyncStallTimeout: Duration = .seconds(180)) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.inviteRepository = inviteRepository
@@ -152,6 +153,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.getFeatureFlagStatus = getFeatureFlagStatus
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
+        self.processVaultSyncEvent = processVaultSyncEvent
         self.logger = logger
         self.loginMethod = loginMethod
         self.fullSyncStallTimeout = fullSyncStallTimeout
@@ -291,12 +293,6 @@ public extension AppContentManager {
         return operation
     }
 
-    func waitForFullSyncsToFinish() async {
-        while let task = fullSyncTasks.last?.task {
-            await task.value
-        }
-    }
-
     func localFullSync(userId: String) async throws {
         let generation = contentGeneration
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
@@ -330,19 +326,20 @@ private extension AppContentManager {
         var hasUndecryptableShares = false
         do {
             // 0. Refresh user data to handle account changes like added address keys
+            try startStep(operation)
             try await refreshUserData(userId: userId)
 
             // 1. Delete all local data
-            try checkStillRunning(operation)
+            try startStep(operation)
             try await deleteLocalDataBeforeFullSync(userId: userId)
 
             // 2. Get all remote shares and their items
-            try checkStillRunning(operation)
+            try startStep(operation)
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
             events.send(.downloadedShares(remoteShares.shares.representingVaults))
 
-            try checkStillRunning(operation)
+            try startStep(operation)
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 // Step 1: Upsert all shares in a single batch
                 async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
@@ -371,28 +368,29 @@ private extension AppContentManager {
             }
 
             // 3. Create default vault if no vaults
-            try checkStillRunning(operation)
+            try startStep(operation)
             try await createDefaultVaultIfNeeded(userId: userId, shares: remoteShares.shares)
 
             // 4. Refresh invite and sl notes
+            try startStep(operation)
             await refreshInvitesAndAliases(userId: userId)
 
             // The event loop also full syncs inactive accounts, whose content must not replace
             // the active account's content on screen
-            try checkStillRunning(operation)
+            try startStep(operation)
             let isActiveUser = userManager.activeUserId == userId
             if isActiveUser {
                 try await loadContents(userId: userId, for: remoteShares.shares, generation: generation)
             }
 
             // 5. Get the lastEventID as a starting point for user events sync loop
-            try checkStillRunning(operation)
+            try startStep(operation)
             try await getLastEventIdIfNotExist(userId: userId)
 
-            try checkStillRunning(operation)
+            try startStep(operation)
             if isActiveUser {
-                // ponytail: preferences only reach the active user, an inactive account
-                // repeats its folder repair once it becomes active
+                // Preferences are only loaded for the active user, an inactive account repeats
+                // its folder repair once it becomes active
                 await markFolderForceSyncDone()
             }
         } catch {
@@ -411,26 +409,25 @@ private extension AppContentManager {
         return .completed(hasUndecryptableShares: hasUndecryptableShares)
     }
 
-    /// A stalled sync is already reported as failed, so it must stop writing at the next step
-    func checkStillRunning(_ operation: FullSyncOperation) throws {
-        if Task.isCancelled || operation.outcome != nil {
-            throw CancellationError()
-        }
+    func startStep(_ operation: FullSyncOperation) throws {
+        try Task.checkCancellation()
+        operation.recordActivity()
     }
 
-    /// Fails a sync that reported no progress for `fullSyncStallTimeout` so the user gets the retry
-    /// screen instead of an endless spinner.
-    /// ponytail: a retry still queues behind the stalled task, add per-step timeouts if calls can hang forever
+    /// Fails a sync with no activity for `fullSyncStallTimeout` so the user gets the retry screen
+    /// instead of an endless spinner. The outcome is published before cancelling because a call
+    /// that ignores cancellation keeps the task, and any sync queued behind it, alive until it returns.
     func failWhenStalled(_ operation: FullSyncOperation) async {
-        var lastProgressUpdates = operation.progressUpdates
+        var lastActivity = operation.activity
         while await (try? Task.sleep(for: fullSyncStallTimeout)) != nil {
-            guard operation.progressUpdates == lastProgressUpdates else {
-                lastProgressUpdates = operation.progressUpdates
+            guard operation.activity == lastActivity else {
+                lastActivity = operation.activity
                 continue
             }
             let error = URLError(.timedOut)
             logger.error(message: "Full sync \(operation.id) made no progress", error: error)
             operation.finish(.failed(error))
+            fullSyncTasks.first { $0.operation === operation }?.task.cancel()
             return
         }
     }
@@ -796,8 +793,8 @@ private extension AppContentManager {
         logger.info("Created default vault for user")
     }
 
-    /// Throws `CancellationError` instead of publishing when the account is no longer the active one
-    /// or the content was reset since `generation` was read
+    /// Skips publishing when the account is no longer the active one or the content was reset
+    /// since `generation` was read
     @MainActor
     func loadContents(userId: String, for shares: [Share], generation: Int) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
@@ -813,9 +810,7 @@ private extension AppContentManager {
                                                  shares: dedupShares,
                                                  folders: folders,
                                                  items: allItems)
-        guard generation == contentGeneration, userManager.activeUserId == userId else {
-            throw CancellationError()
-        }
+        guard generation == contentGeneration, userManager.activeUserId == userId else { return }
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
         currentShares.send(shares)

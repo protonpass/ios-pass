@@ -52,8 +52,8 @@ public final class FullSyncOperation: Identifiable {
     public private(set) var progresses: [VaultSyncProgress] = []
     /// `nil` while the sync is queued or running
     public private(set) var outcome: Outcome?
-    /// Lets a watchdog tell a slow sync from a stalled one
-    @ObservationIgnored public private(set) var progressUpdates = 0
+    /// Bumped on every progress update and sync step, lets a watchdog tell a slow sync from a stalled one
+    @ObservationIgnored public private(set) var activity = 0
     @ObservationIgnored private var waiters: [CheckedContinuation<Outcome, Never>] = []
 
     public init(userId: String, presentation: FullSyncPresentation) {
@@ -73,7 +73,11 @@ public final class FullSyncOperation: Identifiable {
     public func updateProgresses(_ progresses: [VaultSyncProgress]) {
         guard outcome == nil else { return }
         self.progresses = progresses
-        progressUpdates += 1
+        recordActivity()
+    }
+
+    public func recordActivity() {
+        activity += 1
     }
 
     public func finish(_ outcome: Outcome) {

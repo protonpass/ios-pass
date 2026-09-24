@@ -597,7 +597,7 @@ private extension HomepageCoordinator {
               operation.outcome == nil,
               operation.userId == userManager.activeUserId else { return }
 
-        if let fullSyncProgress, fullSyncProgress.controller.presentingViewController != nil {
+        if let fullSyncProgress {
             fullSyncProgress.viewModel.track(operation)
             return
         }
@@ -610,7 +610,24 @@ private extension HomepageCoordinator {
         controller.sheetPresentationController?.preferredCornerRadius = 16
         controller.isModalInPresentation = true
         fullSyncProgress = (viewModel, controller)
-        rootViewController.topMostViewController.present(controller, animated: true)
+        present(fullSyncProgress: controller)
+    }
+
+    /// Presenting fails silently while the top most controller is still presenting or dismissing,
+    /// e.g. right after the login sheet of the add account flow closes, so retry until it sticks.
+    func present(fullSyncProgress controller: UIViewController, attempt: Int = 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self, fullSyncProgress?.controller === controller,
+                  controller.presentingViewController == nil else { return }
+            rootViewController.topMostViewController.present(controller, animated: true)
+            guard controller.presentingViewController == nil else { return }
+            if attempt < 10 {
+                present(fullSyncProgress: controller, attempt: attempt + 1)
+            } else {
+                logger.error("Failed to present the full sync progress")
+                fullSyncProgress = nil
+            }
+        }
     }
 
     func fullSyncDidFinish(_ operation: FullSyncOperation, outcome: FullSyncOperation.Outcome) {
@@ -1995,6 +2012,10 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 
     func syncEventLoopShouldUseUserEvents() async -> Bool {
         await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+    }
+
+    func syncEventLoopIsFullSyncing() async -> Bool {
+        await appContentManager.isFullSyncing
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {

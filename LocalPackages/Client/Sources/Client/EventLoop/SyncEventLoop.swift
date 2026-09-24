@@ -42,6 +42,9 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// Return `true` if user events is enabled
     func syncEventLoopShouldUseUserEvents() async -> Bool
 
+    /// Return `true` while a full sync rewrites local data, loops are skipped until it is done
+    func syncEventLoopIsFullSyncing() async -> Bool
+
     /// Called when a loop is skipped
     /// - Parameters:
     ///    - reason: E.g no internet connection, previous loop not yet finished.
@@ -81,6 +84,7 @@ public enum SyncEventLoopSkipReason {
     case noInternetConnection
     case previousLoopNotFinished(userId: String)
     case backOff
+    case fullSyncInProgress
 }
 
 private let kThresholdRange = 55...60
@@ -254,6 +258,12 @@ private extension SyncEventLoop {
             guard reachability.isNetworkAvailable.value else {
                 pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
                 delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
+                return
+            }
+
+            if await delegate?.syncEventLoopIsFullSyncing() == true {
+                pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                delegate?.syncEventLoopDidSkipLoop(reason: .fullSyncInProgress)
                 return
             }
 
