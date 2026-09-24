@@ -118,18 +118,8 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureStartFullSync()
         return stubbedStartFullSyncResult
     }
-    // MARK: - waitForFullSyncsToFinish
-    public var closureWaitForFullSyncsToFinish: () -> () = {}
-    public var invokedWaitForFullSyncsToFinishfunction = false
-    public var invokedWaitForFullSyncsToFinishCount = 0
-
-    public func waitForFullSyncsToFinish() async {
-        invokedWaitForFullSyncsToFinishfunction = true
-        invokedWaitForFullSyncsToFinishCount += 1
-        closureWaitForFullSyncsToFinish()
-    }
     // MARK: - localFullSync
-    public var localFullSyncUserIdThrowableError6: Error?
+    public var localFullSyncUserIdThrowableError5: Error?
     public var closureLocalFullSync: () -> () = {}
     public var invokedLocalFullSyncfunction = false
     public var invokedLocalFullSyncCount = 0
@@ -140,7 +130,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        if let error = localFullSyncUserIdThrowableError6 {
+        if let error = localFullSyncUserIdThrowableError5 {
             throw error
         }
         closureLocalFullSync()
@@ -176,7 +166,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError9: Error?
+    public var deleteUserIdShareIdThrowableError8: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -187,7 +177,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError9 {
+        if let error = deleteUserIdShareIdThrowableError8 {
             throw error
         }
         closureDelete()

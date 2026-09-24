@@ -23,8 +23,8 @@
 import Client
 
 public protocol FullContentSyncUseCase: Sendable {
-    /// We should always stop the event loop before triggering a full sync to avoid data race
-    /// in case the full sync happens in the middle of a sync loop
+    /// The event loop skips its iterations while a full sync runs, but one could already be running
+    /// when the full sync starts. `shouldStopEventLoop` cancels it to avoid a data race.
     ///
     /// However, user events system could also trigger a force full refresh,
     /// this is the only case where we shouldn't stop the event loop because user events happen inside
@@ -65,19 +65,15 @@ public final class FullContentSync: FullContentSyncUseCase {
             .succeeded
     }
 
-    /// The event loop restarts only once every queued sync is done, so one sync finishing
-    /// does not restart the loop under another one still running.
     @MainActor
     public func start(userId: String,
                       presentation: FullSyncPresentation,
                       shouldStopEventLoop: Bool) -> FullSyncOperation {
-        guard shouldStopEventLoop else {
-            return appContentManager.startFullSync(userId: userId, presentation: presentation)
-        }
-        syncEventLoop.stop()
         let operation = appContentManager.startFullSync(userId: userId, presentation: presentation)
-        Task { [appContentManager, syncEventLoop] in
-            await appContentManager.waitForFullSyncsToFinish()
+        if shouldStopEventLoop {
+            // Stopping cancels the running iteration, restarting right away is safe because
+            // iterations are skipped until no full sync is left
+            syncEventLoop.stop()
             syncEventLoop.start()
         }
         return operation

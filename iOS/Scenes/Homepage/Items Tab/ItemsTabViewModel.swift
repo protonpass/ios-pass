@@ -234,9 +234,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
 private extension ItemsTabViewModel {
     func trackInlineSync(_ operation: FullSyncOperation) {
-        guard operation.presentation == .inline,
-              operation.outcome == nil,
-              operation.userId == userManager.activeUserId else { return }
+        guard operation.outcome == nil, operation.userId == userManager.activeUserId else { return }
+
+        // The progress sheet takes over, including a login sync upgraded to it, so the inline progress
+        // or its stale error must not stay behind or announce the same sync twice
+        guard operation.presentation == .inline else {
+            inlineSyncProgress = nil
+            shouldShowSyncProgress = false
+            return
+        }
 
         if let inlineSyncProgress {
             inlineSyncProgress.track(operation)
