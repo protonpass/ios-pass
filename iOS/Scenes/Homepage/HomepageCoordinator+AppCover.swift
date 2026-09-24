@@ -48,6 +48,7 @@ extension HomepageCoordinator {
 
         if let appCoverView {
             window.bringSubviewToFront(appCoverView)
+            appCoverView.accessibilityViewIsModal = true
             UIView.animate(withDuration: DesignConstant.animationDuration) {
                 appCoverView.alpha = 1
             }
@@ -93,6 +94,7 @@ private extension HomepageCoordinator {
     }
 
     func uncoverApp(completion: (() -> Void)? = nil) {
+        appCoverView?.accessibilityViewIsModal = false
         UIView.animate(withDuration: DesignConstant.animationDuration,
                        animations: { [weak self] in
                            guard let self else { return }
