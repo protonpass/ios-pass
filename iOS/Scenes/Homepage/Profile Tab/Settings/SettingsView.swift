@@ -133,7 +133,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle(.localized("Show website thumbnails"),
+                StaticToggle(#localized("Show website thumbnails"),
                              isOn: viewModel.displayFavIcons,
                              action: { viewModel.toggleDisplayFavIcons() })
             }
@@ -141,7 +141,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle(.localized("Always show username field"),
+                StaticToggle(#localized("Always show username field"),
                              isOn: viewModel.alwaysShowUsernameField,
                              action: { viewModel.toggleAlwaysShowUsernameField() })
             }
@@ -149,7 +149,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle(.localized("Copy alias address after creation"),
+                StaticToggle(#localized("Copy alias address after creation"),
                              isOn: viewModel.copyAfterCreatingAlias,
                              action: { viewModel.toggleCopyAfterCreatingAlias() })
             }
@@ -157,7 +157,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle(.localized("Copy contact's forwarding address after creation"),
+                StaticToggle(#localized("Copy contact's forwarding address after creation"),
                              isOn: viewModel.copyAfterCreatingContact,
                              action: { viewModel.toggleCopyAfterCreatingContact() })
             }
@@ -186,7 +186,7 @@ private extension SettingsView {
                 PassSectionDivider()
 
                 OptionRow(height: .tall) {
-                    StaticToggle(.localized("Share clipboard between devices"),
+                    StaticToggle(#localized("Share clipboard between devices"),
                                  isOn: viewModel.shareClipboard,
                                  action: { viewModel.toggleShareClipboard() })
                 }
@@ -206,7 +206,7 @@ private extension SettingsView {
 
             VStack(spacing: 0) {
                 OptionRow(height: .tall) {
-                    StaticToggle(.localized("Show content in search"),
+                    StaticToggle(#localized("Show content in search"),
                                  isOn: viewModel.spotlightEnabled,
                                  action: { viewModel.toggleSpotlight() })
                 }

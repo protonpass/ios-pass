@@ -52,9 +52,9 @@ public struct MailboxSection: View {
             ItemDetailSectionIcon(icon: IconProvider.forward)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(mode.title)
+                Text(verbatim: mode.title)
                     .sectionTitleText()
-                Text(mailboxSelection.selectedMailboxesString)
+                Text(verbatim: mailboxSelection.selectedMailboxesString)
                     .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)

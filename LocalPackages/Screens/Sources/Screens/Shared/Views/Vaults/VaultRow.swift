@@ -112,7 +112,7 @@ public struct VaultRow<Thumbnail: View>: View {
             }
 
             VStack(alignment: .leading) {
-                Text(title)
+                Text(verbatim: title)
                     .foregroundStyle(PassColor.textNorm)
 
                 if itemCount == 0 {

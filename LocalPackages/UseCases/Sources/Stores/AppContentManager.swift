@@ -24,7 +24,6 @@ import Core
 @preconcurrency import CryptoKit
 import Entities
 import Foundation
-import Macro
 import ProtonCoreLogin
 import SwiftUI
 import UseCases
@@ -585,10 +584,6 @@ public extension AppContentManager {
         }
     }
 
-    func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
-        try await itemRepository.getItemContent(shareId: shareId, itemId: itemId)
-    }
-
     @MainActor
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption
@@ -778,11 +773,7 @@ private extension AppContentManager {
 
     func createDefaultVault(userId: String) async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultContent(name: #localized("Personal"),
-                                 description: #localized("Personal"),
-                                 color: .color1,
-                                 icon: .icon1)
-        try await shareRepository.createVault(userId: userId, vault: vault)
+        try await shareRepository.createVault(userId: userId, vault: .defaultVault)
         logger.info("Created default vault for user")
     }
 

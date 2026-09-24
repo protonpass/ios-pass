@@ -97,7 +97,7 @@ public struct ImportFromChromeInstructions: View {
 
     private func row(for step: ImportFromChromeStep) -> some View {
         HStack(spacing: 10) {
-            Text(step.number)
+            Text(verbatim: step.number)
                 .foregroundStyle(PassColor.interactionNormMajor2)
                 .fontWeight(.medium)
                 .padding(10)

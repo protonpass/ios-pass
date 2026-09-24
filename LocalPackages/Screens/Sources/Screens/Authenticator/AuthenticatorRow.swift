@@ -72,7 +72,7 @@ private struct AuthenticatorCodeColumn: View {
             }
         } label: {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
+                Text(verbatim: title)
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textWeak)
 

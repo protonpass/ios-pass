@@ -183,14 +183,14 @@ private extension LoginItemsView {
 
 private extension LoginItemsView {
     var title: some View {
-        Text(mode.title)
+        Text(verbatim: mode.title)
             .foregroundStyle(PassColor.textNorm)
             .font(.title.bold())
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     var description: some View {
-        Text(mode.description)
+        Text(verbatim: mode.description)
             .foregroundStyle(PassColor.textNorm)
             .font(.headline)
             .frame(maxWidth: .infinity, alignment: .leading)
