@@ -76,7 +76,7 @@ private extension ItemPathBreadcrumbView {
     var breadcrumb: some View {
         breadcrumbLayout {
             Label(title: {
-                Text(vaultContent.name)
+                Text(verbatim: vaultContent.name)
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textWeak)
             }, icon: {

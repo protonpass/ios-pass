@@ -41,7 +41,7 @@ struct SortTypeListView: View {
                                         },
                                         height: .compact,
                                         content: {
-                                            Text(type.title)
+                                            Text(verbatim: type.title)
                                                 .foregroundStyle(type == selectedSortType ?
                                                     PassColor.interactionNormMajor2 : PassColor
                                                     .textNorm)

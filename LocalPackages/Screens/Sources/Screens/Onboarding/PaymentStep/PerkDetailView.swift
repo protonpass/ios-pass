@@ -47,7 +47,7 @@ struct PerkDetailView: View {
                 Text(verbatim: "\(value)")
 
             case let .text(value):
-                Text(value)
+                Text(value, bundle: .module)
             }
         }
         .themedForegroundStyle(dark: .white, light: PassColor.textNorm)

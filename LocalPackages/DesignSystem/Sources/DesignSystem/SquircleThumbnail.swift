@@ -56,7 +56,7 @@ public struct SquircleThumbnail: View {
                     .padding(.vertical, height / 3.5)
 
             case let .initials(string):
-                Text(string)
+                Text(verbatim: string)
                     .font(.system(size: height / 3))
                     .fontWeight(.medium)
                     .foregroundStyle(tintColor)

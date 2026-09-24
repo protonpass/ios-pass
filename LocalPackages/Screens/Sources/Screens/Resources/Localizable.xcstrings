@@ -743,6 +743,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасники)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасників)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасник)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld учасників)"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -753,6 +783,332 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%@ wants to share an item with the group %@." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоча абагуліць элемент з групай %@."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vol compartir un element amb el grup %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce sdílet položku se skupinou %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker at dele et element med gruppen %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ möchte einen Eintrag mit der Gruppe %@ teilen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο %@ θέλει να μοιραστεί ένα στοιχείο με την ομάδα %@."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ wants to share an item with the group %2$@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ quiere compartir un elemento con el grupo %@."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ quiere compartir un elemento con el grupo %@."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ haluaa jakaa kohteen ryhmälle %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ souhaite partager un élément avec le groupe %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuole condividere un elemento con il gruppo %@."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がグループ%@でアイテムを共有したいようです。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ს უნდა, გაუზიაროს ელემენტი ჯგუფს %@."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@님이 %@ 그룹과 항목을 공유하고자 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker å dele et element med gruppen %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wil een item delen met de groep %@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ deseja compartilhar um item com o grupo %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dorește să partajeze un element cu grupul %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce zdieľať položku so skupinou %@."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ želi deliti predmet s skupino %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vill dela ett objekt med gruppen %@."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, %@ grubuyla bir öge paylaşmak istiyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоче поділитися елементом із групою %@."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ muốn chia sẽ một nội dung với nhóm %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 希望与群组 %@ 共享一个项目。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 想與群組 %@ 分享項目。"
+          }
+        }
+      }
+    },
+    "%@ wants to share an item with you." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоча абагуліць элемент з вамі."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vol compartir un element amb vós."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce s vámi sdílet položku."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker at dele et element med dig."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ möchte einen Eintrag mit dir teilen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο %@ θέλει να μοιραστεί ένα στοιχείο μαζί σας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wants to share an item with you."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ quiere compartir un elemento contigo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ desea compartir un elemento con usted."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ haluaa jakaa sinulle kohteen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ souhaite partager un élément avec vous."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuole condividere un elemento con te."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@があなたにアイテムを共有したいようです。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ უნდა, ელემენტი გაგიზიაროთ."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@님이 나와 항목을 공유하고자 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker å dele et element med deg."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wil een item met u delen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ deseja compartilhar um item com você."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ doreşte să vă partajeze un articol."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ s vami chce zdieľať položku."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ želi dati predmet v skupno rabo z vami."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vill dela ett objekt med dig."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sizinle bir öge paylaşmak istiyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоче поділитися з вами елементом."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ muốn chia sẻ một nội dung với bạn."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 希望与您共享一个项目"
           }
         }
       }
@@ -817,7 +1173,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/kuukausi"
+            "value" : "%@/kk"
           }
         },
         "fr" : {
@@ -847,7 +1203,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@/월간"
+            "value" : "%@/월"
           }
         },
         "nb" : {
@@ -862,6 +1218,12 @@
             "value" : "%@/maand"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/miesiąc"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -872,6 +1234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/lună"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/месяц"
           }
         },
         "sk" : {
@@ -896,6 +1264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@/ay"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ / місяць"
           }
         },
         "zh-Hans" : {
@@ -1045,6 +1419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ з %2$@"
           }
         },
         "zh-Hans" : {
@@ -1490,6 +1870,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma ad SimpleLogin üzerinde var ancak Proton Pass üzerinde bulunmuyor"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдоніми, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонім, присутній у SimpleLogin, але відсутній у Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
                 }
               }
             }
@@ -1967,6 +2377,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld символів"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -2434,6 +2874,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld dosya"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файли"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файл"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "і%lld файлів"
                 }
               }
             }
@@ -3049,6 +3519,42 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -3528,6 +4034,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записи входу імпортовано"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запис входу імпортовано"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -3535,6 +4071,508 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "已导入%lld 登录项目"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld member(s)" : {
+      "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld удзельнікаў"
+                }
+              }
+            }
+          }
+        },
+        "ca" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membre"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membres"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členové"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členů"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlemmer"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Mitglied"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Mitglieder"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld μέλος"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld μέλη"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld member"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld members"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jäsen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld jäsentä"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membre"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membres"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membri"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 人のメンバー"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld წევრი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 명의 구성원"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlemmer"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lid"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld leden"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membros"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membri"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld membru"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld de membri"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členovia"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld členov"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld član"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld članov"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld člana"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld medlemmar"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld üye"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld üye"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасники"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасників"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасник"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld учасників"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 位成员"
                 }
               }
             }
@@ -3995,6 +5033,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld sözcük"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слова"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слово"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld слів"
                 }
               }
             }
@@ -4600,6 +5668,362 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "日誌是一種檔案，會顯示您做了什麼導致錯誤的動作。這些資訊只會被利用於協助我們的工程師修復問題。"
+          }
+        }
+      }
+    },
+    "Accept and view the item" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прыняць і паглядзець элемент"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepta i mostra l'element"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přijmout a zobrazit položku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter og se elementet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annehmen und das Element anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποδοχή και προβολή αντικειμένου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept and view the item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar y mostrar el elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar y mostrar el elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyväksy ja avaa kohde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter et afficher l'élément"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elfogadás és az elem megtekintése"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terima dan lihat item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accetta e visualizza l'elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受諾し、アイテムを見る"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიღება და ელემენტის ნახვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 공유 수락 및 확인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aksepter og se elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepteer en bekijk item"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaakceptuj i zobacz element"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar e visualizar o item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar e ver esse item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptare și vizualizare articol"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Принять и просмотреть элемент"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijať a zobraziť novú položku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprejmi in si oglej predmet"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptera och visa objektet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kabul et ve ögeyi görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийняти та переглянути елемент"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chấp nhận và xem mục"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受并查看项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受並檢視該項目"
+          }
+        }
+      }
+    },
+    "Accept invitation" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прыняць запрашэнне"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepta la invitació"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přijmout pozvánku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptér invitation"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einladung annehmen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποδοχή πρόσκλησης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept invitation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar la invitacion"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar la invitacion"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyväksy kutsu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter l'invitation"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accetta l'invito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待を承認"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოსაწვევის მიღება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "초대 수락"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Godta invitasjonen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepteer uitnodiging"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar convite"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptare invitație"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijať pozvánku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprejmi povabilo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptera inbjudan"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daveti kabul et"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийняти запрошення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受邀请"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受邀請"
           }
         }
       }
@@ -7288,6 +8712,12 @@
             "value" : "\"%@\" takma adı çöpe atıldı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдонім «%@» переміщено до смітника"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9323,6 +10753,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Усі облікові записи (%lld)"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -10328,7 +11788,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ha de tenir com a mínim 13 caràcters."
+            "value" : "Ha de tenir com a mínim 13 caràcters"
           }
         },
         "cs" : {
@@ -10361,6 +11821,12 @@
             "value" : "At least 13 characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al menos 13 caracteres"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10371,12 +11837,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Au moins 13 caractères"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Almeno 13 caratteri"
           }
         },
         "ka" : {
@@ -10391,24 +11851,6 @@
             "value" : "최소 13자"
           }
         },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minst 13 tegn"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minstens 13 tekens"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pelo menos 13 caracteres"
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10421,12 +11863,6 @@
             "value" : "Aspoň 13 znakov"
           }
         },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Minst 13 tecken"
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10437,6 +11873,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "至少 13 个字符"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最少 13 個字元"
           }
         }
       }
@@ -11168,6 +12610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Her yıl %@ ile otomatik olarak yenilenir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Автоподовження за %@ щороку"
           }
         },
         "zh-Hans" : {
@@ -14684,6 +16132,203 @@
         }
       }
     },
+    "Congratulations,\n your access has been confirmed" : {
+      "comment" : "When an admin confirmed access of a new user",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Віншуем! \n Ваш доступ пацверджаны"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felicitats,\n\nel vostre accés ha estat confirmat"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blahopřejeme,\n váš přístup byl potvrzen"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillykke,\n din adgang er blevet bekræftet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratulation, dein Zugriff wurde bestätigt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συγχαρητήρια,\n η πρόσβασή σας επιβεβαιώθηκε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Congratulations,\n your access has been confirmed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felicitaciones\nSe ha confirmado tu acceso."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felicitaciones\n se ha confirmado su acceso."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onnittelut,\n käyttöoikeutesi on vahvistettu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Félicitations, votre accès a été confirmé."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratulálunk, a hozzáférése meg lett erősítve"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selamat,\n akses Anda telah dikonfirmasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo accesso è stato confermato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おめでとうございます\n アクセスが確認されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გილოცავთ,\n თქვენი წვდომა დადასტურებულია"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "축하합니다,\n 사용자의 접근이 수락되었습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratulerer,\n tilgangen din er bekreftet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefeliciteerd, uw toegang is bevestigd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratulacje. Dostęp został potwierdzony"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parabéns!\nO seu acesso foi confirmado."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parabéns, \nseu acesso foi confirmado."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felicitări, accesul v-a fost confirmat."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поздравляем,\n ваш доступ подтвержден"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blahoželáme,\n váš prístup bol potvrdený"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čestitke,\n vaš dostop je potrjen"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Grattis,\n din åtkomst har bekräftats"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tebrikler,\n erişiminiz onaylandı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вітаємо,\n ваш доступ підтверджено"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chúc mừng, truy cập của bạn đã được xác nhận"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恭喜，\n 您的访问权限已确认"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恭喜您,\n 您的存取已確認"
+          }
+        }
+      }
+    },
     "Control what lands in your inbox" : {
       "localizations" : {
         "be" : {
@@ -15404,6 +17049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "\"%@\" bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося знайти «%@»"
           }
         },
         "zh-Hans" : {
@@ -17027,6 +18678,12 @@
             "value" : "Create folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17045,6 +18702,12 @@
             "value" : "Créer un dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17055,6 +18718,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 생성"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett mappe"
           }
         },
         "pt-BR" : {
@@ -17085,6 +18754,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити теку"
           }
         }
       }
@@ -17425,6 +19100,12 @@
             "value" : "Yeni kasa oluştur"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити нове сховище"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17673,6 +19354,12 @@
             "value" : "Create sub-folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crear subcarpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17691,6 +19378,12 @@
             "value" : "Créer un sous-dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea sotto-cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17701,6 +19394,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "하위 폴더 생성"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opprett undermappe"
           }
         },
         "pt-BR" : {
@@ -17731,6 +19430,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alt klasör oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити підтеку"
           }
         }
       }
@@ -20713,6 +22418,12 @@
             "value" : "Customize password"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personalizar contraseña"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20783,6 +22494,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parolayı özelleştir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налаштувати пароль"
           }
         },
         "zh-Hans" : {
@@ -22007,6 +23724,12 @@
             "value" : "Delete folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22025,6 +23748,12 @@
             "value" : "Supprimer le dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22035,6 +23764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett mappe"
           }
         },
         "pt-BR" : {
@@ -22065,6 +23800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörü sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити теку"
           }
         }
       }
@@ -22113,6 +23854,12 @@
             "value" : "Delete folder?"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Eliminar carpeta?"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22131,6 +23878,12 @@
             "value" : "Supprimer le dossier ?"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare la cartella?"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22141,6 +23894,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더를 삭제하시겠습니까?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slette mappe?"
           }
         },
         "pt-BR" : {
@@ -22171,6 +23930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör silinsin mi?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити теку?"
           }
         }
       }
@@ -22611,6 +24376,12 @@
             "value" : "Description is too long. Please keep it under %lld characters."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La descripción es demasiado larga. Mantenla por debajo de %lld caracteres."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22641,6 +24412,12 @@
             "value" : "설명이 너무 깁니다. %lld자 아래로 작성해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskrivelsen er for lang. Hold den under %lld tegn."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22669,6 +24446,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Açıklama çok uzun. Lütfen %lld karakterden kısa tutun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опис занадто довгий. Обмежте його до %lld символів."
           }
         },
         "zh-Hans" : {
@@ -25654,6 +27437,12 @@
             "value" : "Enter a folder title"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingresa un título de carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25672,6 +27461,12 @@
             "value" : "Saisir un titre de dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci un titolo per la cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25682,6 +27477,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 제목 입력"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn en mappetittel"
           }
         },
         "pt-BR" : {
@@ -25712,6 +27513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir klasör başlığı yazın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведіть назву теки"
           }
         }
       }
@@ -25760,6 +27567,12 @@
             "value" : "Enter new folder title"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Introduce el título de la nueva carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25778,6 +27591,12 @@
             "value" : "Saisir un nouveau titre de dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci un titolo per la cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25788,6 +27607,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새로운 폴더 제목 입력"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv inn ny mappetittel"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insira um título para a pasta"
           }
         },
         "ro" : {
@@ -25812,6 +27643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni klasör başlığını yazın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведіть нову назву теки"
           }
         }
       }
@@ -26442,6 +28279,12 @@
             "value" : "Failed to send report"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al enviar el informe"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26472,6 +28315,12 @@
             "value" : "리포트 전송 실패"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke sende rapporten"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26500,6 +28349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bildirim gönderilemedi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося надіслати звіт"
           }
         },
         "zh-Hans" : {
@@ -27142,10 +28997,22 @@
             "value" : "Files"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archivos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Archivos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiedostot"
           }
         },
         "fr" : {
@@ -27170,6 +29037,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "파일"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filer"
           }
         },
         "pt-BR" : {
@@ -27200,6 +29073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosyalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файли"
           }
         },
         "zh-Hans" : {
@@ -28620,6 +30499,12 @@
             "value" : "Folder « %@ » deleted"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha eliminado la carpeta « %@ »"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28638,6 +30523,12 @@
             "value" : "Le dossier « %@ » a été supprimé."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartella « %@ » eliminata"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28648,6 +30539,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 « %@ » 이(가) 삭제되었습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappe \" %@ \" slettet"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A pasta « %@ » foi excluída"
           }
         },
         "ro" : {
@@ -28672,6 +30575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "« %@ » klasörü silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теку «%@» видалено"
           }
         }
       }
@@ -28720,6 +30629,12 @@
             "value" : "Folder name"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre de la carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28738,6 +30653,12 @@
             "value" : "Nom du dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28748,6 +30669,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 이름"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappenavn"
           }
         },
         "pt-BR" : {
@@ -28778,6 +30705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasör adı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назва теки"
           }
         }
       }
@@ -28914,6 +30847,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теки"
           }
         },
         "zh-Hans" : {
@@ -30233,6 +32172,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kullanıcı adı oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Згенерувати ім’я користувача"
           }
         },
         "zh-Hans" : {
@@ -34842,6 +36787,12 @@
             "value" : "Oturum açma kayıtlarını içe aktar (%1$lld/%2$lld)"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпортування записів входу (%1$lld/%2$lld)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35175,6 +37126,12 @@
             "value" : "Sıfatları ekleyin"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати прикметники"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35315,6 +37272,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adları ekleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати іменники"
           }
         },
         "zh-Hans" : {
@@ -35647,6 +37610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fiilleri ekleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вживати дієслова"
           }
         },
         "zh-Hans" : {
@@ -36049,6 +38018,357 @@
         }
       }
     },
+    "invites the group %@ to access items in" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "запрашае групу %@ атрымаць доступ да элементаў у"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "convida el grup %@ a accedir als elements de"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "zve skupinu %@ k přístupu k položkám v"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer gruppen %@ til at få adgang til elementer i"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lädt die Gruppe %@ ein, auf Einträge zuzugreifen in"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "καλεί την ομάδα %@ να έχει πρόσβαση σε στοιχεία στο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invites the group %@ to access items in"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita al grupo %@ a acceder a elementos de"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita al grupo %@ a acceder a elementos de"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kutsuu ryhmän %@ käyttämään kohteita"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invite le groupe %@ à accéder aux éléments dans"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invita il gruppo %@ ad accedere agli elementi in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グループ%@にアイテムへのアクセスを招待します"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "იწვევს ჯგუფს %@ ელემენტებზე წვდომაზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "님이 다음 항목의 접근을 위해 그룹 %@에 초대했습니다:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer gruppen %@ til å få tilgang til elementer i"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nodigt de groep %@ uit om toegang te krijgen tot items in"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "convida o grupo %@ a acessar os itens em"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invită grupul %@ să acceseze articolele din"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pozýva skupinu %@ na prístup k položkám v"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "povabi skupino %@, naj dostopa do predmetov v"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bjuder in gruppen %@ att komma åt objekt i"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ grubunu şu kasadaki ögelere erişmeye davet ediyor:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "запрошує групу %@ отримати доступ до елементів у"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀请群组 %@ 访问以下项目："
+          }
+        }
+      }
+    },
+    "invites you to access items in" : {
+      "comment" : "The description of the sheet to reject/accept invitation. This is prefixed by the inviter's email. E.g \"john.doe@example.com invites you to access items in\". Below this phrase are the vault's details like name and number of items.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "запрашае вас атрымаць доступ да элементаў у"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "us convida a accedir a elements a"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vás zve k přístupu k položkám v"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer dig til at tilgå elementer i"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hat dich eingeladen auf Elemente in folgenden Tresor zuzugreifen:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "σας προσκαλεί να αποκτήσετε πρόσβαση σε στοιχεία στη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "invites you to access items in"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "te invita a acceder a elementos de"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "le invita a acceder a elementos de"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kutsui sinut käyttämään sisältöä holvista"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vous invite à accéder à des éléments dans"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "meghívta a tároló elérésére:"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mengundang Anda untuk mengakses item pada"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ti invita ad accedere agli elementi in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたにアイテムへのアクセスを招待しています。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გიწვევთ ელემენტებზე წვდომისთვის"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "님이 항목 공유를 초대합니다:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "inviterer deg til å få tilgang til elementer i"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nodigt u uit met toegang tot items in"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "udostępnia Ci sejf"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "convida-o a aceder a itens em"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "convida você a acessar itens em"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vă invită să accesați articolele din"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "приглашает вас получить доступ к элементам в"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vás pozýva na prístup k položkám v"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vas vabi k dostopu do predmetov v"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bjuder in dig att komma åt objekt i"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sizi şu kasadaki ögelere erişmeye davet ediyor:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "запрошує вас отримати доступ до елементів у"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mời bạn truy cập nội dung trong"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀请您访问其中的项目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀請您存取項目於"
+          }
+        }
+      }
+    },
     "Item successfully pinned" : {
       "localizations" : {
         "be" : {
@@ -36437,6 +38757,202 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "項目成功取消標記"
+          }
+        }
+      }
+    },
+    "Join shared vault" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Далучыцца да абагуленага сховішча"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uniu-vos a la caixa forta compartida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit ke sdílenému trezoru"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deltag i delt boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Freigegebenem Tresor beitreten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συμμετοχή σε κοινόχρηστη κρύπτη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join shared vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unirte a la caja fuerte compartida"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unirse a la bóveda compartida"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liity jaettuun holviin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejoindre le coffre-fort partagé"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Csatlakozás megosztott tárolóhoz"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gabung ke brankas yang dibagikan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisciti alla cassaforte condivisa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有保管庫に参加する"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებულ საცავთან მიერთება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유 금고 참가"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bli med delt hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deelnemen aan gedeelde kluis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dołącz do udostępnionego sejfu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juntar-se ao cofre partilhado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juntar ao cofre compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alăturare la seif partajat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Присоединиться к общему хранилищу"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pripojiť sa k zdieľanému trezoru"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridružite se skupnemu trezorju"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gå med delat valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılan kasaya eriş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приєднатися до спільного сховища"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tham gia két sắt dùng chung"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加入共享保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加入共享的保管庫"
           }
         }
       }
@@ -37109,6 +39625,12 @@
             "value" : "Leetspeak"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "리트스피크"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37140,6 +39662,12 @@
           }
         },
         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
+          }
+        },
+        "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leetspeak"
@@ -38765,10 +41293,22 @@
             "value" : "Lowercase letters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letras minúsculas"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letras minúsculas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pienet kirjaimet"
           }
         },
         "fr" : {
@@ -38787,6 +41327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "მხედრული ასოები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "소문자"
           }
         },
         "nb" : {
@@ -38823,6 +41369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Küçük harfler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Малі літери"
           }
         },
         "zh-Hans" : {
@@ -39852,6 +42404,12 @@
             "value" : "Move all items"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover todos los elementos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39870,6 +42428,12 @@
             "value" : "Déplacer tous les éléments"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta tutti gli elementi"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39880,6 +42444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "전체 항목 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt alle elementer"
           }
         },
         "pt-BR" : {
@@ -39910,6 +42480,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm ögeleri taşı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемістити всі елементи"
           }
         }
       }
@@ -39958,6 +42534,12 @@
             "value" : "Move folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39976,6 +42558,12 @@
             "value" : "Déplacer le dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39986,6 +42574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt mappe"
           }
         },
         "pt-BR" : {
@@ -40016,6 +42610,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasörü taşı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемістити теку"
           }
         }
       }
@@ -40261,6 +42861,12 @@
             "value" : "New folder"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nueva carpeta"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40279,6 +42885,12 @@
             "value" : "Nouveau dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova cartella"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40289,6 +42901,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "새 폴더"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny mappe"
           }
         },
         "pt-BR" : {
@@ -40319,6 +42937,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeni klasör"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нова тека"
           }
         }
       }
@@ -40365,6 +42989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No common passwords"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin contraseñas comunes"
           }
         },
         "es-419" : {
@@ -40437,6 +43067,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yaygın parolalar kullanılmamalıdır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без розповсюджених паролів"
           }
         },
         "zh-Hans" : {
@@ -40877,10 +43513,22 @@
             "value" : "No repeated characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin caracteres repetidos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin caracteres repetidos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei toistuvia merkkejä"
           }
         },
         "fr" : {
@@ -40949,6 +43597,12 @@
             "value" : "Yinelenen karakterler bulunmamalı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без повторюваних символів"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41001,10 +43655,22 @@
             "value" : "No sequential characters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin caracteres secuenciales"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin secuencia de caracteres"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei peräkkäisiä merkkejä"
           }
         },
         "fr" : {
@@ -41073,6 +43739,12 @@
             "value" : "Sıralı karakterler bulunmamalı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Без послідовних символів"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41086,7 +43758,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тэкст на відарысе не выяўлены. Пераканайцеся, што тэкст добра чытаецца, хапае асвятлення і відарыс знаходзіцца ў фокусе камеры."
+            "value" : "Тэкст на відарысе не выяўлены. Пераканайцеся, што тэкст добра чытаецца, хапае асвятлення і відарыс знаходзіцца ў фокусе камеры, а потым паўтарыце спробу."
           }
         },
         "ca" : {
@@ -41865,7 +44537,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nespokojený"
+            "value" : "Nespokojen(a)"
           }
         },
         "da" : {
@@ -41890,6 +44562,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not satisfied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No satisfecho"
           }
         },
         "es-419" : {
@@ -41962,6 +44640,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yetersiz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не влаштовує"
           }
         },
         "zh-Hans" : {
@@ -44368,6 +47052,12 @@
             "value" : "One or more files exceed the %lld MB limit. Please select smaller files."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uno o varios archivos superan el límite de %lld MB. Selecciona archivos más pequeños."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44398,6 +47088,12 @@
             "value" : "하나 이상의 파일이 %lld MB 제한을 초과합니다. 더 작은 파일을 선택해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Én eller flere filer overskrider grensen på %lld MB. Velg mindre filer."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44420,6 +47116,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir ya da birkaç dosya %lld MB sınırını aşıyor. Lütfen daha küçük dosyalar seçin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Один або кілька файлів перевищують ліміт у %lld МБ. Виберіть файли меншого розміру."
           }
         },
         "zh-Hans" : {
@@ -46715,6 +49417,12 @@
             "value" : "İnternet panosunu aç"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити вебпанель"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47431,7 +50139,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parola"
+            "value" : "Parolă"
           }
         },
         "ru" : {
@@ -48123,10 +50831,22 @@
             "value" : "Photos or videos"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotos o vídeos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fotos o videos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuvat tai videot"
           }
         },
         "fr" : {
@@ -48151,6 +50871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "사진 및 비디오"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilder eller videoer"
           }
         },
         "pt-BR" : {
@@ -48181,6 +50907,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fotoğraflar veya videolar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фото або відео"
           }
         },
         "zh-Hans" : {
@@ -48525,6 +51257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen yöneticinizle görüşün."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніться до адміністратора."
           }
         },
         "zh-Hans" : {
@@ -48971,10 +51709,22 @@
             "value" : "Please limit your selection to %lld files"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limita tu selección a %lld archivos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limite su selección a %lld archivos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rajoita valintasi %lld tiedostoon"
           }
         },
         "fr" : {
@@ -48993,6 +51743,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton ზღუდავს თქვენს არჩევანს %lld ფაილზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld개 파일 이하로 선택해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begrens utvalget til %lld filer"
           }
         },
         "pt-BR" : {
@@ -49023,6 +51785,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen seçiminizi %lld dosya ile sınırlayın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Обмежте свій вибір до %lld файлів"
           }
         },
         "zh-Hans" : {
@@ -50336,6 +53104,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen bunun yerine hesabınızın internet panosunu kullanın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натомість скористайтеся нашою вебпанеллю керування обліковим записом"
           }
         },
         "zh-Hans" : {
@@ -51965,10 +54739,212 @@
             "value" : "Kullanıcı adını yeniden oluştur"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повторно згенерувати ім’я користувача"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "重新生成用户名"
+          }
+        }
+      }
+    },
+    "Reject invitation" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адхіліць запрашэнне"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rebutja la invitació"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odmítnout pozvánku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afvis invitation"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einladung ablehnen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απόρριψη πρόσκλησης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reject invitation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechazar la invitación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechazar invitación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kieltäydy kutsusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refuser l'invitation"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meghívó elutasítása"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tolak undangan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rifiuta l'invito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "招待を拒否する"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოსაწვევის უარყოფა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "초대 거절"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avslå invitasjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitnodiging afwijzen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odrzuć zaproszenie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejeitar o convite"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recusar convite"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Refuzare invitație"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отклонить приглашение"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odmietnuť pozvánku"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zavrni povabilo"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avböj inbjudan"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daveti reddet"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відхилити запрошення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Từ chối lời mời"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拒绝邀请"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "婉拒邀請"
           }
         }
       }
@@ -53350,7 +56326,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spokojený"
+            "value" : "Spokojen(a)"
           }
         },
         "da" : {
@@ -53375,6 +56351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Satisfied"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satisfecho"
           }
         },
         "es-419" : {
@@ -53778,7 +56760,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Analisar os documentos"
+            "value" : "Digitalizar documentos"
           }
         },
         "pt-BR" : {
@@ -54823,6 +57805,203 @@
         }
       }
     },
+    "See the shared vault" : {
+      "comment" : "New user accepts the invitation",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паглядзець абагуленае сховішча"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra la caixa forta compartida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prohlédnout sdílený trezor"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se den delte boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilten Tresor anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή της κοινόχρηστης κρύπτης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See the shared vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver la caja fuerte compartida"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver la bóveda compartida"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä jaettu holvi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir le coffre-fort partagé"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A megosztott tároló megtekintése"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lihat brankas yang dibagikan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la cassaforte condivisa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有保管庫を参照してください"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებული საცავის ნახვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 금고 보기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se delt hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeelde kluis bekijken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobacz udostępniony sejf"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver o cofre partilhado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver cofre compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare seif partajat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Просмотр общего хранилища"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozrite si zdieľaný trezor"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oglejte si skupni trezor"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se det delade valvet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paylaşılan kasaya bakın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переглянути спільне сховище"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xem két sắt đã được chia sẻ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看共享的保险库"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看共享保管庫"
+          }
+        }
+      }
+    },
     "Select **Import to Proton Pass**" : {
       "comment" : "Please align with the translation for CFBundleDisplayName and CFBundleName of Action extension.",
       "localizations" : {
@@ -55058,6 +58237,12 @@
             "value" : "Select a destination"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un destino"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55076,10 +58261,34 @@
             "value" : "Sélectionner une destination"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona una destinazione"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "აირჩიეთ სამიზნე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "목적지 선택"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg en plassering"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecione um destino"
           }
         },
         "ro" : {
@@ -56848,6 +60057,202 @@
         }
       }
     },
+    "Shared item invitation" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрашэнне да абагуленага элемента"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitació a un element compartit"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvánka ke sdílené položce"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delte element-invitation"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilte Eintrageinladung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόσκληση για κοινόχρηστο στοιχείο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared item invitation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitación a un elemento compartido"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitación a un elemento compartido"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kutsu jaettuun kohteeseen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitation à un élément partagé"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megosztott elem meghívó"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undangan item terbagi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invito a un elemento condiviso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有したアイテム招待"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებული ელემენტის მოსაწვევი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 항목 초대"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt elementinvitasjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld item uitnodiging"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaproszenie do udostępnionego elementu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convite a um item partilhado"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convite de item compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitație articol partajat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приглашение на общий элемент"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvánka ku zdieľanej položke"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povabilo k skupnem predmetu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbjudan till delat objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge paylaşma daveti"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрошення на спільний елемент"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lời mời chia sẻ mục"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享项目邀请"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享項目邀請函"
+          }
+        }
+      }
+    },
     "Shared with me" : {
       "localizations" : {
         "be" : {
@@ -57073,7 +60478,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ordner %@ anzeigen"
+            "value" : "%@ Ordner anzeigen"
           }
         },
         "el" : {
@@ -57086,6 +60491,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show %@ folder"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar la carpeta %@"
           }
         },
         "es-419" : {
@@ -57106,6 +60517,12 @@
             "value" : "Afficher %@ dossier"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra %@ cartellla"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57116,6 +60533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@개 폴더 보기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis %@ mappe"
           }
         },
         "pt-BR" : {
@@ -57282,6 +60705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kasasını görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати сховище %@"
           }
         },
         "zh-Hans" : {
@@ -62807,10 +66236,22 @@
             "value" : "Symbols"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Símbolos"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Símbolos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Symbolit"
           }
         },
         "fr" : {
@@ -65059,6 +68500,12 @@
             "value" : "This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion."
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto elimina de forma permanente la carpeta « %@ » y todo su contenido. Introduce el nombre de la carpeta para confirmar la eliminación."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65077,6 +68524,12 @@
             "value" : "Ceci supprimera définitivement le dossier « %@ » et tout son contenu. Saisissez le nom du dossier pour confirmer la suppression."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo eliminerà definitivamente la cartella « %@ » e tutti i suoi contenuti. Inserisci il nome della cartella per confermare l'eliminazione."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65087,6 +68540,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "폴더 « %@ » 와(과) 이 폴더의 내용물을 모두 지우게 됩니다. 삭제를 계속하려면 해당 폴더 이름을 입력하십시오."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil slette mappen \"%@\" og alt innholdet permanent. Skriv inn mappenavnet for å bekrefte slettingen."
           }
         },
         "pt-BR" : {
@@ -65247,6 +68706,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu işlem « %@ » kasasını ve içindekileri kalıcı olarak silecek. Silme işlemini onaylamak için kasa adını yazın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Це назавжди видалить сховище «%@» та весь його вміст. Введіть назву сховища, аби підтвердити видалення."
           }
         },
         "zh-Hans" : {
@@ -69131,10 +72596,22 @@
             "value" : "Uppercase letters"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letras mayúsculas"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letras mayúsculas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isot kirjaimet"
           }
         },
         "fr" : {
@@ -69153,6 +72630,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "მთავრული ასოები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대문자"
           }
         },
         "nb" : {
@@ -69433,10 +72916,22 @@
             "value" : "Use this password"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usar esta contraseña"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usar esta contraseña"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä tätä salasanaa"
           }
         },
         "fr" : {
@@ -70044,6 +73539,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "« %@ » kasası silindi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище «%@» видалено"
           }
         },
         "zh-Hans" : {
@@ -75422,6 +78923,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma adı kalıcı olarak silmek üzeresiniz"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдоніми"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонімів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся остаточно видалити %lld псевдонімів"
                 }
               }
             }

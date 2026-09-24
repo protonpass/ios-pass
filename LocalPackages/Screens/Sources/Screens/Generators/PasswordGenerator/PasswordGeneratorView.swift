@@ -164,7 +164,7 @@ private struct PasswordPreview: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            Text(password.coloredPassword())
+            Text(password.coloredPassword()) // ignore:missing_bundle
                 .font(.title3.monospaced())
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
@@ -269,7 +269,7 @@ private struct PasswordTypeSelector: View {
         LabeledMenuPicker(title: "Type",
                           selection: $viewModel.passwordType,
                           options: PasswordType.allCases) {
-            .localized($0.title)
+            $0.title
         }
     }
 }
@@ -327,7 +327,7 @@ private struct MemorablePasswordOptions: View {
             LabeledMenuPicker(title: "Word separator",
                               selection: $viewModel.wordSeparator,
                               options: WordSeparator.allCases) {
-                .verbatim($0.title)
+                $0.title
             }
             PassDivider()
 
@@ -436,10 +436,10 @@ private extension PasswordPenalty {
 }
 
 private extension PasswordType {
-    var title: LocalizedStringKey {
+    var title: String {
         switch self {
-        case .random: "Random password"
-        case .memorable: "Memorable password"
+        case .random: #localized("Random password", bundle: .module)
+        case .memorable: #localized("Memorable password", bundle: .module)
         }
     }
 }

@@ -30,40 +30,65 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
-    func execute(with invite: Invite) async throws -> Share?
+    /// Accept an invite and optionally return an item content in order to display after accepting
+    func callAsFunction(userData: UserData, invite: Invite) async throws -> ItemContent?
 }
 
-public extension AcceptInvitationUseCase {
-    func callAsFunction(with invite: Invite) async throws -> Share? {
-        try await execute(with: invite)
-    }
-}
-
-public final class AcceptInvitation: AcceptInvitationUseCase {
-    private let repository: any InviteRepositoryProtocol
-    private let userManager: any UserManagerProtocol
+public struct AcceptInvitation: AcceptInvitationUseCase {
+    private let inviteRepository: any InviteRepositoryProtocol
+    private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
+    private let folderRepository: any FolderRepositoryProtocol
     private let getEmailPublicKey: any GetEmailPublicKeyUseCase
     private let getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase
     private let logger: Logger
 
-    public init(repository: any InviteRepositoryProtocol,
-                userManager: any UserManagerProtocol,
+    public init(inviteRepository: any InviteRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol,
+                folderRepository: any FolderRepositoryProtocol,
                 getEmailPublicKey: any GetEmailPublicKeyUseCase,
                 getInviteDecryptionKeys: GetInviteDecryptionKeysUseCase,
                 logManager: any LogManagerProtocol) {
-        self.repository = repository
-        self.userManager = userManager
+        self.inviteRepository = inviteRepository
+        self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
+        self.folderRepository = folderRepository
         self.getEmailPublicKey = getEmailPublicKey
         self.getInviteDecryptionKeys = getInviteDecryptionKeys
         logger = .init(manager: logManager)
     }
 
-    public func execute(with invite: Invite) async throws -> Share? {
-        logger.trace("Start accepting share invite for invitee email \(invite.invitedEmail)")
-        let encrytedKeys = try await encryptKeys(invite: invite)
-        logger.trace("Finished encrypting keys")
-        let userId = try await userManager.getActiveUserId()
-        return try await repository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
+    public func callAsFunction(userData: UserData, invite: Invite) async throws -> ItemContent? {
+        let inviteDebugInfo = "email \(invite.invitedEmail), token \(invite.inviteToken)"
+        logger.trace("Start accepting for invite \(inviteDebugInfo)")
+        let encrytedKeys = try await encryptKeys(userData: userData, invite: invite)
+        logger.trace("Finished encrypting keys for invite \(inviteDebugInfo)")
+        let userId = userData.user.ID
+
+        let share = try await inviteRepository.acceptInvite(userId: userId, invite: invite, keys: encrytedKeys)
+        // Remove right after accepting regardless of the outcome of subsequent fetches
+        // Because re-accepting wouldn't work anyway
+        try await inviteRepository.removeCachedInvite(userId: userId, invite: invite)
+        if let share {
+            try await shareRepository.upsertShares(userId: userId, shares: [share])
+
+            switch share.shareType {
+            case .item:
+                logger.trace("Fetching shared item for item invite \(inviteDebugInfo)")
+                return try await itemRepository.getSharedItem(userId: userId, share: share)
+
+            case .vault:
+                logger.trace("Fetching folders & items for vault invite \(inviteDebugInfo)")
+                let shareId = share.shareId
+                try await folderRepository.refreshFolders(userId: userId, shareId: shareId)
+                try await itemRepository.refreshItems(userId: userId, shareId: shareId)
+
+            case .unknown:
+                break
+            }
+        }
+        return nil
     }
 }
 
@@ -73,15 +98,13 @@ struct TransformKeyConfig {
 }
 
 private extension AcceptInvitation {
-    func encryptKeys(invite: Invite) async throws -> [ItemKey] {
+    func encryptKeys(userData: UserData, invite: Invite) async throws -> [ItemKey] {
         do {
-            async let userDataProcess = try userManager.getUnwrappedActiveUserData()
             async let addressKeysProcess = try getInviteDecryptionKeys(invite: invite)
             async let inviterPublicKeysProcess = try getEmailPublicKey(with: invite.inviterEmail)
 
-            let (userData, addressKeys, inviterPublicKeys) = try await (userDataProcess,
-                                                                        addressKeysProcess,
-                                                                        inviterPublicKeysProcess)
+            let (addressKeys, inviterPublicKeys) = try await (addressKeysProcess,
+                                                              inviterPublicKeysProcess)
 
             let armoredInviterPublicKeys = inviterPublicKeys.map { ArmoredKey(value: $0.value) }
             let config = try getConfig(invite: invite, addressKeys: addressKeys, userData: userData)

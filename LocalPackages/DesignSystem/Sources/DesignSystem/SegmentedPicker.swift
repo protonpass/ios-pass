@@ -56,7 +56,7 @@ public struct SegmentedPicker: View {
                     Button(action: {
                         selectedIndex = index
                     }, label: {
-                        Text(option)
+                        Text(verbatim: option)
                             .font(.body.weight(.medium))
                             .foregroundStyle(index == selectedIndex ?
                                 highlightTextColor : PassColor.textNorm)

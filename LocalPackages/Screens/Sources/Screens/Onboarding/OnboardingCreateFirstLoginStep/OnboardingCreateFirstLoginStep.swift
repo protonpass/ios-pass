@@ -161,7 +161,7 @@ private struct ServiceSelectionView: View {
            let attributedRange = Range(range, in: string) {
             string[attributedRange].font = .body.bold()
         }
-        return Text(string)
+        return Text(string) // ignore:missing_bundle
     }
 }
 
@@ -342,7 +342,7 @@ private extension CreateFirstLoginView {
                     .editableSectionTitleText(for: password)
 
                 SensitiveTextField(text: $password,
-                                   placeholder: #localized("Add password"),
+                                   placeholder: #localized("Add password", bundle: .module),
                                    focusedField: $focusedField,
                                    field: .password,
                                    font: .body.monospacedFont(for: password),

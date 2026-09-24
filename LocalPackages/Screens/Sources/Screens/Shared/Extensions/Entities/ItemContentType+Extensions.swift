@@ -214,240 +214,240 @@ public extension ItemContentType {
     var chipTitle: String {
         switch self {
         case .login:
-            #localized("Login")
+            #localized("Login", bundle: .module)
 
         case .alias:
-            #localized("Alias")
+            #localized("Alias", bundle: .module)
 
         case .note:
-            #localized("Note")
+            #localized("Note", bundle: .module)
 
         case .creditCard:
-            #localized("Card")
+            #localized("Card", bundle: .module)
 
         case .identity:
-            #localized("Identity")
+            #localized("Identity", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key")
+            #localized("SSH key", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network")
+            #localized("WiFi network", bundle: .module)
 
         case .custom:
-            #localized("Custom item")
+            #localized("Custom item", bundle: .module)
         }
     }
 
     var filterTitle: String {
         switch self {
         case .login:
-            #localized("Logins")
+            #localized("Logins", bundle: .module)
 
         case .alias:
-            #localized("Aliases")
+            #localized("Aliases", bundle: .module)
 
         case .note:
-            #localized("Notes")
+            #localized("Notes", bundle: .module)
 
         case .creditCard:
-            #localized("Credit cards")
+            #localized("Credit cards", bundle: .module)
 
         case .identity:
-            #localized("Identities")
+            #localized("Identities", bundle: .module)
 
         case .sshKey:
-            #localized("SSH keys")
+            #localized("SSH keys", bundle: .module)
 
         case .wifi:
-            #localized("WiFi networks")
+            #localized("WiFi networks", bundle: .module)
 
         case .custom:
-            #localized("Custom items")
+            #localized("Custom items", bundle: .module)
         }
     }
 
     var filterMessage: String {
         switch self {
         case .login:
-            #localized("Filtered by logins. Trashed items aren't shown.")
+            #localized("Filtered by logins. Trashed items aren't shown.", bundle: .module)
 
         case .alias:
-            #localized("Filtered by aliases. Trashed items aren't shown.")
+            #localized("Filtered by aliases. Trashed items aren't shown.", bundle: .module)
 
         case .note:
-            #localized("Filtered by notes. Trashed items aren't shown.")
+            #localized("Filtered by notes. Trashed items aren't shown.", bundle: .module)
 
         case .creditCard:
-            #localized("Filtered by credit cards. Trashed items aren't shown.")
+            #localized("Filtered by credit cards. Trashed items aren't shown.", bundle: .module)
 
         case .identity:
-            #localized("Filtered by identities. Trashed items aren't shown.")
+            #localized("Filtered by identities. Trashed items aren't shown.", bundle: .module)
 
         case .custom, .sshKey, .wifi:
-            #localized("Filtered by custom items. Trashed items aren't shown.")
+            #localized("Filtered by custom items. Trashed items aren't shown.", bundle: .module)
         }
     }
 
     var createItemTitle: String {
         switch self {
         case .login:
-            #localized("Create a login")
+            #localized("Create a login", bundle: .module)
 
         case .alias:
-            #localized("Create a Hide My Email alias")
+            #localized("Create a Hide My Email alias", bundle: .module)
 
         case .creditCard:
-            #localized("Create a card")
+            #localized("Create a card", bundle: .module)
 
         case .note:
-            #localized("Create a note")
+            #localized("Create a note", bundle: .module)
 
         case .identity:
-            #localized("Create an identity")
+            #localized("Create an identity", bundle: .module)
 
         case .custom, .sshKey, .wifi:
-            #localized("Create a custom item")
+            #localized("Create a custom item", bundle: .module)
         }
     }
 
     var creationMessage: String {
         switch self {
         case .login:
-            #localized("Login created")
+            #localized("Login created", bundle: .module)
 
         case .alias:
-            #localized("Alias created")
+            #localized("Alias created", bundle: .module)
 
         case .creditCard:
-            #localized("Credit card created")
+            #localized("Credit card created", bundle: .module)
 
         case .note:
-            #localized("Note created")
+            #localized("Note created", bundle: .module)
 
         case .identity:
-            #localized("Identity created")
+            #localized("Identity created", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key created")
+            #localized("SSH key created", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network created")
+            #localized("WiFi network created", bundle: .module)
 
         case .custom:
-            #localized("Custom item created")
+            #localized("Custom item created", bundle: .module)
         }
     }
 
     var openMessage: String {
         switch self {
         case .login:
-            #localized("Open login")
+            #localized("Open login", bundle: .module)
 
         case .alias:
-            #localized("Open alias")
+            #localized("Open alias", bundle: .module)
 
         case .creditCard:
-            #localized("Open credit card")
+            #localized("Open credit card", bundle: .module)
 
         case .note:
-            #localized("Open note")
+            #localized("Open note", bundle: .module)
 
         case .identity:
-            #localized("Open identity")
+            #localized("Open identity", bundle: .module)
 
         case .sshKey:
-            #localized("Open SSH key")
+            #localized("Open SSH key", bundle: .module)
 
         case .wifi:
-            #localized("Open WiFi network")
+            #localized("Open WiFi network", bundle: .module)
 
         case .custom:
-            #localized("Open custom item")
+            #localized("Open custom item", bundle: .module)
         }
     }
 
     var restoreMessage: String {
         switch self {
         case .login:
-            #localized("Login restored")
+            #localized("Login restored", bundle: .module)
 
         case .alias:
-            #localized("Alias restored")
+            #localized("Alias restored", bundle: .module)
 
         case .creditCard:
-            #localized("Credit card restored")
+            #localized("Credit card restored", bundle: .module)
 
         case .note:
-            #localized("Note restored")
+            #localized("Note restored", bundle: .module)
 
         case .identity:
-            #localized("Identity restored")
+            #localized("Identity restored", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key restored")
+            #localized("SSH key restored", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network restored")
+            #localized("WiFi network restored", bundle: .module)
 
         case .custom:
-            #localized("Custom item restored")
+            #localized("Custom item restored", bundle: .module)
         }
     }
 
     var deleteMessage: String {
         switch self {
         case .login:
-            #localized("Login permanently deleted")
+            #localized("Login permanently deleted", bundle: .module)
 
         case .alias:
-            #localized("Alias permanently deleted")
+            #localized("Alias permanently deleted", bundle: .module)
 
         case .creditCard:
-            #localized("Credit card permanently deleted")
+            #localized("Credit card permanently deleted", bundle: .module)
 
         case .note:
-            #localized("Note permanently deleted")
+            #localized("Note permanently deleted", bundle: .module)
 
         case .identity:
-            #localized("Identity permanently deleted")
+            #localized("Identity permanently deleted", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key permanently deleted")
+            #localized("SSH key permanently deleted", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network permanently deleted")
+            #localized("WiFi network permanently deleted", bundle: .module)
 
         case .custom:
-            #localized("Custom item permanently deleted")
+            #localized("Custom item permanently deleted", bundle: .module)
         }
     }
 
     var updateMessage: String {
         switch self {
         case .login:
-            #localized("Login updated")
+            #localized("Login updated", bundle: .module)
 
         case .alias:
-            #localized("Alias updated")
+            #localized("Alias updated", bundle: .module)
 
         case .creditCard:
-            #localized("Credit card updated")
+            #localized("Credit card updated", bundle: .module)
 
         case .note:
-            #localized("Note updated")
+            #localized("Note updated", bundle: .module)
 
         case .identity:
-            #localized("Identity updated")
+            #localized("Identity updated", bundle: .module)
 
         case .sshKey:
-            #localized("SSH key updated")
+            #localized("SSH key updated", bundle: .module)
 
         case .wifi:
-            #localized("WiFi network updated")
+            #localized("WiFi network updated", bundle: .module)
 
         case .custom:
-            #localized("Custom item updated")
+            #localized("Custom item updated", bundle: .module)
         }
     }
 }

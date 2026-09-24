@@ -31,7 +31,7 @@ public struct TOTPText: View {
         var texts = [Text]()
 
         for (index, segment) in segments.enumerated() {
-            texts.append(Text(segment)
+            texts.append(Text(verbatim: segment)
                 .font(font)
                 .fontWeight(.medium)
                 .foregroundStyle(textColor))

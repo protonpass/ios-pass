@@ -1,4 +1,8 @@
+# Version 1.21.1
+- Fixed the invitation sheet staying stuck after accepting an invite
+
 # Version 1.21.0
+- Added support for folders (behind feature flag)
 - Show penalties for password strength criteria
 - Improved the bug reporting experience with better file and input validation
 
@@ -6,7 +10,7 @@ Others:
 - Core libraries upgraded from 37.5.3 to 37.6.1
 - Bump Sentry from 9.26 to 9.29
 - Bump Factory from 3.3.2 to 3.4
-- from Rust library upgraded from 1.6.1 to 2.0.0
+- Rust library upgraded from 1.6.1 to 2.0.0
 - Remove "PassHideShowVault" and "PassGroupInvitesV1" flags
 
 # Version 1.20.1

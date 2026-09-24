@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -39,7 +40,7 @@ struct ExtensionSettingsView: View {
             ScrollView {
                 VStack {
                     OptionRow(height: .medium) {
-                        StaticToggle(.localized("QuickType bar suggestions"),
+                        StaticToggle(#localized("QuickType bar suggestions"),
                                      isOn: viewModel.quickTypeBar,
                                      action: { viewModel.toggleQuickTypeBar() })
                     }
@@ -52,7 +53,7 @@ struct ExtensionSettingsView: View {
                         .frame(height: 24)
 
                     OptionRow(height: .medium) {
-                        StaticToggle(.localized("Copy 2FA code"),
+                        StaticToggle(#localized("Copy 2FA code"),
                                      isOn: viewModel.automaticallyCopyTotpCode,
                                      action: { viewModel.toggleAutomaticCopy2FACode() })
                     }

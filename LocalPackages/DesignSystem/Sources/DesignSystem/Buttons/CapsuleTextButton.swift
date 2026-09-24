@@ -85,7 +85,7 @@ public struct CapsuleTextButton: View {
 
 private extension CapsuleTextButton {
     var text: some View {
-        Text(title)
+        Text(verbatim: title)
             .font(font)
             .fontWeight(fontWeight)
             .foregroundStyle(titleColor)
@@ -159,7 +159,7 @@ public struct DisablableCapsuleTextButton: View {
 
 private extension DisablableCapsuleTextButton {
     var text: some View {
-        Text(title)
+        Text(verbatim: title)
             .font(.callout)
             .foregroundStyle(disabled ? disableTitleColor : titleColor)
     }
@@ -220,7 +220,7 @@ public struct CapsuleTextBorderedButton: View {
 
 private extension CapsuleTextBorderedButton {
     var text: some View {
-        Text(title)
+        Text(verbatim: title)
             .font(font)
             .foregroundStyle(titleColor)
             .padding(.horizontal, 16)

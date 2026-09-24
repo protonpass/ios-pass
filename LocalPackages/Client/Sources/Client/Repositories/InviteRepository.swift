@@ -37,7 +37,7 @@ public protocol InviteRepositoryProtocol: Sendable {
     func rejectInvite(userId: String, invite: Invite) async throws -> Bool
     func refreshAllInvites(userId: String) async throws
     func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws
-    func removeCachedInvite(userId: String, containing inviteToken: String) async
+    func removeCachedInvite(userId: String, invite: Invite) async throws
     func sendNewShareInvites(userId: String,
                              shareId: String,
                              newShareInvites: [ShareNewUserInvite]) async throws
@@ -128,9 +128,9 @@ public extension InviteRepository {
 
             case .group:
                 logger.trace("Accepting group invite with token \(inviteToken)")
-                _ = try await remoteDatasource.acceptGroupInvite(userId: userId,
-                                                                 inviteToken: inviteToken,
-                                                                 request: request)
+                try await remoteDatasource.acceptGroupInvite(userId: userId,
+                                                             inviteToken: inviteToken,
+                                                             request: request)
                 logger.trace("Accepted group invite with token \(inviteToken)")
                 return nil
             }
@@ -195,11 +195,13 @@ public extension InviteRepository {
         updateCurrentInvites(userId: userId, groupInvites: groupInvites, userInvites: userInvites)
     }
 
-    func removeCachedInvite(userId: String, containing inviteToken: String) {
+    func removeCachedInvite(userId: String, invite: Invite) async throws {
+        let inviteToken = invite.inviteToken
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
         var allInvites = currentPendingInvites.value
         allInvites[userId] = allInvites[userId]?.filter { $0.inviteToken != inviteToken }
         currentPendingInvites.send(allInvites)
+        try await removeLocalInvite(userId: userId, invite: invite)
     }
 
     func sendNewShareInvites(userId: String,
@@ -449,6 +451,11 @@ private extension InviteRepository {
         guard error.asPassApiError == .invalidValidation else {
             return
         }
+        try await removeLocalInvite(userId: userId, invite: invite)
+        try await loadLocalInvites(userId: userId)
+    }
+
+    func removeLocalInvite(userId: String, invite: Invite) async throws {
         switch invite {
         case let .user(invite):
             try await localDatasource.removeUserInvite(userId: userId, invite: invite)
@@ -456,7 +463,6 @@ private extension InviteRepository {
         case let .group(invite):
             try await localDatasource.removeGroupInvite(userId: userId, invite: invite)
         }
-        try await loadLocalInvites(userId: userId)
     }
 }
 

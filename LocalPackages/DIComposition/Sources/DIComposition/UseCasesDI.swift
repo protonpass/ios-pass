@@ -71,6 +71,10 @@ private extension UseCasesContainer {
         RepositoryContainer.shared.publicKeyRepository()
     }
 
+    var folderRepository: any FolderRepositoryProtocol {
+        RepositoryContainer.shared.folderRepository()
+    }
+
     @MainActor
     var appContentManager: any AppContentManagerProtocol {
         ServiceContainer.shared.appContentManager()
@@ -248,13 +252,14 @@ public extension UseCasesContainer {
     }
 
     var rejectInvitation: Factory<any RejectInvitationUseCase> {
-        self { RejectInvitation(repository: self.inviteRepository,
-                                userManager: self.userManager) }
+        self { RejectInvitation(repository: self.inviteRepository) }
     }
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
-        self { AcceptInvitation(repository: self.inviteRepository,
-                                userManager: self.userManager,
+        self { AcceptInvitation(inviteRepository: self.inviteRepository,
+                                itemRepository: self.itemRepository,
+                                shareRepository: self.shareRepository,
+                                folderRepository: self.folderRepository,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                 logManager: self.logManager) }
@@ -264,11 +269,6 @@ public extension UseCasesContainer {
         self { DecodeShareVaultInformation(getEmailPublicKey: self.getEmailPublicKey(),
                                            getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                            logManager: self.logManager) }
-    }
-
-    var updateCachedInvitations: Factory<any UpdateCachedInvitationsUseCase> {
-        self { UpdateCachedInvitations(repository: self.inviteRepository,
-                                       userManager: self.userManager) }
     }
 
     var revokeInvitation: Factory<any RevokeInvitationUseCase> {

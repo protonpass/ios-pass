@@ -132,7 +132,7 @@ private extension CapsuleLabelButton {
     }
 
     var titleView: some View {
-        Text(title)
+        Text(verbatim: title)
             .font(.callout)
     }
 }

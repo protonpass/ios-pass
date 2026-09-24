@@ -108,7 +108,7 @@ struct InviteRepositoryTests {
         try await sut.refreshAllInvites(userId: userId2)
 
         // When
-        await sut.removeCachedInvite(userId: userId2, containing: sharedToken)
+        try await sut.removeCachedInvite(userId: userId2, invite: .user(invite2))
 
         // Then
         #expect(sut.currentPendingInvites.value[userId1] == [.user(invite1)])

@@ -65,7 +65,7 @@ public struct NotLoggedInView: View {
             Group {
                 Text("Signed out", bundle: .module)
                     .font(.title2.bold())
-                Text(variant.message)
+                Text(verbatim: variant.message)
             }
             .multilineTextAlignment(.center)
             .foregroundStyle(PassColor.textNorm)

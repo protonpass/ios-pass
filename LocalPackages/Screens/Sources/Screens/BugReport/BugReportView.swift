@@ -113,7 +113,7 @@ private extension BugReportView {
     }
 
     func pickerLabel(_ title: String) -> some View {
-        Label(title: { Text(title) },
+        Label(title: { Text(verbatim: title) },
               icon: { Image(systemName: "chevron.up.chevron.down") })
             .fontWeight(.bold)
             .foregroundStyle(PassColor.interactionNormMajor2)
@@ -132,7 +132,7 @@ private extension BugReportView {
                 Button(action: {
                     viewModel.object = object
                 }, label: {
-                    Text(object.description)
+                    Text(verbatim: object.description)
                 })
             }
         }, label: {
@@ -157,7 +157,7 @@ private extension BugReportView {
                        bundle: .module)
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(title)
+                Text(verbatim: title)
                     .font(.footnote)
                     .foregroundStyle(PassColor.textNorm)
 
@@ -165,7 +165,7 @@ private extension BugReportView {
                 // workaround by using a ZStack
                 ZStack(alignment: .topLeading) {
                     if viewModel.description.isEmpty {
-                        Text(placeholder)
+                        Text(verbatim: placeholder)
                             .foregroundStyle(PassColor.textHint)
                     }
 
@@ -249,7 +249,7 @@ private extension BugReportView {
 
     func view(for fileName: String) -> some View {
         Label(title: {
-            Text(fileName)
+            Text(verbatim: fileName)
                 .font(.callout)
                 .foregroundStyle(PassColor.textNorm)
                 .lineLimit(1)

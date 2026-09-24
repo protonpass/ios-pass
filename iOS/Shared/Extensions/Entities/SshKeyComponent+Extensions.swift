@@ -19,13 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Macro
 import SwiftUI
 
 extension SshKeyComponent {
-    var title: LocalizedStringKey {
+    var title: String {
         switch self {
-        case .publicKey: "Public key"
-        case .privateKey: "Private key"
+        case .publicKey: #localized("Public key")
+        case .privateKey: #localized("Private key")
         }
     }
 

@@ -40,7 +40,7 @@ public struct ParenthesizedText: View {
     }
 
     public var body: some View {
-        Text(attributedString)
+        Text(attributedString) // ignore:missing_bundle
     }
 }
 

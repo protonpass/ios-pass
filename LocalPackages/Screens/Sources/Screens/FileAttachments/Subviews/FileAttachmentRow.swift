@@ -21,6 +21,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -73,7 +74,7 @@ private extension FileAttachmentRow {
                 .frame(maxWidth: 20)
 
             VStack(alignment: .leading) {
-                Text(uiModel.name)
+                Text(verbatim: uiModel.name)
                     .lineLimit(2)
                     .truncationMode(.middle)
                     .foregroundStyle(PassColor.textNorm)
@@ -113,26 +114,26 @@ private extension FileAttachmentRow {
                 Menu(content: {
                     switch mode {
                     case let .edit(onOpen, onRename, onDelete, _):
-                        LabelButton(title: "Open",
+                        LabelButton(title: #localized("Open", bundle: .module),
                                     icon: IconProvider.eye,
                                     action: onOpen)
-                        LabelButton(title: "Rename",
+                        LabelButton(title: #localized("Rename", bundle: .module),
                                     icon: PassIcon.rename,
                                     action: onRename)
                         Divider()
-                        LabelButton(title: "Delete",
+                        LabelButton(title: #localized("Delete", bundle: .module),
                                     icon: IconProvider.trash,
                                     action: onDelete)
 
                     case let .view(onOpen, onSave, onShare):
-                        LabelButton(title: "Open",
+                        LabelButton(title: #localized("Open", bundle: .module),
                                     icon: IconProvider.eye,
                                     action: onOpen)
-                        LabelButton(title: "Save",
+                        LabelButton(title: #localized("Save", bundle: .module),
                                     icon: IconProvider.arrowDownCircle,
                                     action: onSave)
 
-                        LabelButton(title: "Share",
+                        LabelButton(title: #localized("Share", bundle: .module),
                                     icon: IconProvider.arrowUpFromSquare,
                                     action: onShare)
                     }
@@ -145,11 +146,11 @@ private extension FileAttachmentRow {
             case .error:
                 if case let .edit(_, _, onDelete, onRetryUpload) = mode {
                     Menu(content: {
-                        LabelButton(title: "Retry",
+                        LabelButton(title: #localized("Retry", bundle: .module),
                                     icon: IconProvider.arrowRotateRight,
                                     action: onRetryUpload)
                         Divider()
-                        LabelButton(title: "Delete",
+                        LabelButton(title: #localized("Delete", bundle: .module),
                                     icon: IconProvider.trash,
                                     action: onDelete)
                     }, label: {
