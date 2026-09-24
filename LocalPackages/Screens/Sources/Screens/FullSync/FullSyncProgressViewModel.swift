@@ -31,7 +31,6 @@ import UseCases
 @Observable
 public final class FullSyncProgressViewModel {
     public private(set) var operation: FullSyncOperation
-    public let presentation: FullSyncPresentation
 
     private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
@@ -57,7 +56,6 @@ public final class FullSyncProgressViewModel {
     public init(operation: FullSyncOperation,
                 onFinish: @escaping (FullSyncOperation, FullSyncOperation.Outcome) -> Void) {
         self.operation = operation
-        presentation = operation.presentation
         self.onFinish = onFinish
         track(operation)
     }
@@ -77,7 +75,7 @@ public final class FullSyncProgressViewModel {
 
     func retry() {
         track(fullContentSync.start(userId: operation.userId,
-                                    presentation: presentation,
+                                    presentation: operation.presentation,
                                     shouldStopEventLoop: true))
     }
 

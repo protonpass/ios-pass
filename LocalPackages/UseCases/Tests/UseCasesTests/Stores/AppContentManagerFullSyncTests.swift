@@ -118,7 +118,7 @@ struct AppContentManagerFullSyncTests {
     }
 
     @Test
-    func `A sheet request upgrades an inline sync in flight`() async {
+    func `A sheet request joins an inline sync in flight without presenting it`() async {
         let gate = refresh.pause("user-a")
 
         let inline = sut.startFullSync(userId: "user-a", presentation: .inline)
@@ -128,7 +128,8 @@ struct AppContentManagerFullSyncTests {
         _ = await inline.result()
 
         #expect(inline === sheet)
-        #expect(inline.presentation == .sheet)
+        #expect(inline.presentation == .inline)
+        #expect(refresh.calls == ["user-a"])
     }
 
     @Test

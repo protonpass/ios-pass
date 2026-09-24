@@ -48,7 +48,7 @@ public final class FullSyncOperation: Identifiable {
 
     public let id = UUID()
     public let userId: String
-    public var presentation: FullSyncPresentation
+    public let presentation: FullSyncPresentation
     public private(set) var progresses: [VaultSyncProgress] = []
     /// `nil` while the sync is queued or running
     public private(set) var outcome: Outcome?

@@ -31,7 +31,7 @@ public struct FullSyncProgressView: View {
     }
 
     public var body: some View {
-        switch viewModel.presentation {
+        switch viewModel.operation.presentation {
         case .sheet:
             NavigationStack {
                 realBody
