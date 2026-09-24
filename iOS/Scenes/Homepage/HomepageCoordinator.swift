@@ -596,10 +596,10 @@ private extension HomepageCoordinator {
     }
 
     /// Runs on launch and on every account switch: an interrupted sync left the account's local
-    /// data wiped. A sync already in flight is left alone, e.g. the one right after logging in.
+    /// data wiped. Joins the account's sync already in flight, e.g. the one right after logging in,
+    /// and queues behind another account's background sync instead of skipping.
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
-        guard appContentManager.incompleteFullSyncUserIds.contains(userId),
-              !appContentManager.isFullSyncing else { return }
+        guard appContentManager.incompleteFullSyncUserIds.contains(userId) else { return }
         fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
