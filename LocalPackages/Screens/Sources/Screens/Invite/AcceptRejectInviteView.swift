@@ -1,5 +1,4 @@
 //
-//
 // AcceptRejectInviteView.swift
 // Proton Pass - Created on 27/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
@@ -23,22 +22,21 @@
 import DesignSystem
 import Entities
 import Macro
-import Screens
 import SwiftUI
 
-struct AcceptRejectInviteView: View {
+public struct AcceptRejectInviteView: View {
     @State private var viewModel: AcceptRejectInviteViewModel
 
-    init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {
+    public init(invite: Invite, onResult: @escaping (AcceptRejectInviteResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(invite: invite, onResult: onResult))
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
                 VStack {
                     if viewModel.invite.fromNewUser {
-                        Text("Congratulations,\n your access has been confirmed")
+                        Text("Congratulations,\n your access has been confirmed", bundle: .module)
                             .font(.title2.bold())
                             .foregroundStyle(PassColor.textNorm)
                             .multilineTextAlignment(.center)
@@ -76,29 +74,32 @@ private extension AcceptRejectInviteView {
     var senderEmailInfo: some View {
         VStack(alignment: .center) {
             if viewModel.invite.isVault {
-                Text(viewModel.invite.inviterEmail)
+                Text(verbatim: viewModel.invite.inviterEmail)
                     .fontWeight(.bold)
                 switch viewModel.invite {
                 case .user:
-                    Text("invites you to access items in")
+                    Text("invites you to access items in", bundle: .module)
 
                 case .group:
-                    Text("invites the group \(viewModel.invitedGroupName) to access items in")
+                    Text("invites the group \(viewModel.invitedGroupName) to access items in",
+                         bundle: .module)
                 }
             } else {
-                Text("Shared item invitation")
+                Text("Shared item invitation", bundle: .module)
                     .font(.title2)
                     .fontWeight(.bold)
                     .padding(.bottom, 16)
                 switch viewModel.invite {
                 case .user:
-                    Text("\(viewModel.invite.inviterEmail) wants to share an item with you.")
+                    Text("\(viewModel.invite.inviterEmail) wants to share an item with you.",
+                         bundle: .module)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
 
                 case .group:
                     // swiftlint:disable:next line_length
-                    Text("\(viewModel.invite.inviterEmail) wants to share an item with the group \(viewModel.invitedGroupName).")
+                    Text("\(viewModel.invite.inviterEmail) wants to share an item with the group \(viewModel.invitedGroupName).",
+                         bundle: .module)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 16)
                 }
@@ -116,10 +117,10 @@ private extension AcceptRejectInviteView {
                          backgroundColor: infos.backgroundColor,
                          type: .custom(buttonSize: 64, iconSize: 28))
 
-            Text(infos.name)
+            Text(verbatim: infos.name)
                 .font(.title2.bold())
                 .foregroundStyle(PassColor.textNorm)
-            Text(viewModel.invite.vaultsCountInfos)
+            Text(verbatim: viewModel.invite.vaultsCountInfos)
                 .font(.title3)
                 .foregroundStyle(PassColor.textWeak)
         }
@@ -146,21 +147,22 @@ private extension Invite {
     var acceptButtonTitle: String {
         switch self {
         case .user:
-            isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
-                #localized("Accept and view the item")
+            isVault ? fromNewUser ? #localized("See the shared vault", bundle: .module) :
+                #localized("Join shared vault", bundle: .module) :
+                #localized("Accept and view the item", bundle: .module)
 
         case .group:
-            #localized("Accept invitation")
+            #localized("Accept invitation", bundle: .module)
         }
     }
 
     var rejectButtonTitle: String {
-        fromNewUser ? #localized("Close") : #localized("Reject invitation")
+        fromNewUser ? #localized("Close", bundle: .module) : #localized("Reject invitation", bundle: .module)
     }
 
     var vaultsCountInfos: String {
-        let itemsCount = #localized("%lld item(s)", vaultData?.itemCount ?? 0)
-        let membersCount = #localized("%lld member(s)", vaultData?.memberCount ?? 0)
+        let itemsCount = #localized("%lld item(s)", bundle: .module, vaultData?.itemCount ?? 0)
+        let membersCount = #localized("%lld member(s)", bundle: .module, vaultData?.memberCount ?? 0)
         return "\(itemsCount) • \(membersCount)"
     }
 }
