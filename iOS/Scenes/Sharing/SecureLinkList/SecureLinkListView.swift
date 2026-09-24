@@ -23,6 +23,7 @@
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecureLinkListView: View {

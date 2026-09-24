@@ -1,6 +1,6 @@
 //
 // ItemWeaknessDisplay+Extensions.swift
-// Proton Pass - Created on 16/06/2026.
+// Proton Pass - Created on 24/09/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -25,36 +25,36 @@ import Foundation
 import Macro
 import SwiftUI
 
-extension ItemWeaknessDisplay {
+public extension ItemWeaknessDisplay {
     var title: String {
         switch self {
         case .fullyExcluded:
-            #localized("Excluded Item")
+            #localized("Excluded Item", bundle: .module)
 
         case .weakness(.weakPassword, _):
-            #localized("Weak password")
+            #localized("Weak password", bundle: .module)
 
         case .weakness(.compromisedPassword, _):
-            #localized("Compromised password")
+            #localized("Compromised password", bundle: .module)
 
         case .weakness(.reusedPassword, _):
-            #localized("Reused password")
+            #localized("Reused password", bundle: .module)
 
         case .weakness(.missing2FA, _):
-            #localized("Set up 2FA for more security")
+            #localized("Set up 2FA for more security", bundle: .module)
         }
     }
 
     var infos: String? {
         switch self {
         case .fullyExcluded:
-            #localized("This item is not being monitored")
+            #localized("This item is not being monitored", bundle: .module)
 
         case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
-            #localized("This account is vulnerable, visit the service and change your password")
+            #localized("This account is vulnerable, visit the service and change your password", bundle: .module)
 
         case .weakness(.missing2FA, _):
-            #localized("This service offers 2FA. Enable it for added account security.")
+            #localized("This service offers 2FA. Enable it for added account security.", bundle: .module)
 
         case .weakness(.reusedPassword, _):
             nil
@@ -81,7 +81,7 @@ extension ItemWeaknessDisplay {
     var shortTitle: String {
         switch self {
         case .weakness(.missing2FA, _):
-            #localized("Missing 2FA")
+            #localized("Missing 2FA", bundle: .module)
 
         case .fullyExcluded,
              .weakness(.compromisedPassword, _),

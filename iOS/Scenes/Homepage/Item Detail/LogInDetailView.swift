@@ -54,7 +54,6 @@ private extension LogInDetailView {
                 ScrollView {
                     VStack(spacing: 0) {
                         securityIssuesView
-                            .padding(.vertical)
 
                         if let vaultContent = viewModel.shareContent?.share.vaultContent {
                             ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
@@ -401,7 +400,12 @@ private extension LogInDetailView {
     var securityIssuesView: some View {
         if let issues = viewModel.securityIssues, !issues.isEmpty {
             SecurityIssueView(weaknesses: issues,
-                              viewModel: viewModel)
+                              reusedItems: viewModel.reusedItems,
+                              onToggleMonitoring: viewModel.toggleMonitoring(weakness:),
+                              onShowReusedItemList: viewModel.showItemList,
+                              onShowItemDetail: viewModel.showDetail(for:),
+                              onRetryFetchReusedItems: viewModel.fetchSimilarPasswordItems)
+                .padding(.vertical)
         }
     }
 }
