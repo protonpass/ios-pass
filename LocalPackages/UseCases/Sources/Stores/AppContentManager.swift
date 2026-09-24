@@ -479,10 +479,6 @@ public extension AppContentManager {
         }
     }
 
-    func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
-        try await itemRepository.getItemContent(shareId: shareId, itemId: itemId)
-    }
-
     @MainActor
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption

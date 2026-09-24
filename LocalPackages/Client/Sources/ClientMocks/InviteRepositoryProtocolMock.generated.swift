@@ -133,16 +133,20 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureRefreshSpecificInvites()
     }
     // MARK: - removeCachedInvite
+    public var removeCachedInviteUserIdInviteThrowableError6: Error?
     public var closureRemoveCachedInvite: () -> () = {}
     public var invokedRemoveCachedInvitefunction = false
     public var invokedRemoveCachedInviteCount = 0
-    public var invokedRemoveCachedInviteParameters: (userId: String, inviteToken: String)?
-    public var invokedRemoveCachedInviteParametersList = [(userId: String, inviteToken: String)]()
+    public var invokedRemoveCachedInviteParameters: (userId: String, invite: Invite)?
+    public var invokedRemoveCachedInviteParametersList = [(userId: String, invite: Invite)]()
 
-    public func removeCachedInvite(userId: String, containing inviteToken: String) async {
+    public func removeCachedInvite(userId: String, invite: Invite) async throws {
         invokedRemoveCachedInvitefunction = true
         invokedRemoveCachedInviteCount += 1
-        invokedRemoveCachedInviteParameters = (userId, inviteToken)
+        invokedRemoveCachedInviteParameters = (userId, invite)
+        if let error = removeCachedInviteUserIdInviteThrowableError6 {
+            throw error
+        }
         closureRemoveCachedInvite()
     }
     // MARK: - sendNewShareInvites

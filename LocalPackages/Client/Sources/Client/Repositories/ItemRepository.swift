@@ -116,6 +116,10 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Permanently delete selected items
     func delete(userId: String, items: [any ItemIdentifiable]) async throws
 
+    /// Get and cache a shared item after accepting an item invite
+    /// Return an optional item content in order to display after accepting
+    func getSharedItem(userId: String, share: Share) async throws -> ItemContent?
+
     @discardableResult
     func updateItem(userId: String,
                     oldItem: Item,
@@ -322,7 +326,7 @@ public extension ItemRepository {
     func refreshItems(userId: String,
                       shareId: String,
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
-        logger.trace("Refreshing share \(shareId)")
+        logger.trace("Refreshing items for share \(shareId)")
         let itemRevisions = try await remoteDatasource.getItems(userId: userId,
                                                                 shareId: shareId,
                                                                 eventStream: eventStream)
@@ -645,6 +649,32 @@ public extension ItemRepository {
         try await refreshPinnedItemDataStream()
         itemsWereUpdated.send()
         logger.trace("Deleted locally items \(items.count)")
+    }
+
+    func getSharedItem(userId: String, share: Share) async throws -> ItemContent? {
+        let shareId = share.shareID
+        guard share.shareType == .item else {
+            throw PassError.itemShareExpected(share)
+        }
+        logger.trace("Getting shared item shareId: \(shareId), targetId: \(share.targetID)")
+        let revisions = try await remoteDatasource.getItemRevisions(userId: userId,
+                                                                    shareId: shareId,
+                                                                    itemId: share.targetID,
+                                                                    lastToken: nil)
+        guard let lastestRevision = revisions.data.first else {
+            throw PassError.sharedItemNotFound(share)
+        }
+        let symmetricKey = try await getSymmetricKey()
+        let encrypted = try await symmetricallyEncrypt(itemRevision: lastestRevision,
+                                                       shareId: shareId,
+                                                       userId: userId,
+                                                       symmetricKey: symmetricKey)
+        try await localDatasource.upsertItems([encrypted])
+        guard let content = try await getItemContent(shareId: shareId,
+                                                     itemId: encrypted.itemId) else {
+            throw PassError.itemNotFound(encrypted)
+        }
+        return content
     }
 
     func updateItem(userId: String,
