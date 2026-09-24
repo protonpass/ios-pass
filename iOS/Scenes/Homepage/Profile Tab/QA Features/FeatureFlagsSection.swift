@@ -41,7 +41,7 @@ struct FeatureFlagsSection: View {
     }
 
     private func row(for flag: String) -> some View {
-        StaticToggle(.verbatim(flag),
+        StaticToggle(flag,
                      isOn: viewModel.isActivated(flag),
                      action: { viewModel.toggle(flag) })
     }

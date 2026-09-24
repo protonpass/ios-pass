@@ -87,10 +87,13 @@ struct EditCustomFieldView<Field: Hashable>: View {
             }
             .animation(.default, value: isRemoved)
 
-            Menu(content: {
+            CircleMenu(icon: IconProvider.threeDotsVertical,
+                       iconColor: contentType.normMajor1Color,
+                       backgroundColor: contentType.normMinor1Color,
+                       accessibilityLabel: "Custom field menu") {
                 Button(action: onEditTitle) {
                     Label(title: { Text("Edit name") },
-                          icon: { IconProvider.pencil })
+                          icon: { IconProvider.pencil as Image })
                 }
 
                 Button(action: {
@@ -98,15 +101,9 @@ struct EditCustomFieldView<Field: Hashable>: View {
                     onRemove()
                 }, label: {
                     Label(title: { Text("Remove field") },
-                          icon: { IconProvider.crossCircle })
+                          icon: { IconProvider.crossCircle as Image })
                 })
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: contentType.normMajor1Color,
-                             backgroundColor: contentType.normMinor1Color,
-                             accessibilityLabel: "Custom field menu",
-                             action: {})
-            })
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .if(roundedSection) { view in

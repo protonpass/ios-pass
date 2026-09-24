@@ -89,7 +89,7 @@ private extension ItemDetailToolbar {
             if case .active = viewModel.itemContent.item.itemState {
                 Menu(content: {
                     if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
-                        Label("Move to another container", uiImage: IconProvider.folderArrowIn)
+                        Label("Move", uiImage: IconProvider.folderArrowIn)
                             .buttonEmbeded {
                                 if viewModel.itemContent.shared {
                                     viewModel.showingVaultMoveAlert.toggle()

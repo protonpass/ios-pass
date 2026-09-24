@@ -26,7 +26,9 @@ import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol InviteRepositoryProtocol: Sendable {
-    var currentPendingInvites: CurrentValueSubject<[Invite], Never> { get }
+    /// This publisher returns a dictionary containing invites link to a user id as key.
+    /// This enables filtering of invites displayed on main screen per user / account connected to the device
+    var currentPendingInvites: CurrentValueSubject<[String: [Invite]], Never> { get }
 
     func loadLocalInvites(userId: String) async throws
     func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share?
@@ -35,7 +37,7 @@ public protocol InviteRepositoryProtocol: Sendable {
     func rejectInvite(userId: String, invite: Invite) async throws -> Bool
     func refreshAllInvites(userId: String) async throws
     func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws
-    func removeCachedInvite(containing inviteToken: String) async
+    func removeCachedInvite(userId: String, invite: Invite) async throws
     func sendNewShareInvites(userId: String,
                              shareId: String,
                              newShareInvites: [ShareNewUserInvite]) async throws
@@ -89,7 +91,7 @@ public actor InviteRepository: FullInviteRepositoryProtocol {
     private let localDatasource: any LocalInviteDatasourceProtocol
     private let logger: Logger
 
-    public nonisolated let currentPendingInvites: CurrentValueSubject<[Invite], Never> = .init([])
+    public nonisolated let currentPendingInvites: CurrentValueSubject<[String: [Invite]], Never> = .init([:])
 
     public init(remoteDatasource: any RemoteInviteDatasourceProtocol,
                 localDatasource: any LocalInviteDatasourceProtocol,
@@ -106,7 +108,7 @@ public extension InviteRepository {
         async let getGroupInvites = try localDatasource.getGroupInvites(userId: userId)
 
         let (groupInvites, userInvites) = try await (getGroupInvites, getUserInvites)
-        updateCurrentInvites(groupInvites: groupInvites, userInvites: userInvites)
+        updateCurrentInvites(userId: userId, groupInvites: groupInvites, userInvites: userInvites)
     }
 
     func acceptInvite(userId: String, invite: Invite, keys: [ItemKey]) async throws -> Share? {
@@ -126,9 +128,9 @@ public extension InviteRepository {
 
             case .group:
                 logger.trace("Accepting group invite with token \(inviteToken)")
-                _ = try await remoteDatasource.acceptGroupInvite(userId: userId,
-                                                                 inviteToken: inviteToken,
-                                                                 request: request)
+                try await remoteDatasource.acceptGroupInvite(userId: userId,
+                                                             inviteToken: inviteToken,
+                                                             request: request)
                 logger.trace("Accepted group invite with token \(inviteToken)")
                 return nil
             }
@@ -174,7 +176,7 @@ public extension InviteRepository {
             logger.error("Group invite fetch failed: \(error)")
         }
 
-        updateCurrentInvites(groupInvites: groupInvites ?? [], userInvites: userInvites)
+        updateCurrentInvites(userId: userId, groupInvites: groupInvites ?? [], userInvites: userInvites)
     }
 
     func refreshSpecificInvites(userId: String, refreshInviteType: RefreshInviteType) async throws {
@@ -190,13 +192,16 @@ public extension InviteRepository {
             userInvites = try await updateUserInvite(userId, eventToken: token)
         }
 
-        updateCurrentInvites(groupInvites: groupInvites, userInvites: userInvites)
+        updateCurrentInvites(userId: userId, groupInvites: groupInvites, userInvites: userInvites)
     }
 
-    func removeCachedInvite(containing inviteToken: String) {
+    func removeCachedInvite(userId: String, invite: Invite) async throws {
+        let inviteToken = invite.inviteToken
         logger.trace("Removing current cached invite containing inviteToken \(inviteToken)")
-        let newInvites = currentPendingInvites.value.filter { $0.inviteToken != inviteToken }
-        currentPendingInvites.send(newInvites)
+        var allInvites = currentPendingInvites.value
+        allInvites[userId] = allInvites[userId]?.filter { $0.inviteToken != inviteToken }
+        currentPendingInvites.send(allInvites)
+        try await removeLocalInvite(userId: userId, invite: invite)
     }
 
     func sendNewShareInvites(userId: String,
@@ -432,10 +437,12 @@ private extension InviteRepository {
         return invites
     }
 
-    func updateCurrentInvites(groupInvites: [GroupInvite], userInvites: [UserInvite]) {
+    func updateCurrentInvites(userId: String, groupInvites: [GroupInvite], userInvites: [UserInvite]) {
         let invites: [Invite] = groupInvites.map { .group($0) } + userInvites.map { .user($0) }
 
-        currentPendingInvites.send(invites)
+        var allInvites = currentPendingInvites.value
+        allInvites[userId] = invites
+        currentPendingInvites.send(allInvites)
     }
 
     func removeLocalOutdatedInvite(userId: String, error: Error, invite: Invite) async throws {
@@ -444,6 +451,11 @@ private extension InviteRepository {
         guard error.asPassApiError == .invalidValidation else {
             return
         }
+        try await removeLocalInvite(userId: userId, invite: invite)
+        try await loadLocalInvites(userId: userId)
+    }
+
+    func removeLocalInvite(userId: String, invite: Invite) async throws {
         switch invite {
         case let .user(invite):
             try await localDatasource.removeUserInvite(userId: userId, invite: invite)
@@ -451,7 +463,6 @@ private extension InviteRepository {
         case let .group(invite):
             try await localDatasource.removeGroupInvite(userId: userId, invite: invite)
         }
-        try await loadLocalInvites(userId: userId)
     }
 }
 

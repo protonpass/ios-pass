@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
@@ -47,34 +48,34 @@ struct StorageUiModel {
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let notificationService = resolve(\SharedServiceContainer.notificationService)
+    private let credentialManager = dependency(\ServiceContainer.credentialManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let notificationService = dependency(\ServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
-    private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
-    private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
-    private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let policy = dependency(\ToolingContainer.localAuthenticationEnablingPolicy)
+    private let getAuthMethods = dependency(\UseCasesContainer.getLocalAuthenticationMethods)
+    private let checkBiometryType = dependency(\UseCasesContainer.checkBiometryType)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = dependency(\DataContainer.itemTypeSelection)
 
     // Use cases
-    private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
-    private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
-    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
-    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private let indexAllLoginItems = dependency(\UseCasesContainer.indexAllLoginItems)
+    private let unindexAllLoginItems = dependency(\UseCasesContainer.unindexAllLoginItems)
+    private let enableAutoFill = dependency(\UseCasesContainer.enableAutoFill)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
+    private let secureLinkManager = dependency(\ServiceContainer.secureLinkManager)
+    private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
 
     /// Repositories
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\UseCasesContainer.switchUser) private var switchUser
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
@@ -229,7 +230,11 @@ extension ProfileTabViewModel {
     func handleEnableAutoFillAction() {
         Task { [weak self] in
             guard let self else { return }
-            if await enableAutoFill() {
+            let outcome = await enableAutoFill()
+            if outcome.needsInstructions {
+                router.present(for: .autoFillInstructions)
+            }
+            if outcome.handled {
                 autoFillEnabled = await credentialManager.isAutoFillEnabled
             }
         }
@@ -544,8 +549,12 @@ private extension ProfileTabViewModel {
         accesses.first(where: { $0.userId == userId })?.access.plan.displayName
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

@@ -22,6 +22,18 @@
 import Foundation
 import UIKit
 
+public struct CreatePasskeyPrfOutput: Hashable, Sendable {
+    public let supported: Bool
+    public let first: Data?
+    public let second: Data?
+
+    public init(supported: Bool, first: Data?, second: Data?) {
+        self.supported = supported
+        self.first = first
+        self.second = second
+    }
+}
+
 public struct CreatePasskeyResponse: Hashable, Sendable {
     public let passkey: Data
     public let keyId: String
@@ -39,6 +51,7 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
     public let osVersion: String
     public let deviceName: String
     public let appVersion: String
+    public let prf: CreatePasskeyPrfOutput?
 
     public init(passkey: Data,
                 keyId: String,
@@ -55,7 +68,8 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
                 osName: String,
                 osVersion: String,
                 deviceName: String,
-                appVersion: String) {
+                appVersion: String,
+                prf: CreatePasskeyPrfOutput?) {
         self.passkey = passkey
         self.keyId = keyId
         self.domain = domain
@@ -72,6 +86,7 @@ public struct CreatePasskeyResponse: Hashable, Sendable {
         self.osVersion = osVersion
         self.deviceName = deviceName
         self.appVersion = appVersion
+        self.prf = prf
     }
 }
 

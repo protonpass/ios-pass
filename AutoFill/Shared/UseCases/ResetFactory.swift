@@ -20,7 +20,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DIComposition
 import FactoryKit
+import Screens
 
 protocol ResetFactoryUseCase: Sendable {
     func execute()
@@ -36,10 +38,10 @@ final class ResetFactory: ResetFactoryUseCase {
     init() {}
 
     func execute() {
-        SharedViewContainer.shared.reset()
-        SharedRepositoryContainer.shared.reset()
-        SharedToolingContainer.shared.reset()
-        SharedDataContainer.shared.reset()
+        UIComponentsContainer.shared.reset()
+        RepositoryContainer.shared.reset()
+        ToolingContainer.shared.reset()
+        DataContainer.shared.reset()
         AutoFillUseCaseContainer.shared.reset()
     }
 }

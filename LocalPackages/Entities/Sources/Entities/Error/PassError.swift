@@ -34,6 +34,8 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case crypto(CryptoFailureReason)
     case errorExpected
     case itemNotFound(any ItemIdentifiable)
+    case itemShareExpected(Share)
+    case sharedItemNotFound(Share)
     case keysNotFound(shareID: String)
     case shareNotFoundInLocalDB(shareID: String)
     case symmetricEncryption(SymmetricEncryptionFailureReason)
@@ -62,6 +64,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case itemsNotBelongToSameVault
     case group(GroupFailureReason)
     case folder(FolderFailureReason)
+    case bugReport(BugReportFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -97,6 +100,12 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
 
         case let .itemNotFound(item):
             "Item not found ID \"\(item.itemId)\", share ID \"\(item.shareId)\""
+
+        case let .itemShareExpected(share):
+            "Item share expected for share \(share.shareId), target type \(share.targetType)"
+
+        case let .sharedItemNotFound(share):
+            "Shared item not found share ID \(share.shareId), target ID \(share.targetID)"
 
         case let .keysNotFound(shareID):
             "Keys not found for share \"\(shareID)\""
@@ -180,6 +189,9 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
             reason.debugDescription
 
         case let .folder(reason):
+            reason.debugDescription
+
+        case let .bugReport(reason):
             reason.debugDescription
         }
     }

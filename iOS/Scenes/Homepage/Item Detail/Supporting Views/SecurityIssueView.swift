@@ -82,7 +82,9 @@ struct SecurityIssueView: View {
             VStack(alignment: .leading, spacing: 10) {
                 ForEach(weaknesses) { weakness in
                     securityWeaknessRow(weakness: weakness)
-                    if weakness != weaknesses.last { Divider() }
+                    if weakness != weaknesses.last {
+                        Divider()
+                    }
                 }
             }
             .transition(.opacity)

@@ -19,9 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 enum EnableExtraPasswordViewState {
     case defining, repeating
@@ -65,12 +67,12 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     private var definedExtraPassword = ""
     private var protonPasswordFailedVerificationCount = 0
 
-    private let doVerifyProtonPassword = resolve(\UseCasesContainer.verifyProtonPassword)
-    private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
-    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let doVerifyProtonPassword = dependency(\UseCasesContainer.verifyProtonPassword)
+    private let enableExtraPassword = dependency(\UseCasesContainer.enableExtraPassword)
+    private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
         Task { [weak self] in

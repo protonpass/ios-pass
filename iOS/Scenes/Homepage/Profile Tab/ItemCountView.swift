@@ -21,9 +21,11 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
+import Stores
 import SwiftUI
 
 private let kChipHeight: CGFloat = 56
@@ -166,6 +168,7 @@ private extension CounterChip {
 }
 
 private extension ItemContentType {
+    @MainActor
     var toConfiguration: CounterChip.Configuration {
         .init(icon: regularIcon,
               iconTint: thumbnailTintColor,
@@ -176,7 +179,7 @@ private extension ItemContentType {
 @MainActor
 private final class ItemCountViewModel: ObservableObject {
     @Published private(set) var object: FetchableObject<ItemCount> = .fetching
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
     private var cancellables = Set<AnyCancellable>()
 
     private var task: Task<Void, Never>?
@@ -210,7 +213,9 @@ private final class ItemCountViewModel: ObservableObject {
 private extension ItemCountViewModel {
     @concurrent
     func refreshAsync(_ sharesData: SharesData) async -> FetchableObject<ItemCount>? {
-        if Task.isCancelled { return nil }
+        if Task.isCancelled {
+            return nil
+        }
         let hiddenShareIds = sharesData.hiddenSharesIds
         let activeItems = sharesData.visibleShareContents.flatMap(\.allItems)
         let allItems = activeItems + sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }

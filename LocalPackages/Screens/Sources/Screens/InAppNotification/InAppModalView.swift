@@ -25,45 +25,36 @@ import SwiftUI
 
 public struct InAppModalView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var contentHeight: CGFloat = 0
-
-    @StateObject private var viewModel: InAppModalViewModel
     private let notification: InAppNotification
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
     private let onTap: () -> Void
     private let onClose: () -> Void
+    private let onHeightChanged: (Double) -> Void
 
     public init(notification: InAppNotification,
-                viewModel: InAppModalViewModel,
                 onAppear: @escaping () -> Void,
                 onDisappear: @escaping () -> Void,
                 onTap: @escaping () -> Void,
-                onClose: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: viewModel)
+                onClose: @escaping () -> Void,
+                onHeightChanged: @escaping (Double) -> Void) {
         self.notification = notification
         self.onAppear = onAppear
         self.onDisappear = onDisappear
         self.onTap = onTap
         self.onClose = onClose
+        self.onHeightChanged = onHeightChanged
     }
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundWeak
             VStack(spacing: 24) {
                 if let imageUrl = notification.content.safeImageUrl {
                     AsyncImage(url: imageUrl,
                                content: { image in
                                    image.resizable()
-                                       .aspectRatio(contentMode: .fit)
+                                       .scaledToFit()
                                        .frame(minHeight: 150, idealHeight: 180, maxHeight: 180)
-                                       .background(GeometryReader { proxy in
-                                           Color.clear
-                                               .onAppear {
-                                                   contentHeight += proxy.size.height
-                                               }
-                                       })
                                },
                                placeholder: {
                                    ProgressView()
@@ -104,12 +95,6 @@ public struct InAppModalView: View {
             .padding(DesignConstant.sectionPadding)
             .background(PassColor.backgroundWeak)
             .frame(maxWidth: .infinity)
-            .background(GeometryReader { proxy in
-                Color.clear
-                    .onAppear {
-                        contentHeight += proxy.size.height
-                    }
-            })
 
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.backgroundNorm,
@@ -126,27 +111,6 @@ public struct InAppModalView: View {
         .interactiveDismissDisabled()
         .onAppear(perform: onAppear)
         .onDisappear(perform: onDisappear)
-        .onChange(of: contentHeight) { _, value in
-            viewModel.updateSheetHeight(value)
-        }
-    }
-}
-
-@MainActor
-public final class InAppModalViewModel: ObservableObject {
-    public weak var sheetPresentation: UISheetPresentationController?
-
-    public init() {}
-
-    func updateSheetHeight(_ height: CGFloat) {
-        guard let sheetPresentation else {
-            return
-        }
-        let custom = UISheetPresentationController.Detent.custom { _ in
-            CGFloat(height)
-        }
-        sheetPresentation.animateChanges {
-            sheetPresentation.detents = [custom]
-        }
+        .fittedPresentationDetent(onHeightChanged: onHeightChanged)
     }
 }

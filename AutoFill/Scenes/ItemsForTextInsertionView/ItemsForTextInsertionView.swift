@@ -44,6 +44,7 @@ struct ItemsForTextInsertionView: View {
         .task {
             await viewModel.fetchItems()
             await viewModel.sync(ignoreError: true)
+            await viewModel.refreshFolderSyncBanner()
         }
         .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
                              onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
@@ -98,6 +99,11 @@ private extension ItemsForTextInsertionView {
                 }
                 .padding(.horizontal)
                 .animation(.default, value: viewModel.query.isEmpty)
+
+                if viewModel.showFolderSyncBanner {
+                    FolderSyncRequiredBanner()
+                        .padding([.horizontal, .top])
+                }
             }
             switch viewModel.state {
             case .idle:

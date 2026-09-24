@@ -19,10 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import ProtonCoreUIFoundations
+import Screens
 import UIKit
 
 @MainActor
@@ -35,13 +37,13 @@ final class ShareElementViewModel: ObservableObject {
     let itemContent: ItemContent
     let itemCount: Int?
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    @LazyInjected(\RepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\ServiceContainer.userManager) var userManager
+    @LazyInjected(\RepositoryContainer.accessRepository) private(set) var accessRepository
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
 
     weak var sheetPresentation: UISheetPresentationController?

@@ -38,37 +38,4 @@ public extension PassModule {
             #localized("Action extension logs", bundle: .module)
         }
     }
-
-    var logFileName: String {
-        switch self {
-        case .hostApp:
-            "pass_host_application.log"
-
-        case .autoFillExtension:
-            "pass_autofill_extension.log"
-
-        case .shareExtension:
-            "pass_share_extension.log"
-
-        case .actionExtension:
-            "pass_action_extension.log"
-        }
-    }
-
-    var exportLogFileName: String {
-        let hash = Bundle.main.gitCommitHash ?? "?"
-        return switch self {
-        case .hostApp:
-            "pass_host_application_\(hash).log"
-
-        case .autoFillExtension:
-            "pass_autofill_extension\(hash).log"
-
-        case .shareExtension:
-            "pass_share_extension\(hash).log"
-
-        case .actionExtension:
-            "pass_action_extension\(hash).log"
-        }
-    }
 }

@@ -184,8 +184,9 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var invokedRefreshShareCount = 0
     public var invokedRefreshShareParameters: (userId: String, shareId: String, eventToken: String?)?
     public var invokedRefreshShareParametersList = [(userId: String, shareId: String, eventToken: String?)]()
+    public nonisolated(unsafe) var stubbedRefreshShareResult: Share!
 
-    public func refreshShare(userId: String, shareId: String, eventToken: String?) async throws {
+    public func refreshShare(userId: String, shareId: String, eventToken: String?) async throws -> Share {
         invokedRefreshSharefunction = true
         invokedRefreshShareCount += 1
         invokedRefreshShareParameters = (userId, shareId, eventToken)
@@ -193,6 +194,7 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
             throw error
         }
         closureRefreshShare()
+        return stubbedRefreshShareResult
     }
     // MARK: - getUsersLinkedToVaultShare
     public var getUsersLinkedToVaultShareToLastTokenThrowableError10: Error?

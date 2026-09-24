@@ -77,6 +77,7 @@ struct FeedbackChannelsView: View {
 }
 
 extension FeedbackChannel {
+    @MainActor
     var icon: Image {
         switch self {
         case .bugReport:

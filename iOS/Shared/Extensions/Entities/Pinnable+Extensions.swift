@@ -27,6 +27,7 @@ extension Pinnable {
         pinned ? "Unpin" : "Pin"
     }
 
+    @MainActor
     var pinIcon: Image {
         pinned ? PassIcon.pinAngledSlash : PassIcon.pinAngled
     }

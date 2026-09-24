@@ -18,8 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreKeymaker
@@ -42,7 +44,7 @@ enum LocalAuthenticationSuccessMode {
 }
 
 struct LocalAuthenticationModifier: ViewModifier {
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
     @State private var authenticated: Bool

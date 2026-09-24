@@ -20,10 +20,12 @@
 //
 
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import UIKit
 
 enum SecureLinkExpiration: Hashable, Identifiable {
@@ -89,8 +91,8 @@ final class CreateSecureLinkViewModel: ObservableObject {
     private var state = PassthroughSubject<CreateSecureLinkViewModelState, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let createSecureLink = resolve(\UseCasesContainer.createSecureLink)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    let createSecureLink = dependency(\UseCasesContainer.createSecureLink)
 
     let itemContent: ItemContent
     private let share: Share

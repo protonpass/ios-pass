@@ -69,6 +69,7 @@ private extension SearchView {
                                                  in: animationNamespace)
             } else if UIDevice.current.userInterfaceIdiom == .phone {
                 Text("Search")
+                    .foregroundStyle(PassColor.textNorm)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,9 +96,7 @@ private extension SearchView {
                     .padding(.top)
 
             case .empty:
-                EmptySearchView()
-                    .frame(maxHeight: .infinity)
-                    .padding(.bottom, safeAreaInsets.bottom + 200)
+                EmptySearchView(bottomPadding: safeAreaInsets.bottom + 100)
 
             case let .history(history):
                 SearchRecentResultsView(results: history,

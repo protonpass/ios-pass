@@ -22,8 +22,10 @@
 @_spi(QA) import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import StoreKit
 import SwiftUI
 
@@ -247,21 +249,10 @@ private final class InAppNotificationViewModel {
     var addedMockedNotification = false
     var removedMockedNotification = false
 
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
-    private var inAppNotificationManager
-
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.localNotificationTimeDatasource)
-    private var localNotificationTimeDatasource
-
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager)
-    private var userManager
-
-    @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private var router
+    private let inAppNotificationManager = dependency(\ServiceContainer.inAppNotificationManager)
+    private let localNotificationTimeDatasource = dependency(\RepositoryContainer.localNotificationTimeDatasource)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var lastThreshold: Double?
     var notificationKey = "pass_user_internal_notification"

@@ -24,11 +24,12 @@ import Entities
 extension Share {
     static func random(shareId: String? = nil,
                        vaultId: String? = nil,
+                       targetType: TargetType? = nil,
                        contentKeyRotation: Int64? = nil) -> Share {
         .init(shareID: shareId ?? .random(),
               vaultID: vaultId ?? .random(),
               addressID: .random(),
-              targetType: .random(in: 0...10),
+              targetType: targetType.map { Int64($0.rawValue) } ?? .random(in: 0...10),
               targetID: .random(),
               permission: .random(in: 0...10),
               shareRoleID: "1",

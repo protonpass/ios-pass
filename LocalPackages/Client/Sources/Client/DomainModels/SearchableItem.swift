@@ -318,6 +318,28 @@ public extension [SearchableItem] {
     }
 
     var toItemSearchResults: [ItemSearchResult] {
-        self.map(\.toItemSearchResult)
+        map(\.toItemSearchResult)
+    }
+}
+
+/// The item sets a search screen needs: the current selection's items, plus the global set
+/// backing the "All vaults" tab.
+///
+/// - `scoped`: the items matching the current search mode / share selection (vault, folder
+///   subtree, shared by me, shared with me, pinned, or trash).
+/// - `all`: the global **active** set used by the "All vaults" tab. It is not necessarily a
+///   superset of `scoped`: for `.trash`, `scoped` holds the *trashed* items while `all` holds
+///   the *active* ones, so the two sets are disjoint. For the other selections `scoped` is a
+///   subset of `all`.
+public struct SearchableItems: Sendable {
+    public let scoped: [SearchableItem]
+
+    /// Global active set backing the "All vaults" tab.
+    /// `nil` when there is no second tab to fill, i.e. `.all` (already global) and `.pinned`.
+    public let all: [SearchableItem]?
+
+    public init(scoped: [SearchableItem], all: [SearchableItem]?) {
+        self.scoped = scoped
+        self.all = all
     }
 }

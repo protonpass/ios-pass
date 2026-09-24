@@ -175,6 +175,14 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
                        memorablePasswordMustCapitalize: true,
                        memorablePasswordMustIncludeNumbers: true)
     }
+
+    public var lockedOptions: PasswordPolicyLockedOptions {
+        .init(specialCharacters: randomPasswordMustIncludeSymbols != nil,
+              capitalCharacters: randomPasswordMustIncludeUppercase != nil,
+              numberCharacters: randomPasswordMustIncludeNumbers != nil,
+              capitalizingWords: memorablePasswordMustCapitalize != nil,
+              includingNumbers: memorablePasswordMustIncludeNumbers != nil)
+    }
 }
 
 public extension PasswordPolicy {

@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Stores
 import SwiftUI
 
 extension HomepageCoordinator {

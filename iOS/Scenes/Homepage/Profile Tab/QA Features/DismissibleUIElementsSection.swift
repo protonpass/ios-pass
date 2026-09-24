@@ -26,6 +26,7 @@
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -65,7 +66,7 @@ private final class DismissibleUIElementViewModel: ObservableObject {
         }
     }
 
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
 
     init() {
         updateValues()

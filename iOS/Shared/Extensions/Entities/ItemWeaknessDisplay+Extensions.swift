@@ -61,6 +61,7 @@ extension ItemWeaknessDisplay {
         }
     }
 
+    @MainActor
     var icon: Image {
         switch self {
         case .weakness(.missing2FA, _):
@@ -90,6 +91,7 @@ extension ItemWeaknessDisplay {
         }
     }
 
+    @MainActor
     var color: Color {
         switch self {
         case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):

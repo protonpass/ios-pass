@@ -22,6 +22,7 @@ import Core
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol RemoteFolderDatasourceProtocol: Sendable {
     func getFolders(userId: String,
                     shareId: String,

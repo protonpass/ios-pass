@@ -22,6 +22,7 @@
 import Client
 import Core
 import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import SwiftUI
@@ -62,7 +63,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private var sortTask: Task<Void, Never>?
     private var filterAndSortTask: Task<Void, Never>?
 
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillCredentials) private var autoFillCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
@@ -70,7 +71,7 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: ASPasskeyCredentialRequestParameters?
     private let urls: [URL]
-    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+    private let mapServiceIdentifierToURL = dependency(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     let mode: CredentialsMode
 
     var domain: String {
@@ -421,7 +422,9 @@ private extension CredentialsViewModel {
                 notMatchedItemSections = .fetched(sectionedItems)
             }
         } catch {
-            if error is CancellationError { return }
+            if error is CancellationError {
+                return
+            }
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 notMatchedItemSections = .error(error)
