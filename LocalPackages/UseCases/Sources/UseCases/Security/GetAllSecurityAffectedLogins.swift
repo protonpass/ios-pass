@@ -77,13 +77,13 @@ private extension GetAllSecurityAffectedLogins {
 
     func filterReusedPasswords(items: [SecurityAffectedItem]) -> SecurityIssuesContent {
         var reusedPasswords: SecurityIssuesContent = [:]
-        var grouped: [String: Set<ItemUiModel>] = [:]
+        var grouped: [Int: Set<ItemUiModel>] = [:]
 
         for item in items where item.activeWeaknesses.contains(.reusedPassword) {
-            guard let token = item.reuseToken else {
+            guard let group = item.reuseGroup else {
                 continue
             }
-            grouped[token, default: []].insert(item.display)
+            grouped[group, default: []].insert(item.display)
         }
 
         // Keep only passwords actually shared by more than one surfaced item.

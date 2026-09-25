@@ -322,16 +322,25 @@ class BaseItemDetailViewModel: ObservableObject {
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
+                let flag = weakness.flag(isMonitored)
+                logger.trace("Updating monitoring flag \(flag) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, flag: weakness.flag(isMonitored))
-                logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
-                if isMonitored {
-                    let message = #localized("Item excluded from monitoring")
-                    router.display(element: .infosMessage(message))
-                } else {
-                    let message = #localized("Item included for monitoring")
-                    router.display(element: .successMessage(message))
+                try await toggleItemMonitoring(item: itemContent, flag: flag)
+                logger.trace("Updated monitoring flag \(flag) for \(itemContent.debugDescription)")
+                switch weakness {
+                case .fullyExcluded:
+                    if isMonitored {
+                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
+                    } else {
+                        router.display(element: .successMessage(#localized("Item included for monitoring")))
+                    }
+
+                case let .weakness(kind, isExcluded):
+                    if isExcluded {
+                        router.display(element: .successMessage(kind.alertRestoredMessage))
+                    } else {
+                        router.display(element: .infosMessage(kind.alertIgnoredMessage))
+                    }
                 }
                 refresh()
             } catch {
