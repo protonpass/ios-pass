@@ -45,7 +45,6 @@ public struct SecurityIssueView: View, Equatable {
         self.onShowReusedItemList = onShowReusedItemList
         self.onShowItemDetail = onShowItemDetail
         self.onRetryFetchReusedItems = onRetryFetchReusedItems
-        expanded = expanded
     }
 
     public var body: some View {

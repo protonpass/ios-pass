@@ -265,8 +265,11 @@ private extension PassMonitorRepository {
     }
 
     func setup() {
+        // A sync can update many items at once and each refresh decrypts every login, so
+        // coalesce bursts into one refresh
         itemRepository.itemsWereUpdated
             .dropFirst()
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
             .sink { [weak self] in
                 guard let self else {
                     return
@@ -312,19 +315,22 @@ private extension PassMonitorRepository {
                                                loginData: loginItem)
             }
 
-        // Filter out unique passwords
-        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
+        let reuseGroups = Dictionary(uniqueKeysWithValues: passwordCounts
+            .filter { $0.value > 1 }
+            .keys
+            .enumerated()
+            .map { ($1, $0) })
 
-        let securityAffectedItems = loginItems.compactMap { item in
-            let isReused = reusedPasswords.contains(item.loginData.password)
-            let detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
-
-            let affectedItem = SecurityAffectedItem(item: item.encrypted,
-                                                    detected: detected,
-                                                    display: item.content.toItemUiModel,
-                                                    reuseToken: item.loginData.password.reuseToken)
-
-            return affectedItem.shouldBeIncluded ? affectedItem : nil
+        let securityAffectedItems = loginItems.compactMap { item -> SecurityAffectedItem? in
+            let reuseGroup = reuseGroups[item.loginData.password]
+            let detected = weaknessEvaluator.evaluate(item.loginData, isReused: reuseGroup != nil)
+            guard !detected.isEmpty || item.encrypted.item.isExcludedItem else {
+                return nil
+            }
+            return SecurityAffectedItem(item: item.encrypted,
+                                        detected: detected,
+                                        display: item.content.toItemUiModel,
+                                        reuseGroup: reuseGroup)
         }
 
         var weakPasswordCount = 0
@@ -347,7 +353,7 @@ private extension PassMonitorRepository {
 
         let stats = WeaknessStats(counts: [
             .weakPassword: weakPasswordCount,
-            .reusedPassword: reusedPasswords.count,
+            .reusedPassword: reuseGroups.count,
             .missing2FA: missing2FACount
         ],
         excludedItems: excludedItemsCount)

@@ -231,7 +231,9 @@ extension LogInDetailViewModel {
                 return
             }
             do {
-                reusedItems = .fetching
+                if !reusedItems.isFetched {
+                    reusedItems = .fetching
+                }
                 let items = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
                 reusedItems = .fetched(items)
             } catch {
