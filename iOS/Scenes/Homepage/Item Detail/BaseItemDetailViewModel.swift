@@ -21,10 +21,12 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import Screens
+import Stores
 import SwiftUI
 
 @MainActor
@@ -93,28 +95,28 @@ class BaseItemDetailViewModel: ObservableObject {
     private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
     let shareContent: ShareContent?
-    let logger = resolve(\SharedToolingContainer.logger)
+    let logger = dependency(\ToolingContainer.logger)
 
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
-    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
-    private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
-    private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
-    @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
-    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let canUserPerformActionOnVault = dependency(\UseCasesContainer.canUserPerformActionOnVault)
+    private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let unpinItems = dependency(\UseCasesContainer.unpinItems)
+    private let toggleItemMonitoring = dependency(\UseCasesContainer.toggleItemMonitoring)
+    private let addItemReadEvent = dependency(\UseCasesContainer.addItemReadEvent)
+    @LazyInjected(\RepositoryContainer.itemRepository) private(set) var itemRepository
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private(set) var router
+    @LazyInjected(\UIComponentsContainer.itemContextMenuHandler) var itemContextMenuHandler
+    @LazyInjected(\ServiceContainer.syncEventLoop) var syncEventLoop
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
-    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
-    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
-    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\ServiceContainer.userManager) var userManager
+    @LazyInjected(\RepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\UseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\UseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\UseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\UseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
     var folderSupported: Bool {
@@ -129,7 +131,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var isAllowedToClone: Bool {
-        guard itemIsLinkToVault else { return false }
+        guard itemIsLinkToVault, isAllowedToEdit else { return false }
         switch itemContent.type {
         case .alias:
             return false
@@ -320,16 +322,25 @@ class BaseItemDetailViewModel: ObservableObject {
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
+                let flag = weakness.flag(isMonitored)
+                logger.trace("Updating monitoring flag \(flag) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, flag: weakness.flag(isMonitored))
-                logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
-                if isMonitored {
-                    let message = #localized("Item excluded from monitoring")
-                    router.display(element: .infosMessage(message))
-                } else {
-                    let message = #localized("Item included for monitoring")
-                    router.display(element: .successMessage(message))
+                try await toggleItemMonitoring(item: itemContent, flag: flag)
+                logger.trace("Updated monitoring flag \(flag) for \(itemContent.debugDescription)")
+                switch weakness {
+                case .fullyExcluded:
+                    if isMonitored {
+                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
+                    } else {
+                        router.display(element: .successMessage(#localized("Item included for monitoring")))
+                    }
+
+                case let .weakness(kind, isExcluded):
+                    if isExcluded {
+                        router.display(element: .successMessage(kind.alertRestoredMessage))
+                    } else {
+                        router.display(element: .infosMessage(kind.alertIgnoredMessage))
+                    }
                 }
                 refresh()
             } catch {
@@ -375,8 +386,12 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    func handle(_ error: any Error) {
-        logger.error(error)
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 

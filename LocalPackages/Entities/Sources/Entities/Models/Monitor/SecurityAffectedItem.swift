@@ -32,24 +32,24 @@ public struct SecurityAffectedItem: Sendable {
     public let detected: Set<WeaknessKind>
     public let display: ItemUiModel
 
-    /// Stable equality token for reuse grouping (a hash of the password; nil when empty). Lets the
-    /// reused-password list group items without re-decrypting or holding plaintext passwords.
-    public let reuseToken: String?
+    /// Items sharing a password get the same value; nil when the password isn't reused. Only
+    /// comparable within a single refresh, and carries nothing derived from the password.
+    public let reuseGroup: Int?
 
     public init(item: SymmetricallyEncryptedItem,
                 detected: Set<WeaknessKind>,
                 display: ItemUiModel,
-                reuseToken: String?) {
+                reuseGroup: Int?) {
         self.item = item
         self.detected = detected
         self.display = display
-        self.reuseToken = reuseToken
+        self.reuseGroup = reuseGroup
     }
 }
 
 public extension SecurityAffectedItem {
     var suppressedChecks: Set<WeaknessKind> {
-        Set(WeaknessKind.allCases.filter { item.item.itemFlags.contains($0.skipFlag) })
+        item.item.suppressedChecks
     }
 
     var isFullyExcluded: Bool {
@@ -61,7 +61,7 @@ public extension SecurityAffectedItem {
     }
 
     var isExcludedItem: Bool {
-        isFullyExcluded || !suppressedChecks.isEmpty
+        item.item.isExcludedItem
     }
 
     var passwordIsCompromised: Bool {

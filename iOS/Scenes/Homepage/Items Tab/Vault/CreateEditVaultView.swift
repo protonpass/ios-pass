@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -100,7 +101,7 @@ struct CreateEditVaultView: View {
 
     private var vaultsLimitMessage: some View {
         // swiftlint:disable:next line_length
-        TextBanner("You have reached the limit of vaults you can create. Upgrade to a paid plan to create multiple vaults.")
+        TextBanner(#localized("You have reached the limit of vaults you can create. Upgrade to a paid plan to create multiple vaults."))
     }
 
     private var previewAndTitle: some View {

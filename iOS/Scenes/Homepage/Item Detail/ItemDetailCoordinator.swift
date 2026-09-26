@@ -19,18 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
 final class ItemDetailCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
     private weak var itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?
     private weak var currentViewModel: BaseItemDetailViewModel?
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?) {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate

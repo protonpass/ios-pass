@@ -42,7 +42,10 @@ struct SortFilterItemsMenu: View {
     let selectable: Bool
 
     var body: some View {
-        Menu(content: {
+        CircleMenu(icon: IconProvider.threeDotsVertical,
+                   iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
+                   backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear,
+                   accessibilityLabel: "Items filtering and sort menu") {
             ForEach(options) { option in
                 switch option {
                 case let .selectItems(onSelect):
@@ -51,7 +54,7 @@ struct SortFilterItemsMenu: View {
                             Label(title: {
                                 Text("Select items")
                             }, icon: {
-                                IconProvider.checkmarkCircle
+                                IconProvider.checkmarkCircle as Image
                             })
                         }
                         Divider()
@@ -71,19 +74,13 @@ struct SortFilterItemsMenu: View {
                             Label(title: {
                                 Text("Reset filters")
                             }, icon: {
-                                IconProvider.arrowUpAndLeft
+                                IconProvider.arrowUpAndLeft as Image
                             })
                         }
                     }
                 }
             }
-        }, label: {
-            CircleButton(icon: IconProvider.threeDotsVertical,
-                         iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
-                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear,
-                         action: {}) // Explicit empty action to render liquid glass effect
-        })
-        .accessibilityLabel(Text("Items filtering and sort menu"))
+        }
     }
 }
 
@@ -164,7 +161,7 @@ private extension SortFilterItemsMenu {
                     Text(verbatim: selectedType.title)
                 })
             }, icon: {
-                IconProvider.arrowDownArrowUp
+                IconProvider.arrowDownArrowUp as Image
             })
         })
     }

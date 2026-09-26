@@ -21,34 +21,37 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
+import Foundation
 import Macro
+import Screens
+import Stores
 
 @MainActor
 final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let moveItemsBetweenContainers = resolve(\UseCasesContainer.moveItemsBetweenContainers)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let moveItemsBetweenContainers = dependency(\UseCasesContainer.moveItemsBetweenContainers)
+    private let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\RepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var isFreeUser = false
     @Published private(set) var showWarning = false
+    @Published private(set) var folderSupported = false
     @Published var selectedContainer: ShareSelectionPayload?
     @Published var expandedContainerIds = Set<String>()
 
     let allSharesContent: [ShareContent]
     private let context: MovingContext
-
-    var folderSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFolder)
-    }
+    private var cancellables = Set<AnyCancellable>()
 
     init(allVaults: [ShareContent], context: MovingContext) {
         allSharesContent = allVaults.sortedByHidden()
@@ -72,6 +75,18 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
            .getShareContent(for: fromShareId) {
             selectedContainer = ShareSelectionPayload(share: shareContent.share, folder: nil)
         }
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] access in
+                guard let self else { return }
+                folderSupported =
+                    FolderSupportState(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType
+                                           .passFolder),
+                    plan: access?.access.plan)
+                    .canCreateAndModifyFolders
+            }
+            .store(in: &cancellables)
 
         Task { [weak self] in
             guard let self else { return }

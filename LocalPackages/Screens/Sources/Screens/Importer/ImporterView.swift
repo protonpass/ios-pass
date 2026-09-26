@@ -27,15 +27,12 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct ImporterView: View {
-    @StateObject private var viewModel: ImporterViewModel
+    @State private var viewModel: ImporterViewModel
     private let onClose: () -> Void
 
-    public init(logManager: any LogManagerProtocol,
-                datasource: any ImporterDatasource,
+    public init(source: any ImporterDatasource,
                 onClose: @escaping () -> Void) {
-        let viewModel = ImporterViewModel(logManager: logManager)
-        viewModel.datasource = datasource
-        _viewModel = .init(wrappedValue: viewModel)
+        _viewModel = .init(wrappedValue: ImporterViewModel(source: source))
         self.onClose = onClose
     }
 
@@ -61,13 +58,13 @@ public struct ImporterView: View {
         .fullSheetBackground()
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
-        .task { await viewModel.fetchData() }
+        .task { await viewModel.loadData() }
         .alert(Text("Imported successfully", bundle: .module),
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
                actions: { Button("OK", action: onClose) },
                message: {
                    if let message = viewModel.importSuccessMessage {
-                       Text(message)
+                       Text(verbatim: message)
                    }
                })
         .alert(Text("Error occurred", bundle: .module),
@@ -76,7 +73,7 @@ public struct ImporterView: View {
                                  label: { Text("OK", bundle: .module) }) },
                message: {
                    if let error = viewModel.error {
-                       Text(error.localizedDebugDescription)
+                       Text(verbatim: error.localizedDebugDescription)
                    }
                })
     }
@@ -129,10 +126,10 @@ private struct LoginRow: View {
                               height: 40)
 
             VStack(alignment: .leading) {
-                Text(login.name)
+                Text(verbatim: login.name)
                     .lineLimit(2)
                     .foregroundStyle(PassColor.textNorm)
-                Text(login.emailOrUsername)
+                Text(verbatim: login.emailOrUsername)
                     .lineLimit(2)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)

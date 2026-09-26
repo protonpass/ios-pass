@@ -20,25 +20,22 @@
 
 import Client
 import Combine
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
+import Stores
 
 @MainActor
 @Observable
 final class FolderMoveListViewModel {
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @ObservationIgnored
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @ObservationIgnored
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-
-    @ObservationIgnored
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
 
     private(set) var loading = false
     private(set) var moveCompleted = false

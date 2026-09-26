@@ -1,0 +1,8 @@
+included_dirs:
+  - LocalPackages/Client/Sources
+  - LocalPackages/Core/Sources
+  - LocalPackages/DIComposition/Sources
+  - LocalPackages/DesignSystem/Sources
+  - LocalPackages/Entities/Sources
+  - LocalPackages/Screens/Sources
+  - LocalPackages/UseCases/Sources

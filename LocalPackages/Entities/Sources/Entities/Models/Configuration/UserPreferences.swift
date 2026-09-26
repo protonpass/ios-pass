@@ -50,6 +50,9 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// Whether to show or not SimpleLogin alias sync explanation sheet
     public var dismissedAliasesSyncSheet: Bool
 
+    /// State of the one-shot full sync repairing data missed before folder support
+    public var folderForceSync: FolderForceSyncState
+
     public init(spotlightEnabled: Bool,
                 spotlightSearchableContent: SpotlightSearchableContent,
                 spotlightSearchableVaults: SpotlightSearchableVaults,
@@ -58,7 +61,8 @@ public struct UserPreferences: Codable, Equatable, Sendable {
                 lastSelectedShareId: String?,
                 lastSelectedFolderId: String?,
                 lastCreatedItemShareId: String?,
-                dismissedAliasesSyncSheet: Bool) {
+                dismissedAliasesSyncSheet: Bool,
+                folderForceSync: FolderForceSyncState) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
@@ -68,6 +72,7 @@ public struct UserPreferences: Codable, Equatable, Sendable {
         self.lastCreatedItemShareId = lastCreatedItemShareId
         self.lastSelectedFolderId = lastSelectedFolderId
         self.dismissedAliasesSyncSheet = dismissedAliasesSyncSheet
+        self.folderForceSync = folderForceSync
     }
 }
 
@@ -82,6 +87,7 @@ private extension UserPreferences {
         static let lastSelectedFolderId: String? = nil
         static let lastCreatedItemShareId: String? = nil
         static let dismissedAliasesSyncSheet = false
+        static let folderForceSync = FolderForceSyncState.default
     }
 
     enum CodingKeys: String, CodingKey {
@@ -94,6 +100,7 @@ private extension UserPreferences {
         case lastCreatedItemShareId
         case lastSelectedFolderId
         case dismissedAliasesSyncSheet
+        case folderForceSync
     }
 }
 
@@ -114,6 +121,8 @@ public extension UserPreferences {
         let lastCreatedItemShareId = try container.decodeIfPresent(String?.self, forKey: .lastCreatedItemShareId)
         let dismissedAliasesSyncSheet =
             try container.decodeIfPresent(Bool.self, forKey: .dismissedAliasesSyncSheet)
+        let folderForceSync = try container.decodeIfPresent(FolderForceSyncState.self,
+                                                            forKey: .folderForceSync)
         self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
                   spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults,
@@ -124,7 +133,8 @@ public extension UserPreferences {
                   lastSelectedFolderId: lastSelectedFolderId ?? Default.lastSelectedFolderId,
                   lastCreatedItemShareId: lastCreatedItemShareId ?? Default.lastCreatedItemShareId,
                   dismissedAliasesSyncSheet: dismissedAliasesSyncSheet ?? Default
-                      .dismissedAliasesSyncSheet)
+                      .dismissedAliasesSyncSheet,
+                  folderForceSync: folderForceSync ?? Default.folderForceSync)
     }
 }
 
@@ -138,7 +148,8 @@ extension UserPreferences: Defaultable {
               lastSelectedShareId: Default.lastSelectedShareId,
               lastSelectedFolderId: Default.lastSelectedFolderId,
               lastCreatedItemShareId: Default.lastCreatedItemShareId,
-              dismissedAliasesSyncSheet: Default.dismissedAliasesSyncSheet)
+              dismissedAliasesSyncSheet: Default.dismissedAliasesSyncSheet,
+              folderForceSync: Default.folderForceSync)
     }
 }
 

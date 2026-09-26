@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Macro
 import SwiftUI
 
 // MARK: - Pass Monitor dashboard presentation
@@ -39,6 +40,28 @@ extension WeaknessKind {
         case .compromisedPassword: "Common passwords that frequently appear in data breaches"
         case .reusedPassword: "Generate unique passwords"
         case .missing2FA: "Set up 2FA for more security"
+        }
+    }
+}
+
+// MARK: - Per-check monitoring toasts
+
+extension WeaknessKind {
+    var alertIgnoredMessage: String {
+        switch self {
+        case .weakPassword: #localized("Weak password alert ignored")
+        case .compromisedPassword: #localized("Compromised password alert ignored")
+        case .reusedPassword: #localized("Reused password alert ignored")
+        case .missing2FA: #localized("Missing 2FA alert ignored")
+        }
+    }
+
+    var alertRestoredMessage: String {
+        switch self {
+        case .weakPassword: #localized("Weak password alert restored")
+        case .compromisedPassword: #localized("Compromised password alert restored")
+        case .reusedPassword: #localized("Reused password alert restored")
+        case .missing2FA: #localized("Missing 2FA alert restored")
         }
     }
 }

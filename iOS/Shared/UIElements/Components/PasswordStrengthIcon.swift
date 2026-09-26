@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Screens
 import SwiftUI
 
 struct PasswordStrengthIcon: View {

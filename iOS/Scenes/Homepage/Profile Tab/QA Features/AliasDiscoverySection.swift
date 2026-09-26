@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Observation
@@ -29,27 +30,27 @@ struct AliasDiscoverySection: View {
 
     var body: some View {
         Section(content: {
-            StaticToggle(.verbatim("Showed advanced options tip"),
+            StaticToggle("Showed advanced options tip",
                          isOn: viewModel.showedAdvancedOptions,
                          action: { viewModel.toggle(.advancedOptions) })
 
-            StaticToggle(.verbatim("Showed custom domain tip"),
+            StaticToggle("Showed custom domain tip",
                          isOn: viewModel.showedCustomDomains,
                          action: { viewModel.toggle(.customDomains) })
 
-            StaticToggle(.verbatim("Showed mailbox tip"),
+            StaticToggle("Showed mailbox tip",
                          isOn: viewModel.showedMailboxes,
                          action: { viewModel.toggle(.mailboxes) })
 
-            StaticToggle(.verbatim("Showed contact tip"),
+            StaticToggle("Showed contact tip",
                          isOn: viewModel.showedContacts,
                          action: { viewModel.toggle(.contacts) })
 
-            StaticToggle(.verbatim("Asked for copy alias address after creating"),
+            StaticToggle("Asked for copy alias address after creating",
                          isOn: viewModel.askedForCopyAliasAfterCreating,
                          action: { viewModel.toggle(.copyAliasAfterCreating) })
 
-            StaticToggle(.verbatim("Asked for copy contact reverse-alias after creating"),
+            StaticToggle("Asked for copy contact reverse-alias after creating",
                          isOn: viewModel.askedForCopyContactAfterCreating,
                          action: { viewModel.toggle(.copyContactAfterCreating) })
         }, header: {
@@ -68,8 +69,7 @@ private final class AliasDiscoverySectionViewModel {
     private(set) var askedForCopyAliasAfterCreating = false
     private(set) var askedForCopyContactAfterCreating = false
 
-    @ObservationIgnored
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
 
     private var discovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery

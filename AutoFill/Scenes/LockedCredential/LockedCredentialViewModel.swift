@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import AuthenticationServices
+import DIComposition
 import Entities
 import FactoryKit
 
@@ -27,7 +28,7 @@ typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemCo
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {
     private let request: AutoFillRequest
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let logger = dependency(\ToolingContainer.logger)
 
     @LazyInjected(\AutoFillUseCaseContainer.generateAuthorizationCredential)
     private var generateAuthorizationCredential

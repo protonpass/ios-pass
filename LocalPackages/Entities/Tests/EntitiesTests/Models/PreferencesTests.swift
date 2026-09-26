@@ -106,8 +106,28 @@ struct PreferencesTests {
             lastSelectedShareId: UserPreferences.default.lastSelectedShareId,
             lastSelectedFolderId: UserPreferences.default.lastSelectedFolderId,
             lastCreatedItemShareId: UserPreferences.default.lastCreatedItemShareId,
-            dismissedAliasesSyncSheet: UserPreferences.default.dismissedAliasesSyncSheet)
+            dismissedAliasesSyncSheet: UserPreferences.default.dismissedAliasesSyncSheet,
+            folderForceSync: UserPreferences.default.folderForceSync)
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)
+    }
+
+    @Test
+    func `Decode UserPreferences from JSON predating folder force sync`() throws {
+        let json = """
+{
+    "spotlightEnabled": true,
+    "dismissedAliasesSyncSheet": true
+}
+"""
+        let data = try #require(json.data(using: .utf8))
+        let result = try JSONDecoder().decode(UserPreferences.self, from: data)
+        // A client upgrading from a build without folder support must look "not yet synced",
+        // which is what drives the one-shot repair.
+        #expect(result.folderForceSync == .default)
+        #expect(!result.folderForceSync.done)
+        #expect(!result.folderForceSync.foldersDetected)
+        #expect(result.folderForceSync.attempts == 0)
+        #expect(result.folderForceSync.lastAttempt == nil)
     }
 
     func decodeAndAssert<T: Decodable & Equatable>(_ type: T.Type, json: String, expectation: T) throws {

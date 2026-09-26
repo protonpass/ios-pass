@@ -71,6 +71,15 @@ public extension ItemFlagable {
     var twoFACheckDisabled: Bool {
         itemFlags.contains(.skip2FACheck)
     }
+
+    var suppressedChecks: Set<WeaknessKind> {
+        Set(WeaknessKind.allCases.filter { itemFlags.contains($0.skipFlag) })
+    }
+
+    /// Fully excluded from monitoring, or at least one check suppressed.
+    var isExcludedItem: Bool {
+        monitoringDisabled || !suppressedChecks.isEmpty
+    }
 }
 
 public struct ItemFlags: Sendable, OptionSet {

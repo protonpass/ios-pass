@@ -22,10 +22,13 @@ import Client
 import Combine
 import Core
 @preconcurrency import CryptoKit
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import ProtonCoreLogin
+import Screens
+import Stores
 import SwiftUI
 
 @MainActor
@@ -49,7 +52,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
-    @Published private(set) var createButtonHidden = false
+    @Published private(set) var canCreateItem = true
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
@@ -60,42 +63,43 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
 
-    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
+    let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
+    @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
 
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
-    private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
-    private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
-    private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
-    private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
-    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
-    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
-    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    private let itemRepository = dependency(\RepositoryContainer.itemRepository)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let loginMethod = dependency(\DataContainer.loginMethod)
+    private let getPendingUserInvitations = dependency(\UseCasesContainer.getPendingUserInvitations)
+    private let doTrashSelectedItems = dependency(\UseCasesContainer.trashSelectedItems)
+    private let doRestoreSelectedItems = dependency(\UseCasesContainer.restoreSelectedItems)
+    private let doPermanentlyDeleteSelectedItems = dependency(\UseCasesContainer.permanentlyDeleteSelectedItems)
+    private let getAllPinnedItems = dependency(\UseCasesContainer.getAllPinnedItems)
+    private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
+    private let canEditItem = dependency(\UseCasesContainer.canEditItem)
+    private let shouldDisplayUpgradeAppBanner = dependency(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
+    private let pinItems = dependency(\UseCasesContainer.pinItems)
+    private let unpinItems = dependency(\UseCasesContainer.unpinItems)
+    @LazyInjected(\ServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
-    @LazyInjected(\SharedUseCasesContainer.getOrganizationSettings)
+    @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
 
-    let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    let itemContextMenuHandler = dependency(\UIComponentsContainer.itemContextMenuHandler)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RepositoryContainer.organizationRepository)
     private var organizationRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = dependency(\DataContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var sortTask: Task<Void, Never>?
     private var refreshTask: Task<Void, Never>?
+    private var pendingInvites = [Invite]()
 
     var vaultCreationAllowed: Bool {
         checkVaultCreationAllowance(userData: userData,
@@ -115,7 +119,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
-    let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    let syncEventLoop = dependency(\ServiceContainer.syncEventLoop)
 
     init() {
         setUp()
@@ -167,10 +171,10 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func continueFullSyncIfNeeded() {
         Task { [weak self] in
             guard let self else { return }
-            if let userId = appContentManager.incompleteFullSyncUserId {
-                router.present(for: .fullSync)
-                await appContentManager.fullSync(userId: userId)
-            }
+            guard let userId = appContentManager.incompleteFullSyncUserId,
+                  userId == userManager.activeUserId else { return }
+            router.present(for: .fullSync)
+            await appContentManager.fullSync(userId: userId)
         }
     }
 
@@ -292,6 +296,7 @@ private extension ItemsTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] invites in
                 guard let self else { return }
+                pendingInvites = invites
                 refreshBanners(invites)
             }
             .store(in: &cancellables)
@@ -300,7 +305,7 @@ private extension ItemsTabViewModel {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
-                refreshBanners(getPendingUserInvitations().value)
+                refreshBanners(pendingInvites)
             }
             .store(in: &cancellables)
 
@@ -377,8 +382,14 @@ private extension ItemsTabViewModel {
         }
     }
 
-    func handle(error: any Error) {
-        logger.error(error)
+    /// `function` & `line` default to the call site so the log points at the failing operation
+    /// instead of this helper.
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }
@@ -390,8 +401,8 @@ extension ItemsTabViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func hideCreateButton(_ isHidden: Bool) {
-        createButtonHidden = isHidden
+    func setCanCreateItem(_ canCreate: Bool) {
+        canCreateItem = canCreate
     }
 
     func filterAndSortItems() {
@@ -578,7 +589,7 @@ extension ItemsTabViewModel {
                     delegate?.itemsTabViewModelWantsViewDetail(of: itemContent)
                 }
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -614,7 +625,11 @@ extension ItemsTabViewModel {
 
 private extension ItemsTabViewModel {
     func performBulkAction(_ action: ([ItemUiModel]) async throws -> Void,
-                           successMessage: ([ItemUiModel]) -> String) async {
+                           successMessage: ([ItemUiModel]) -> String,
+                           file: String = #file,
+                           function: String = #function,
+                           line: UInt = #line,
+                           column: UInt = #column) async {
         defer { router.display(element: .globalLoading(shouldShow: false)) }
         do {
             router.display(element: .globalLoading(shouldShow: true))
@@ -624,7 +639,7 @@ private extension ItemsTabViewModel {
             let message = successMessage(items)
             router.display(element: .successMessage(message, config: .dismissAndRefresh))
         } catch {
-            handle(error: error)
+            handle(error: error, file: file, function: function, line: line, column: column)
         }
     }
 

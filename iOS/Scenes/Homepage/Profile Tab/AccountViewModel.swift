@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -30,6 +31,7 @@ import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import ProtonCorePasswordChange
+import Screens
 
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
@@ -41,16 +43,16 @@ protocol AccountViewModelDelegate: AnyObject {
 final class AccountViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
-    private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let userManager = resolve(\SharedServiceContainer.userManager)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
-    private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    private let doDisableExtraPassword = resolve(\UseCasesContainer.disableExtraPassword)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let accountRepository = dependency(\RepositoryContainer.accountRepository)
+    private let featureFlagsRepository = dependency(\RepositoryContainer.featureFlagsRepository)
+    private let userManager = dependency(\ServiceContainer.userManager)
+    private let logger = dependency(\ToolingContainer.logger)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let paymentsManager = dependency(\ServiceContainer.paymentManager) // To remove after Dynaplans
+    private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let doDisableExtraPassword = dependency(\UseCasesContainer.disableExtraPassword)
 
     let isShownAsSheet: Bool
     @Published private(set) var shouldShowSecurityKeys = false
@@ -91,15 +93,14 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             }
             .store(in: &cancellables)
 
-        userManager
-            .currentActiveUser
+        accessRepository.access
+            .combineLatest(userManager.currentActiveUser)
             .receive(on: DispatchQueue.main)
-            .compactMap(\.?.user.canManageSubscription)
-            .sink { [weak self] canManageSubscription in
+            .sink { [weak self] access, userData in
                 guard let self else { return }
-                // Temporarily hide "Manage subscription" option while waiting for dynamic plans
-                let isB2B = plan?.isBusinessUser == true
-                self.canManageSubscription = canManageSubscription && !isB2B
+                plan = access?.access.plan
+                let isB2B = access?.access.plan.isBusinessUser == true
+                canManageSubscription = (userData?.user.canManageSubscription ?? false) && !isB2B
             }
             .store(in: &cancellables)
     }
@@ -281,6 +282,24 @@ private extension AccountViewModel {
         }
     }
 
+    func checkFidoActivation() {
+        Task { @MainActor [weak self] in
+            guard let self, let userId = try? await userManager.getActiveUserId() else { return }
+            let settings = await userSettingsRepository.getSettings(for: userId)
+
+            shouldShowSecurityKeys = settings.twoFactor.type == .fido2 && !isSSOUser
+        }
+    }
+
+    func handle(error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
+        logger.error(error, file: file, function: function, line: line, column: column)
+        router.display(element: .displayErrorBanner(error))
+    }
+
     func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
         case let .success(inAppPurchasePlan):
@@ -298,20 +317,6 @@ private extension AccountViewModel {
         case let .failure(error):
             logger.error(error)
         }
-    }
-
-    private func checkFidoActivation() {
-        Task { @MainActor [weak self] in
-            guard let self, let userId = try? await userManager.getActiveUserId() else { return }
-            let settings = await userSettingsRepository.getSettings(for: userId)
-
-            shouldShowSecurityKeys = settings.twoFactor.type == .fido2 && !isSSOUser
-        }
-    }
-
-    func handle(error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
     }
 }
 

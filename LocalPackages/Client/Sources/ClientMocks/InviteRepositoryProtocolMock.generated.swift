@@ -32,13 +32,13 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
     // MARK: - currentPendingInvites
     public var invokedCurrentPendingInvitesSetter = false
     public var invokedCurrentPendingInvitesSetterCount = 0
-    public var invokedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>?
-    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[Invite], Never>?]()
+    public var invokedCurrentPendingInvites: CurrentValueSubject<[String: [Invite]], Never>?
+    public var invokedCurrentPendingInvitesList = [CurrentValueSubject<[String: [Invite]], Never>?]()
     public var invokedCurrentPendingInvitesGetter = false
     public var invokedCurrentPendingInvitesGetterCount = 0
-    public nonisolated(unsafe) var stubbedCurrentPendingInvites: CurrentValueSubject<[Invite], Never>!
+    public nonisolated(unsafe) var stubbedCurrentPendingInvites: CurrentValueSubject<[String: [Invite]], Never>!
 
-    public var currentPendingInvites: CurrentValueSubject<[Invite], Never> {
+    public var currentPendingInvites: CurrentValueSubject<[String: [Invite]], Never> {
          get {
             return stubbedCurrentPendingInvites
         }
@@ -133,16 +133,20 @@ public final class InviteRepositoryProtocolMock: @unchecked Sendable, InviteRepo
         closureRefreshSpecificInvites()
     }
     // MARK: - removeCachedInvite
+    public var removeCachedInviteUserIdInviteThrowableError6: Error?
     public var closureRemoveCachedInvite: () -> () = {}
     public var invokedRemoveCachedInvitefunction = false
     public var invokedRemoveCachedInviteCount = 0
-    public var invokedRemoveCachedInviteParameters: (inviteToken: String, Void)?
-    public var invokedRemoveCachedInviteParametersList = [(inviteToken: String, Void)]()
+    public var invokedRemoveCachedInviteParameters: (userId: String, invite: Invite)?
+    public var invokedRemoveCachedInviteParametersList = [(userId: String, invite: Invite)]()
 
-    public func removeCachedInvite(containing inviteToken: String) async {
+    public func removeCachedInvite(userId: String, invite: Invite) async throws {
         invokedRemoveCachedInvitefunction = true
         invokedRemoveCachedInviteCount += 1
-        invokedRemoveCachedInviteParameters = (inviteToken, ())
+        invokedRemoveCachedInviteParameters = (userId, invite)
+        if let error = removeCachedInviteUserIdInviteThrowableError6 {
+            throw error
+        }
         closureRemoveCachedInvite()
     }
     // MARK: - sendNewShareInvites

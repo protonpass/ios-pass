@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
@@ -66,13 +67,13 @@ final class CreateEditVaultViewModel: ObservableObject {
     @Published private(set) var finishSaving = false
 
     private let mode: VaultMode
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
-    private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    private let logger = dependency(\ToolingContainer.logger)
+    private let shareRepository = dependency(\RepositoryContainer.shareRepository)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let createVaultUseCase = dependency(\UseCasesContainer.createVault)
+    private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
 
     weak var delegate: (any CreateEditVaultViewModelDelegate)?
 

@@ -21,10 +21,12 @@
 @preconcurrency import AuthenticationServices
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 import SwiftUI
 
 @MainActor
@@ -38,6 +40,7 @@ protocol AutoFillViewModelDelegate: AnyObject {
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @Published var results: [T] = []
+    @Published private(set) var showFolderSyncBanner = false
 
     @Published var selectedUser: UserUiModel? {
         didSet {
@@ -56,10 +59,11 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
-    @LazyInjected(\SharedToolingContainer.logger) var logger
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
-    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ToolingContainer.logger) var logger
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\UseCasesContainer.shouldShowFolderSyncBanner) private var shouldShowFolderSyncBanner
     @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?
@@ -177,6 +181,20 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
             await changeToErrorState(error)
         }
     }
+
+    ///
+    /// `@concurrent` so the lookup leaves the main actor, matching `fetchItems()`. It cannot go on
+    /// the use case instead: `@concurrent` on a protocol requirement reached through an existential
+    /// crashes SILGen in swiftlang 6.3.3.
+    @concurrent
+    func refreshFolderSyncBanner() async {
+        let show = await shouldShowFolderSyncBanner()
+        await setShowFolderSyncBanner(show)
+    }
+
+    private func setShowFolderSyncBanner(_ show: Bool) {
+        showFolderSyncBanner = show
+    }
 }
 
 // MARK: - Non trivial common operations
@@ -267,11 +285,15 @@ extension AutoFillViewModel {
         router.present(for: .upgradeFlow)
     }
 
-    func handle(_ error: any Error) {
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
         if error is CancellationError {
             return
         }
-        logger.error(error)
+        logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
     }
 }

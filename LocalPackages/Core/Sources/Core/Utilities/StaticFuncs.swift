@@ -23,6 +23,8 @@ import Foundation
 public func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
     var error: NSError?
     let result = operation(&error)
-    if let error { throw error }
+    if let error {
+        throw error
+    }
     return result
 }

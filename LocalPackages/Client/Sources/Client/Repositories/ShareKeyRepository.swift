@@ -72,7 +72,7 @@ public extension ShareKeyRepository {
 
     func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
-        let keys = try await localDatasource.getKeys(shareId: shareId)
+        let keys = try await localDatasource.getKeys(shareId: shareId).filter { $0.userId == userId }
         if keys.isEmpty {
             logger.trace("No local keys for share \(shareId). Fetching from remote.")
             let keys = try await refreshKeys(userId: userId, shareId: shareId)

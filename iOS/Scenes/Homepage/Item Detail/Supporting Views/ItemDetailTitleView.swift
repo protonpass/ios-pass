@@ -21,8 +21,8 @@
 import Client
 import DesignSystem
 import Entities
-import FactoryKit
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct ItemDetailTitleView: View {

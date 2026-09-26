@@ -224,6 +224,28 @@ struct PassMonitorRepositoryTests {
         #expect(state3.count(for: .missing2FA) == 0)
     }
     
+    @Test
+    func `Items sharing a password share a reuse group, unique passwords have none`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
+            .reusedPasswords,
+            .reusedPasswords,
+            .weakPasswords,
+            .weakPasswords,
+            .missing2FA
+        ])
+
+        try await sut.refreshSecurityChecks()
+
+        let groups = sut.itemsWithSecurityIssues.value.map(\.reuseGroup)
+        try #require(groups.count == 5)
+        let firstGroup = try #require(groups[0])
+        let secondGroup = try #require(groups[2])
+        #expect(groups[1] == firstGroup)
+        #expect(groups[3] == secondGroup)
+        #expect(firstGroup != secondGroup)
+        #expect(groups[4] == nil)
+    }
+
     /// Characterization test for IDTEAM-5965: a fully-excluded (`monitoringDisabled`) item whose
     /// password is weak appears ONLY in the excluded bucket — full exclusion takes precedence, so it
     /// does NOT surface as an active weakness. The weakness is still *detected* (it would reappear

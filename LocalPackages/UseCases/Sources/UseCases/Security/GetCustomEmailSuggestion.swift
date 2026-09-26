@@ -78,7 +78,13 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
 
         let counts = countOccurrences(of: emails)
         let sortedCounts = counts
-            .sorted { if $0.value == $1.value { $0.key < $1.key } else { $0.value > $1.value } }
+            .sorted {
+                if $0.value == $1.value {
+                    $0.key < $1.key
+                } else {
+                    $0.value > $1.value
+                }
+            }
             .map { SuggestedEmail(email: $0.key, count: $0.value) }
         return Array(sortedCounts.prefix(3))
     }
