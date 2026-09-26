@@ -21,6 +21,7 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreUIFoundations
@@ -31,7 +32,7 @@ import SwiftUI
 final class TOTPRowViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpManager = resolve(\SharedServiceContainer.totpManager)
+    private let totpManager = dependency(\ServiceContainer.totpManager)
     private var cancellable = Set<AnyCancellable>()
 
     var code: String? {

@@ -124,11 +124,26 @@ private extension CircleButton {
     }
 
     var iconView: some View {
+        CircleButtonIcon(icon: icon,
+                         color: iconColor,
+                         disabledColor: iconDisabledColor,
+                         width: type.iconWidth)
+    }
+}
+
+struct CircleButtonIcon: View {
+    @Environment(\.isEnabled) private var isEnabled
+    let icon: Image
+    let color: Color
+    let disabledColor: Color
+    let width: CGFloat
+
+    var body: some View {
         icon
             .resizable()
             .renderingMode(.template)
             .scaledToFit()
-            .foregroundStyle(isEnabled ? iconColor : iconDisabledColor)
-            .frame(width: type.iconWidth, height: type.iconWidth)
+            .foregroundStyle(isEnabled ? color : disabledColor)
+            .frame(width: width, height: width)
     }
 }

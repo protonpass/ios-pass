@@ -30,7 +30,6 @@ public protocol LocalFolderDatasourceProtocol: Sendable {
     func removeAllFolders(userId: String) async throws
     func removeAllFolders(shareId: String) async throws
     func deleteFolders(userId: String, folderIds: [String], shareId: String) async throws
-    func deleteFolders(shareId: String, userId: String) async throws
 }
 
 extension LocalFolderDatasourceProtocol {
@@ -86,17 +85,6 @@ public extension LocalFolderDatasource {
             .init(format: "shareID = %@", shareId),
             .init(format: "userID = %@", userId),
             .init(format: "folderID in %@", folderIds)
-        ])
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
-                          context: taskContext)
-    }
-
-    func deleteFolders(shareId: String, userId: String) async throws {
-        let taskContext = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "FolderEntity")
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
-            .init(format: "userID = %@", userId)
         ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)

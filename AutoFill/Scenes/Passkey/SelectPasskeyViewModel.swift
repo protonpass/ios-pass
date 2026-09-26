@@ -19,18 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import AuthenticationServices
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import Screens
 
 @MainActor
 final class SelectPasskeyViewModel: ObservableObject {
     private weak var context: ASCredentialProviderExtensionContext?
     let info: SelectPasskeySheetInformation
 
-    private let autoFillPasskey = resolve(\AutoFillUseCaseContainer.autoFillPasskey)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let autoFillPasskey = dependency(\AutoFillUseCaseContainer.autoFillPasskey)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let logger = dependency(\ToolingContainer.logger)
 
     init(info: SelectPasskeySheetInformation,
          context: ASCredentialProviderExtensionContext) {

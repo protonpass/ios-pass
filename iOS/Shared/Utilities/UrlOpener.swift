@@ -19,13 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import DIComposition
 import FactoryKit
 import SafariServices
 import UIKit
 
 @MainActor
 final class UrlOpener {
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     weak var rootViewController: UIViewController?
 
     init() {}

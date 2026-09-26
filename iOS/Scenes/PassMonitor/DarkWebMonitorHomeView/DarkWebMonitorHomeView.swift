@@ -21,12 +21,14 @@
 //
 
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
+import UseCases
 
 struct DarkWebMonitorHomeView: View {
     // swiftlint:disable:next private_swiftui_state
@@ -36,7 +38,7 @@ struct DarkWebMonitorHomeView: View {
     @State private var showNoBreachesAlert = false
     @State private var showBreachesFoundAlert = false
     @Environment(PathRouter.self) private var router: PathRouter
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
 
     var body: some View {
         mainContainer
@@ -424,11 +426,11 @@ private extension DarkWebMonitorHomeView {
 
                 Menu(content: {
                     Label(title: { Text("Verify") },
-                          icon: { IconProvider.paperPlane })
+                          icon: { IconProvider.paperPlane as Image })
                         .buttonEmbeded { router.present(sheet: .addEmail(.customEmail(email))) }
 
                     Label(title: { Text("Remove") },
-                          icon: { IconProvider.trash })
+                          icon: { IconProvider.trash as Image })
                         .buttonEmbeded { viewModel.removeCustomMailFromMonitor(email: email) }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,

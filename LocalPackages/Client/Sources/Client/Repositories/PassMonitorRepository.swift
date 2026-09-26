@@ -27,7 +27,7 @@ import PassRustCore
 
 private struct InternalPassMonitorItem {
     let encrypted: SymmetricallyEncryptedItem
-    let content: ItemContent
+    let content: Entities.ItemContent
     let loginData: LogInItemData
 }
 
@@ -35,7 +35,7 @@ private struct InternalPassMonitorItem {
 /// compromised-password enrichment so items are only decrypted once per refresh.
 private struct WeaknessComputation {
     let loginItems: [InternalPassMonitorItem]
-    let reusedPasswords: Set<String>
+    let reusedPasswords: [String: Int]
 }
 
 // sourcery: AutoMockable
@@ -46,7 +46,7 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
     func refreshSecurityChecks() async throws
-    func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent]
+    func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent]
 
     func reset() async
 
@@ -129,7 +129,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         pushWeaknessState(base)
     }
 
-    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+    public func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent] {
         guard item.loginItem != nil else {
             return []
         }
@@ -289,8 +289,11 @@ private extension PassMonitorRepository {
     }
 
     func setup() {
+        // A sync can update many items at once and each refresh decrypts every login, so
+        // coalesce bursts into one refresh
         itemRepository.itemsWereUpdated
             .dropFirst()
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
             .sink { [weak self] in
                 guard let self else {
                     return
@@ -340,27 +343,32 @@ private extension PassMonitorRepository {
             }
 
         // Filter out unique passwords
-        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
-        return WeaknessComputation(loginItems: loginItems, reusedPasswords: reusedPasswords)
+        let reuseGroups = Dictionary(uniqueKeysWithValues: passwordCounts
+            .filter { $0.value > 1 }
+            .keys
+            .enumerated()
+            .map { ($1, $0) })
+        return WeaknessComputation(loginItems: loginItems, reusedPasswords: reuseGroups)
     }
 
     /// Builds the weakness stats from pre-decrypted inputs, folding `.compromisedPassword` into the
     /// detected weaknesses of any item in `breachedItemIds` (empty for the synchronous/base pass).
     func buildStats(_ inputs: WeaknessComputation,
                     breachedItemIds: Set<String>) -> (WeaknessStats, [SecurityAffectedItem]) {
-        let securityAffectedItems = inputs.loginItems.compactMap { item in
-            let isReused = inputs.reusedPasswords.contains(item.loginData.password)
-            var detected = weaknessEvaluator.evaluate(item.loginData, isReused: isReused)
+        let securityAffectedItems = inputs.loginItems.compactMap { item -> SecurityAffectedItem? in
+            let reuseGroup = inputs.reusedPasswords[item.loginData.password]
+            var detected = weaknessEvaluator.evaluate(item.loginData, isReused: reuseGroup != nil)
             if breachedItemIds.contains(item.content.id) {
                 detected.insert(.compromisedPassword)
             }
+            guard !detected.isEmpty || item.encrypted.item.isExcludedItem else {
+                return nil
+            }
 
-            let affectedItem = SecurityAffectedItem(item: item.encrypted,
-                                                    detected: detected,
-                                                    display: item.content.toItemUiModel,
-                                                    reuseToken: item.loginData.password.reuseToken)
-
-            return affectedItem.shouldBeIncluded ? affectedItem : nil
+            return SecurityAffectedItem(item: item.encrypted,
+                                        detected: detected,
+                                        display: item.content.toItemUiModel,
+                                        reuseGroup: reuseGroup)
         }
 
         var weakPasswordCount = 0

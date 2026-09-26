@@ -22,7 +22,6 @@
 
 import DesignSystem
 import Entities
-import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -258,7 +257,7 @@ private extension CreateEditIdentityView {
                     }
                 }
             }, header: {
-                CustomSectionHeader(title: .localized(section.type.title),
+                CustomSectionHeader(title: section.type.title,
                                     collapsed: section.isCollapsed,
                                     editable: false,
                                     onToggle: { viewModel.toggleCollapsingSection(section) },
@@ -732,19 +731,19 @@ private extension CreateEditIdentityView {
 }
 
 private extension BaseIdentitySection {
-    var title: LocalizedStringKey {
+    var title: String {
         switch self {
         case .personalDetails:
-            "Personal details"
+            #localized("Personal details")
 
         case .address:
-            "Address details"
+            #localized("Address details")
 
         case .contact:
-            "Contact details"
+            #localized("Contact details")
 
         case .workDetail:
-            "Work details"
+            #localized("Work details")
         }
     }
 }

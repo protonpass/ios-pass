@@ -22,10 +22,13 @@ import Client
 import Combine
 import Core
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Macro
 import ProtonCoreUIFoundations
+import Screens
+import Stores
 import SwiftUI
 
 enum ExtraBulkActionOption {
@@ -50,6 +53,7 @@ enum ExtraBulkActionOption {
         }
     }
 
+    @MainActor
     var icon: Image {
         switch self {
         case .pin:
@@ -69,10 +73,10 @@ enum ExtraBulkActionOption {
 
 @MainActor
 final class ItemsTabTopBarViewModel: ObservableObject {
-    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     private var cancellables = Set<AnyCancellable>()
 

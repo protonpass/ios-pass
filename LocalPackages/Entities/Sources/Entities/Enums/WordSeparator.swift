@@ -21,6 +21,10 @@
 
 import Foundation
 
-public enum WordSeparator: Int, CaseIterable {
+public enum WordSeparator: Int, CaseIterable, Sendable, Identifiable, Equatable {
     case hyphens = 0, spaces, periods, commas, underscores, numbers, numbersAndSymbols
+
+    public var id: Int {
+        rawValue
+    }
 }

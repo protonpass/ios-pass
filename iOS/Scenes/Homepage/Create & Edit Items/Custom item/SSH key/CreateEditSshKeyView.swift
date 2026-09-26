@@ -260,10 +260,10 @@ private struct SshKeyEditor: View {
     @FocusState private var isFocused
     @State private var showDiscardAlert = false
     @State private var value = ""
-    private let title: LocalizedStringKey
+    private let title: String
     private let onSave: (String) -> Void
 
-    init(title: LocalizedStringKey,
+    init(title: String,
          value: String,
          onSave: @escaping (String) -> Void) {
         self.title = title

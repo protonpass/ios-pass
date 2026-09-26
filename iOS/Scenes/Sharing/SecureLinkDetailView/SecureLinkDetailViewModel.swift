@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
+import Screens
 
 struct SecureLinkDetailUiModel {
     let secureLinkID: String
@@ -99,8 +101,8 @@ final class SecureLinkDetailViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var finishedDeleting = false
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let deleteSecureLink = resolve(\UseCasesContainer.deleteSecureLink)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let deleteSecureLink = dependency(\UseCasesContainer.deleteSecureLink)
 
     let uiModel: SecureLinkDetailUiModel
 
@@ -113,7 +115,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
     }
 
     func viewItemDetail() {
-        router.present(for: .itemDetail(uiModel.itemContent))
+        router.present(for: .itemDetail(uiModel.itemContent, automaticDisplay: false))
     }
 
     func deleteLink(link: SecureLinkDetailUiModel) {

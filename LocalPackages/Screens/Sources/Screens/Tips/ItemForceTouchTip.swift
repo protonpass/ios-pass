@@ -23,6 +23,8 @@ import TipKit
 
 public struct ItemForceTouchTip: Tip {
     private let bundle: Bundle
+    private let titleColor: Color
+    private let messageColor: Color
 
     public var id: String {
         PassTip.itemForceTouch.id
@@ -39,12 +41,12 @@ public struct ItemForceTouchTip: Tip {
 
     public var title: Text {
         Text("Quick actions on items", bundle: bundle)
-            .foregroundStyle(PassColor.textNorm)
+            .foregroundStyle(titleColor)
     }
 
     public var message: Text? {
         Text("Press and hold an item to reveal extra options.", bundle: bundle)
-            .foregroundStyle(PassColor.textWeak)
+            .foregroundStyle(messageColor)
     }
 
     public var image: Image? {
@@ -59,5 +61,7 @@ public struct ItemForceTouchTip: Tip {
     @MainActor
     public init() {
         bundle = Foundation.Bundle.module
+        titleColor = PassColor.textNorm
+        messageColor = PassColor.textWeak
     }
 }

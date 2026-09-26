@@ -29,8 +29,8 @@ public extension TipBanner {
         let contentPadding: CGFloat
         let arrowMode: ArrowMode
         let arrowSize: CGSize
-        let title: LocalizedStringKey?
-        let description: LocalizedStringKey
+        let title: String?
+        let description: String
         let cta: CTA?
         let trailingBackground: TrailingBackground?
 
@@ -75,8 +75,8 @@ public extension TipBanner {
                     contentPadding: CGFloat = 16,
                     arrowMode: ArrowMode,
                     arrowSize: CGSize = .init(width: 20, height: 10),
-                    title: LocalizedStringKey? = nil,
-                    description: LocalizedStringKey,
+                    title: String? = nil,
+                    description: String,
                     cta: CTA? = nil,
                     trailingBackground: TrailingBackground? = nil) {
             self.cornerRadius = cornerRadius
@@ -108,14 +108,14 @@ public struct TipBanner: View {
             HStack {
                 VStack(alignment: .leading) {
                     if let title = configuration.title {
-                        Text(title)
+                        Text(verbatim: title)
                             .fontWeight(.medium)
                     } else {
                         Text(#localized("Did you know?", bundle: .module))
                             .fontWeight(.medium)
                     }
 
-                    Text(configuration.description)
+                    Text(verbatim: configuration.description)
                 }
                 .environment(\.colorScheme, .dark)
                 .foregroundStyle(PassColor.textNorm)

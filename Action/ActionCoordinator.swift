@@ -21,6 +21,7 @@
 import Client
 import Combine
 import DesignSystem
+import DIComposition
 import Entities
 import FactoryKit
 import Screens
@@ -29,22 +30,18 @@ import UniformTypeIdentifiers
 
 @MainActor
 final class ActionCoordinator {
-    @LazyInjected(\SharedDataContainer.credentialProvider) private var credentialProvider
-    @LazyInjected(\SharedUseCasesContainer.setUpSentry) private var setUpSentry
-    @LazyInjected(\SharedUseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
+    @LazyInjected(\DataContainer.credentialProvider) private var credentialProvider
+    @LazyInjected(\UseCasesContainer.setUpSentry) private var setUpSentry
+    @LazyInjected(\UseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\UseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
 
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
-    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
-    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
-    private var createVaultAndImportLogins
+    @LazyInjected(\ToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\UseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\UseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
+    @LazyInjected(\UseCasesContainer.parseCsvLogins) private var parseCsvLogins
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -56,7 +53,6 @@ final class ActionCoordinator {
 
     init(rootViewController: UIViewController?) {
         self.rootViewController = rootViewController
-        AppearanceSettings.apply()
         setUpSentry()
         setUpRouter()
         setCoreLoggerEnvironment()
@@ -107,8 +103,7 @@ private extension ActionCoordinator {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
             let prefs = getSharedPreferences()
-            let view = ImporterView(logManager: logManager,
-                                    datasource: self,
+            let view = ImporterView(source: self,
                                     onClose: { [weak self] in
                                         guard let self else { return }
                                         dismissExtension()
@@ -184,10 +179,6 @@ extension ActionCoordinator: ExtensionCoordinator {
 }
 
 extension ActionCoordinator: ImporterDatasource {
-    func getUsers() async throws -> [UserUiModel] {
-        try await getUserUiModels()
-    }
-
     func parseLogins() async throws -> [CsvLogin] {
         guard let items = context?.inputItems as? [NSExtensionItem] else {
             throw PassError.extension(.noInputItems)
@@ -217,14 +208,5 @@ extension ActionCoordinator: ImporterDatasource {
         }
 
         return try await parseCsvLogins(csvString)
-    }
-
-    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
-        let userId: String = if let user {
-            user.id
-        } else {
-            try await userManager.getActiveUserId()
-        }
-        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }

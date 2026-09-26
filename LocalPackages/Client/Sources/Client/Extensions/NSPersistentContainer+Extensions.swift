@@ -26,7 +26,9 @@ public extension NSPersistentContainer {
 
     static func model(for name: String) -> NSManagedObjectModel {
         modelCache.withLock { cache in
-            if let cached = cache[name] { return cached }
+            if let cached = cache[name] {
+                return cached
+            }
 
             guard let url = Bundle.module.url(forResource: name, withExtension: "momd")
             else { fatalError("Could not get URL for model: \(name)") }

@@ -40,7 +40,8 @@ public enum SearchUtils {
         // we don't want to have new lines in such case
         let text = text.replacingOccurrences(of: "\n", with: " ")
 
-        guard let range = text.range(of: query, options: .caseInsensitive) else { return nil }
+        guard let range = text.range(of: query, options: [.caseInsensitive, .diacriticInsensitive])
+        else { return nil }
         let matchedWord = text[range]
 
         // We want to extract the matched phrase that has

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import DesignSystem
 import Foundation
 
 public enum AllowedCharacter: String {
@@ -183,6 +184,23 @@ public extension String {
         content.append(contentsOf: strings)
         return String.concatenateOptionalStrings(content, separator: separator)
     }
+
+    @MainActor
+    func coloredPassword() -> AttributedString {
+        let attributedChars = map { char in
+            var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
+            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
+                PassColor.loginInteractionNormMajor2
+            } else if AllowedCharacter.special.rawValue.contains(char) ||
+                AllowedCharacter.separator.rawValue.contains(char) {
+                PassColor.aliasInteractionNormMajor2
+            } else {
+                PassColor.textNorm
+            }
+            return attributedChar
+        }
+        return attributedChars.reduce(into: .init()) { $0 += $1 }
+    }
 }
 
 // MARK: Computed Extensions
@@ -194,15 +212,6 @@ public extension String {
 
     var spacesRemoved: String {
         replacingOccurrences(of: " ", with: "")
-    }
-
-    /// Stable hash of a password for reuse grouping (nil when empty). Storing a hash rather than the
-    /// plaintext keeps the published security cache from holding every password in memory.
-    var reuseToken: String? {
-        guard !isEmpty else {
-            return nil
-        }
-        return SHA256.hash(data: Data(utf8)).map { String(format: "%02x", $0) }.joined()
     }
 }
 

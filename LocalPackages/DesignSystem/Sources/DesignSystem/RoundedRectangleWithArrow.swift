@@ -21,7 +21,7 @@
 
 import SwiftUI
 
-public struct RoundedRectangleWithArrow: Shape {
+public nonisolated struct RoundedRectangleWithArrow: Shape {
     private let cornerRadius: CGFloat
     private let arrowPosition: ArrowPosition
     private let arrowSize: CGSize

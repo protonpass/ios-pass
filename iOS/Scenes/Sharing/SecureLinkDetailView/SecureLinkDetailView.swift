@@ -21,6 +21,7 @@
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecureLinkDetailView: View {
@@ -101,7 +102,7 @@ struct SecureLinkDetailView: View {
         .padding(.bottom, DesignConstant.sectionPadding)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PassColor.backgroundNorm)
+        .fullSheetBackground()
         .onChange(of: viewModel.finishedDeleting) {
             dismiss()
         }

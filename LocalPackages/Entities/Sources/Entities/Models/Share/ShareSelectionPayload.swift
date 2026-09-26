@@ -41,6 +41,10 @@ public struct ShareSelectionPayload: Hashable, Sendable, Identifiable {
         folder != nil
     }
 
+    public func canCreateItem(folderAllowed: Bool) -> Bool {
+        share.canEdit && (folderAllowed || !isFolderSelected)
+    }
+
     public var title: String {
         folder?.content.name ?? share.vaultContent?.name ?? ""
     }

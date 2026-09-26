@@ -19,17 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreLogin
+import Screens
 import SwiftUI
 
 @MainActor
 final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let upgradeChecker = dependency(\ServiceContainer.upgradeChecker)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private weak var createEditItemDelegate: (any CreateEditLoginViewModelDelegate)?
     private var currentViewModel: BaseCreateEditItemViewModel?
 

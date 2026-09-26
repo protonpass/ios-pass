@@ -19,8 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import Entities
 import FactoryKit
+import Screens
 import SwiftUI
 
 @MainActor
@@ -52,13 +54,13 @@ final class LogsViewModel: DeinitPrintable, ObservableObject {
     private let logFormatter: any LogFormatterProtocol
     let module: PassModule
 
-    private let getLogEntries = resolve(\UseCasesContainer.getLogEntries)
-    private let extractLogsToFile = resolve(\UseCasesContainer.extractLogsToFile)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let getLogEntries = dependency(\UseCasesContainer.getLogEntries)
+    private let extractLogsToFile = dependency(\UseCasesContainer.extractLogsToFile)
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     init(module: PassModule) {
         self.module = module
-        logFormatter = SharedToolingContainer.shared.logFormatter()
+        logFormatter = ToolingContainer.shared.logFormatter()
         loadLogs()
     }
 

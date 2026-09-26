@@ -85,7 +85,7 @@ public struct OptionRow<Content: View, LeadingView: View, TrailingView: View>: V
 
             VStack(alignment: .leading, spacing: 4) {
                 if let title {
-                    Text(title)
+                    Text(verbatim: title)
                         .sectionTitleText()
                 }
                 content
@@ -112,7 +112,7 @@ public struct TextOptionRow: View {
     public var body: some View {
         OptionRow(action: action,
                   content: {
-                      Text(title)
+                      Text(verbatim: title)
                           .foregroundStyle(PassColor.textNorm)
                   },
                   trailing: { ChevronRight() })

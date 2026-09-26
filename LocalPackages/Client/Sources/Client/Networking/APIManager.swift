@@ -134,15 +134,32 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
     }
 
     public func getApiService(userId: String) throws -> any APIService {
-        if let credentials = authManager.getCredential(userId: userId),
+        let credentials = authManager.getCredential(userId: userId)
+        if let credentials,
            let service = allCurrentApiServices
            .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
             return service.apiService
         }
+
+        let reason = if let credentials {
+            "no API service matches session \(credentials.sessionID)"
+        } else {
+            "no credential found"
+        }
+
         if let unauthApiService = allCurrentApiServices.unauthApiService {
+            if userId.isEmpty {
+                logger.info("No user id: using the unauthenticated API service, as intended")
+            } else {
+                logger.warning("""
+                Falling back to unauthenticated API service for user \(userId): \(reason). \
+                Authenticated requests will fail with "Invalid access token".
+                """)
+            }
             return unauthApiService
         }
 
+        logger.error("No API service for user \(userId): \(reason), and no unauthenticated one either")
         throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
@@ -306,7 +323,7 @@ extension APIManager: APIServiceLoggingDelegate {
                                              sessionType: APISessionTypeForLogging,
                                              reason: APIServiceAccessTokenRefreshSuccessReasonForLogging) {
         logger.info("""
-        Access token refresh did succeed for \(sessionType) session \(sessionID)
+        Access token refresh did succeed for \(sessionType) session \(sessionID) \
         with reason \(reason)
         """)
     }

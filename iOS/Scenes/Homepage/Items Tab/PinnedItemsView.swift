@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Screens
 import SwiftUI
 
 struct PinnedItemsView: View {

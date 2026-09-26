@@ -319,13 +319,18 @@ final class PPSplitViewController: UISplitViewController {
         statusBarStyle
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        show(.primary)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        registerForTraitChanges([
+            UITraitHorizontalSizeClass.self,
+            UITraitVerticalSizeClass.self
+        ]) { (self: PPSplitViewController, _) in
+            self.show(.primary)
+        }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         show(.primary)
     }
 }

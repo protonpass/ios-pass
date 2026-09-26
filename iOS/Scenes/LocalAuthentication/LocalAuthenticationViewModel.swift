@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import Foundation
@@ -37,19 +38,14 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let delayed: Bool
-    @ObservationIgnored
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
-    @ObservationIgnored
-    private let logger = resolve(\SharedToolingContainer.logger)
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let logger = dependency(\ToolingContainer.logger)
     private let onSuccess: () async throws -> Void
     private let onFailure: (String?) -> Void
     private var cancellables = Set<AnyCancellable>()
-    @ObservationIgnored
-    private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-    @ObservationIgnored
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
-    @ObservationIgnored
-    private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    private let authenticate = dependency(\UseCasesContainer.authenticateBiometrically)
+    private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
     let mode: Mode
 
     // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier

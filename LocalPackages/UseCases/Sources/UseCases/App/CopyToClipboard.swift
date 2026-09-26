@@ -25,11 +25,12 @@ import UIKit
 import UniformTypeIdentifiers
 
 /// Copy `text` to clipboard and optionally display a banner message
+@MainActor
 public protocol CopyToClipboardUseCase: Sendable {
-    func execute(_ text: String,
-                 expirationDate: Date?,
-                 bannerMessage: String?,
-                 bannerDisplay: (any BannerDisplayProtocol)?)
+    func callAsFunction(_ text: String,
+                        expirationDate: Date?,
+                        bannerMessage: String?,
+                        bannerDisplay: (any BannerDisplayProtocol)?)
 }
 
 public extension CopyToClipboardUseCase {
@@ -37,24 +38,24 @@ public extension CopyToClipboardUseCase {
                         expirationDate: Date? = nil,
                         bannerMessage: String? = nil,
                         bannerDisplay: (any BannerDisplayProtocol)? = nil) {
-        execute(text,
-                expirationDate: expirationDate,
-                bannerMessage: bannerMessage,
-                bannerDisplay: bannerDisplay)
+        callAsFunction(text,
+                       expirationDate: expirationDate,
+                       bannerMessage: bannerMessage,
+                       bannerDisplay: bannerDisplay)
     }
 }
 
-public final class CopyToClipboard: CopyToClipboardUseCase {
+public struct CopyToClipboard: CopyToClipboardUseCase {
     private let getSharedPreferences: any GetSharedPreferencesUseCase
 
-    public init(getSharedPreferences: any GetSharedPreferencesUseCase) {
+    public nonisolated init(getSharedPreferences: any GetSharedPreferencesUseCase) {
         self.getSharedPreferences = getSharedPreferences
     }
 
-    public func execute(_ text: String,
-                        expirationDate: Date?,
-                        bannerMessage: String?,
-                        bannerDisplay: (any BannerDisplayProtocol)?) {
+    public func callAsFunction(_ text: String,
+                               expirationDate: Date?,
+                               bannerMessage: String?,
+                               bannerDisplay: (any BannerDisplayProtocol)?) {
         let preferences = getSharedPreferences()
 
         // Use setItems with raw Data instead of setObjects with NSItemProviderWriting.

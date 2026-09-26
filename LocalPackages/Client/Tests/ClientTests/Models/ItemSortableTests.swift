@@ -28,67 +28,73 @@ struct ItemSortableTests {
     @Test("Most recent sort")
     func mostRecentSort() throws {
         struct DummyItem: DateSortable {
-            let dateForSorting: Date
+            let lastUseTime: Int64
+            let modifyTime: Int64
         }
 
         var items = [DummyItem]()
         let now = Date()
+        let timestamp: (Date) -> Int64 = { Int64($0.timeIntervalSince1970) }
+        // Buckets are driven by the most recent of the 2 dates, so each item only sets one of them
+        let lastUsed: (Date) -> DummyItem = { DummyItem(lastUseTime: timestamp($0), modifyTime: 0) }
+        let modified: (Date) -> DummyItem = { DummyItem(lastUseTime: 0, modifyTime: timestamp($0)) }
+
         // Given today items
-        let today1 = DummyItem(dateForSorting: now.adding(component: .second, value: -10))
-        let today2 = DummyItem(dateForSorting: now.adding(component: .second, value: -1))
-        let today3 = DummyItem(dateForSorting: now)
+        let today1 = lastUsed(now.adding(component: .second, value: -10))
+        let today2 = modified(now.adding(component: .second, value: -1))
+        let today3 = lastUsed(now)
 
         items.append(contentsOf: [today1, today2, today3])
 
         // Given yesterday items
         let yesterdayDate = Date().adding(component: .day, value: -1)
-        let yesterday1 = DummyItem(dateForSorting: yesterdayDate.adding(component: .second, value: -100))
+        let yesterday1 = lastUsed(yesterdayDate.adding(component: .second, value: -100))
 
-        let yesterday2 = DummyItem(dateForSorting: yesterdayDate.adding(component: .second, value: -67))
+        let yesterday2 = modified(yesterdayDate.adding(component: .second, value: -67))
 
-        let yesterday3 = DummyItem(dateForSorting: yesterdayDate.adding(component: .second, value: -3))
+        let yesterday3 = lastUsed(yesterdayDate.adding(component: .second, value: -3))
 
         items.append(contentsOf: [yesterday1, yesterday2, yesterday3])
 
         // Given last 7 day items
-        let last7Days1 = DummyItem(dateForSorting: now.adding(component: .day, value: -4))
-        let last7Days2 = DummyItem(dateForSorting: now.adding(component: .day, value: -2))
-        let last7Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -5))
+        let last7Days1 = lastUsed(now.adding(component: .day, value: -4))
+        let last7Days2 = modified(now.adding(component: .day, value: -2))
+        let last7Days3 = lastUsed(now.adding(component: .day, value: -5))
 
         items.append(contentsOf: [last7Days1, last7Days2, last7Days3])
 
         // Given last 14 day items
-        let last14Days1 = DummyItem(dateForSorting: now.adding(component: .day, value: -10))
-        let last14Days2 = DummyItem(dateForSorting: now.adding(component: .day, value: -8))
-        let last14Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -11))
+        let last14Days1 = modified(now.adding(component: .day, value: -10))
+        let last14Days2 = lastUsed(now.adding(component: .day, value: -8))
+        let last14Days3 = modified(now.adding(component: .day, value: -11))
 
         items.append(contentsOf: [last14Days1, last14Days2, last14Days3])
 
         // Given last 30 day items
-        let last30Days1 = DummyItem(dateForSorting: now.adding(component: .day, value: -17))
-        let last30Days2 = DummyItem(dateForSorting: now.adding(component: .day, value: -16))
-        let last30Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -20))
+        let last30Days1 = lastUsed(now.adding(component: .day, value: -17))
+        let last30Days2 = modified(now.adding(component: .day, value: -16))
+        let last30Days3 = lastUsed(now.adding(component: .day, value: -20))
 
         items.append(contentsOf: [last30Days1, last30Days2, last30Days3])
 
         // Given last 60 day items
-        let last60Days1 = DummyItem(dateForSorting: now.adding(component: .day, value: -35))
-        let last60Days2 = DummyItem(dateForSorting: now.adding(component: .day, value: -40))
-        let last60Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -31))
+        let last60Days1 = modified(now.adding(component: .day, value: -35))
+        let last60Days2 = lastUsed(now.adding(component: .day, value: -40))
+        let last60Days3 = modified(now.adding(component: .day, value: -31))
 
         items.append(contentsOf: [last60Days1, last60Days2, last60Days3])
 
         // Given last 90 day items
-        let last90Days1 = DummyItem(dateForSorting: now.adding(component: .day, value: -78))
-        let last90Days2 = DummyItem(dateForSorting: now.adding(component: .day, value: -67))
-        let last90Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -61))
+        let last90Days1 = lastUsed(now.adding(component: .day, value: -78))
+        let last90Days2 = modified(now.adding(component: .day, value: -67))
+        let last90Days3 = lastUsed(now.adding(component: .day, value: -61))
 
         items.append(contentsOf: [last90Days1, last90Days2, last90Days3])
 
         // Given more than 90 day items
-        let moreThan90Days1 = DummyItem(dateForSorting: now.adding(component: .year, value: -2))
-        let moreThan90Days2 = DummyItem(dateForSorting: now.adding(component: .month, value: -8))
-        let moreThan90Days3 = DummyItem(dateForSorting: now.adding(component: .day, value: -100))
+        let moreThan90Days1 = modified(now.adding(component: .year, value: -2))
+        let moreThan90Days2 = lastUsed(now.adding(component: .month, value: -8))
+        let moreThan90Days3 = modified(now.adding(component: .day, value: -100))
 
         items.append(contentsOf: [moreThan90Days1, moreThan90Days2, moreThan90Days3])
 
@@ -167,7 +173,8 @@ struct ItemSortableTests {
     }
 
     func assertEqual(_ lhs: any DateSortable, _ rhs: any DateSortable) {
-        #expect(lhs.dateForSorting == rhs.dateForSorting)
+        #expect(lhs.lastUseTime == rhs.lastUseTime)
+        #expect(lhs.modifyTime == rhs.modifyTime)
     }
 
     @Test("Alphabetical sort")
@@ -239,21 +246,28 @@ struct ItemSortableTests {
     @Test("Month year sort")
     func monthYearSort() throws {
         struct DummyItem: DateSortable {
-            let dateForSorting: Date
+            let lastUseTime: Int64
+            let modifyTime: Int64
         }
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
-        let createDate: (String) -> Date = { dateFormat in
-            dateFormatter.date(from: dateFormat)! // swiftlint:disable:this force_unwrapping
+        let createTimestamp: (String) -> Int64 = { dateFormat in
+            // swiftlint:disable:next force_unwrapping
+            Int64(dateFormatter.date(from: dateFormat)!.timeIntervalSince1970)
+        }
+        // A recent last use time must not influence the buckets, only the modify time counts
+        let recentUse = Int64(Date().timeIntervalSince1970)
+        let makeItem: (String) -> DummyItem = {
+            DummyItem(lastUseTime: recentUse, modifyTime: createTimestamp($0))
         }
         // Given
-        let item1 = DummyItem(dateForSorting: createDate("11/03/2023"))
-        let item2 = DummyItem(dateForSorting: createDate("20/03/2023"))
-        let item3 = DummyItem(dateForSorting: createDate("01/07/2022"))
-        let item4 = DummyItem(dateForSorting: createDate("05/03/2022"))
-        let item5 = DummyItem(dateForSorting: createDate("18/03/2022"))
-        let item6 = DummyItem(dateForSorting: createDate("18/06/2021"))
+        let item1 = makeItem("11/03/2023")
+        let item2 = makeItem("20/03/2023")
+        let item3 = makeItem("01/07/2022")
+        let item4 = makeItem("05/03/2022")
+        let item5 = makeItem("18/03/2022")
+        let item6 = makeItem("18/06/2021")
 
         let items = [item1, item2, item3, item4, item5, item6].shuffled()
 

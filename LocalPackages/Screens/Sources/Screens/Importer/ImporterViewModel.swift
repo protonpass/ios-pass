@@ -19,37 +19,44 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import DIComposition
 import Entities
+import FactoryKit
 import Foundation
 import Macro
 import ProtonCoreLogin
 
 public protocol ImporterDatasource: Sendable, AnyObject {
-    func getUsers() async throws -> [UserUiModel]
     func parseLogins() async throws -> [CsvLogin]
-    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws
 }
 
 @MainActor
-final class ImporterViewModel: ObservableObject {
-    @Published private(set) var logins: [CsvLogin] = []
-    @Published private(set) var loading = false
-    @Published private var excludedIds: Set<String> = .init()
-    @Published private(set) var users: [UserUiModel] = []
-    @Published var selectedUser: UserUiModel?
-    @Published var importSuccessMessage: String?
-    @Published var error: (any Error)?
+@Observable
+final class ImporterViewModel {
+    private(set) var logins: [CsvLogin] = []
+    private(set) var loading = false
+    private var excludedIds: Set<String> = .init()
+    private(set) var users: [UserUiModel] = []
+    var selectedUser: UserUiModel?
+    var importSuccessMessage: String?
+    var error: (any Error)?
 
+    private let getUsers = dependency(\UseCasesContainer.getUserUiModels)
+    private let createVaultAndImportLogins = dependency(\UseCasesContainer.createVaultAndImportLogins)
+    private let userManager = dependency(\ServiceContainer.userManager)
     private let logger: Logger
+
+    private let source: any ImporterDatasource
 
     var selectedCount: Int {
         logins.count - excludedIds.count
     }
 
-    weak var datasource: (any ImporterDatasource)?
-
-    init(logManager: any LogManagerProtocol) {
+    init(source: any ImporterDatasource,
+         logManager: any LogManagerProtocol = ToolingContainer.shared.logManager()) {
+        self.source = source
         logger = .init(manager: logManager)
+        logins = logins
     }
 }
 
@@ -66,16 +73,14 @@ extension ImporterViewModel {
         }
     }
 
-    func fetchData() async {
+    func loadData() async {
         do {
             defer { loading = false }
             loading = true
-            guard let datasource else {
-                throw PassError.importer(.missingDatasource)
-            }
-            users = try await datasource.getUsers()
+
+            logins = try await source.parseLogins()
+            users = try await getUsers()
             selectedUser = users.first
-            logins = try await datasource.parseLogins()
         } catch {
             handle(error)
         }
@@ -87,17 +92,12 @@ extension ImporterViewModel {
             defer { loading = false }
             loading = true
             do {
-                guard let datasource else {
-                    throw PassError.importer(.missingDatasource)
-                }
-
                 guard !logins.isEmpty else {
                     throw PassError.importer(.noLoginsFound)
                 }
 
                 let loginsToImport = logins.filter { !excludedIds.contains($0.id) }
-                try await datasource.proceedImportation(user: selectedUser,
-                                                        logins: loginsToImport)
+                try await proceedImportation(user: selectedUser, logins: loginsToImport)
                 importSuccessMessage = #localized("%lld logins imported",
                                                   bundle: .module,
                                                   selectedCount)
@@ -107,8 +107,23 @@ extension ImporterViewModel {
         }
     }
 
-    func handle(_ error: any Error) {
+    func handle(_ error: any Error,
+                file: String = #file,
+                function: String = #function,
+                line: UInt = #line,
+                column: UInt = #column) {
         self.error = error
-        logger.error(error)
+        logger.error(error, file: file, function: function, line: line, column: column)
+    }
+}
+
+private extension ImporterViewModel {
+    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
+        let userId: String = if let user {
+            user.id
+        } else {
+            try await userManager.getActiveUserId()
+        }
+        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }

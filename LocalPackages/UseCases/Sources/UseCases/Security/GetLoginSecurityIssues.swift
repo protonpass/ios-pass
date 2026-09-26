@@ -35,9 +35,9 @@ public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    /// Return the items with security issue
-    /// - Parameter itemId: This is the combination of item id + share id for uniqueness
-    /// - Returns: All the items found with some security weakness
+    /// Emits the item's security state on every Pass Monitor refresh, or `nil` when the item has no
+    /// detected weakness and no exclusion (full or per check).
+    /// - Parameter itemId: `ItemContent.id` (item ID + share ID), not the bare item ID.
     public func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
             .map { items -> SecurityAffectedItem? in

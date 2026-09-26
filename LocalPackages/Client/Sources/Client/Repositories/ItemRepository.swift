@@ -48,10 +48,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get all local items of a share by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all local items of a share or folder by state
-    func getItems(shareId: String, folderId: String?, state: ItemState) async throws
-        -> [SymmetricallyEncryptedItem]
-
     /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
@@ -120,6 +116,10 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Permanently delete selected items
     func delete(userId: String, items: [any ItemIdentifiable]) async throws
 
+    /// Get and cache a shared item after accepting an item invite
+    /// Return an optional item content in order to display after accepting
+    func getSharedItem(userId: String, share: Share) async throws -> ItemContent?
+
     @discardableResult
     func updateItem(userId: String,
                     oldItem: Item,
@@ -138,8 +138,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
                                aliases: [Alias]) async throws
 
     func move(items: [any ItemIdentifiable], toShareId: String, destinationFolderId: String?) async throws
-
-    func move(currentShareId: String, toShareId: String, destinationFolderId: String?) async throws
 
     // periphery:ignore
     /// Delete all local items
@@ -274,17 +272,6 @@ public extension ItemRepository {
         try await localDatasource.getItems(shareId: shareId, state: state)
     }
 
-    /// Get all local items of a share or folder by state
-    func getItems(shareId: String,
-                  folderId: String?,
-                  state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        if let folderId {
-            try await localDatasource.getItems(shareId: shareId, folderId: folderId, state: state)
-        } else {
-            try await getItems(shareId: shareId, state: state)
-        }
-    }
-
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem? {
         try await localDatasource.getItem(shareId: shareId, itemId: itemId)
     }
@@ -339,7 +326,7 @@ public extension ItemRepository {
     func refreshItems(userId: String,
                       shareId: String,
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
-        logger.trace("Refreshing share \(shareId)")
+        logger.trace("Refreshing items for share \(shareId)")
         let itemRevisions = try await remoteDatasource.getItems(userId: userId,
                                                                 shareId: shareId,
                                                                 eventStream: eventStream)
@@ -408,7 +395,8 @@ public extension ItemRepository {
                     shareId: String,
                     folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating item for share \(shareId) and user \(userId)")
-        let request = try await createItemRequest(itemContent: itemContent,
+        let request = try await createItemRequest(userId: userId,
+                                                  itemContent: itemContent,
                                                   shareId: shareId,
                                                   folderId: folderId)
         let createdItemRevision = try await remoteDatasource.createItem(userId: userId,
@@ -433,7 +421,8 @@ public extension ItemRepository {
                      shareId: String,
                      folderId: String?) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating alias item for user \(userId)")
-        let createItemRequest = try await createItemRequest(itemContent: itemContent,
+        let createItemRequest = try await createItemRequest(userId: userId,
+                                                            itemContent: itemContent,
                                                             shareId: shareId,
                                                             folderId: folderId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
@@ -462,7 +451,8 @@ public extension ItemRepository {
         logger.trace("Creating pending alias item for user \(userId)")
 
         let aliasesItemInfos = try await itemsContent.asyncCompactMap { pendingAliasId, value in
-            let request = try await createItemRequest(itemContent: value,
+            let request = try await createItemRequest(userId: userId,
+                                                      itemContent: value,
                                                       shareId: shareId,
                                                       folderId: folderId)
             return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
@@ -495,10 +485,12 @@ public extension ItemRepository {
                                  folderId: String?)
         async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
-        let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent,
+        let createAliasItemRequest = try await createItemRequest(userId: userId,
+                                                                 itemContent: aliasItemContent,
                                                                  shareId: shareId,
                                                                  folderId: folderId)
-        let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent,
+        let createOtherItemRequest = try await createItemRequest(userId: userId,
+                                                                 itemContent: otherItemContent,
                                                                  shareId: shareId,
                                                                  folderId: folderId)
 
@@ -663,6 +655,32 @@ public extension ItemRepository {
         logger.trace("Deleted locally items \(items.count)")
     }
 
+    func getSharedItem(userId: String, share: Share) async throws -> ItemContent? {
+        let shareId = share.shareID
+        guard share.shareType == .item else {
+            throw PassError.itemShareExpected(share)
+        }
+        logger.trace("Getting shared item shareId: \(shareId), targetId: \(share.targetID)")
+        let revisions = try await remoteDatasource.getItemRevisions(userId: userId,
+                                                                    shareId: shareId,
+                                                                    itemId: share.targetID,
+                                                                    lastToken: nil)
+        guard let lastestRevision = revisions.data.first else {
+            throw PassError.sharedItemNotFound(share)
+        }
+        let symmetricKey = try await getSymmetricKey()
+        let encrypted = try await symmetricallyEncrypt(itemRevision: lastestRevision,
+                                                       shareId: shareId,
+                                                       userId: userId,
+                                                       symmetricKey: symmetricKey)
+        try await localDatasource.upsertItems([encrypted])
+        guard let content = try await getItemContent(shareId: shareId,
+                                                     itemId: encrypted.itemId) else {
+            throw PassError.itemNotFound(encrypted)
+        }
+        return content
+    }
+
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
@@ -670,17 +688,12 @@ public extension ItemRepository {
                     slNote: String?) async throws -> SymmetricallyEncryptedItem {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
-        let fullParentId = if let folderId = oldItem.folderID {
-            folderId + shareId
-        } else {
-            shareId
-        }
         let latestItemKey: any CryptographicKeyProtocol = if oldItem.isASharedWithMeItem {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         } else {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: shareId,
-                                                      parentId: fullParentId,
+                                                      folderId: oldItem.folderID,
                                                       itemId: itemId)
         }
 
@@ -769,22 +782,14 @@ public extension ItemRepository {
         let userId = try await userManager.getActiveUserId()
         try await bulkAction(userId: userId, items: items) { [weak self] groupedItems, _ in
             guard let self else { return }
-            try await parallelMove(items: groupedItems,
+            try await parallelMove(userId: userId,
+                                   items: groupedItems,
                                    to: toShareId,
                                    destinationFolderId: destinationFolderId)
         }
         try await refreshPinnedItemDataStream()
-        logger.info("Bulk moved \(items.count) items to share \(toShareId)")
-    }
-
-    func move(currentShareId: String,
-              toShareId: String,
-              destinationFolderId: String?) async throws {
-        logger.trace("Moving current share \(currentShareId) to share \(toShareId)")
-        let items = try await getItems(shareId: currentShareId, state: .active)
-        try await parallelMove(items: items, to: toShareId, destinationFolderId: destinationFolderId)
         itemsWereUpdated.send()
-        logger.trace("Moved share \(currentShareId) to share \(toShareId)")
+        logger.info("Bulk moved \(items.count) items to share \(toShareId)")
     }
 
     func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
@@ -948,13 +953,11 @@ private extension ItemRepository {
             throw PassError.shareNotFoundInLocalDB(shareID: shareId)
         }
 
-        let fullContainerKey = if let folderID = itemRevision.folderID, share.share.shareType == .vault {
-            folderID + shareId
-        } else {
-            shareId
-        }
-
-        let shareKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey, keyRotation: nil)
+        let shareKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                shareId: shareId,
+                                                                folderId: share.share.shareType == .vault ?
+                                                                    itemRevision.folderID : nil,
+                                                                keyRotation: nil)
 
         let contentProtobuf = try itemRevision.getContentProtobuf(containerKey: shareKey)
 
@@ -981,15 +984,13 @@ private extension ItemRepository {
                      encryptedSimpleLoginNote: encryptedSlNote)
     }
 
-    func createItemRequest(itemContent: any ProtobufableItemContentProtocol,
+    func createItemRequest(userId: String,
+                           itemContent: any ProtobufableItemContentProtocol,
                            shareId: String,
                            folderId: String?) async throws -> CreateItemRequest {
-        let fullContainerKey = if let folderId {
-            folderId + shareId
-        } else {
-            shareId
-        }
-        let latestContainerKey = try await passKeyManager.getContainerKey(containerId: fullContainerKey,
+        let latestContainerKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                          shareId: shareId,
+                                                                          folderId: folderId,
                                                                           keyRotation: nil)
         return try CreateItemRequest(containerKey: latestContainerKey,
                                      itemContent: itemContent,
@@ -1030,7 +1031,8 @@ public extension ItemRepository {
 }
 
 private extension ItemRepository {
-    func parallelMove(items: [any ItemIdentifiable],
+    func parallelMove(userId: String,
+                      items: [any ItemIdentifiable],
                       to toShareId: String,
                       destinationFolderId: String?) async throws {
         let splitArray = items.chunked(into: 10)
@@ -1054,14 +1056,16 @@ private extension ItemRepository {
                         if !sameFolderMove.isEmpty {
                             group.addTask {
                                 let symmetricEncryptedItems = try await self.getItems(sameFolderMove)
-                                try await self.doSameShareMove(items: symmetricEncryptedItems,
+                                try await self.doSameShareMove(userId: userId,
+                                                               items: symmetricEncryptedItems,
                                                                shareId: toShareId,
                                                                toContainerId: destinationFolderId)
                             }
                         }
                         if !otherFolderMove.isEmpty {
                             group.addTask {
-                                try await self.doMove(items: otherFolderMove,
+                                try await self.doMove(userId: userId,
+                                                      items: otherFolderMove,
                                                       toShareId: toShareId,
                                                       destinationFolderId: destinationFolderId)
                             }
@@ -1075,22 +1079,18 @@ private extension ItemRepository {
     }
 
     @discardableResult
-    func doMove(items: [any ItemIdentifiable],
+    func doMove(userId: String,
+                items: [any ItemIdentifiable],
                 toShareId: String,
                 destinationFolderId: String?) async throws -> [SymmetricallyEncryptedItem] {
         guard let fromSharedId = items.first?.shareId else {
             throw PassError.unexpectedError
         }
-        let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await getSymmetricKey()
 
-        let fullDestinationId = if let destinationFolderId {
-            destinationFolderId + toShareId
-        } else {
-            toShareId
-        }
-
-        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: fullDestinationId,
+        let destinationShareKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                           shareId: toShareId,
+                                                                           folderId: destinationFolderId,
                                                                            keyRotation: nil)
 
         var itemsToBeMoved = [ItemToBeMoved]()
@@ -1098,7 +1098,7 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         parentId: item.fullParentId,
+                                                                         folderId: item.folderId,
                                                                          itemId: item.itemId)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
@@ -1132,17 +1132,13 @@ private extension ItemRepository {
         return newEncryptedItems
     }
 
-    func doSameShareMove(items: [SymmetricallyEncryptedItem],
+    func doSameShareMove(userId: String,
+                         items: [SymmetricallyEncryptedItem],
                          shareId: String,
                          toContainerId: String?) async throws {
-        let userId = try await userManager.getActiveUserId()
-        let fullContainerId = if let toContainerId {
-            toContainerId + shareId
-        } else {
-            shareId
-        }
-
-        let destinationShareKey = try await passKeyManager.getContainerKey(containerId: fullContainerId,
+        let destinationShareKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                           shareId: shareId,
+                                                                           folderId: toContainerId,
                                                                            keyRotation: nil)
 
         var itemsToBeMoved = [InternalItemToBeMoved]()
@@ -1150,7 +1146,7 @@ private extension ItemRepository {
             // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
-                                                                         parentId: item.fullParentId,
+                                                                         folderId: item.folderId,
                                                                          itemId: item.item.itemID)
             // Re-encrypt all those item keys with the destination vault key
             var encryptedItemKeys = [ItemKey]()
@@ -1206,12 +1202,9 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func decrypt(userId: String, item: Item, shareId: String) async throws -> ItemContent {
-        let fullContainerId = if let folderId = item.folderID {
-            folderId + shareId
-        } else {
-            shareId
-        }
-        let containerKey = try await passKeyManager.getContainerKey(containerId: fullContainerId,
+        let containerKey = try await passKeyManager.getContainerKey(userId: userId,
+                                                                    shareId: shareId,
+                                                                    folderId: item.folderID,
                                                                     keyRotation: nil)
         let contentProtobuf = try item.getContentProtobuf(containerKey: containerKey)
         return ItemContent(userId: userId,

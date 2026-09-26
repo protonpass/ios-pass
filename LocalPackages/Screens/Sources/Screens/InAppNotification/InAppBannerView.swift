@@ -50,7 +50,7 @@ public struct InAppBannerView: View {
                     AsyncImage(url: url,
                                content: { image in
                                    image.resizable()
-                                       .aspectRatio(contentMode: .fit)
+                                       .scaledToFit()
                                        .frame(maxWidth: 40, maxHeight: 40)
                                },
                                placeholder: {

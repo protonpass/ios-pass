@@ -150,3 +150,5 @@ extension ItemUiModel: Identifiable {
         !aliasEnabled
     }
 }
+
+extension ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable {}

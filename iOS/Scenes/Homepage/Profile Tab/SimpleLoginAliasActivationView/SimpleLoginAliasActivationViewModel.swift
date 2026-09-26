@@ -23,10 +23,13 @@
 import Client
 import Combine
 import Core
+import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreLogin
 import ProtonCoreServices
+import Screens
+import Stores
 import SwiftUI
 import UseCases
 
@@ -37,14 +40,14 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject {
 
     @Published private(set) var loading = false
 
-    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    @LazyInjected(\RepositoryContainer.accessRepository)
     private var accessRepository: any AccessRepositoryProtocol
-    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
-    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\UseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\RepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\ToolingContainer.logger) private var logger
 
     private var userAliasSyncData: UserAliasSyncData?
 
