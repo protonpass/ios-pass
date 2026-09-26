@@ -50,7 +50,8 @@ public extension UpsellEntry {
 
         case .compromisedPasswords:
             // swiftlint:disable:next line_length
-            #localized("Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches.")
+            #localized("Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches.",
+                       bundle: .module)
         }
     }
 
@@ -87,7 +88,8 @@ public extension UpsellEntry {
 
         case .compromisedPasswords:
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
-                                                title: #localized("Compromised password detection"),
+                                                title: #localized("Compromised password detection",
+                                                                  bundle: .module),
                                                 color: PassColor.interactionNormMajor2))
 
         default:
