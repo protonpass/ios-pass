@@ -270,7 +270,6 @@ public extension PassMonitorRepository {
             breachedItemIds = try? await compromisedItemIds(userId: userId, inputs: visibleInputs)
         }
         let stats = buildStats(inputs, breachedItemIds: breachedItemIds ?? []).0
-        // nil omits the field rather than reporting zero when the check couldn't run
         let compromisedPasswords = breachedItemIds == nil ? nil : stats.count(for: .compromisedPassword)
         try await remoteDataSource.sendUserMonitorStats(userId: userId,
                                                         stats: stats,
