@@ -353,10 +353,11 @@ struct PassMonitorRepositoryTests {
         return [make(flags: 128), make(flags: 0)]
     }
 
-    func makePaidSut(checker: any CompromisedPasswordCheckerProtocol) -> PassMonitorRepository {
+    func makePaidSut(checker: any CompromisedPasswordCheckerProtocol,
+                     remoteDataSource: RemoteBreachDataSourceProtocolMock = .init()) -> PassMonitorRepository {
         PassMonitorRepository(itemRepository: itemRepository,
                               shareRepository: shareRepository,
-                              remoteDataSource: RemoteBreachDataSourceProtocolMock(),
+                              remoteDataSource: remoteDataSource,
                               symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                               userManager: userManager,
                               accessRepository: Self.makeAccessRepository(planType: "plus"),
@@ -380,6 +381,40 @@ struct PassMonitorRepositoryTests {
         #expect(stats.count(for: .weakPassword) == 1)
         #expect(stats.count(for: .missing2FA) == 1)
         #expect(stats.count(for: .compromisedPassword) == 0)
+    }
+
+    @Test
+    func `Monitor stats report counts compromised passwords from a fresh check`() async throws {
+        let items = createEncryptedLoginItems(weakness: [.weakPasswords, .missing2FA])
+        itemRepository.stubbedGetActiveLogInItemsResult = items
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        let breached = try #require(items.first)
+        checker.stubbedCheckResult = [breached.itemId + breached.shareId]
+        let remote = RemoteBreachDataSourceProtocolMock()
+        let sut = makePaidSut(checker: checker, remoteDataSource: remote)
+
+        // No refresh has been awaited, so nothing is published yet
+        try await sut.sendUserMonitorStats()
+
+        let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
+        #expect(sent.compromisedPasswords == 1)
+        #expect(sent.stats.count(for: .weakPassword) == 1)
+        #expect(sent.stats.count(for: .missing2FA) == 1)
+    }
+
+    @Test
+    func `Monitor stats report omits compromised passwords when the check fails`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.checkUserIdCandidatesThrowableError1 = PassError.compromisePassword(.invalidResponse)
+        let remote = RemoteBreachDataSourceProtocolMock()
+        let sut = makePaidSut(checker: checker, remoteDataSource: remote)
+
+        try await sut.sendUserMonitorStats()
+
+        let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
+        #expect(sent.compromisedPasswords == nil)
+        #expect(sent.stats.count(for: .weakPassword) == 1)
     }
 
     @Test

@@ -64,10 +64,6 @@ public extension SecurityAffectedItem {
         item.item.isExcludedItem
     }
 
-    var passwordIsCompromised: Bool {
-        detected.contains(.compromisedPassword)
-    }
-
     var shouldBeIncluded: Bool {
         !detected.isEmpty || isExcludedItem
     }
