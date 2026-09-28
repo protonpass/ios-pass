@@ -405,13 +405,15 @@ struct PassMonitorRepositoryTests {
         #expect(sut.itemsWithSecurityIssues.value.isEmpty)
     }
 
-    func testPassMonitorRepository_listOfReusedPasswordItems() async throws {
+    @Test
+    func `getItemsWithSamePassword returns the other login sharing the password`() async throws {
         let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords],
                                               addStrong: false)
         let item = items.first!
         itemRepository.stubbedGetActiveLogInItemsResult = items
         let key = symmetricKeyProviderMockFactory.key
 
+        try await sut.refreshSecurityChecks()
         let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: key))
         #expect(reusedItems.count == 1)
         #expect(reusedItems.first! == (try! items.last!.getItemContent(symmetricKey: key)))
