@@ -262,10 +262,19 @@ public extension PassMonitorRepository {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
-        let breachedItemIds = await isCompromisedCheckEnabled(userId: userId) ? itemsWithSecurityIssues.value
-            .filter(\.passwordIsCompromised).map(\.id) : []
-        let result = buildStats(inputs, breachedItemIds: Set(breachedItemIds))
-        try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
+        // Checked here rather than read from the last published refresh, which may not have finished
+        // yet. All visible items are passed because the checker prunes cached rows of non-candidates.
+        var breachedItemIds: Set<String>?
+        if await isCompromisedCheckEnabled(userId: userId) {
+            let visibleInputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
+            breachedItemIds = try? await compromisedItemIds(userId: userId, inputs: visibleInputs)
+        }
+        let stats = buildStats(inputs, breachedItemIds: breachedItemIds ?? []).0
+        // nil omits the field rather than reporting zero when the check couldn't run
+        let compromisedPasswords = breachedItemIds == nil ? nil : stats.count(for: .compromisedPassword)
+        try await remoteDataSource.sendUserMonitorStats(userId: userId,
+                                                        stats: stats,
+                                                        compromisedPasswords: compromisedPasswords)
     }
 }
 
