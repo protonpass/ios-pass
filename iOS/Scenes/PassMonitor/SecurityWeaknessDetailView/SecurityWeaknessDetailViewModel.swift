@@ -71,7 +71,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                 automaticDisplay: false,
                                                 showExcludedWeaknesses: type == .excludedItems))
                 let eventType: TelemetryEventType? = switch type {
-                case .weakness(.compromisedPassword), .weakness(.weakPassword):
+                case .weakness(.weakPassword):
                     .monitorItemDetailFromWeakPassword
 
                 case .weakness(.missing2FA):
@@ -80,7 +80,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                 case .weakness(.reusedPassword):
                     .monitorItemDetailFromReusedPassword
 
-                case .excludedItems:
+                case .excludedItems, .weakness(.compromisedPassword):
                     nil
                 }
                 if let eventType {

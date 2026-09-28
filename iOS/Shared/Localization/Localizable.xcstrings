@@ -95391,6 +95391,16 @@
         }
       }
     },
+    "No compromised passwords were found in your login items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No compromised passwords were found in your login items"
+          }
+        }
+      }
+    },
     "No items are shared with you" : {
       "localizations" : {
         "be" : {
@@ -143670,6 +143680,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這些項目仍有風險"
+          }
+        }
+      }
+    },
+    "These passwords appeared in data breaches. Change them to keep your accounts safe." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These passwords appeared in data breaches. Change them to keep your accounts safe."
           }
         }
       }

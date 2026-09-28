@@ -28,46 +28,27 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
 
     public init() {}
 
-    // MARK: - getChecksUserId
+    // MARK: - getChecks
     public var getChecksUserIdThrowableError1: Error?
-    public var closureGetChecksUserIdAsync1: () -> () = {}
-    public var invokedGetChecksUserIdAsync1 = false
-    public var invokedGetChecksUserIdAsyncCount1 = 0
-    public var invokedGetChecksUserIdAsyncParameters1: (userId: String, Void)?
-    public var invokedGetChecksUserIdAsyncParametersList1 = [(userId: String, Void)]()
-    public var stubbedGetChecksUserIdAsyncResult1: [CompromisedPasswordCheck]!
+    public var closureGetChecks: () -> () = {}
+    public var invokedGetChecksfunction = false
+    public var invokedGetChecksCount = 0
+    public var invokedGetChecksParameters: (userId: String, Void)?
+    public var invokedGetChecksParametersList = [(userId: String, Void)]()
+    public nonisolated(unsafe) var stubbedGetChecksResult: [CompromisedPasswordCheck]!
 
     public func getChecks(userId: String) async throws -> [CompromisedPasswordCheck] {
-        invokedGetChecksUserIdAsync1 = true
-        invokedGetChecksUserIdAsyncCount1 += 1
-        invokedGetChecksUserIdAsyncParameters1 = (userId, ())
+        invokedGetChecksfunction = true
+        invokedGetChecksCount += 1
+        invokedGetChecksParameters = (userId, ())
         if let error = getChecksUserIdThrowableError1 {
             throw error
         }
-        closureGetChecksUserIdAsync1()
-        return stubbedGetChecksUserIdAsyncResult1
-    }
-    // MARK: - getChecksUserIdItems
-    public var getChecksUserIdItemsThrowableError2: Error?
-    public var closureGetChecksUserIdItemsAsync2: () -> () = {}
-    public var invokedGetChecksUserIdItemsAsync2 = false
-    public var invokedGetChecksUserIdItemsAsyncCount2 = 0
-    public var invokedGetChecksUserIdItemsAsyncParameters2: (userId: String, items: [any ItemIdentifiable])?
-    public var invokedGetChecksUserIdItemsAsyncParametersList2 = [(userId: String, items: [any ItemIdentifiable])]()
-    public var stubbedGetChecksUserIdItemsAsyncResult2: [CompromisedPasswordCheck]!
-
-    public func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck] {
-        invokedGetChecksUserIdItemsAsync2 = true
-        invokedGetChecksUserIdItemsAsyncCount2 += 1
-        invokedGetChecksUserIdItemsAsyncParameters2 = (userId, items)
-        if let error = getChecksUserIdItemsThrowableError2 {
-            throw error
-        }
-        closureGetChecksUserIdItemsAsync2()
-        return stubbedGetChecksUserIdItemsAsyncResult2
+        closureGetChecks()
+        return stubbedGetChecksResult
     }
     // MARK: - upsert
-    public var upsertUserIdThrowableError3: Error?
+    public var upsertUserIdThrowableError2: Error?
     public var closureUpsert: () -> () = {}
     public var invokedUpsertfunction = false
     public var invokedUpsertCount = 0
@@ -78,13 +59,13 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         invokedUpsertfunction = true
         invokedUpsertCount += 1
         invokedUpsertParameters = (checks, userId)
-        if let error = upsertUserIdThrowableError3 {
+        if let error = upsertUserIdThrowableError2 {
             throw error
         }
         closureUpsert()
     }
     // MARK: - remove
-    public var removeUserIdStaleItemIdsThrowableError4: Error?
+    public var removeUserIdStaleItemIdsThrowableError3: Error?
     public var closureRemove: () -> () = {}
     public var invokedRemovefunction = false
     public var invokedRemoveCount = 0
@@ -95,13 +76,13 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         invokedRemovefunction = true
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, staleItemIds)
-        if let error = removeUserIdStaleItemIdsThrowableError4 {
+        if let error = removeUserIdStaleItemIdsThrowableError3 {
             throw error
         }
         closureRemove()
     }
     // MARK: - removeAll
-    public var removeAllUserIdThrowableError5: Error?
+    public var removeAllUserIdThrowableError4: Error?
     public var closureRemoveAll: () -> () = {}
     public var invokedRemoveAllfunction = false
     public var invokedRemoveAllCount = 0
@@ -112,7 +93,7 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         invokedRemoveAllfunction = true
         invokedRemoveAllCount += 1
         invokedRemoveAllParameters = (userId, ())
-        if let error = removeAllUserIdThrowableError5 {
+        if let error = removeAllUserIdThrowableError4 {
             throw error
         }
         closureRemoveAll()

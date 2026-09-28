@@ -31,7 +31,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
     /// Returns the set of item Ids (itemId + shareId) whose password is present in the breach corpus.
     /// An Id absent from the set is either not breached or "unknown" (e.g. an uncached item whose
     /// network query failed) — callers must not distinguish the two. Per-prefix network/parse failures
-    /// keep cached results; symmetric-key, local-cache and corpus-timestamp failures throw.
+    /// and corpus-timestamp failures keep cached results; symmetric-key and local-cache failures throw.
     ///
     /// The full corpus re-scan runs at most once per rolling 24h; a created or updated login is a
     /// cache-miss and is checked immediately regardless of that window.
@@ -85,42 +85,50 @@ public extension CompromisedPasswordChecker {
             .getTimestamp(key: Constants.CompromisedPasswords.lastRunKey(userId))
         let dueForFullCheck = isDueForFullCheck(now: now, lastRun: lastRun)
 
-        let currentLastChange: Int?
+        var currentLastChange: Int?
         let corpusUnchanged: Bool
+        var allSucceeded = true
         if dueForFullCheck {
-            currentLastChange = try await fetchCurrentLastChange()
-            corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
-                                                stored: localTimestampDatasource
-                                                    .getTimestamp(key: Constants.CompromisedPasswords
-                                                        .lastCorpusChangeKey(userId)))
+            do {
+                currentLastChange = try await remoteDatasource.getLastChangeTimestamp()
+                corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
+                                                    stored: localTimestampDatasource
+                                                        .getTimestamp(key: Constants.CompromisedPasswords
+                                                            .lastCorpusChangeKey(userId)))
+            } catch {
+                logger.warning("Failed to fetch last timestamp for compromised password")
+                // Same policy as a failed prefix query: serve cached results rather than dropping
+                // known breaches, and leave the markers alone so the next refresh retries
+                corpusUnchanged = true
+                allSucceeded = false
+            }
         } else {
             // Within the 24h window: skip the remote corpus call and assume the corpus is stable.
             // Unchanged passwords are reused from cache; a new/updated login is a hash-miss in
             // `partition(...)` and is still range-queried immediately.
-            currentLastChange = nil
             corpusUnchanged = true
         }
 
         let (reusable, toCheck) = partition(derivedCandidates, cached: cached, corpusUnchanged: corpusUnchanged)
 
         var results = reusable
-        var allSucceeded = true
         if !toCheck.isEmpty {
             let (checked, succeeded) = await checkRemotely(toCheck, cached: cached, userId: userId)
             results.merge(checked) { _, new in new }
-            allSucceeded = succeeded
+            allSucceeded = allSucceeded && succeeded
         }
 
-        // Advance the freshness marker only when nothing failed, so a partial failure forces a
-        // re-check next scan rather than masking a stale result.
-        if let currentLastChange, allSucceeded {
-            localTimestampDatasource.setTimestamp(currentLastChange,
-                                                  key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
-        }
-
-        if dueForFullCheck, allSucceeded {
+        // The daily window restarts whenever the scan ran, otherwise one persistently failing prefix
+        // would force a full re-scan on every refresh. The corpus marker only moves when every prefix
+        // answered, so the next daily scan re-queries what failed instead of trusting stale rows.
+        if let currentLastChange {
             localTimestampDatasource.setTimestamp(now,
                                                   key: Constants.CompromisedPasswords.lastRunKey(userId))
+            if allSucceeded {
+                localTimestampDatasource.setTimestamp(currentLastChange,
+                                                      key: Constants.CompromisedPasswords
+                                                          .lastCorpusChangeKey(userId))
+            }
         }
 
         logger.info("Finished fetching and checking compromised passwords")
@@ -132,23 +140,33 @@ private extension CompromisedPasswordChecker {
     func loadCachedChecks(userId: String,
                           derived: [DerivedCompromisedPasswordCandidate]) async throws
         -> [String: CompromisedPasswordCheck] {
+        let stored: [CompromisedPasswordCheck]
         do {
-            let list = try await localDatasource.getChecks(userId: userId,
-                                                           items: derived)
-            return Dictionary(list.map { ($0.id, $0) }, uniquingKeysWith: { _, new in new })
+            stored = try await localDatasource.getChecks(userId: userId)
         } catch {
             logger.warning("Failed to fetch locally stored items password checks")
             throw error
         }
-    }
 
-    func fetchCurrentLastChange() async throws -> Int? {
-        do {
-            return try await remoteDatasource.getLastChangeTimestamp()
-        } catch {
-            logger.warning("Failed to fetch last timestamp for compromised password")
-            throw error
+        // Rows of deleted, moved or no-longer-checked items would otherwise pile up until logout
+        let candidateIds = Set(derived.map(\.id))
+        var cached = [String: CompromisedPasswordCheck]()
+        var stale = [IDs]()
+        for check in stored {
+            if candidateIds.contains(check.id) {
+                cached[check.id] = check
+            } else {
+                stale.append(IDs(shareId: check.shareId, itemId: check.itemId))
+            }
         }
+        if !stale.isEmpty {
+            do {
+                try await localDatasource.remove(userId: userId, staleItemIds: stale)
+            } catch {
+                logger.warning("Failed to remove \(stale.count) stale CompromisedPasswordCheck")
+            }
+        }
+        return cached
     }
 
     func isCorpusUnchanged(current: Int?, stored: Int?) -> Bool {

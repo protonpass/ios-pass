@@ -26,13 +26,8 @@ import Foundation
 
 // sourcery: AutoMockable
 public protocol LocalCompromisedPasswordDatasourceProtocol: Sendable {
-    // periphery:ignore
     func getChecks(userId: String) async throws -> [CompromisedPasswordCheck]
-
-    /// Persisted checks for a user, restricted to the given item ids.
-    func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck]
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws
-    // periphery:ignore
     func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws
     func removeAll(userId: String) async throws
 }
@@ -49,45 +44,40 @@ public extension LocalCompromisedPasswordDatasource {
         return entities.map { $0.toCompromisedPasswordCheck() }
     }
 
-    func getChecks(userId: String, items: [any ItemIdentifiable]) async throws -> [CompromisedPasswordCheck] {
-        guard !items.isEmpty else {
-            return []
-        }
-        let context = newTaskContext(type: .fetch)
-        let request = CompromisedPasswordCheckEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@ AND shareID IN %@",
-                                        userId,
-                                        items.map(\.itemId),
-                                        items.map(\.shareId))
-
-        let entities = try await execute(fetchRequest: request, context: context)
-        return entities.map { $0.toCompromisedPasswordCheck() }
-    }
-
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws {
-        try await upsert(checks,
-                         entityType: CompromisedPasswordCheckEntity.self,
-                         fetchPredicate: .init(format: "userID = %@", userId),
-                         isEqual: { item, entity in
-                             item.shareId == entity.shareID && item.itemId == entity.itemID
-                         },
-                         hydrate: { item, entity in
-                             entity.hydrate(from: item, userId: userId)
-                         })
+        guard !checks.isEmpty else {
+            return
+        }
+        let context = newTaskContext(type: .insert)
+        // The (userID, shareID, itemID) uniqueness constraint makes the batch insert overwrite
+        // existing rows, so no fetch-and-match pass is needed
+        let request = newBatchInsertRequest(entity: CompromisedPasswordCheckEntity.entity(context: context),
+                                            sourceItems: checks) { object, check in
+            (object as? CompromisedPasswordCheckEntity)?.hydrate(from: check, userId: userId)
+        }
+        try await execute(batchInsertRequest: request, context: context)
     }
 
     func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws {
         guard !staleItemIds.isEmpty else {
             return
         }
+        let staleIds = Set(staleItemIds.map(\.ids))
+        let itemIds = staleItemIds.map(\.itemId)
         let context = newTaskContext(type: .delete)
-        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName:
-            "CompromisedPasswordCheckEntity")
-        fetchRequest.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@ AND shareID IN %@",
-                                             userId,
-                                             staleItemIds.map(\.itemId),
-                                             staleItemIds.map(\.shareId))
-        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest), context: context)
+        let objectIds = try await context.perform {
+            let request = CompromisedPasswordCheckEntity.fetchRequest()
+            // `itemID IN` alone over-matches when an item id exists in several shares, so the exact
+            // (share, item) pair is checked on the fetched rows
+            request.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@", userId, itemIds)
+            return try context.fetch(request)
+                .filter { staleIds.contains(IDs(shareId: $0.shareID, itemId: $0.itemID)) }
+                .map(\.objectID)
+        }
+        guard !objectIds.isEmpty else {
+            return
+        }
+        try await execute(batchDeleteRequest: .init(objectIDs: objectIds), context: context)
     }
 
     func removeAll(userId: String) async throws {

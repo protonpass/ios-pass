@@ -74,7 +74,9 @@ final class PassMonitorViewModel: ObservableObject {
 
     func showSecurityWeakness(filter: MonitorListSection) {
         router.present(for: .securityDetail(filter))
-        addTelemetryEvent(with: filter.telemetryEventType)
+        if let eventType = filter.telemetryEventType {
+            addTelemetryEvent(with: eventType)
+        }
     }
 
     func sentinelSheetAction() {

@@ -37,6 +37,27 @@ enum FixtureWeakness {
     case fullyExcluded
 }
 
+/// Holds every `check` call until `open()` so a test can act while a refresh is in flight.
+private actor GatedCompromisedPasswordChecker: CompromisedPasswordCheckerProtocol {
+    private(set) var invocationCount = 0
+    private var isOpen = false
+    private var waiters = [CheckedContinuation<Void, Never>]()
+
+    func check(userId: String, candidates: [CompromisedPasswordCandidate]) async -> Set<String> {
+        invocationCount += 1
+        if !isOpen {
+            await withCheckedContinuation { waiters.append($0) }
+        }
+        return Set(candidates.map(\.id))
+    }
+
+    func open() {
+        isOpen = true
+        waiters.forEach { $0.resume() }
+        waiters.removeAll()
+    }
+}
+
 @Suite(.tags(.repository))
 struct PassMonitorRepositoryTests {
     let symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory
@@ -60,10 +81,21 @@ struct PassMonitorRepositoryTests {
         shareRepository.stubbedGetSharesResult = []
         // Free plan => compromised-password detection (a paid feature) is skipped, so these tests
         // exercise only the local weakness checks.
+        let accessRepository = Self.makeAccessRepository(planType: "free")
+        sut = PassMonitorRepository(itemRepository: itemRepository,
+                                    shareRepository: shareRepository,
+                                    remoteDataSource: RemoteBreachDataSourceProtocolMock(),
+                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
+                                    userManager: userManager,
+                                    accessRepository: accessRepository,
+                                    compromisedPasswordChecker: CompromisedPasswordCheckerProtocolMock())
+    }
+
+    static func makeAccessRepository(planType: String) -> AccessRepositoryProtocolMock {
         let accessRepository = AccessRepositoryProtocolMock()
         accessRepository.stubbedGetAccessResult = UserAccess(userId: "test",
-                                                             access: Access(plan: .init(type: "free",
-                                                                                        internalName: "free",
+                                                             access: Access(plan: .init(type: planType,
+                                                                                        internalName: planType,
                                                                                         displayName: "Free",
                                                                                         hideUpgrade: false,
                                                                                         manageAlias: false,
@@ -84,13 +116,7 @@ struct PassMonitorRepositoryTests {
                                                                             waitingNewUserInvites: 0,
                                                                             minVersionUpgrade: nil,
                                                                             userData: UserAliasSyncData.default))
-        sut = PassMonitorRepository(itemRepository: itemRepository,
-                                    shareRepository: shareRepository,
-                                    remoteDataSource: RemoteBreachDataSourceProtocolMock(),
-                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
-                                    userManager: userManager,
-                                    accessRepository: accessRepository,
-                                    compromisedPasswordChecker: CompromisedPasswordCheckerProtocolMock())
+        return accessRepository
     }
 
     func createEncryptedLoginItems(weakness: [FixtureWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
@@ -327,6 +353,58 @@ struct PassMonitorRepositoryTests {
         return [make(flags: 128), make(flags: 0)]
     }
 
+    func makePaidSut(checker: any CompromisedPasswordCheckerProtocol) -> PassMonitorRepository {
+        PassMonitorRepository(itemRepository: itemRepository,
+                              shareRepository: shareRepository,
+                              remoteDataSource: RemoteBreachDataSourceProtocolMock(),
+                              symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
+                              userManager: userManager,
+                              accessRepository: Self.makeAccessRepository(planType: "plus"),
+                              compromisedPasswordChecker: checker)
+    }
+
+    @Test
+    func `A failing compromised check still publishes the local weakness results`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [
+            .weakPasswords,
+            .missing2FA
+        ])
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.checkUserIdCandidatesThrowableError1 = PassError.compromisePassword(.invalidResponse)
+        let sut = makePaidSut(checker: checker)
+
+        try await sut.refreshSecurityChecks()
+
+        #expect(checker.invokedCheckfunction)
+        let stats = try #require(sut.weaknessStats.value)
+        #expect(stats.count(for: .weakPassword) == 1)
+        #expect(stats.count(for: .missing2FA) == 1)
+        #expect(stats.count(for: .compromisedPassword) == 0)
+    }
+
+    @Test
+    func `A refresh still in flight when reset is called publishes nothing`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+        let checker = GatedCompromisedPasswordChecker()
+        let sut = makePaidSut(checker: checker)
+
+        let refresh = Task { try await sut.refreshSecurityChecks() }
+        // Wait for both this refresh and the one `init` schedules to be parked in the checker
+        var spins = 0
+        while await checker.invocationCount < 2, spins < 10_000 {
+            spins += 1
+            await Task.yield()
+        }
+        try #require(await checker.invocationCount == 2)
+
+        await sut.reset()
+        await checker.open()
+        try await refresh.value
+
+        #expect(sut.weaknessStats.value == nil)
+        #expect(sut.itemsWithSecurityIssues.value.isEmpty)
+    }
+
     func testPassMonitorRepository_listOfReusedPasswordItems() async throws {
         let items = createEncryptedLoginItems(weakness: [.reusedPasswords, .reusedPasswords],
                                               addStrong: false)
@@ -337,6 +415,37 @@ struct PassMonitorRepositoryTests {
         let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: key))
         #expect(reusedItems.count == 1)
         #expect(reusedItems.first! == (try! items.last!.getItemContent(symmetricKey: key)))
+    }
+
+    @Test
+    func `getItemsWithSamePassword leaves out an item whose reuse check is ignored`() async throws {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+
+        func make(flags: Int) -> SymmetricallyEncryptedItem {
+            let loginData = LogInItemData.mock(username: "test",
+                                               password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad")
+            let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                               note: "n",
+                                                                               itemUuid: UUID().uuidString,
+                                                                               data: .login(loginData),
+                                                                               customFields: [])
+            return SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                     item: .random(flags: flags),
+                                                     encryptedContent: try! content.encrypt(symmetricKey: key))
+        }
+        // 128 = skipReusedPasswordCheck
+        let viewed = make(flags: 0)
+        let partner = make(flags: 0)
+        let ignored = make(flags: 128)
+        itemRepository.stubbedGetActiveLogInItemsResult = [viewed, partner, ignored]
+
+        try await sut.refreshSecurityChecks()
+        let reused = try await sut.getItemsWithSamePassword(item: viewed.getItemContent(symmetricKey: key))
+
+        #expect(reused.map(\.ids) == [partner.ids])
     }
 
     /// Regression for IDTEAM-5965: the reused-password count must reflect the item's CURRENT
@@ -383,6 +492,7 @@ struct PassMonitorRepositoryTests {
                                                               encryptedContent: encrypt(stalePassword))
         let staleContent = try staleEncrypted.getItemContent(symmetricKey: key)
 
+        try await sut.refreshSecurityChecks()
         let reused = try await sut.getItemsWithSamePassword(item: staleContent)
 
         #expect(reused.count == 1)
