@@ -95,7 +95,7 @@ struct CompromisedPasswordCheckerTests {
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data(("0000000000000000000000000000000000:3\n" +
                                                   "\(suffix):31033620\n").utf8))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
         let candidate = candidate()
 
         let results = try await makeSUT(remote: remote, local: local)
@@ -113,7 +113,7 @@ struct CompromisedPasswordCheckerTests {
         remote.stubbedGetLastChangeTimestampResult = 1_000_000
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data("0000000000000000000000000000000000:3\n".utf8))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
         let candidate = candidate()
 
         let results = try await makeSUT(remote: remote, local: local)
@@ -132,7 +132,7 @@ struct CompromisedPasswordCheckerTests {
 
         remote.stubbedGetLastChangeTimestampResult = 500 // older than the stored marker below
         localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = [
+        local.stubbedGetChecksResult = [
             .init(shareId: "share",
                   itemId: "item",
                   passwordHash: passwordHash,
@@ -161,7 +161,7 @@ struct CompromisedPasswordCheckerTests {
         remote.stubbedGetLastChangeTimestampResult = 2_000
         remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
         localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = [
+        local.stubbedGetChecksResult = [
             .init(shareId: "share",
                   itemId: "item",
                   passwordHash: passwordHash,
@@ -177,6 +177,80 @@ struct CompromisedPasswordCheckerTests {
 
         // The breached cached row survives the failure and the id stays in the set.
         #expect(results.contains(candidate.id))
+    }
+
+    @Test
+    func `Keeps the cached result and retries next time when the corpus timestamp fetch fails`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        remote.getLastChangeTimestampThrowableError1 = PassError.compromisePassword(.invalidResponse)
+        local.stubbedGetChecksResult = [
+            .init(shareId: "share",
+                  itemId: "item",
+                  passwordHash: fingerprint("12345"),
+                  prefix: prefix,
+                  etag: "\"v1\"",
+                  breachCount: 555,
+                  checkedAt: 900)
+        ]
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(results.contains(candidate.id))
+        #expect(!remote.invokedQueryfunction)
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == nil)
+    }
+
+    @Test
+    func `A failing prefix restarts the daily window but keeps the corpus marker`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        remote.stubbedGetLastChangeTimestampResult = 2_000
+        remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
+        localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
+        local.stubbedGetChecksResult = []
+
+        _ = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate()])
+
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == now)
+        #expect(localTimestamp
+            .getTimestamp(key: Constants.CompromisedPasswords.lastCorpusChangeKey("user")) == 1_000)
+    }
+
+    @Test
+    func `Removes cached rows of items that are no longer candidates`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+        localTimestamp.setTimestamp(now - 3_600, key: Constants.CompromisedPasswords.lastRunKey("user"))
+
+        func row(shareId: String, itemId: String) -> CompromisedPasswordCheck {
+            .init(shareId: shareId,
+                  itemId: itemId,
+                  passwordHash: fingerprint("12345"),
+                  prefix: prefix,
+                  etag: "\"v1\"",
+                  breachCount: 1,
+                  checkedAt: 900)
+        }
+        // Same item id in another share (a moved item) and a deleted item
+        local.stubbedGetChecksResult = [row(shareId: "share", itemId: "item"),
+                                        row(shareId: "otherShare", itemId: "item"),
+                                        row(shareId: "share", itemId: "deleted")]
+
+        _ = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+            .check(userId: "user", candidates: [candidate()])
+
+        let removed = try #require(local.invokedRemoveParameters?.staleItemIds.map(\.ids))
+        #expect(Set(removed) == [IDs(shareId: "otherShare", itemId: "item"),
+                                 IDs(shareId: "share", itemId: "deleted")])
     }
 
     @Test
@@ -201,7 +275,7 @@ struct CompromisedPasswordCheckerTests {
         // breached regardless of which prefix it falls under.
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data("0000000000000000000000000000000000:3\n".utf8))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
 
         // Distinct passwords -> distinct SHA-1 prefixes, more than the concurrency limit, which
         // forces the bounded backfill path.
@@ -229,7 +303,7 @@ struct CompromisedPasswordCheckerTests {
 
         // Last full run was 1h ago -> within the 24h window.
         localTimestamp.setTimestamp(now - 3_600, key: Constants.CompromisedPasswords.lastRunKey("user"))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = [
+        local.stubbedGetChecksResult = [
             .init(shareId: "share",
                   itemId: "item",
                   passwordHash: passwordHash,
@@ -257,7 +331,7 @@ struct CompromisedPasswordCheckerTests {
 
         localTimestamp.setTimestamp(now - 3_600, key: Constants.CompromisedPasswords.lastRunKey("user"))
         // Empty cache -> the login is a cache-miss and must be range-queried immediately.
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
         remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
         let candidate = candidate()
 
@@ -284,7 +358,7 @@ struct CompromisedPasswordCheckerTests {
                                     key: Constants.CompromisedPasswords.lastRunKey("user"))
         remote.stubbedGetLastChangeTimestampResult = 1_000_000
         remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
         let candidate = candidate()
 
         let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
@@ -306,7 +380,7 @@ struct CompromisedPasswordCheckerTests {
         // No lastRun marker seeded.
         remote.stubbedGetLastChangeTimestampResult = 1_000_000
         remote.stubbedQueryResult = .modified(etag: "\"v1\"", body: Data("\(suffix):31033620\n".utf8))
-        local.stubbedGetChecksUserIdItemsAsyncResult2 = []
+        local.stubbedGetChecksResult = []
         let candidate = candidate()
 
         let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)

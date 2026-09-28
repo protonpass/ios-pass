@@ -26,7 +26,7 @@ import Entities
 
 public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
 
-public protocol GetAllSecurityAffectedLoginsUseCase {
+public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
     func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, Never>
 }
 

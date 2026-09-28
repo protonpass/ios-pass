@@ -88,6 +88,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     private var cancellable = Set<AnyCancellable>()
     private var refreshTask: Task<Void, Never>?
+    private var startedRefreshes = 0
+    private var lastPublishedRefresh = 0
 
     public init(itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
@@ -115,49 +117,39 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     }
 
     public func refreshSecurityChecks() async throws {
+        startedRefreshes += 1
+        let refreshNumber = startedRefreshes
         let userId = try await userManager.getActiveUserId()
-        // Decrypt items once; both the synchronous publish and the compromised enrichment reuse it.
         let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
-        let base = buildStats(inputs, breachedItemIds: [])
-        if await isCompromisedCheckEnabled(userId: userId),
-           let breachedItemIds = try await compromisedItemIds(userId: userId, inputs: inputs),
-           !breachedItemIds.isEmpty {
-            let enriched = buildStats(inputs, breachedItemIds: breachedItemIds)
-            pushWeaknessState(enriched)
-            return
+        // A failed compromised check must not hide the local weak/reused/2FA results
+        var breachedItemIds = Set<String>()
+        if await isCompromisedCheckEnabled(userId: userId) {
+            breachedItemIds = await (try? compromisedItemIds(userId: userId, inputs: inputs)) ?? []
         }
-        pushWeaknessState(base)
+        // The actor is reentrant across the awaits above: a newer refresh may already have published,
+        // or reset() may have cleared the state, and publishing now would bring stale data back
+        guard refreshNumber > lastPublishedRefresh else { return }
+        lastPublishedRefresh = refreshNumber
+        pushWeaknessState(buildStats(inputs, breachedItemIds: breachedItemIds))
     }
 
     public func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent] {
-        guard item.loginItem != nil else {
+        // Reads the last published refresh so the result matches the reused-password list exactly
+        let affectedItems = itemsWithSecurityIssues.value
+        guard let reuseGroup = affectedItems.first(where: { $0.item.ids == item.ids })?.reuseGroup else {
             return []
         }
-        let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let decryptedItems = try await itemRepository.getActiveLogInItems(userId: userId)
-            .compactMap { try? $0.getItemContent(symmetricKey: symmetricKey) }
-
-        guard let referencePassword = decryptedItems
-            .first(where: { $0.ids == item.ids })?
-            .loginItem?.password,
-            !referencePassword.isEmpty else {
-            return []
-        }
-
-        return decryptedItems.filter { decryptedItem in
-            guard !decryptedItem.item.monitoringDisabled,
-                  decryptedItem.ids != item.ids,
-                  let loginItem = decryptedItem.loginItem,
-                  !loginItem.password.isEmpty,
-                  loginItem.password == referencePassword else {
-                return false
+        return try affectedItems
+            .filter { $0.reuseGroup == reuseGroup &&
+                $0.item.ids != item.ids &&
+                $0.activeWeaknesses.contains(.reusedPassword)
             }
-            return true
-        }
+            .map { try $0.item.getItemContent(symmetricKey: symmetricKey) }
     }
 
     public func reset() {
+        lastPublishedRefresh = startedRefreshes
         userBreaches.send(nil)
         weaknessStats.send(nil)
         itemsWithSecurityIssues.send([])
@@ -418,7 +410,7 @@ private extension PassMonitorRepository {
     /// Item ids that contains itemId and shareId whose password was found in the breach corpus. Network/parse
     /// failures keep cached results (handled in the checker); excluded or per-check-suppressed items are never
     /// queried.
-    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async throws -> Set<String>? {
+    func compromisedItemIds(userId: String, inputs: WeaknessComputation) async throws -> Set<String> {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
             guard !item.encrypted.item.monitoringDisabled,
                   !item.encrypted.item.compromisedPasswordCheckDisabled,
@@ -430,10 +422,9 @@ private extension PassMonitorRepository {
                                                 password: item.loginData.password)
         }
         guard !candidates.isEmpty else {
-            return nil
+            return []
         }
-        let breachedItemIds = try await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
-        return breachedItemIds.nilIfEmpty
+        return try await compromisedPasswordChecker.check(userId: userId, candidates: candidates)
     }
 }
 
