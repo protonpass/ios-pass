@@ -74892,7 +74892,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Pass is een artikelnotitie versleuteld met de artikelversleutelingssleutel en alleen gebruikers die toegang hebben tot het item kunnen de notitie bekijken."
+            "value" : "In Pass is een itemnotitie versleuteld met de itemversleutelingssleutel en alleen gebruikers die toegang hebben tot het item kunnen de notitie bekijken."
           }
         },
         "pl" : {
@@ -122560,7 +122560,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Εξοικονομήστε"
+            "value" : "Αποθήκευση"
           }
         },
         "en" : {
@@ -129840,7 +129840,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nastavte dodatečné heslo pro Proton Pass"
+            "value" : "Nastavit dodatečné heslo pro Proton Pass"
           }
         },
         "da" : {
@@ -130655,7 +130655,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configuración"
+            "value" : "Ajustes"
           }
         },
         "es-419" : {
