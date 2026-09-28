@@ -28,14 +28,9 @@ public enum GzipError: Error, Equatable {
 }
 
 public extension Data {
-    /// Decompresses a gzip (RFC 1952) payload.
-    ///
-    /// The compromised-password range files are served gzip-compressed (`*.gz`). Apple's
-    /// `Compression` framework only decodes a *raw* DEFLATE stream with `COMPRESSION_ZLIB`
-    /// (it does not understand the gzip wrapper), so we parse and strip the gzip header
-    /// ourselves, inflate the DEFLATE payload via the streaming API (which, unlike the
-    /// one-shot buffer API, handles an unknown decompressed size correctly), then validate the
-    /// trailing CRC-32/ISIZE to catch silent corruption.
+    /// Decompresses a gzip (RFC 1952) payload and validates its CRC-32/ISIZE trailer.
+    /// `Compression` only inflates raw DEFLATE, so the gzip header is parsed here; the streaming API
+    /// is used because the one-shot API mishandles an unknown decompressed size.
     func gunzipped() throws(GzipError) -> Data {
         let bytes = [UInt8](self)
         let payloadStart = try Self.gzipPayloadStart(bytes)

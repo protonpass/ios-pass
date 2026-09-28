@@ -28,7 +28,6 @@ import ProtonCoreLogin
 @preconcurrency import ProtonCoreServices
 import ProtonCoreUtilities
 
-/// Contain all repositories
 public final class RepositoryContainer: SharedContainer, AutoRegistering {
     public static let shared = RepositoryContainer()
     public let manager = ContainerManager()

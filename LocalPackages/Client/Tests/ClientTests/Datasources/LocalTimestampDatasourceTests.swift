@@ -85,7 +85,6 @@ final class LocalTimestampDatasourceTests {
         #expect(sut.getTimestamp(key: "b") == 2)
     }
 
-    // Documents a quirk of the current implementation — see note below.
     @Test func `returns nil when the key holds a non-numeric value`() {
         defaults.set("not a timestamp", forKey: "key")
         #expect(sut.getTimestamp(key: "key") == nil)

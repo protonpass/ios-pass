@@ -108,12 +108,11 @@ public enum Constants {
         /// is still checked immediately regardless, because it is a cache-miss in the checker.
         public static let minimumCheckInterval = 24 * 60 * 60
 
-        /// Key to fetch the saved timestamp of last corpus
         public static func lastCorpusChangeKey(_ userId: String) -> String {
             "compromisedPasswordsLastChange.\(userId)"
         }
 
-        /// Key to fetch the wall-clock timestamp of the last successful full corpus re-scan, per user.
+        /// Wall-clock time of the last full scan, as opposed to the corpus's own `last_change`.
         public static func lastRunKey(_ userId: String) -> String {
             "compromisedPasswordsLastRun.\(userId)"
         }
@@ -134,7 +133,6 @@ public enum Constants {
     }
 }
 
-/// Links to KB articles or useful pages
 public enum ProtonLink {
     public static let howToImport = "https://proton.me/support/pass-import"
     public static let privacyPolicy = "https://proton.me/legal/privacy"

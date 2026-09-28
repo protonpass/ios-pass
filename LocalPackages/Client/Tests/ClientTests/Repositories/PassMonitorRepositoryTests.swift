@@ -74,9 +74,7 @@ struct PassMonitorRepositoryTests {
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
         shareRepository = ShareRepositoryProtocolMock()
-        // Guard against the SUT's init-time `setup()` task calling `getShares` before a test body
-        // sets a stub (the generated mock force-unwraps `stubbedGetSharesResult`). Mirrors the
-        // `itemRepository` default above.
+        // The init-time `setup()` refresh can call `getShares` before a test stubs it, and the mock force-unwraps
         shareRepository.stubbedGetSharesResult = []
         // Free plan => compromised-password detection (a paid feature) is skipped, so these tests
         // exercise only the local weakness checks.
@@ -198,10 +196,8 @@ struct PassMonitorRepositoryTests {
         try await sut.refreshSecurityChecks()
 
         let state = try #require(sut.weaknessStats.value)
-        // The fully-excluded item (`.fullyExcluded`, monitoringDisabled) is built with a weak
-        // password, an empty TOTP and a 2FA-eligible URL — but full exclusion takes precedence
-        // (IDTEAM-5965), so it counts ONLY toward the excluded bucket, never the active weak /
-        // missing-2FA buckets. Hence weakPasswords == 1 and missing2FA == 1 (the non-excluded items).
+        // The fully excluded item is also weak and missing 2FA, but exclusion wins (IDTEAM-5965),
+        // so it only counts as excluded
         #expect(state.count(for: .reusedPassword) == 1)
         #expect(state.count(for: .weakPassword) == 1)
         #expect(state.excludedItems == 1)
@@ -271,10 +267,7 @@ struct PassMonitorRepositoryTests {
         #expect(groups[4] == nil)
     }
 
-    /// Characterization test for IDTEAM-5965: a fully-excluded (`monitoringDisabled`) item whose
-    /// password is weak appears ONLY in the excluded bucket — full exclusion takes precedence, so it
-    /// does NOT surface as an active weakness. The weakness is still *detected* (it would reappear
-    /// if monitoring were re-enabled), but `activeWeaknesses` is empty.
+    /// IDTEAM-5965: the weakness stays detected, so it reappears if monitoring is re-enabled.
     @Test
     func `Fully-excluded item is excluded only, never an active weakness`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeFullyExcludedWeakItems()
@@ -294,7 +287,6 @@ struct PassMonitorRepositoryTests {
         #expect(item.activeWeaknesses.isEmpty)            // ...but not surfaced as active
     }
 
-    /// A single fully-excluded (`monitoringDisabled`) login whose password is weak.
     func makeFullyExcludedWeakItems() -> [SymmetricallyEncryptedItem] {
         let shareID = UUID().uuidString
         let key = symmetricKeyProviderMockFactory.key
@@ -321,15 +313,11 @@ struct PassMonitorRepositoryTests {
         let suppressed = try #require(affected.first { $0.suppressedChecks.contains(.reusedPassword) })
         #expect(affected.count == 1)
 
-        // Suppressed item: not detected as reused.
         #expect(suppressed.detected.isEmpty)
         #expect(!suppressed.activeWeaknesses.contains(.reusedPassword))
         #expect(suppressed.isExcludedItem)
     }
 
-    /// Two logins sharing the SAME strong password; the first has the reused-password check
-    /// suppressed (flag `skipReusedPasswordCheck`, rawValue 1 << 7 = 128), the second is normally
-    /// monitored.
     func makeReusePairOneSuppressed() -> [SymmetricallyEncryptedItem] {
         let shareID = UUID().uuidString
         let key = symmetricKeyProviderMockFactory.key
@@ -483,12 +471,8 @@ struct PassMonitorRepositoryTests {
         #expect(reused.map(\.ids) == [partner.ids])
     }
 
-    /// Regression for IDTEAM-5965: the reused-password count must reflect the item's CURRENT
-    /// password, not a stale `ItemContent` a long-lived detail view model may still hold after an
-    /// edit. Here the repository already reflects the post-edit state (the viewed item shares its new
-    /// password with a partner), but the caller passes the PRE-edit content (same ids, old unique
-    /// password). The lookup must resolve the current password by id and still find the partner —
-    /// otherwise the UI shows "Reused password" with "0 other logins use this password".
+    /// IDTEAM-5965: a detail view model can still hold pre-edit content, so the lookup must go by id,
+    /// not by the password it was given.
     @Test
     func `getItemsWithSamePassword resolves the item's current password, ignoring a stale passed-in copy`() async throws {
         let shareID = UUID().uuidString

@@ -175,7 +175,6 @@ struct CompromisedPasswordCheckerTests {
         let results = try await makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
             .check(userId: "user", candidates: [candidate])
 
-        // The breached cached row survives the failure and the id stays in the set.
         #expect(results.contains(candidate.id))
     }
 

@@ -20,7 +20,6 @@
 
 import Foundation
 
-/// Proton Pass errors
 public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)

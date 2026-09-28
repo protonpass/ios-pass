@@ -103,9 +103,7 @@ public extension CompromisedPasswordChecker {
                 allSucceeded = false
             }
         } else {
-            // Within the 24h window: skip the remote corpus call and assume the corpus is stable.
-            // Unchanged passwords are reused from cache; a new/updated login is a hash-miss in
-            // `partition(...)` and is still range-queried immediately.
+            // Inside the daily window the corpus is assumed unchanged; edited logins still miss the cache
             corpusUnchanged = true
         }
 
@@ -228,7 +226,6 @@ private extension CompromisedPasswordChecker {
         return (results, allSucceeded)
     }
 
-    /// Runs one conditional GET per prefix with bounded concurrency.
     func runBounded(groups: [String: [DerivedCompromisedPasswordCandidate]],
                     cached: [String: CompromisedPasswordCheck],
                     now: Int) async -> [PrefixOutcome] {
@@ -323,10 +320,8 @@ private extension CompromisedPasswordChecker {
 // MARK: - Internal data struct
 
 private extension CompromisedPasswordChecker {
-    /// A candidate reduced to only what the breach check needs: the item identifiers, the SHA-1
-    /// prefix/suffix for the k-anonymity range query, and a keyed fingerprint of the password.
-    /// The plaintext `CompromisedPasswordCandidate` is intentionally NOT retained — it is consumed
-    /// here and dropped, so the password lives in memory only for the duration of this initializer.
+    /// The plaintext candidate is deliberately not retained, so the password only lives for the duration
+    /// of the initializer.
     struct DerivedCompromisedPasswordCandidate: ItemIdentifiable {
         let folderId: String?
         let itemId: String
@@ -356,7 +351,7 @@ private extension CompromisedPasswordChecker {
     }
 
     struct PrefixOutcome {
-        /// This contains the full item id (itemId + shareId) and the number of breach linked to the password
+        /// Breach count keyed by itemId + shareId.
         let results: [String: Int]
         let rows: [CompromisedPasswordCheck]
         let succeeded: Bool

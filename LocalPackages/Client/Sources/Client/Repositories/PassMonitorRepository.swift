@@ -31,8 +31,6 @@ private struct InternalPassMonitorItem {
     let loginData: LogInItemData
 }
 
-/// Pre-decrypted inputs for weakness computation, shared between the base (local) pass and the
-/// compromised-password enrichment so items are only decrypted once per refresh.
 private struct WeaknessComputation {
     let loginItems: [InternalPassMonitorItem]
     let reusedPasswords: [String: Int]
@@ -309,9 +307,6 @@ private extension PassMonitorRepository {
         refresh()
     }
 
-    /// Decrypts the user's applicable login items once and derives the reused-password set. The
-    /// expensive decryption pass lives here so callers can build base and compromised-enriched
-    /// stats from the same inputs without decrypting twice.
     func computeWeaknessInputs(userId: String, userOwned: Bool) async throws -> WeaknessComputation {
         var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
@@ -342,7 +337,6 @@ private extension PassMonitorRepository {
                                                loginData: loginItem)
             }
 
-        // Filter out unique passwords
         let reuseGroups = Dictionary(uniqueKeysWithValues: passwordCounts
             .filter { $0.value > 1 }
             .keys
@@ -351,8 +345,6 @@ private extension PassMonitorRepository {
         return WeaknessComputation(loginItems: loginItems, reusedPasswords: reuseGroups)
     }
 
-    /// Builds the weakness stats from pre-decrypted inputs, folding `.compromisedPassword` into the
-    /// detected weaknesses of any item in `breachedItemIds` (empty for the synchronous/base pass).
     func buildStats(_ inputs: WeaknessComputation,
                     breachedItemIds: Set<String>) -> (WeaknessStats, [SecurityAffectedItem]) {
         let securityAffectedItems = inputs.loginItems.compactMap { item -> SecurityAffectedItem? in
@@ -415,9 +407,8 @@ private extension PassMonitorRepository {
         return !isFreeUser
     }
 
-    /// Item ids that contains itemId and shareId whose password was found in the breach corpus. Network/parse
-    /// failures keep cached results (handled in the checker); excluded or per-check-suppressed items are never
-    /// queried.
+    /// Ids (itemId + shareId) of logins whose password is in the breach corpus. Fully excluded and
+    /// check-suppressed logins are never sent.
     func compromisedItemIds(userId: String, inputs: WeaknessComputation) async throws -> Set<String> {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
             guard !item.encrypted.item.monitoringDisabled,
