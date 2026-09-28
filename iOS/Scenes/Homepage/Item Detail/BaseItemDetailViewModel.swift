@@ -207,10 +207,6 @@ class BaseItemDetailViewModel: ObservableObject {
         superBindValuesCalled = true
     }
 
-    /// Copy to clipboard and trigger a toast message
-    /// - Parameters:
-    ///    - text: The text to be copied to clipboard.
-    ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
         donateToItemForceTouchTip()
         router.action(.copyToClipboard(text: text, message: message))
@@ -504,7 +500,6 @@ private extension BaseItemDetailViewModel {
                                                   item: itemContent,
                                                   file: file)
                 if FileManager.default.fileExists(atPath: url.path()) {
-                    // File already downloaded => open directly
                     switch postAction {
                     case .save:
                         urlToSave = url
@@ -516,7 +511,7 @@ private extension BaseItemDetailViewModel {
                         filePreviewMode = .item(file, self, postAction)
                     }
                 } else {
-                    // File not downloaded => open preview page to download
+                    // The preview page downloads the file
                     filePreviewMode = .item(file, self, postAction)
                 }
             } catch {

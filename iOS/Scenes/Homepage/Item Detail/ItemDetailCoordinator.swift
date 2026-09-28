@@ -73,7 +73,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
         router.navigate(to: .detail(view: itemDetailPage.view, asSheet: asSheet))
     }
 
-    /// Refresh the currently presented item detail page
     func refresh(onItemNotFound: @escaping () -> Void) {
         currentViewModel?.refresh(onItemNotFound: onItemNotFound)
     }

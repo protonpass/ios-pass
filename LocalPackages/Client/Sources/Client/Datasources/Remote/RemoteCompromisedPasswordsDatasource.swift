@@ -47,9 +47,7 @@ public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswo
             self.session = session
         } else {
             let configuration = URLSessionConfiguration.ephemeral
-            // Disable URLSession's own HTTP cache so our explicit If-None-Match / 304
-            // handling is what drives conditional behaviour (rather than being absorbed
-            // transparently by the URL cache).
+            // URLCache would absorb 304s before our ETag handling sees them
             configuration.urlCache = nil
             configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
             self.session = URLSession(configuration: configuration)

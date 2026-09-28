@@ -20,11 +20,8 @@
 
 import Foundation
 
-/// A per-item security weakness Pass Monitor can detect.
-///
-/// Single source of truth for weakness identity, display ordering and the per-check
-/// exclusion flag. Unlike a breach (an account/email-level concern surfaced via Dark Web
-/// Monitoring), every `WeaknessKind` is item-scoped and individually excludable.
+/// Single source of truth for weakness identity, display order and the per-check exclusion flag.
+/// Item-scoped and individually excludable, unlike breaches, which are account-level (Dark Web Monitoring).
 public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Comparable {
     case weakPassword
     case compromisedPassword

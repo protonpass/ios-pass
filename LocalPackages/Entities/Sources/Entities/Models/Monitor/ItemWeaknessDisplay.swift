@@ -20,11 +20,8 @@
 
 import Foundation
 
-/// Presentation model for a single weakness row shown on the login detail screen.
-///
-/// A row either represents one detected `WeaknessKind` (with whether the user has excluded that
-/// specific check) or the whole-item "fully excluded" state. Dark Web Monitoring is intentionally
-/// not represented here — it has its own route.
+/// A login-detail row: one `WeaknessKind` (and whether that check is excluded) or the fully excluded state.
+/// Dark Web Monitoring has its own route.
 public enum ItemWeaknessDisplay: Identifiable, Hashable {
     case weakness(WeaknessKind, isExcluded: Bool)
     case fullyExcluded

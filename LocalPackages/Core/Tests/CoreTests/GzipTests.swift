@@ -62,8 +62,8 @@ struct GzipTests {
     }
 }
 
-/// Builds a valid gzip container (RFC 1952) around `string`, including a correct CRC-32/ISIZE
-/// trailer (which `gunzipped()` now validates).
+/// Builds a valid gzip container (RFC 1952) around `string`, including the CRC-32/ISIZE trailer
+/// that `gunzipped()` validates.
 private func makeGzip(_ string: String) -> Data {
     let payload = Data(string.utf8)
     var gzip = Data([0x1F, 0x8B, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF])

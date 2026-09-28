@@ -20,7 +20,6 @@
 
 import Foundation
 
-/// A login item to check against the compromised-password (k-anonymity) corpus.
 public struct CompromisedPasswordCandidate: Sendable, Equatable {
     public let shareId: String
     public let itemId: String
@@ -41,7 +40,7 @@ public struct CompromisedPasswordCandidate: Sendable, Equatable {
 public struct CompromisedPasswordCheck: Sendable, Equatable {
     public let shareId: String
     public let itemId: String
-    /// SHA-256 hex of the exact stored password — the password-change invalidation key.
+    /// Keyed HMAC-SHA256 fingerprint of the password, used to spot password changes. Never sent.
     public let passwordHash: String
     /// Uppercase SHA-1 hex prefix (first 6 chars) the stored `etag`/result belong to.
     public let prefix: String
@@ -72,7 +71,6 @@ public struct CompromisedPasswordCheck: Sendable, Equatable {
     }
 }
 
-/// Result of a conditional range query against the compromised-password service.
 public enum CompromisedRangeResponse: Sendable {
     /// HTTP 304 — the range slice has not changed; the caller must reuse its cached result.
     case notModified

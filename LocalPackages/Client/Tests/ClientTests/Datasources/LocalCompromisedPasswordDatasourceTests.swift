@@ -279,8 +279,7 @@ struct LocalCompromisedPasswordDatasourceTests {
     // MARK: Concurrency
     
     @Test func `concurrent upserts of disjoint items all persist`() async throws {
-        // The protocol is Sendable and async — concurrent callers are a supported usage.
-        // Structured task group; child tasks own nothing beyond their Sendable check.
+        // The protocol is Sendable and async, so concurrent callers are a supported usage
         let userId = UUID().uuidString
         let checks = (0..<50).map { _ in CompromisedPasswordCheck.random() }
         
