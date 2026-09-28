@@ -51,6 +51,8 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 Carthage/
+vendor/bundle/
+.bundle/
 
 ### Xcode Patch ###
 *.xcodeproj/*
