@@ -496,37 +496,37 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ хоча абагуліць элемент з групай %@."
+            "value" : "%1$@ хоча абагуліць элемент з групай %2$@."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ vol compartir un element amb el grup %@."
+            "value" : "%1$@ vol compartir un element amb el grup %2$@."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ chce sdílet položku se skupinou %@."
+            "value" : "%1$@ chce sdílet položku se skupinou %2$@."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ønsker at dele et element med gruppen %@."
+            "value" : "%1$@ ønsker at dele et element med gruppen %2$@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ möchte einen Eintrag mit der Gruppe %@ teilen."
+            "value" : "%1$@ möchte einen Eintrag mit der Gruppe %2$@ teilen."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ο %@ θέλει να μοιραστεί ένα στοιχείο με την ομάδα %@."
+            "value" : "Ο %1$@ θέλει να μοιραστεί ένα στοιχείο με την ομάδα %2$@."
           }
         },
         "en" : {
@@ -538,121 +538,49 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ quiere compartir un elemento con el grupo %@."
+            "value" : "%1$@ quiere compartir un elemento con el grupo %2$@."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ quiere compartir un elemento con el grupo %@."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ haluaa jakaa kohteen ryhmälle %@."
+            "value" : "%1$@ desea compartir un elemento con el grupo %2$@."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ souhaite partager un élément avec le groupe %@."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ vuole condividere un elemento con il gruppo %@."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@がグループ%@でアイテムを共有したいようです。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@-ს უნდა, გაუზიაროს ელემენტი ჯგუფს %@."
+            "value" : "%1$@ souhaite partager un élément avec le groupe %2$@."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@님이 %@ 그룹과 항목을 공유하고자 합니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ ønsker å dele et element med gruppen %@."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ wil een item delen met de groep %@."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ deseja compartilhar um item com o grupo %@."
+            "value" : "%1$@님이 %2$@ 그룹과 항목을 공유하고자 합니다."
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ dorește să partajeze un element cu grupul %@."
+            "value" : "%1$@ dorește să partajeze un articol cu grupul %2$@."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ chce zdieľať položku so skupinou %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ želi deliti predmet s skupino %@."
+            "value" : "%1$@ chce zdieľať položku so skupinou %2$@."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ vill dela ett objekt med gruppen %@."
+            "value" : "%1$@ vill dela ett objekt med gruppen %2$@."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@, %@ grubuyla bir öge paylaşmak istiyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ хоче поділитися елементом із групою %@."
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ muốn chia sẽ một nội dung với nhóm %@."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 希望与群组 %@ 共享一个项目。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 想與群組 %@ 分享項目。"
+            "value" : "%1$@, %2$@ grubu ile bir öge paylaşmak istiyor."
           }
         }
       }
@@ -11555,6 +11483,12 @@
             "value" : "최소 13자"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pelo menos 13 caracteres"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11565,6 +11499,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aspoň 13 znakov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minst 13 tecken"
           }
         },
         "tr" : {
@@ -39365,6 +39305,12 @@
             "value" : "Leetspeak"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49237,7 +49183,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보관함 정리"
+            "value" : "금고 정리"
           }
         },
         "nb" : {
@@ -55590,7 +55536,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Εξοικονομήστε"
+            "value" : "Αποθήκευση"
           }
         },
         "en" : {
@@ -59673,6 +59619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť %@ priečinok"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa %@ mapp"
           }
         },
         "tr" : {
