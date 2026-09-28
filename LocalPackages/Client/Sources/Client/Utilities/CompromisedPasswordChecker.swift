@@ -118,9 +118,8 @@ public extension CompromisedPasswordChecker {
             allSucceeded = allSucceeded && succeeded
         }
 
-        // The daily window restarts whenever the scan ran, otherwise one persistently failing prefix
-        // would force a full re-scan on every refresh. The corpus marker only moves when every prefix
-        // answered, so the next daily scan re-queries what failed instead of trusting stale rows.
+        // Restarting the window even after a failure stops one bad prefix from forcing a rescan every refresh.
+        // The corpus marker waits for full success, so the next daily scan re-queries what failed.
         if let currentLastChange {
             localTimestampDatasource.setTimestamp(now,
                                                   key: Constants.CompromisedPasswords.lastRunKey(userId))

@@ -37,7 +37,6 @@ enum FixtureWeakness {
     case fullyExcluded
 }
 
-/// Holds every `check` call until `open()` so a test can act while a refresh is in flight.
 private actor GatedCompromisedPasswordChecker: CompromisedPasswordCheckerProtocol {
     private(set) var invocationCount = 0
     private var isOpen = false
@@ -393,7 +392,6 @@ struct PassMonitorRepositoryTests {
         let remote = RemoteBreachDataSourceProtocolMock()
         let sut = makePaidSut(checker: checker, remoteDataSource: remote)
 
-        // No refresh has been awaited, so nothing is published yet
         try await sut.sendUserMonitorStats()
 
         let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
