@@ -99,13 +99,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                 guard let self, let issues else {
                     return
                 }
-                if issues.contains(where: {
-                    if case .weakness(.reusedPassword, _) = $0 {
-                        true
-                    } else {
-                        false
-                    }
-                }) {
+                if issues.contains(where: \.isReusedPasswordWeakness) {
                     fetchSimilarPasswordItems()
                 }
             }.store(in: &cancellables)
