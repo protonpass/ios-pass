@@ -25,6 +25,9 @@ import Combine
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
+    /// Emits the item's security state on every Pass Monitor refresh, or `nil` when the item has no
+    /// detected weakness and no exclusion (full or per check).
+    /// - Parameter itemId: `ItemContent.id` (item ID + share ID), not the bare item ID.
     func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never>
 }
 
@@ -35,13 +38,11 @@ public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    /// Emits the item's security state on every Pass Monitor refresh, or `nil` when the item has no
-    /// detected weakness and no exclusion (full or per check).
-    /// - Parameter itemId: `ItemContent.id` (item ID + share ID), not the bare item ID.
     public func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
             .map { items -> SecurityAffectedItem? in
                 items.first { $0.display.id == itemId }
-            }.eraseToAnyPublisher()
+            }
+            .eraseToAnyPublisher()
     }
 }

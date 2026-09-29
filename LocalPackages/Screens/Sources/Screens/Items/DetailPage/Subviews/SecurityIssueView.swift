@@ -95,7 +95,9 @@ private struct SecurityIssueHeader: View {
             } label: {
                 HStack(spacing: 8) {
                     Image(uiImage: IconProvider.chevronRightFilled)
-                        .resizable().scaledToFit().frame(width: 16)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16)
                         .foregroundStyle(PassColor.textNorm)
                         .rotationEffect(.degrees(expanded ? 90 : 0))
                         .accessibilityHidden(true)
@@ -151,17 +153,14 @@ private struct SecurityWeaknessRow: View {
     let onRetryFetchReusedItems: () -> Void
 
     private var isReusedPassword: Bool {
-        if case .weakness(.reusedPassword, _) = weakness {
-            true
-        } else {
-            false
-        }
+        weakness.isReusedPasswordWeakness
     }
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             weakness.icon
-                .resizable().scaledToFit()
+                .resizable()
+                .scaledToFit()
                 .frame(width: 16)
                 .padding(.top, 2)
                 .accessibilityHidden(true)
@@ -170,23 +169,25 @@ private struct SecurityWeaknessRow: View {
                 HStack(alignment: .top, spacing: 8) {
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                         Text(verbatim: weakness.title)
-                            .font(.subheadline).fontWeight(.bold)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                             .foregroundStyle(weakness.color)
-                        if isReusedPassword {
-                            if case let .fetched(items) = reusedItems {
-                                Text("\(items.count) other logins use this password", bundle: .module)
-                                    .font(.subheadline)
-                                    .foregroundStyle(PassColor.textNorm)
-                            }
+                        if isReusedPassword,
+                           case let .fetched(items) = reusedItems {
+                            Text("\(items.count) other logins use this password", bundle: .module)
+                                .font(.subheadline)
+                                .foregroundStyle(PassColor.textNorm)
                         } else if let infos = weakness.infos {
-                            Text(verbatim: infos).font(.subheadline)
+                            Text(verbatim: infos)
+                                .font(.subheadline)
                                 .foregroundStyle(PassColor.textNorm)
                         }
                     }
 
                     Spacer()
-                    CapsuleTextButton(title: weakness.isExcluded
-                        ? #localized("Restore alert", bundle: .module) : #localized("Ignore", bundle: .module),
+                    CapsuleTextButton(title: weakness.isExcluded ?
+                        #localized("Restore alert", bundle: .module) :
+                        #localized("Ignore", bundle: .module),
                         titleColor: PassColor.interactionNormMajor2,
                         font: .subheadline,
                         backgroundColor: PassColor.loginInteractionNormMinor2,
@@ -277,6 +278,7 @@ private struct ReusedItemsPassListView: View {
                     .buttonStyle(.plain)
                 }
             }
-        }.scrollBounceBehavior(.basedOnSize, axes: .horizontal)
+        }
+        .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
     }
 }
