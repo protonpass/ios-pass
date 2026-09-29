@@ -151,11 +151,7 @@ private struct SecurityWeaknessRow: View {
     let onRetryFetchReusedItems: () -> Void
 
     private var isReusedPassword: Bool {
-        if case .weakness(.reusedPassword, _) = weakness {
-            true
-        } else {
-            false
-        }
+        weakness.isReusedPasswordWeakness
     }
 
     var body: some View {
