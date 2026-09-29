@@ -37,9 +37,7 @@ struct IdentityDetailView: View {
 
     var body: some View {
         mainContainer
-            .if(viewModel.isShownAsSheet) { view in
-                view.navigationStackEmbeded()
-            }
+            .navigationStackEmbeded()
     }
 }
 
