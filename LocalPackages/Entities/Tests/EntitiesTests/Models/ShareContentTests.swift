@@ -321,7 +321,7 @@ struct ShareContentTests {
         let content = ShareContent(share: share, elements: elements)
 
         #expect(content.folders(in: shareId)?.map(\.content.name) == ["A", "b", "c"])
-        #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 2", "Folder 3", "Folder 10"])
+        #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 10", "Folder 2", "Folder 3"])
     }
 
     @Test

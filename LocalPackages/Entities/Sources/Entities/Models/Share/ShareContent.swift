@@ -70,7 +70,7 @@ public struct ShareContent: Identifiable, Hashable, Sendable, Equatable {
 
         for containerId in foldersByContainer.keys {
             foldersByContainer[containerId]?.sort {
-                $0.content.name.localizedStandardCompare($1.content.name) == .orderedAscending
+                $0.content.name.caseInsensitiveCompare($1.content.name) == .orderedAscending
             }
         }
 
