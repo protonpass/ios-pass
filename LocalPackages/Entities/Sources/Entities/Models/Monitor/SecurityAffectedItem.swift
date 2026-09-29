@@ -60,3 +60,32 @@ public extension SecurityAffectedItem {
         item.item.isExcludedItem
     }
 }
+
+public extension [SecurityAffectedItem] {
+    func stats(reusedPasswordCount: Int) -> WeaknessStats {
+        var weakPasswordCount = 0
+        var missing2FACount = 0
+        var excludedItemsCount = 0
+
+        for item in self {
+            if item.activeWeaknesses.contains(.weakPassword) {
+                weakPasswordCount += 1
+            }
+
+            if item.activeWeaknesses.contains(.missing2FA) {
+                missing2FACount += 1
+            }
+
+            if item.isExcludedItem {
+                excludedItemsCount += 1
+            }
+        }
+
+        return WeaknessStats(counts: [
+            .weakPassword: weakPasswordCount,
+            .reusedPassword: reusedPasswordCount,
+            .missing2FA: missing2FACount
+        ],
+        excludedItems: excludedItemsCount)
+    }
+}

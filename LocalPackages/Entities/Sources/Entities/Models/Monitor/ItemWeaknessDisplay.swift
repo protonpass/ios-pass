@@ -42,4 +42,12 @@ public enum ItemWeaknessDisplay: Identifiable, Hashable {
             true
         }
     }
+
+    public var isReusedPasswordWeakness: Bool {
+        if case let .weakness(weakness, _) = self {
+            weakness == .reusedPassword
+        } else {
+            false
+        }
+    }
 }

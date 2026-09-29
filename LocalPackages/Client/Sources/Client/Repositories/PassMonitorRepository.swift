@@ -322,41 +322,17 @@ private extension PassMonitorRepository {
             .map { ($1, $0) })
 
         let securityAffectedItems = loginItems.compactMap { item -> SecurityAffectedItem? in
+            guard item.encrypted.item.isExcludedItem else { return nil }
             let reuseGroup = reuseGroups[item.loginData.password]
             let detected = weaknessEvaluator.evaluate(item.loginData, isReused: reuseGroup != nil)
-            guard !detected.isEmpty || item.encrypted.item.isExcludedItem else {
-                return nil
-            }
+            guard !detected.isEmpty else { return nil }
             return SecurityAffectedItem(item: item.encrypted,
                                         detected: detected,
                                         display: item.content.toItemUiModel,
                                         reuseGroup: reuseGroup)
         }
 
-        var weakPasswordCount = 0
-        var missing2FACount = 0
-        var excludedItemsCount = 0
-
-        for item in securityAffectedItems {
-            if item.activeWeaknesses.contains(.weakPassword) {
-                weakPasswordCount += 1
-            }
-
-            if item.activeWeaknesses.contains(.missing2FA) {
-                missing2FACount += 1
-            }
-
-            if item.isExcludedItem {
-                excludedItemsCount += 1
-            }
-        }
-
-        let stats = WeaknessStats(counts: [
-            .weakPassword: weakPasswordCount,
-            .reusedPassword: reuseGroups.count,
-            .missing2FA: missing2FACount
-        ],
-        excludedItems: excludedItemsCount)
+        let stats = securityAffectedItems.stats(reusedPasswordCount: reuseGroups.count)
         return (stats, securityAffectedItems)
     }
 }
