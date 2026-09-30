@@ -166,8 +166,8 @@ public extension ServiceContainer {
                                  indexItemsForSpotlight: UseCasesContainer.shared.indexItemsForSpotlight(),
                                  deleteLocalDataBeforeFullSync: UseCasesContainer.shared
                                      .deleteLocalDataBeforeFullSync(),
-                                 getLastEventIdIfNotExist: UseCasesContainer.shared
-                                     .getLastEventIdIfNotExist(),
+                                 getAndStoreLastEventId: UseCasesContainer.shared
+                                     .getAndStoreLastEventId(),
                                  getFeatureFlagStatus: UseCasesContainer.shared.getFeatureFlagStatus(),
                                  dedupShare: UseCasesContainer.shared.dedupShare(),
                                  refreshUserData: UseCasesContainer.shared.refreshUserData(),

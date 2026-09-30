@@ -93,7 +93,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let indexAllLoginItems: any IndexAllLoginItemsUseCase
     private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
     private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
-    private let getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase
+    private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
@@ -121,7 +121,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 indexAllLoginItems: any IndexAllLoginItemsUseCase,
                 indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
                 deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
-                getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase,
+                getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
@@ -137,7 +137,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.indexAllLoginItems = indexAllLoginItems
         self.indexItemsForSpotlight = indexItemsForSpotlight
         self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
-        self.getLastEventIdIfNotExist = getLastEventIdIfNotExist
+        self.getAndStoreLastEventId = getAndStoreLastEventId
         self.getFeatureFlagStatus = getFeatureFlagStatus
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
@@ -334,7 +334,7 @@ private extension AppContentManager {
             try await loadContents(userId: userId, for: remoteShares.shares)
 
             // 5. Get the lastEventID as a starting point for user events sync loop
-            try await getLastEventIdIfNotExist(userId: userId)
+            try await getAndStoreLastEventId(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
             return false
