@@ -42,7 +42,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
     private let remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol
     private let localDatasource: any LocalCompromisedPasswordDatasourceProtocol
-    private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
+    private let scanTracker: any CompromisedPasswordScanTrackerProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let dateProvider: any CurrentDateProviderProtocol
     private let maxConcurrentRequests: Int
@@ -50,14 +50,14 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
     public init(remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol,
                 localDatasource: any LocalCompromisedPasswordDatasourceProtocol,
-                localTimestampDatasource: any LocalTimestampDatasourceProtocol,
+                scanTracker: any CompromisedPasswordScanTrackerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 maxConcurrentRequests: Int = 8,
                 dateProvider: any CurrentDateProviderProtocol) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
-        self.localTimestampDatasource = localTimestampDatasource
+        self.scanTracker = scanTracker
         self.symmetricKeyProvider = symmetricKeyProvider
         self.dateProvider = dateProvider
         self.maxConcurrentRequests = maxConcurrentRequests
@@ -80,21 +80,14 @@ public extension CompromisedPasswordChecker {
 
         let cached = try await loadCachedChecks(userId: userId, derived: derivedCandidates)
 
-        let now = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
-        let lastRun = localTimestampDatasource
-            .getTimestamp(key: Constants.CompromisedPasswords.lastRunKey(userId))
-        let dueForFullCheck = isDueForFullCheck(now: now, lastRun: lastRun)
-
         var currentLastChange: Int?
         let corpusUnchanged: Bool
         var allSucceeded = true
-        if dueForFullCheck {
+        if scanTracker.isFullScanDue(userId: userId) {
             do {
-                currentLastChange = try await remoteDatasource.getLastChangeTimestamp()
-                corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
-                                                    stored: localTimestampDatasource
-                                                        .getTimestamp(key: Constants.CompromisedPasswords
-                                                            .lastCorpusChangeKey(userId)))
+                let lastChange = try await remoteDatasource.getLastChangeTimestamp()
+                currentLastChange = lastChange
+                corpusUnchanged = scanTracker.isCorpusUnchanged(userId: userId, currentLastChange: lastChange)
             } catch {
                 logger.warning("Failed to fetch last timestamp for compromised password")
                 // Same policy as a failed prefix query: serve cached results rather than dropping
@@ -119,12 +112,9 @@ public extension CompromisedPasswordChecker {
         // Restarting the window even after a failure stops one bad prefix from forcing a rescan every refresh.
         // The corpus marker waits for full success, so the next daily scan re-queries what failed.
         if let currentLastChange {
-            localTimestampDatasource.setTimestamp(now,
-                                                  key: Constants.CompromisedPasswords.lastRunKey(userId))
+            scanTracker.recordFullScan(userId: userId)
             if allSucceeded {
-                localTimestampDatasource.setTimestamp(currentLastChange,
-                                                      key: Constants.CompromisedPasswords
-                                                          .lastCorpusChangeKey(userId))
+                scanTracker.recordCorpusLastChange(currentLastChange, userId: userId)
             }
         }
 
@@ -164,18 +154,6 @@ private extension CompromisedPasswordChecker {
             }
         }
         return cached
-    }
-
-    func isCorpusUnchanged(current: Int?, stored: Int?) -> Bool {
-        guard let current, let stored else { return false }
-        return current <= stored
-    }
-
-    func isDueForFullCheck(now: Int, lastRun: Int?) -> Bool {
-        guard let lastRun else { return true }
-        let elapsed = now - lastRun
-        guard elapsed >= 0 else { return true }
-        return elapsed >= Constants.CompromisedPasswords.minimumCheckInterval
     }
 
     func partition(_ derivedAll: [DerivedCompromisedPasswordCandidate],

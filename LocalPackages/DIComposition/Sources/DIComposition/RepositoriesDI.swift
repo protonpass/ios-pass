@@ -498,10 +498,17 @@ public extension RepositoryContainer {
         self {
             CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
                                        localDatasource: self.localCompromisedPasswordDatasource(),
-                                       localTimestampDatasource: self.localTimestampDatasource(),
+                                       scanTracker: self.compromisedPasswordScanTracker(),
                                        symmetricKeyProvider: self.symmetricKeyProvider,
                                        logManager: self.logManager,
-                                       dateProvider: ToolingContainer.shared.currentDateProvider())
+                                       dateProvider: self.currentDateProvider)
+        }
+    }
+
+    var compromisedPasswordScanTracker: Factory<any CompromisedPasswordScanTrackerProtocol> {
+        self {
+            CompromisedPasswordScanTracker(localTimestampDatasource: self.localTimestampDatasource(),
+                                           dateProvider: self.currentDateProvider)
         }
     }
 }
