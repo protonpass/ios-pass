@@ -27,19 +27,6 @@ import Entities
 import Foundation
 import Testing
 
-private final class MockLocalTimestampDatasource: LocalTimestampDatasourceProtocol, @unchecked Sendable {
-    /// Key-aware so the corpus-change marker and the last-run marker never alias each other.
-    private var store = [String: Int]()
-
-    func getTimestamp(key: String) -> Int? {
-        store[key]
-    }
-
-    func setTimestamp(_ value: Int?, key: String) {
-        store[key] = value
-    }
-}
-
 private struct StubDateProvider: CurrentDateProviderProtocol {
     let date: Date
     func getCurrentDate() -> Date { date }
@@ -67,9 +54,11 @@ struct CompromisedPasswordCheckerTests {
                          now: Int = 1_000_000,
                          maxConcurrentRequests: Int = 8) -> CompromisedPasswordChecker {
         let dateProvider = StubDateProvider(date: Date(timeIntervalSince1970: TimeInterval(now)))
+        let scanTracker = CompromisedPasswordScanTracker(localTimestampDatasource: localTimeStamp,
+                                                         dateProvider: dateProvider)
         return CompromisedPasswordChecker(remoteDatasource: remote,
                                           localDatasource: local,
-                                          localTimestampDatasource: localTimeStamp,
+                                          scanTracker: scanTracker,
                                           symmetricKeyProvider: keyProvider,
                                           logManager: LogManagerProtocolMock(),
                                           maxConcurrentRequests: maxConcurrentRequests,
