@@ -44,13 +44,16 @@ public extension URLSessionConfiguration {
 }
 
 public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswordsDatasourceProtocol, Sendable {
+    private let gunzipper: any GunzipperProtocol
     private let session: URLSession
     private let userAgent: String
     private let baseURLString: String
 
-    public init(userAgent: String,
+    public init(gunzipper: any GunzipperProtocol,
+                userAgent: String,
                 baseURLString: String = Constants.CompromisedPasswords.baseUrl,
                 sessionConfiguration: URLSessionConfiguration = .compromisedPasswordCheck) {
+        self.gunzipper = gunzipper
         self.userAgent = userAgent
         self.baseURLString = baseURLString
         session = URLSession(configuration: sessionConfiguration)
@@ -102,7 +105,7 @@ public extension RemoteCompromisedPasswordsDatasource {
 
         case 200:
             let newEtag = httpResponse.value(forHTTPHeaderField: "ETag")
-            let body = try data.gunzipped()
+            let body = try gunzipper.unzip(data)
             return .modified(etag: newEtag, body: body)
 
         default:
