@@ -70,20 +70,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                 router.present(for: .itemDetail(itemContent,
                                                 automaticDisplay: false,
                                                 showExcludedWeaknesses: type == .excludedItems))
-                let eventType: TelemetryEventType? = switch type {
-                case .weakness(.weakPassword):
-                    .monitorItemDetailFromWeakPassword
-
-                case .weakness(.missing2FA):
-                    .monitorItemDetailFromMissing2FA
-
-                case .weakness(.reusedPassword):
-                    .monitorItemDetailFromReusedPassword
-
-                case .excludedItems, .weakness(.compromisedPassword):
-                    nil
-                }
-                if let eventType {
+                if let eventType = type.telemetryEventType {
                     addTelemetryEvent(with: eventType)
                 }
             } catch {

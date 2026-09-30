@@ -33,6 +33,16 @@ public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
     func query(prefix6: String, etag: String?) async throws -> CompromisedRangeResponse
 }
 
+public extension URLSessionConfiguration {
+    static var compromisedPasswordCheck: URLSessionConfiguration {
+        let configuration = URLSessionConfiguration.ephemeral
+        // URLCache would absorb 304s before our ETag handling sees them
+        configuration.urlCache = nil
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        return configuration
+    }
+}
+
 public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswordsDatasourceProtocol, Sendable {
     private let session: URLSession
     private let userAgent: String
@@ -40,26 +50,16 @@ public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswo
 
     public init(userAgent: String,
                 baseURLString: String = Constants.CompromisedPasswords.baseUrl,
-                session: URLSession? = nil) {
+                sessionConfiguration: URLSessionConfiguration = .compromisedPasswordCheck) {
         self.userAgent = userAgent
         self.baseURLString = baseURLString
-        if let session {
-            self.session = session
-        } else {
-            let configuration = URLSessionConfiguration.ephemeral
-            // URLCache would absorb 304s before our ETag handling sees them
-            configuration.urlCache = nil
-            configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
-            self.session = URLSession(configuration: configuration)
-        }
+        session = URLSession(configuration: sessionConfiguration)
     }
 }
 
 public extension RemoteCompromisedPasswordsDatasource {
     func getLastChangeTimestamp() async throws -> Int {
-        let url = try url(for: "/split/sha1/last_change")
-        var request = URLRequest(url: url)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        let request = try baseRequest(path: "/split/sha1/last_change")
 
         let (data, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -83,10 +83,8 @@ public extension RemoteCompromisedPasswordsDatasource {
         let p0 = prefix.prefix(2)
         let p2 = prefix.dropFirst(2).prefix(2)
         let p4 = prefix.dropFirst(4).prefix(2)
-        let url = try url(for: "/split/sha1/\(p0)/\(p2)/\(p4)/\(prefix).gz")
+        var request = try baseRequest(path: "/split/sha1/\(p0)/\(p2)/\(p4)/\(prefix).gz")
 
-        var request = URLRequest(url: url)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
         request.setValue("true", forHTTPHeaderField: "Add-Padding")
         // ETags are opaque: the stored value already carries its quoting, so send it verbatim.
         if let etag, !etag.isEmpty {
@@ -114,12 +112,14 @@ public extension RemoteCompromisedPasswordsDatasource {
 }
 
 private extension RemoteCompromisedPasswordsDatasource {
-    func url(for path: String) throws -> URL {
+    func baseRequest(path: String) throws -> URLRequest {
         let urlString = "\(baseURLString)\(path)"
         guard let url = URL(string: urlString) else {
             throw PassError.compromisePassword(.invalidURL(urlString))
         }
 
-        return url
+        var request = URLRequest(url: url)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        return request
     }
 }

@@ -244,7 +244,8 @@ private extension PassMonitorView {
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm)
                 Spacer()
-            }.padding(.top, DesignConstant.sectionPadding)
+            }
+            .padding(.top, DesignConstant.sectionPadding)
         }
     }
 
