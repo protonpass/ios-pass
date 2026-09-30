@@ -4,7 +4,7 @@
 
 Others:
 - Rust library upgraded from 2.0.0 to 2.2.0
-- Bump Sentry from 9.29.1 to 9.29.2
+- Bump Sentry from 9.29.1 to 9.30.0
 
 # Version 1.21.1
 - Fixed the invitation sheet staying stuck after accepting an invite
