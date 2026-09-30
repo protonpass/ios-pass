@@ -191,7 +191,8 @@ private extension TelemetryEventType {
              .monitorDisplayWeakPasswords,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
-             .monitorItemDetailFromWeakPassword:
+             .monitorItemDetailFromWeakPassword,
+             .monitorItemDetailFromCompromisedPassword:
             Image(systemName: "person.badge.shield.checkmark.fill")
 
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
@@ -246,6 +247,7 @@ private extension TelemetryEventType {
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
+             .monitorItemDetailFromCompromisedPassword,
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
@@ -299,6 +301,7 @@ private extension TelemetryEventType {
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
+             .monitorItemDetailFromCompromisedPassword,
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
@@ -400,6 +403,9 @@ private extension TelemetryEventType {
 
         case .monitorItemDetailFromReusedPassword:
             "View item detail from reused password list"
+
+        case .monitorItemDetailFromCompromisedPassword:
+            "View item detail from compromised password list"
 
         case .multiAccountAddAccount:
             "Add new account"
