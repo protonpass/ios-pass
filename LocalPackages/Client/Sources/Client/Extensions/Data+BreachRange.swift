@@ -23,12 +23,9 @@ import Foundation
 struct BreachRangeEntry: Equatable {
     let suffix: String
     let count: Int
+}
 
-    init(suffix: String, count: Int) {
-        self.suffix = suffix
-        self.count = count
-    }
-
+extension BreachRangeEntry {
     init?(line: Substring) {
         let parts = line.split(separator: ":", maxSplits: 1)
         guard parts.count == 2 else {

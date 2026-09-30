@@ -85,7 +85,8 @@ struct PassMonitorRepositoryTests {
                                     symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                     userManager: userManager,
                                     accessRepository: accessRepository,
-                                    compromisedPasswordChecker: CompromisedPasswordCheckerProtocolMock())
+                                    compromisedPasswordChecker: CompromisedPasswordCheckerProtocolMock(),
+                                    isFeatureEnabled: { _ in true })
     }
 
     static func makeAccessRepository(planType: String) -> AccessRepositoryProtocolMock {
@@ -340,15 +341,81 @@ struct PassMonitorRepositoryTests {
         return [make(flags: 128), make(flags: 0)]
     }
 
+    @Test
+    func `Reuse suppression is ignored when per-check exclusion is disabled`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
+        let sut = makePaidSut(checker: CompromisedPasswordCheckerProtocolMock(),
+                              isFeatureEnabled: { $0 != .passMonitorPerCheckExclusion })
+
+        try await sut.refreshSecurityChecks()
+
+        let affected = sut.itemsWithSecurityIssues.value
+        #expect(affected.count == 2)
+        #expect(affected.allSatisfy { $0.activeWeaknesses.contains(.reusedPassword) })
+        #expect(affected.allSatisfy { !$0.isExcludedItem })
+        let stats = try #require(sut.weaknessStats.value)
+        #expect(stats.count(for: .reusedPassword) == 1)
+        #expect(stats.excludedItems == 0)
+    }
+
+    @Test
+    func `Compromised suppression is ignored when the compromised check is disabled`() async throws {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+        let loginData = LogInItemData.mock(username: "test",
+                                           password: "Ageless6-Evidence0-Detonator1-Cider4-Synthesis6sdfasdsad")
+        let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                           note: "n",
+                                                                           itemUuid: UUID().uuidString,
+                                                                           data: .login(loginData),
+                                                                           customFields: [])
+        // 64 = skipCompromisedPasswordCheck (1 << 6)
+        itemRepository.stubbedGetActiveLogInItemsResult = [
+            SymmetricallyEncryptedItem.random(shareId: shareID,
+                                              item: .random(flags: 64),
+                                              encryptedContent: try content.encrypt(symmetricKey: key))
+        ]
+        let sut = makePaidSut(checker: CompromisedPasswordCheckerProtocolMock(),
+                              isFeatureEnabled: { $0 != .passCompromisedPasswords })
+
+        try await sut.refreshSecurityChecks()
+
+        #expect(sut.itemsWithSecurityIssues.value.isEmpty)
+        #expect(try #require(sut.weaknessStats.value).excludedItems == 0)
+    }
+
+    @Test
+    func `Compromised check is skipped for paid users when its flag is disabled`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        let remote = RemoteBreachDataSourceProtocolMock()
+        let sut = makePaidSut(checker: checker,
+                              remoteDataSource: remote,
+                              isFeatureEnabled: { $0 != .passCompromisedPasswords })
+
+        try await sut.refreshSecurityChecks()
+        try await sut.sendUserMonitorStats()
+
+        #expect(!checker.invokedCheckfunction)
+        let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
+        #expect(sent.compromisedPasswords == nil)
+        #expect(sent.stats.count(for: .weakPassword) == 1)
+    }
+
     func makePaidSut(checker: any CompromisedPasswordCheckerProtocol,
-                     remoteDataSource: RemoteBreachDataSourceProtocolMock = .init()) -> PassMonitorRepository {
+                     remoteDataSource: RemoteBreachDataSourceProtocolMock = .init(),
+                     isFeatureEnabled: @escaping @Sendable (FeatureFlagType) -> Bool = { _ in true })
+        -> PassMonitorRepository {
         PassMonitorRepository(itemRepository: itemRepository,
                               shareRepository: shareRepository,
                               remoteDataSource: remoteDataSource,
                               symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                               userManager: userManager,
                               accessRepository: Self.makeAccessRepository(planType: "plus"),
-                              compromisedPasswordChecker: checker)
+                              compromisedPasswordChecker: checker,
+                              isFeatureEnabled: isFeatureEnabled)
     }
 
     @Test

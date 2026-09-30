@@ -484,13 +484,15 @@ public extension RepositoryContainer {
 public extension RepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
-            PassMonitorRepository(itemRepository: self.itemRepository(),
-                                  shareRepository: self.shareRepository(),
-                                  remoteDataSource: self.remoteBreachDataSource(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider,
-                                  userManager: self.userManager,
-                                  accessRepository: self.accessRepository(),
-                                  compromisedPasswordChecker: self.compromisedPasswordChecker())
+            let getFeatureFlagStatus = UseCasesContainer.shared.getFeatureFlagStatus()
+            return PassMonitorRepository(itemRepository: self.itemRepository(),
+                                         shareRepository: self.shareRepository(),
+                                         remoteDataSource: self.remoteBreachDataSource(),
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         userManager: self.userManager,
+                                         accessRepository: self.accessRepository(),
+                                         compromisedPasswordChecker: self.compromisedPasswordChecker(),
+                                         isFeatureEnabled: { getFeatureFlagStatus(for: $0) })
         }
     }
 
