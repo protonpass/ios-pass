@@ -156,7 +156,11 @@ public extension RepositoryContainer {
     }
 
     var remoteCompromisedPasswordsDatasource: Factory<any RemoteCompromisedPasswordsDatasourceProtocol> {
-        self { RemoteCompromisedPasswordsDatasource(userAgent: ToolingContainer.shared.appVersion()) }
+        self {
+            let container = ToolingContainer.shared
+            return RemoteCompromisedPasswordsDatasource(gunzipper: container.gunzipper(),
+                                                        userAgent: container.appVersion())
+        }
     }
 
     var localCompromisedPasswordDatasource: Factory<any LocalCompromisedPasswordDatasourceProtocol> {
