@@ -49,6 +49,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let hasEmail: Bool
     public let hasUsername: Bool
     public let hasPassword: Bool
+    public let customIcon: String?
 
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
@@ -195,6 +196,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         self.hasEmail = hasEmail
         self.hasUsername = hasUsername
         self.hasPassword = hasPassword
+        customIcon = itemContent.customIcon
     }
 }
 
@@ -263,7 +265,8 @@ private extension SearchableItem {
                      shared: shared,
                      hasEmail: hasEmail,
                      hasUsername: hasUsername,
-                     hasPassword: hasPassword)
+                     hasPassword: hasPassword,
+                     customIcon: customIcon)
     }
 
     var toItemSearchResult: ItemSearchResult {
@@ -284,7 +287,8 @@ private extension SearchableItem {
                          shared: shared,
                          hasEmail: hasEmail,
                          hasUsername: hasUsername,
-                         hasPassword: hasPassword)
+                         hasPassword: hasPassword,
+                         customIcon: customIcon)
     }
 }
 
@@ -296,7 +300,8 @@ public extension SearchableItem {
                            type: type,
                            title: name,
                            url: url,
-                           description: note)
+                           description: note,
+                           customIcon: customIcon)
     }
 }
 

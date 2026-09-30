@@ -45,6 +45,7 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable, I
     public let hasEmail: Bool
     public let hasUsername: Bool
     public let hasPassword: Bool
+    public let customIcon: String?
 
     public var hasTotpUri: Bool {
         totpUri?.isEmpty == false
@@ -71,7 +72,8 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable, I
                 shared: Bool,
                 hasEmail: Bool,
                 hasUsername: Bool,
-                hasPassword: Bool) {
+                hasPassword: Bool,
+                customIcon: String? = nil) {
         // We precompute and cache the hash value
         // because we rely on it a lot to drive SwiftUI's rerendering process
         // the faster we can hash this object, the better the UI performance
@@ -136,6 +138,9 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable, I
 
         self.hasPassword = hasPassword
         hasher.combine(hasPassword)
+
+        self.customIcon = customIcon
+        hasher.combine(customIcon)
 
         precomputedHash = hasher.finalize()
     }

@@ -74,6 +74,7 @@ public extension ItemContent {
                      shared: shared,
                      hasEmail: hasEmail,
                      hasUsername: hasUsername,
-                     hasPassword: hasPassword)
+                     hasPassword: hasPassword,
+                     customIcon: customIcon)
     }
 }

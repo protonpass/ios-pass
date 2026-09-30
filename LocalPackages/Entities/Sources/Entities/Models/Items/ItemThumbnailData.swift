@@ -25,6 +25,8 @@ public enum ItemThumbnailData: Equatable, Sendable {
     case icon(type: ItemContentType)
     case initials(type: ItemContentType, initials: String)
     case favIcon(type: ItemContentType, url: String, initials: String)
+    /// `dataUri` is a validated raster `CustomItemIcon`
+    case customIcon(type: ItemContentType, dataUri: String)
 
     public var url: String? {
         switch self {
@@ -45,6 +47,9 @@ public enum ItemThumbnailData: Equatable, Sendable {
             type
 
         case let .favIcon(type, _, _):
+            type
+
+        case let .customIcon(type, _):
             type
         }
     }

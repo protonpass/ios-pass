@@ -84,7 +84,8 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
                                              note: oldContent.note,
                                              itemUuid: oldContent.itemUuid,
                                              data: newLoginData,
-                                             customFields: oldContent.customFields)
+                                             customFields: oldContent.customFields,
+                                             customIcon: oldContent.customIcon)
         try await itemRepository.updateItem(userId: oldContent.userId,
                                             oldItem: oldContent.item,
                                             newItemContent: newContent,

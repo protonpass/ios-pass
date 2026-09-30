@@ -25,4 +25,12 @@ public protocol ItemThumbnailable {
     var type: ItemContentType { get }
     var title: String { get }
     var url: String? { get }
+    /// Untrusted raw value, only render it after validating with `CustomItemIcon`
+    var customIcon: String? { get }
+}
+
+public extension ItemThumbnailable {
+    var customIcon: String? {
+        nil
+    }
 }

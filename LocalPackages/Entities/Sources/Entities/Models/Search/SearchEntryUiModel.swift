@@ -26,6 +26,8 @@ public struct SearchEntryUiModel: ItemIdentifiable, Hashable {
     public let title: String
     public let url: String?
     public let description: String?
+    /// Untrusted raw value, only render it after validating with `CustomItemIcon`
+    public let customIcon: String?
 
     public init(itemId: String,
                 shareId: String,
@@ -33,7 +35,8 @@ public struct SearchEntryUiModel: ItemIdentifiable, Hashable {
                 type: ItemContentType,
                 title: String,
                 url: String?,
-                description: String?) {
+                description: String?,
+                customIcon: String? = nil) {
         self.itemId = itemId
         self.shareId = shareId
         self.folderId = folderId
@@ -41,6 +44,7 @@ public struct SearchEntryUiModel: ItemIdentifiable, Hashable {
         self.title = title
         self.url = url
         self.description = description
+        self.customIcon = customIcon
     }
 }
 

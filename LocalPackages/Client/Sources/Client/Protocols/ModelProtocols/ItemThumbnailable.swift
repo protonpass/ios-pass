@@ -23,6 +23,11 @@ import Entities
 
 public extension ItemThumbnailable {
     func thumbnailData() -> ItemThumbnailData {
+        // SVG icons are not rendered (no SVG renderer available) so they fall back to the default thumbnail
+        if let customIcon, CustomItemIcon.mimeType(of: customIcon)?.isRaster == true {
+            return .customIcon(type: type, dataUri: customIcon)
+        }
+
         switch type {
         case .login:
             let initials = title.initials()

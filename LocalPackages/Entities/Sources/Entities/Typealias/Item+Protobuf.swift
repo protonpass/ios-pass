@@ -38,6 +38,11 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         metadata.itemUuid
     }
 
+    /// Untrusted raw value, only render it after validating with `CustomItemIcon`
+    public var customIcon: String? {
+        metadata.hasIcon ? metadata.icon : nil
+    }
+
     public var contentData: ItemContentData {
         switch content.content {
         case .alias:
@@ -96,12 +101,16 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                 note: String,
                 itemUuid: String,
                 data: ItemContentData,
-                customFields: [CustomField]) {
+                customFields: [CustomField],
+                customIcon: String? = nil) {
         self.init()
         metadata = .init()
         metadata.itemUuid = itemUuid
         metadata.name = name
         metadata.note = note
+        if let customIcon {
+            metadata.icon = customIcon
+        }
 
         switch data {
         case .alias:

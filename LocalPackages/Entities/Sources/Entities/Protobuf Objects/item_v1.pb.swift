@@ -684,9 +684,22 @@ public struct ProtonPassItemV1_Metadata: Sendable {
 
   public var itemUuid: String = String()
 
+  /// Optional user-defined icon as a base64 data URI
+  /// (`data:image/png;base64,...` or `data:image/svg+xml;base64,...`)
+  public var icon: String {
+    get {return _icon ?? String()}
+    set {_icon = newValue}
+  }
+  /// Returns true if `icon` has been explicitly set.
+  public var hasIcon: Bool {return self._icon != nil}
+  /// Clears the value of `icon`. Subsequent reads from it will return its default value.
+  public mutating func clearIcon() {self._icon = nil}
+
   public var unknownFields = SwiftProtobuf.UnknownStorage()
 
   public init() {}
+
+  fileprivate var _icon: String? = nil
 }
 
 public struct ProtonPassItemV1_Content: Sendable {
@@ -1925,7 +1938,7 @@ extension ProtonPassItemV1_ExtraField: SwiftProtobuf.Message, SwiftProtobuf._Mes
 
 extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = _protobuf_package + ".Metadata"
-  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}note\0\u{3}item_uuid\0")
+  public static let _protobuf_nameMap = SwiftProtobuf._NameMap(bytecode: "\0\u{1}name\0\u{1}note\0\u{3}item_uuid\0\u{1}icon\0")
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
     while let fieldNumber = try decoder.nextFieldNumber() {
@@ -1936,12 +1949,17 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
       case 1: try { try decoder.decodeSingularStringField(value: &self.name) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.note) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self.itemUuid) }()
+      case 4: try { try decoder.decodeSingularStringField(value: &self._icon) }()
       default: break
       }
     }
   }
 
   public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
     if !self.name.isEmpty {
       try visitor.visitSingularStringField(value: self.name, fieldNumber: 1)
     }
@@ -1951,6 +1969,9 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if !self.itemUuid.isEmpty {
       try visitor.visitSingularStringField(value: self.itemUuid, fieldNumber: 3)
     }
+    try { if let v = self._icon {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 4)
+    } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
@@ -1958,6 +1979,7 @@ extension ProtonPassItemV1_Metadata: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if lhs.name != rhs.name {return false}
     if lhs.note != rhs.note {return false}
     if lhs.itemUuid != rhs.itemUuid {return false}
+    if lhs._icon != rhs._icon {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

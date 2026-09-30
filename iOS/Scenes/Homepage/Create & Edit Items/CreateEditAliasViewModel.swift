@@ -177,7 +177,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: .alias,
-                            customFields: customFields)
+                            customFields: customFields,
+                            customIcon: customIcon)
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {

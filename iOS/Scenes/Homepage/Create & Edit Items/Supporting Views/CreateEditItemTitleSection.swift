@@ -25,16 +25,19 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct CreateEditItemTitleSection<Field: Hashable>: View {
+struct CreateEditItemTitleSection<Field: Hashable, LeadingView: View>: View {
     @Binding var title: String
     let focusedField: FocusState<Field?>.Binding
     let field: Field
     let itemContentType: ItemContentType
     let isEditMode: Bool
     var onSubmit: (() -> Void)?
+    @ViewBuilder var leadingView: () -> LeadingView
 
     var body: some View {
         HStack {
+            leadingView()
+
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Title")
                     .editableSectionTitleText(for: title)
@@ -53,5 +56,22 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
         .padding(DesignConstant.sectionPadding)
         .animation(.default, value: title.isEmpty)
         .roundedEditableSection()
+    }
+}
+
+extension CreateEditItemTitleSection where LeadingView == EmptyView {
+    init(title: Binding<String>,
+         focusedField: FocusState<Field?>.Binding,
+         field: Field,
+         itemContentType: ItemContentType,
+         isEditMode: Bool,
+         onSubmit: (() -> Void)? = nil) {
+        self.init(title: title,
+                  focusedField: focusedField,
+                  field: field,
+                  itemContentType: itemContentType,
+                  isEditMode: isEditMode,
+                  onSubmit: onSubmit,
+                  leadingView: { EmptyView() })
     }
 }

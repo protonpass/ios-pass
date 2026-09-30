@@ -38,6 +38,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let contentData: ItemContentData
     public let customFields: [CustomField]
     public let simpleLoginNote: String?
+    /// Untrusted raw value, only render it after validating with `CustomItemIcon`
+    public let customIcon: String?
 
     /// Applicable to identities, ssh keys, wifis and custom items
     public var customSections: [CustomSection] {
@@ -75,7 +77,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
                 note: String,
                 contentData: ItemContentData,
                 customFields: [CustomField],
-                simpleLoginNote: String?) {
+                simpleLoginNote: String?,
+                customIcon: String? = nil) {
         self.shareId = shareId
         self.itemUuid = itemUuid
         self.userId = userId
@@ -85,6 +88,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         self.contentData = contentData
         self.customFields = customFields
         self.simpleLoginNote = simpleLoginNote
+        self.customIcon = customIcon
     }
 
     public init(userId: String,
@@ -101,6 +105,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         contentData = contentProtobuf.contentData
         customFields = contentProtobuf.customFields
         self.simpleLoginNote = simpleLoginNote
+        customIcon = contentProtobuf.customIcon
     }
 
     public var protobuf: ItemContentProtobuf {
@@ -108,7 +113,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
               note: note,
               itemUuid: itemUuid,
               data: contentData,
-              customFields: customFields)
+              customFields: customFields,
+              customIcon: customIcon)
     }
 
     /// Used as item's secondary title (description). Only applicable to SSH key & custom item types.

@@ -71,7 +71,8 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                             data: ItemContentData.sshKey(.init(privateKey: privateKey,
                                                                publicKey: publicKey,
                                                                extraSections: customSections)),
-                            customFields: customFields)
+                            customFields: customFields,
+                            customIcon: customIcon)
     }
 
     func generate(with type: SshKeyType) {

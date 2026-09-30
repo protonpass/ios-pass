@@ -100,6 +100,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
     public let hasEmail: Bool
     public let hasUsername: Bool
     public let hasPassword: Bool
+    public let customIcon: String?
 
     public let precomputedHash: Int
 
@@ -120,7 +121,8 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
                 shared: Bool,
                 hasEmail: Bool,
                 hasUsername: Bool,
-                hasPassword: Bool) {
+                hasPassword: Bool,
+                customIcon: String? = nil) {
         var hasher = Hasher()
 
         self.shareId = shareId
@@ -176,6 +178,9 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
         self.hasPassword = hasPassword
         hasher.combine(hasPassword)
+
+        self.customIcon = customIcon
+        hasher.combine(customIcon)
 
         precomputedHash = hasher.finalize()
     }

@@ -23,10 +23,12 @@ import Core
 import DesignSystem
 import Entities
 import Macro
+import PhotosUI
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 import TipKit
+import UniformTypeIdentifiers
 
 struct CreateEditLoginView: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -86,8 +88,17 @@ struct CreateEditLoginView: View {
                                                        } else {
                                                            focusedField = .emailOrUsername
                                                        }
+                                                   },
+                                                   leadingView: {
+                                                       CustomIconPicker(viewModel: viewModel)
                                                    })
                                                    .padding(.bottom, DesignConstant.sectionPadding / 2)
+                        if let message = viewModel.customIconErrorMessage {
+                            InvalidInputLabel(message)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.horizontal, DesignConstant.sectionPadding)
+                                .padding(.bottom, DesignConstant.sectionPadding / 2)
+                        }
                         editablePasskeySection
                         readOnlyPasskeySection
                         usernamePasswordTOTPSection
@@ -662,6 +673,117 @@ private extension CreateEditLoginView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: focusedField)
         .animation(.default, value: viewModel.totpUriErrorMessage.isEmpty)
+    }
+}
+
+// MARK: - CustomIconPicker
+
+private struct CustomIconPicker: View {
+    @ObservedObject var viewModel: CreateEditLoginViewModel
+    @State private var showPhotosPicker = false
+    @State private var showFileImporter = false
+    @State private var selectedPhoto: PhotosPickerItem?
+
+    private let size: CGFloat = 40
+    private let type = ItemContentType.login
+
+    var body: some View {
+        Menu(content: {
+            Label(title: {
+                Text("Choose a photo")
+            }, icon: {
+                PassIcon.images
+                    .resizable()
+            })
+            .buttonEmbeded {
+                showPhotosPicker.toggle()
+            }
+
+            Label(title: {
+                Text("Choose a file")
+            }, icon: {
+                IconProvider.fileEmpty
+                    .resizable()
+            })
+            .buttonEmbeded {
+                showFileImporter.toggle()
+            }
+
+            if viewModel.customIcon != nil {
+                Button(role: .destructive,
+                       action: { viewModel.removeCustomIcon() },
+                       label: {
+                           Label(title: {
+                               Text("Remove icon")
+                           }, icon: {
+                               IconProvider.trash as Image
+                           })
+                       })
+            }
+        }, label: {
+            thumbnail
+                // This fileImporter modifier must be first applied otherwise file picker
+                // won't be shown in some cases
+                .fileImporter(isPresented: $showFileImporter,
+                              // SVG is not offered because it cannot be rendered on iOS
+                              allowedContentTypes: [.png, .jpeg, .webP],
+                              allowsMultipleSelection: false,
+                              onCompletion: { result in
+                                  switch result {
+                                  case let .success(urls):
+                                      if let url = urls.first {
+                                          viewModel.setCustomIcon(from: url)
+                                      }
+
+                                  case let .failure(error):
+                                      viewModel.handleCustomIconError(error)
+                                  }
+                              })
+                .photosPicker(isPresented: $showPhotosPicker,
+                              selection: $selectedPhoto,
+                              matching: .images,
+                              // Transcode formats such as HEIC to JPEG
+                              preferredItemEncoding: .compatible)
+        })
+        .disabled(viewModel.isProcessingCustomIcon)
+        .accessibilityLabel(Text("Custom icon"))
+        .onAppear {
+            // Workaround showFileImporter boolean not set to `false`
+            // when users close the file picker
+            showFileImporter = false
+        }
+        .onChange(of: selectedPhoto) { _, newValue in
+            guard let newValue else { return }
+            selectedPhoto = nil
+            viewModel.setCustomIcon(from: newValue)
+        }
+    }
+
+    private var thumbnail: some View {
+        ZStack {
+            if let image = CustomItemIconImageCache.image(for: viewModel.customIcon) {
+                Image(decorative: image, scale: 1)
+                    .resizable()
+                    .scaledToFill()
+            } else if viewModel.isCustomIconValid {
+                SquircleThumbnail(data: .icon(type.regularIcon),
+                                  tintColor: type.thumbnailTintColor,
+                                  backgroundColor: type.thumbnailBackgroundColor,
+                                  height: size)
+            } else {
+                SquircleThumbnail(data: .icon(IconProvider.exclamationCircleFilled),
+                                  tintColor: PassColor.signalWarning,
+                                  backgroundColor: type.thumbnailBackgroundColor,
+                                  height: size)
+            }
+
+            if viewModel.isProcessingCustomIcon {
+                ProgressView()
+            }
+        }
+        .frame(width: size, height: size)
+        .clipShape(RoundedRectangle(cornerRadius: size / 2.5, style: .continuous))
+        .contentShape(.rect)
     }
 }
 

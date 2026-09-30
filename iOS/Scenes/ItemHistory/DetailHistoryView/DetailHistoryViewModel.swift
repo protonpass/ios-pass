@@ -122,7 +122,8 @@ extension DetailHistoryViewModel {
                                                     note: pastRevision.note,
                                                     itemUuid: pastRevision.itemUuid,
                                                     data: pastRevision.contentData,
-                                                    customFields: pastRevision.customFields)
+                                                    customFields: pastRevision.customFields,
+                                                    customIcon: pastRevision.customIcon)
                 let updatedItem = try await itemRepository.updateItem(userId: userId,
                                                                       oldItem: currentRevision.item,
                                                                       newItemContent: protobuff,

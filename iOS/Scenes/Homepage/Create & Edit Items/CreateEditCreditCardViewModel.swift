@@ -107,7 +107,8 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
                      note: note,
                      itemUuid: UUID().uuidString,
                      data: .creditCard(data),
-                     customFields: customFields)
+                     customFields: customFields,
+                     customIcon: customIcon)
     }
 
     override func bindValues() {

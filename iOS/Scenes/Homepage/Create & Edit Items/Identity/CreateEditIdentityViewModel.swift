@@ -298,7 +298,8 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                      note: "",
                      itemUuid: UUID().uuidString,
                      data: .identity(data),
-                     customFields: [])
+                     customFields: [],
+                     customIcon: customIcon)
     }
 }
 

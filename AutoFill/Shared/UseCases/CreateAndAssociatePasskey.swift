@@ -83,7 +83,8 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                              note: oldItemContent.note,
                                              itemUuid: oldItemContent.itemUuid,
                                              data: newLoginData,
-                                             customFields: oldItemContent.customFields)
+                                             customFields: oldItemContent.customFields,
+                                             customIcon: oldItemContent.customIcon)
 
         try await itemRepository.updateItem(userId: oldItemContent.userId,
                                             oldItem: oldItemContent.item,

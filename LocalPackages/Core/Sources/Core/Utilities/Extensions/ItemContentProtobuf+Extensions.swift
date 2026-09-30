@@ -32,6 +32,10 @@ public extension ItemContentProtobuf {
 
 private extension ProtonPassItemV1_Metadata {
     func isLooselyEqual(to other: Self) -> Bool {
-        name == other.name && note == other.note
+        name == other.name && note == other.note && optionalIcon == other.optionalIcon
+    }
+
+    var optionalIcon: String? {
+        hasIcon ? icon : nil
     }
 }

@@ -84,7 +84,8 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
                             note: note,
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.custom(.init(sections: customSections)),
-                            customFields: customFields)
+                            customFields: customFields,
+                            customIcon: customIcon)
     }
 }
 

@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import DesignSystem
 import DIComposition
 import Entities
@@ -162,6 +163,21 @@ private extension ItemSquircleThumbnail {
                 } catch {
                     print(error)
                 }
+            }
+
+        case let .customIcon(type, dataUri):
+            if let image = CustomItemIconImageCache.image(for: dataUri) {
+                Image(decorative: image, scale: 1)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: size.height, height: size.height)
+                    .clipShape(RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous))
+            } else {
+                SquircleThumbnail(data: iconData(type: type),
+                                  tintColor: type.thumbnailTintColor,
+                                  backgroundColor: alternativeBackground ?
+                                      type.thumbnailAlternativeBackgroundColor : type.thumbnailBackgroundColor,
+                                  height: size.height)
             }
         }
     }

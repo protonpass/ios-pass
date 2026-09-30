@@ -65,6 +65,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                                                              password: password,
                                                              security: security,
                                                              extraSections: customSections)),
-                            customFields: customFields)
+                            customFields: customFields,
+                            customIcon: customIcon)
     }
 }
