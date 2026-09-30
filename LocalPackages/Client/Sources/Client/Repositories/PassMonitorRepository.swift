@@ -29,6 +29,7 @@ private struct InternalPassMonitorItem {
     let encrypted: SymmetricallyEncryptedItem
     let content: Entities.ItemContent
     let loginData: LogInItemData
+    let suppressedChecks: Set<WeaknessKind>
 }
 
 private struct WeaknessComputation {
@@ -78,6 +79,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let userManager: any UserManagerProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let compromisedPasswordChecker: any CompromisedPasswordCheckerProtocol
+    private let isFeatureEnabled: @Sendable (FeatureFlagType) -> Bool
 
     public nonisolated let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
     public nonisolated let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
@@ -96,6 +98,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 userManager: any UserManagerProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 compromisedPasswordChecker: any CompromisedPasswordCheckerProtocol,
+                isFeatureEnabled: @escaping @Sendable (FeatureFlagType) -> Bool,
                 weaknessEvaluator: any ItemWeaknessEvaluatorProtocol = ItemWeaknessEvaluator()) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
@@ -105,6 +108,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         self.userManager = userManager
         self.accessRepository = accessRepository
         self.compromisedPasswordChecker = compromisedPasswordChecker
+        self.isFeatureEnabled = isFeatureEnabled
 
         Task { [weak self] in
             guard let self else {
@@ -118,10 +122,13 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         startedRefreshes += 1
         let refreshNumber = startedRefreshes
         let userId = try await userManager.getActiveUserId()
-        let inputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
+        let compromisedCheckEnabled = await isCompromisedCheckEnabled(userId: userId)
+        let inputs = try await computeWeaknessInputs(userId: userId,
+                                                     userOwned: false,
+                                                     compromisedCheckEnabled: compromisedCheckEnabled)
         // A failed compromised check must not hide the local weak/reused/2FA results
         var breachedItemIds = Set<String>()
-        if await isCompromisedCheckEnabled(userId: userId) {
+        if compromisedCheckEnabled {
             breachedItemIds = await (try? compromisedItemIds(userId: userId, inputs: inputs)) ?? []
         }
         // The actor is reentrant across the awaits above: a newer refresh may already have published,
@@ -259,12 +266,17 @@ public extension PassMonitorRepository {
     func sendUserMonitorStats() async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        let inputs = try await computeWeaknessInputs(userId: userId, userOwned: true)
+        let compromisedCheckEnabled = await isCompromisedCheckEnabled(userId: userId)
+        let inputs = try await computeWeaknessInputs(userId: userId,
+                                                     userOwned: true,
+                                                     compromisedCheckEnabled: compromisedCheckEnabled)
         // Checked here rather than read from the last published refresh, which may not have finished
         // yet. All visible items are passed because the checker prunes cached rows of non-candidates.
         var breachedItemIds: Set<String>?
-        if await isCompromisedCheckEnabled(userId: userId) {
-            let visibleInputs = try await computeWeaknessInputs(userId: userId, userOwned: false)
+        if compromisedCheckEnabled {
+            let visibleInputs = try await computeWeaknessInputs(userId: userId,
+                                                                userOwned: false,
+                                                                compromisedCheckEnabled: compromisedCheckEnabled)
             breachedItemIds = try? await compromisedItemIds(userId: userId, inputs: visibleInputs)
         }
         let stats = buildStats(inputs, breachedItemIds: breachedItemIds ?? []).0
@@ -307,7 +319,10 @@ private extension PassMonitorRepository {
         refresh()
     }
 
-    func computeWeaknessInputs(userId: String, userOwned: Bool) async throws -> WeaknessComputation {
+    func computeWeaknessInputs(userId: String,
+                               userOwned: Bool,
+                               compromisedCheckEnabled: Bool) async throws -> WeaknessComputation {
+        let excludableChecks = excludableChecks(compromisedCheckEnabled: compromisedCheckEnabled)
         var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let shares = try await shareRepository.getShares(userId: userId)
@@ -327,14 +342,16 @@ private extension PassMonitorRepository {
                     return nil
                 }
 
+                let suppressedChecks = encryptedItem.item.suppressedChecks.intersection(excludableChecks)
                 if !encryptedItem.item.monitoringDisabled,
-                   !encryptedItem.item.reusedPasswordCheckDisabled,
+                   !suppressedChecks.contains(.reusedPassword),
                    !loginItem.password.isEmpty {
                     passwordCounts[loginItem.password, default: 0] += 1
                 }
                 return InternalPassMonitorItem(encrypted: encryptedItem,
                                                content: item,
-                                               loginData: loginItem)
+                                               loginData: loginItem,
+                                               suppressedChecks: suppressedChecks)
             }
 
         let reuseGroups = Dictionary(uniqueKeysWithValues: passwordCounts
@@ -353,13 +370,15 @@ private extension PassMonitorRepository {
             if breachedItemIds.contains(item.content.id) {
                 detected.insert(.compromisedPassword)
             }
-            guard !detected.isEmpty || item.encrypted.item.isExcludedItem else {
+            let isExcluded = item.encrypted.item.monitoringDisabled || !item.suppressedChecks.isEmpty
+            guard !detected.isEmpty || isExcluded else {
                 return nil
             }
 
             return SecurityAffectedItem(item: item.encrypted,
                                         detected: detected,
                                         display: item.content.toItemUiModel,
+                                        suppressedChecks: item.suppressedChecks,
                                         reuseGroup: reuseGroup)
         }
 
@@ -401,10 +420,23 @@ private extension PassMonitorRepository {
         itemsWithSecurityIssues.send(newState.1)
     }
 
-    /// Compromised-password detection runs only for paid users (no server feature flag).
     func isCompromisedCheckEnabled(userId: String) async -> Bool {
+        guard isFeatureEnabled(FeatureFlagType.passCompromisedPasswords) else {
+            return false
+        }
         let isFreeUser = await (try? accessRepository.getPlan(userId: userId).isFreeUser) ?? true
         return !isFreeUser
+    }
+
+    func excludableChecks(compromisedCheckEnabled: Bool) -> Set<WeaknessKind> {
+        guard isFeatureEnabled(FeatureFlagType.passMonitorPerCheckExclusion) else {
+            return []
+        }
+        var checks = Set(WeaknessKind.allCases)
+        if !compromisedCheckEnabled {
+            checks.remove(.compromisedPassword)
+        }
+        return checks
     }
 
     /// Ids (itemId + shareId) of logins whose password is in the breach corpus. Fully excluded and
@@ -412,7 +444,7 @@ private extension PassMonitorRepository {
     func compromisedItemIds(userId: String, inputs: WeaknessComputation) async throws -> Set<String> {
         let candidates = inputs.loginItems.compactMap { item -> CompromisedPasswordCandidate? in
             guard !item.encrypted.item.monitoringDisabled,
-                  !item.encrypted.item.compromisedPasswordCheckDisabled,
+                  !item.suppressedChecks.contains(.compromisedPassword),
                   !item.loginData.password.isEmpty else {
                 return nil
             }
