@@ -401,6 +401,7 @@ private extension LogInDetailView {
         if let issues = viewModel.securityIssues, !issues.isEmpty {
             SecurityIssueView(weaknesses: issues,
                               reusedItems: viewModel.reusedItems,
+                              isPerCheckExclusionEnabled: viewModel.isPerCheckExclusionEnabled,
                               onToggleMonitoring: viewModel.toggleMonitoring(weakness:),
                               onShowReusedItemList: viewModel.showItemList,
                               onShowItemDetail: viewModel.showDetail(for:),

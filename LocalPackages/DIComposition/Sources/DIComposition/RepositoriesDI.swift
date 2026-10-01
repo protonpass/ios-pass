@@ -156,7 +156,11 @@ public extension RepositoryContainer {
     }
 
     var remoteCompromisedPasswordsDatasource: Factory<any RemoteCompromisedPasswordsDatasourceProtocol> {
-        self { RemoteCompromisedPasswordsDatasource(userAgent: ToolingContainer.shared.appVersion()) }
+        self {
+            let container = ToolingContainer.shared
+            return RemoteCompromisedPasswordsDatasource(gunzipper: container.gunzipper(),
+                                                        userAgent: container.appVersion())
+        }
     }
 
     var localCompromisedPasswordDatasource: Factory<any LocalCompromisedPasswordDatasourceProtocol> {
@@ -480,13 +484,15 @@ public extension RepositoryContainer {
 public extension RepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
-            PassMonitorRepository(itemRepository: self.itemRepository(),
-                                  shareRepository: self.shareRepository(),
-                                  remoteDataSource: self.remoteBreachDataSource(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider,
-                                  userManager: self.userManager,
-                                  accessRepository: self.accessRepository(),
-                                  compromisedPasswordChecker: self.compromisedPasswordChecker())
+            let getFeatureFlagStatus = UseCasesContainer.shared.getFeatureFlagStatus()
+            return PassMonitorRepository(itemRepository: self.itemRepository(),
+                                         shareRepository: self.shareRepository(),
+                                         remoteDataSource: self.remoteBreachDataSource(),
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         userManager: self.userManager,
+                                         accessRepository: self.accessRepository(),
+                                         compromisedPasswordChecker: self.compromisedPasswordChecker(),
+                                         isFeatureEnabled: { getFeatureFlagStatus(for: $0) })
         }
     }
 
@@ -494,10 +500,17 @@ public extension RepositoryContainer {
         self {
             CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
                                        localDatasource: self.localCompromisedPasswordDatasource(),
-                                       localTimestampDatasource: self.localTimestampDatasource(),
+                                       scanTracker: self.compromisedPasswordScanTracker(),
                                        symmetricKeyProvider: self.symmetricKeyProvider,
                                        logManager: self.logManager,
-                                       dateProvider: ToolingContainer.shared.currentDateProvider())
+                                       dateProvider: self.currentDateProvider)
+        }
+    }
+
+    var compromisedPasswordScanTracker: Factory<any CompromisedPasswordScanTrackerProtocol> {
+        self {
+            CompromisedPasswordScanTracker(localTimestampDatasource: self.localTimestampDatasource(),
+                                           dateProvider: self.currentDateProvider)
         }
     }
 }

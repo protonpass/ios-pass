@@ -230,7 +230,7 @@ private extension PassMonitorView {
     func passwordHealthSection(_ weaknessStats: WeaknessStats) -> some View {
         Section {
             VStack(spacing: DesignConstant.sectionPadding) {
-                ForEach(WeaknessKind.allCases.sorted()) { kind in
+                ForEach(viewModel.weaknessKinds) { kind in
                     weaknessRow(kind: kind,
                                 count: weaknessStats.count(for: kind),
                                 upsellEntry: kind == .compromisedPassword ? .compromisedPasswords : nil)
@@ -244,7 +244,8 @@ private extension PassMonitorView {
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm)
                 Spacer()
-            }.padding(.top, DesignConstant.sectionPadding)
+            }
+            .padding(.top, DesignConstant.sectionPadding)
         }
     }
 

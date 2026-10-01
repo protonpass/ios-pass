@@ -80,7 +80,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                 case .weakness(.reusedPassword):
                     .monitorItemDetailFromReusedPassword
 
-                case .excludedItems, .weakness(.compromisedPassword):
+                case .weakness(.compromisedPassword):
+                    .monitorItemDetailFromCompromisedPassword
+
+                case .excludedItems:
                     nil
                 }
                 if let eventType {

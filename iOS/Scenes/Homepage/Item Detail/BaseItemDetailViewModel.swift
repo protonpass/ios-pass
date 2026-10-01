@@ -123,6 +123,10 @@ class BaseItemDetailViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
     }
 
+    var isPerCheckExclusionEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passMonitorPerCheckExclusion)
+    }
+
     var isAllowedToEdit: Bool {
         guard let vault else {
             return false

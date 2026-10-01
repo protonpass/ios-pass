@@ -39,7 +39,10 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func toggleMonitoringFor(userId: String, email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail
 
     /// `compromisedPasswords` is nil when the breach check could not run, which omits it from the report.
-    func sendUserMonitorStats(userId: String, stats: WeaknessStats, compromisedPasswords: Int?) async throws
+    func sendUserMonitorStats(userId: String,
+                              stats: WeaknessStats,
+                              excludedItems: Int,
+                              compromisedPasswords: Int?) async throws
 }
 
 public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol, @unchecked Sendable {}
@@ -127,10 +130,13 @@ public extension RemoteBreachDataSource {
         return result.email
     }
 
-    func sendUserMonitorStats(userId: String, stats: WeaknessStats, compromisedPasswords: Int?) async throws {
+    func sendUserMonitorStats(userId: String,
+                              stats: WeaknessStats,
+                              excludedItems: Int,
+                              compromisedPasswords: Int?) async throws {
         let request = SendUserMonitoringStatsRequest(reusedPasswords: stats.count(for: .reusedPassword),
                                                      inactive2FA: stats.count(for: .missing2FA),
-                                                     excludedItems: stats.excludedItems,
+                                                     excludedItems: excludedItems,
                                                      weakPasswords: stats.count(for: .weakPassword),
                                                      compromisedPasswords: compromisedPasswords)
         let endpoint = SendUserMonitoringStatsEndpoint(request: request)

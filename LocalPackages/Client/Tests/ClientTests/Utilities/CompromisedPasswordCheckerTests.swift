@@ -25,20 +25,8 @@ import CoreMocks
 import CryptoKit
 import Entities
 import Foundation
+import os
 import Testing
-
-private final class MockLocalTimestampDatasource: LocalTimestampDatasourceProtocol, @unchecked Sendable {
-    /// Key-aware so the corpus-change marker and the last-run marker never alias each other.
-    private var store = [String: Int]()
-
-    func getTimestamp(key: String) -> Int? {
-        store[key]
-    }
-
-    func setTimestamp(_ value: Int?, key: String) {
-        store[key] = value
-    }
-}
 
 private struct StubDateProvider: CurrentDateProviderProtocol {
     let date: Date
@@ -67,9 +55,11 @@ struct CompromisedPasswordCheckerTests {
                          now: Int = 1_000_000,
                          maxConcurrentRequests: Int = 8) -> CompromisedPasswordChecker {
         let dateProvider = StubDateProvider(date: Date(timeIntervalSince1970: TimeInterval(now)))
+        let scanTracker = CompromisedPasswordScanTracker(localTimestampDatasource: localTimeStamp,
+                                                         dateProvider: dateProvider)
         return CompromisedPasswordChecker(remoteDatasource: remote,
                                           localDatasource: local,
-                                          localTimestampDatasource: localTimeStamp,
+                                          scanTracker: scanTracker,
                                           symmetricKeyProvider: keyProvider,
                                           logManager: LogManagerProtocolMock(),
                                           maxConcurrentRequests: maxConcurrentRequests,
@@ -157,7 +147,7 @@ struct CompromisedPasswordCheckerTests {
         let localTimestamp = MockLocalTimestampDatasource()
         let passwordHash = fingerprint("12345")
 
-        // Corpus reportedly changed (newer than stored), so it tries the network — which fails.
+        // Corpus reportedly changed (newer than stored), so it tries the network - which fails.
         remote.stubbedGetLastChangeTimestampResult = 2_000
         remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
         localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
@@ -224,6 +214,27 @@ struct CompromisedPasswordCheckerTests {
     }
 
     @Test
+    func `A cancelled scan leaves the daily window and corpus marker untouched`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        remote.stubbedGetLastChangeTimestampResult = 2_000
+        remote.stubbedQueryResult = .notModified
+        local.stubbedGetChecksResult = []
+        let sut = makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+        let candidate = candidate()
+
+        _ = try await Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            return try await sut.check(userId: "user", candidates: [candidate])
+        }.value
+
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == nil)
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastCorpusChangeKey("user")) == nil)
+    }
+
+    @Test
     func `Removes cached rows of items that are no longer candidates`() async throws {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
         let local = LocalCompromisedPasswordDatasourceProtocolMock()
@@ -275,6 +286,9 @@ struct CompromisedPasswordCheckerTests {
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data("0000000000000000000000000000000000:3\n".utf8))
         local.stubbedGetChecksResult = []
+        // The generated mock's own counter is a plain `var` bumped from concurrent child tasks
+        let queryCount = OSAllocatedUnfairLock(initialState: 0)
+        remote.closureQuery = { queryCount.withLock { $0 += 1 } }
 
         // Distinct passwords -> distinct SHA-1 prefixes, more than the concurrency limit, which
         // forces the bounded backfill path.
@@ -287,7 +301,7 @@ struct CompromisedPasswordCheckerTests {
 
         // With a Set return, not-breached items collapse away: coverage is observed via the query
         // counter (one conditional GET per distinct prefix), and the breached set is empty.
-        #expect(remote.invokedQueryCount == 12)
+        #expect(queryCount.withLock { $0 } == 12)
         #expect(results.isEmpty)
     }
 
