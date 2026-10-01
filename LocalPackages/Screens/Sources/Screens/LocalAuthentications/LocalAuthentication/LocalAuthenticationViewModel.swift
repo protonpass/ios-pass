@@ -18,26 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-//
-// LocalAuthenticationViewModel.swift
-// Proton Pass - Created on 22/06/2023.
-// Copyright (c) 2023 Proton Technologies AG
-//
-// This file is part of Proton Pass.
-//
-// Proton Pass is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Proton Pass is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-
 import Combine
 import Core
 import DIComposition
@@ -128,7 +108,8 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
-                                                           reason: #localized("Please authenticate"))
+                                                           reason: #localized("Please authenticate",
+                                                                              bundle: .module))
                 if authenticated {
                     try await recordSuccess()
                 } else {
@@ -136,7 +117,8 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 }
             } catch PassError.biometricChange {
                 // swiftlint:disable:next line_length
-                onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
+                onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
+                                     bundle: .module))
             } catch let error as LAError where error.reachedNoVerdict {
                 promptDismissed = true
                 logger.warning("\(mode.type) prompt dismissed without a verdict. \(error)")

@@ -67,7 +67,7 @@ struct BiometricAuthenticationView: View {
                 guard case .noAttempts = viewModel.state else {
                     return
                 }
-                try? await Task.sleep(for: viewModel.delayedTime)
+                guard await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
                 viewModel.onAuth()
                 viewModel.biometricallyAuthenticate()
             }

@@ -22,14 +22,9 @@ import Core
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
-public protocol AuthenticateBiometricallyUseCase {
-    func callAsFunction(policy: LAPolicy, reason: String, retries: Int) async throws -> Bool
-}
-
-public extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(policy: LAPolicy, reason: String, retries: Int = 5) async throws -> Bool {
-        try await callAsFunction(policy: policy, reason: reason, retries: retries)
-    }
+// sourcery: AutoMockable
+public protocol AuthenticateBiometricallyUseCase: Sendable {
+    func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool
 }
 
 /**
@@ -46,8 +41,8 @@ public struct AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         self.keychainService = keychainService
     }
 
-    public func callAsFunction(policy: LAPolicy, reason: String, retries: Int = 5) async throws -> Bool {
-        var retriesLeft = retries
+    public func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
+        var retriesLeft = 5
         while true {
             let context = LAContext()
             do {
@@ -64,7 +59,7 @@ public struct AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
             } catch let error as LAError where error.code == .notInteractive && retriesLeft > 0 {
                 // -1004 "Caller is not running foreground": the system refused to show the sheet
                 // because our UI isn't frontmost yet. Transient, so ask again shortly instead of
-                // reporting it, as callers treat any thrown error as a failed unlock attempt.
+                // reporting it.
                 retriesLeft -= 1
                 try await Task.sleep(for: .milliseconds(250))
             }

@@ -42,9 +42,3 @@ public extension LocalAuthenticationMethodUiModel {
         }
     }
 }
-
-extension LocalAuthenticationMethodUiModel: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.method == rhs.method
-    }
-}

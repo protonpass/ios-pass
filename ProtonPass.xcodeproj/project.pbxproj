@@ -3486,8 +3486,6 @@
 				35AC8E382B6A29CB00B06CF4 /* EditSpotlightSearchableVaultsView.swift in Sources */,
 				5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */,
 				5B3FD1A52BFCE24E00434294 /* CreateEditIdentityViewModel.swift in Sources */,
-				358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */,
-				355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */,
 				5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */,
 				35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */,
 				5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */,

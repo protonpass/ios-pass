@@ -43,7 +43,7 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            SecureField("PIN code", text: $pinCode)
+            SecureField(#localized("PIN code", bundle: .module), text: $pinCode)
                 .labelsHidden()
                 .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
@@ -99,7 +99,7 @@ struct PinAuthenticationView: View {
         .tint(PassColor.interactionNorm)
         .animation(.default, value: viewModel.state)
         .task {
-            try? await Task.sleep(for: viewModel.delayedTime)
+            guard await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
             viewModel.onAuth()
             isFocused = true
         }

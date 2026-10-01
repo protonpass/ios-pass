@@ -27,15 +27,15 @@ struct LAErrorTests {
     @Test("Errors raised without ever asking the user reach no verdict",
           arguments: [LAError.Code.notInteractive,
                       .systemCancel,
-                      .appCancel,
-                      .userCancel,
-                      .userFallback])
+                      .appCancel])
     func reachedNoVerdict_whenPromptNeverAnswered_returnsTrue(code: LAError.Code) {
         #expect(LAError(code).reachedNoVerdict)
     }
 
     @Test("Errors carrying an actual outcome do reach a verdict",
           arguments: [LAError.Code.authenticationFailed,
+                      .userCancel,
+                      .userFallback,
                       .biometryLockout,
                       .biometryNotAvailable,
                       .biometryNotEnrolled,
@@ -47,6 +47,6 @@ struct LAErrorTests {
 
     @Test("notInteractive is the documented -1004 \"Caller is not running foreground\" code")
     func notInteractive_hasCodeMinus1004() {
-        #expect(LAError.Code.notInteractive.rawValue == -1004)
+        #expect(LAError.Code.notInteractive.rawValue == -1_004)
     }
 }

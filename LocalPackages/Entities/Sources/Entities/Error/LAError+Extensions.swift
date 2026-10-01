@@ -21,19 +21,19 @@
 import LocalAuthentication
 
 public extension LAError {
-    /// `true` when the biometric sheet was never shown, or was dismissed without the user's
-    /// face/finger ever being judged. Notably `notInteractive` (-1004, "Caller is not running
+    /// `true` when the biometric sheet was never shown, or was dismissed by the system without the
+    /// user's face/finger ever being judged. Notably `notInteractive` (-1004, "Caller is not running
     /// foreground"), raised when we prompt before the app or extension is frontmost.
     ///
     /// None of these is a wrong face, so none may consume an unlock attempt: 3 consumed attempts
-    /// revoke the session and log the user out.
+    /// revoke the session and log the user out. `userCancel` and `userFallback` are excluded on
+    /// purpose: they can follow a rejected face in the same prompt, so exempting them would allow
+    /// unlimited guesses.
     var reachedNoVerdict: Bool {
         switch code {
         case .appCancel,
              .notInteractive,
-             .systemCancel,
-             .userCancel,
-             .userFallback:
+             .systemCancel:
             true
 
         default:

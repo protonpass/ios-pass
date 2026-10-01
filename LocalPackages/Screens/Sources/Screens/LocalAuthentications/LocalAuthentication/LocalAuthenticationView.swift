@@ -58,6 +58,18 @@ public struct LocalAuthenticationView: View {
     }
 
     public var body: some View {
+        if logOutButtonMode.isTopBarTrailing {
+            content
+                .toolbar { toolbarContent }
+                .navigationStackEmbeded()
+        } else {
+            content
+        }
+    }
+}
+
+private extension LocalAuthenticationView {
+    var content: some View {
         ZStack(alignment: .topTrailing) {
             PassColor.backgroundNorm
                 .ignoresSafeArea()
@@ -78,15 +90,8 @@ public struct LocalAuthenticationView: View {
                     .padding()
             }
         }
-        .toolbar {
-            if logOutButtonMode.isTopBarTrailing {
-                toolbarContent
-            }
-        }
     }
-}
 
-private extension LocalAuthenticationView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
