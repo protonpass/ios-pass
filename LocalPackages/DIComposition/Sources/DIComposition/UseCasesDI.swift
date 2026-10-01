@@ -1008,7 +1008,10 @@ public extension UseCasesContainer {
                                        userEventIdDatasource: container.localUserEventIdDatasource(),
                                        coreEventIdDatasource: container.localCoreEventIdDatasource(),
                                        folderDatasource: container.localFolderDatasource(),
-                                       folderKeysDatasource: container.localFolderKeyDatasource())
+                                       folderKeysDatasource: container.localFolderKeyDatasource(),
+                                       compromisedPasswordDatasource: container
+                                           .localCompromisedPasswordDatasource(),
+                                       localTimestampDatasource: container.localTimestampDatasource())
         }
     }
 

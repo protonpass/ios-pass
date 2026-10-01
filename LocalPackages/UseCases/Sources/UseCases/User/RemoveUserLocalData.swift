@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import Foundation
 
 /// Remove all local data related to a user after logging out
@@ -53,6 +54,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let coreEventIdDatasource: any LocalCoreEventIdDatasourceProtocol
     private let folderDatasource: any LocalFolderDatasourceProtocol
     private let folderKeysDatasource: any LocalFolderKeyDatasourceProtocol
+    private let compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol
+    private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 itemDatasource: any LocalItemDatasourceProtocol,
@@ -72,7 +75,9 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 userEventIdDatasource: any LocalUserEventIdDatasourceProtocol,
                 coreEventIdDatasource: any LocalCoreEventIdDatasourceProtocol,
                 folderDatasource: any LocalFolderDatasourceProtocol,
-                folderKeysDatasource: any LocalFolderKeyDatasourceProtocol) {
+                folderKeysDatasource: any LocalFolderKeyDatasourceProtocol,
+                compromisedPasswordDatasource: any LocalCompromisedPasswordDatasourceProtocol,
+                localTimestampDatasource: any LocalTimestampDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.itemDatasource = itemDatasource
         self.itemReadEventDatasource = itemReadEventDatasource
@@ -92,6 +97,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.coreEventIdDatasource = coreEventIdDatasource
         self.folderKeysDatasource = folderKeysDatasource
         self.folderDatasource = folderDatasource
+        self.compromisedPasswordDatasource = compromisedPasswordDatasource
+        self.localTimestampDatasource = localTimestampDatasource
     }
 }
 
@@ -117,6 +124,11 @@ public extension RemoveUserLocalData {
         async let removeCoreEventId: () = coreEventIdDatasource.removeLastEventId(userId: userId)
         async let removeFolders: () = folderDatasource.removeAllFolders(userId: userId)
         async let removeFolderKeys: () = folderKeysDatasource.removeAllKeys(userId: userId)
+        async let removeCompromisedPasswords: () = compromisedPasswordDatasource.removeAll(userId: userId)
+        async let removeSavedTimestamp: () = localTimestampDatasource
+            .setTimestamp(nil, key: Constants.CompromisedPasswords.lastCorpusChangeKey(userId))
+        async let removeLastRunTimestamp: () = localTimestampDatasource
+            .setTimestamp(nil, key: Constants.CompromisedPasswords.lastRunKey(userId))
 
         _ = try await (removeAccess,
                        removeItems,
@@ -136,6 +148,9 @@ public extension RemoveUserLocalData {
                        removeLastEventId,
                        removeCoreEventId,
                        removeFolders,
-                       removeFolderKeys)
+                       removeFolderKeys,
+                       removeCompromisedPasswords,
+                       removeSavedTimestamp,
+                       removeLastRunTimestamp)
     }
 }

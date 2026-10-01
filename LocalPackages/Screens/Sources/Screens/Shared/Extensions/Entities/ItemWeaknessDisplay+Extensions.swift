@@ -49,7 +49,10 @@ public extension ItemWeaknessDisplay {
         case .fullyExcluded:
             #localized("This item is not being monitored", bundle: .module)
 
-        case .weakness(.compromisedPassword, _), .weakness(.weakPassword, _):
+        case .weakness(.compromisedPassword, _):
+            #localized("Password exposed on the dark web.", bundle: .module)
+
+        case .weakness(.weakPassword, _):
             #localized("This account is vulnerable, visit the service and change your password", bundle: .module)
 
         case .weakness(.missing2FA, _):

@@ -101,6 +101,23 @@ public enum Constants {
         public static let maxFileCount = 10
     }
 
+    public enum CompromisedPasswords {
+        public static let baseUrl = "https://credential-check.protonweb.com"
+
+        /// Minimum spacing between two full corpus re-scans (rolling 24h). A created/updated login
+        /// is still checked immediately regardless, because it is a cache-miss in the checker.
+        public static let minimumCheckInterval = 24 * 60 * 60
+
+        public static func lastCorpusChangeKey(_ userId: String) -> String {
+            "compromisedPasswordsLastChange.\(userId)"
+        }
+
+        /// Wall-clock time of the last full scan, as opposed to the corpus's own `last_change`.
+        public static func lastRunKey(_ userId: String) -> String {
+            "compromisedPasswordsLastRun.\(userId)"
+        }
+    }
+
     // swiftlint:disable:next type_name
     public enum QA {
         public static let forceDisplayUpgradeAppBanner = "forceDisplayUpgradeAppBanner"
@@ -116,7 +133,6 @@ public enum Constants {
     }
 }
 
-/// Links to KB articles or useful pages
 public enum ProtonLink {
     public static let howToImport = "https://proton.me/support/pass-import"
     public static let privacyPolicy = "https://proton.me/legal/privacy"

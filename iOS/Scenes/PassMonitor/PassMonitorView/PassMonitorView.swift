@@ -221,28 +221,32 @@ private extension PassMonitorView {
                                 subTitle: "Advanced account protection program",
                                 action: { viewModel.showSentinelSheet = true })
                 }
-                Section {
-                    VStack(spacing: DesignConstant.sectionPadding) {
-                        // Rows are ordered by WeaknessKind.displayPriority (single source of
-                        // truth). Compromised is hidden until its detection lands (next MR); it
-                        // will then slot into the correct position automatically.
-                        ForEach(WeaknessKind.allCases.sorted().filter { $0 != .compromisedPassword }) { kind in
-                            weaknessRow(kind: kind, count: weaknessStats.count(for: kind))
-                                .padding(.top, kind == .missing2FA ? 16 : 0)
-                        }
-                        excludedItemsRow(weaknessStats.excludedItems)
-                    }
-                } header: {
-                    HStack {
-                        Text("Passwords Health")
-                            .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm)
-                        Spacer()
-                    }.padding(.top, DesignConstant.sectionPadding)
-                }
+                passwordHealthSection(weaknessStats)
             }
         }
         .padding(DesignConstant.sectionPadding)
+    }
+
+    func passwordHealthSection(_ weaknessStats: WeaknessStats) -> some View {
+        Section {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                ForEach(viewModel.weaknessKinds) { kind in
+                    weaknessRow(kind: kind,
+                                count: weaknessStats.count(for: kind),
+                                upsellEntry: kind == .compromisedPassword ? .compromisedPasswords : nil)
+                        .padding(.top, kind == .missing2FA ? 16 : 0)
+                }
+                excludedItemsRow(weaknessStats.excludedItems)
+            }
+        } header: {
+            HStack {
+                Text("Passwords Health")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm)
+                Spacer()
+            }
+            .padding(.top, DesignConstant.sectionPadding)
+        }
     }
 
     var passPlusBadge: some View {
@@ -455,12 +459,21 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    func weaknessRow(kind: WeaknessKind, count: Int) -> some View {
-        passMonitorRow(rowType: kind.toSecureRowType(count),
-                       title: kind.dashboardTitle,
-                       subTitle: kind.dashboardSubtitle,
-                       count: count,
-                       action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
+    @ViewBuilder
+    func weaknessRow(kind: WeaknessKind, count: Int, upsellEntry: UpsellEntry? = nil) -> some View {
+        if let upsellEntry, viewModel.isFreeUser {
+            passMonitorRow(rowType: .upsell,
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           badge: true,
+                           action: { viewModel.upsell(entryPoint: upsellEntry) })
+        } else {
+            passMonitorRow(rowType: kind.toSecureRowType(count),
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           count: count,
+                           action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
+        }
     }
 }
 
@@ -517,7 +530,7 @@ private extension PassMonitorView {
                             }
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(.rect)
 
                 if loading {
@@ -540,7 +553,7 @@ private extension PassMonitorView {
                                           width: 12)
                 }
             }
-            .padding(.horizontal, DesignConstant.sectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: loading ? .clear : rowType.background,
                                   borderColor: loading ? PassColor.inputBorderNorm : rowType.border)
         }

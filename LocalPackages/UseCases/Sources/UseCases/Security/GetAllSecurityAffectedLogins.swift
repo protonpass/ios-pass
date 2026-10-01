@@ -26,7 +26,7 @@ import Entities
 
 public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
 
-public protocol GetAllSecurityAffectedLoginsUseCase {
+public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
     func callAsFunction(for filter: MonitorListSection) -> AnyPublisher<SecurityIssuesContent, Never>
 }
 
@@ -51,8 +51,9 @@ public struct GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase 
                     filterActiveWeakness(.missing2FA, in: items, section: .missing2fa)
 
                 case .weakness(.compromisedPassword):
-                    // Compromised-password detection is not surfaced yet (next MR).
-                    [:]
+                    filterActiveWeakness(.compromisedPassword,
+                                         in: items,
+                                         section: .compromisedPasswords)
 
                 case .excludedItems:
                     filterExcludedItems(items: items)

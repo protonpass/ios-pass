@@ -21,7 +21,7 @@
 import Foundation
 
 /// Selects which list the Pass Monitor weakness-detail screen shows (and the matching dashboard row).
-/// Dark Web Monitoring is intentionally NOT here — it is an account-level concern with its own route.
+/// Dark Web Monitoring is intentionally NOT here - it is an account-level concern with its own route.
 public enum MonitorListSection: Sendable, Hashable {
     case weakness(WeaknessKind)
     case excludedItems

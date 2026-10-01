@@ -23,10 +23,18 @@ import Foundation
 public struct SecurityAffectedItem: Sendable {
     public let item: SymmetricallyEncryptedItem
 
+    public var id: String {
+        item.itemId + item.shareId
+    }
+
     /// Weaknesses genuinely detected on the item, IGNORING any per-check suppression or full
     /// exclusion.
     public let detected: Set<WeaknessKind>
     public let display: ItemUiModel
+
+    /// Per-check exclusions honoured for this item, empty when per-check exclusion is unavailable
+    /// even if the item flags carry some.
+    public let suppressedChecks: Set<WeaknessKind>
 
     /// Items sharing a password get the same value; nil when the password isn't reused. Only
     /// comparable within a single refresh, and carries nothing derived from the password.
@@ -35,19 +43,17 @@ public struct SecurityAffectedItem: Sendable {
     public init(item: SymmetricallyEncryptedItem,
                 detected: Set<WeaknessKind>,
                 display: ItemUiModel,
+                suppressedChecks: Set<WeaknessKind>,
                 reuseGroup: Int?) {
         self.item = item
         self.detected = detected
         self.display = display
+        self.suppressedChecks = suppressedChecks
         self.reuseGroup = reuseGroup
     }
 }
 
 public extension SecurityAffectedItem {
-    var suppressedChecks: Set<WeaknessKind> {
-        item.item.suppressedChecks
-    }
-
     var isFullyExcluded: Bool {
         item.item.monitoringDisabled
     }
@@ -57,6 +63,10 @@ public extension SecurityAffectedItem {
     }
 
     var isExcludedItem: Bool {
-        item.item.isExcludedItem
+        isFullyExcluded || !suppressedChecks.isEmpty
+    }
+
+    var shouldBeIncluded: Bool {
+        !detected.isEmpty || isExcludedItem
     }
 }

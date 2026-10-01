@@ -39,29 +39,22 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get all items (both active & trashed)
     func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all item contents
     func getAllItemContents(userId: String) async throws -> [ItemContent]
 
-    /// Get all local items of all shares by state
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all local items of a share by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
-    /// Get items by IDs
     func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get alias item by alias email
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws
 
     func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
@@ -140,25 +133,20 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func move(items: [any ItemIdentifiable], toShareId: String, destinationFolderId: String?) async throws
 
     // periphery:ignore
-    /// Delete all local items
     func deleteAllItemsLocally() async throws
 
     /// Delete all local items for current active user
     /// This should only be used for a complete nuke of local data for all users
     func deleteAllUserItemsLocally(userId: String) async throws
 
-    /// Delete items locally after sync events
     func deleteAllItemsLocally(shareId: String) async throws
 
-    /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
-    /// Delete items locally after user sync events
     func deleteItemsLocally(items: [any ItemIdentifiable]) async throws
 
     // MARK: - AutoFill operations
 
-    /// Get active log in items of all shares
     func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     func pinItems(_ items: [any ItemIdentifiable]) async throws
@@ -767,9 +755,7 @@ public extension ItemRepository {
                 return SymmetricallyEncryptedAlias(email: alias.email,
                                                    encryptedNote: encryptedNote)
             }
-            // We store a placeholder instead of a null or empty string
-            // in order to mark an alias as synced
-            // So then we could query out only unsynced aliases
+            // A placeholder rather than nil marks the alias as synced, so unsynced ones can be queried
             return SymmetricallyEncryptedAlias(email: alias.email,
                                                encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
         }
@@ -1021,7 +1007,6 @@ public extension ItemRepository {
                 }
                 .sorted(by: { $0.createTime < $1.createTime })
 
-        // Number of TOTP is not reached
         if loginItemsWithTotp.count < numberOfTotp {
             return nil
         }
@@ -1095,7 +1080,6 @@ private extension ItemRepository {
 
         var itemsToBeMoved = [ItemToBeMoved]()
         for item in items {
-            // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
                                                                          folderId: item.folderId,
@@ -1143,7 +1127,6 @@ private extension ItemRepository {
 
         var itemsToBeMoved = [InternalItemToBeMoved]()
         for item in items {
-            // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
                                                                          folderId: item.folderId,
@@ -1170,7 +1153,6 @@ private extension ItemRepository {
                                               modifiedItems: modifiedItems)
     }
 
-    /// Group items by share and bulk actionning on those grouped items
     func bulkAction(userId: String,
                     items: [any ItemIdentifiable],
                     action: @Sendable ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {

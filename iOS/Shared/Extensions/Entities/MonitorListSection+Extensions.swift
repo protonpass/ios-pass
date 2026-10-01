@@ -45,7 +45,10 @@ extension MonitorListSection {
 
     var subtitleInfo: String? {
         switch self {
-        case .weakness(.compromisedPassword), .weakness(.weakPassword):
+        case .weakness(.compromisedPassword):
+            #localized("These passwords appeared in data breaches. Change them to keep your accounts safe.")
+
+        case .weakness(.weakPassword):
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")
 
         case .weakness(.reusedPassword):
@@ -61,7 +64,10 @@ extension MonitorListSection {
 
     var nothingWrongMessage: String {
         switch self {
-        case .weakness(.compromisedPassword), .weakness(.weakPassword):
+        case .weakness(.compromisedPassword):
+            #localized("No compromised passwords were found in your login items")
+
+        case .weakness(.weakPassword):
             #localized("No weak passwords were found in your login items")
 
         case .weakness(.reusedPassword):
@@ -75,9 +81,12 @@ extension MonitorListSection {
         }
     }
 
-    var telemetryEventType: TelemetryEventType {
+    var telemetryEventType: TelemetryEventType? {
         switch self {
-        case .weakness(.compromisedPassword), .weakness(.weakPassword):
+        case .weakness(.compromisedPassword):
+            nil
+
+        case .weakness(.weakPassword):
             .monitorDisplayWeakPasswords
 
         case .weakness(.reusedPassword):
