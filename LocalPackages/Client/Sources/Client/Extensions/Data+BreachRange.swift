@@ -49,6 +49,6 @@ extension Data {
 
 extension [BreachRangeEntry] {
     var countsBySuffix: [String: Int] {
-        Dictionary(map { ($0.suffix, $0.count) }) { _, last in last }
+        Dictionary(map { ($0.suffix, $0.count) }, uniquingKeysWith: { _, last in last })
     }
 }
