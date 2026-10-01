@@ -272,7 +272,7 @@ private extension CompromisedPasswordChecker {
             let cachedBreachCounts = candidates.compactMap { candidate in
                 cachedChecks[candidate.id].map { (candidate.id, $0.breachCount) }
             }
-            return .init(breachCounts: Dictionary(cachedBreachCounts) { _, new in new },
+            return .init(breachCounts: Dictionary(cachedBreachCounts, uniquingKeysWith: { _, new in new }),
                          checks: [],
                          succeeded: false)
         }
