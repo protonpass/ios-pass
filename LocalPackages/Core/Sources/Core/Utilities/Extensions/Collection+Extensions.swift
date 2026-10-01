@@ -27,9 +27,11 @@ public extension Collection {
     }
 }
 
+/// `throws` rather than `rethrows`: these throw CancellationError even when the closure can't throw, and
+/// a rethrows function doing so hangs its non-throwing caller
 public extension Collection where Element: Sendable {
     func parallelMap<T: Sendable>(parallelism: Int = 2,
-                                  _ transform: @escaping @Sendable (Element) async throws -> T) async rethrows
+                                  _ transform: @escaping @Sendable (Element) async throws -> T) async throws
         -> [T] {
         guard !isEmpty else { return [] }
 
@@ -68,7 +70,7 @@ public extension Collection where Element: Sendable {
 
     // periphery:ignore
     func parallelEach(parallelism requestedParallelism: Int? = nil,
-                      _ work: @escaping @Sendable (Element) async throws -> Void) async rethrows {
+                      _ work: @escaping @Sendable (Element) async throws -> Void) async throws {
         _ = try await parallelMap {
             try await work($0)
         }
@@ -76,7 +78,7 @@ public extension Collection where Element: Sendable {
 
     func compactParallelMap<T: Sendable>(parallelism: Int = 2,
                                          _ transform: @escaping @Sendable (Element) async throws
-                                             -> T?) async rethrows -> [T] {
+                                             -> T?) async throws -> [T] {
         guard !isEmpty else { return [] }
 
         var iterator = makeIterator()

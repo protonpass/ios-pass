@@ -73,8 +73,6 @@ public extension String {
 
         let noSpacesCardNumber = spacesRemoved
 
-        // Only consider amex card if number of character <= 15
-        // otherwise treat it as normal card
         if isAmex, noSpacesCardNumber.count <= 15 {
             var formatted = noSpacesCardNumber
             if formatted.count > 4 {
@@ -167,15 +165,12 @@ public extension String {
     }
 
     static func concatenateOptionalStrings(_ strings: [String?], separator: String = "") -> String {
-        // Filter out nil values and empty strings, then unwrap the non-nil, non-empty values
         let nonNilNonEmptyStrings = strings.compactMap { $0?.isEmpty == false ? $0 : nil }
-        // Join the non-nil, non-empty strings with a space separator
         return nonNilNonEmptyStrings.joined(separator: separator)
     }
 
     // periphery:ignore
     static func concatenateOptionalStrings(_ strings: String?..., separator: String = "") -> String {
-        // Call the array-based function with the variadic arguments
         concatenateOptionalStrings(strings, separator: separator)
     }
 

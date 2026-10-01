@@ -71,7 +71,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                 automaticDisplay: false,
                                                 showExcludedWeaknesses: type == .excludedItems))
                 let eventType: TelemetryEventType? = switch type {
-                case .weakness(.compromisedPassword), .weakness(.weakPassword):
+                case .weakness(.weakPassword):
                     .monitorItemDetailFromWeakPassword
 
                 case .weakness(.missing2FA):
@@ -79,6 +79,9 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
 
                 case .weakness(.reusedPassword):
                     .monitorItemDetailFromReusedPassword
+
+                case .weakness(.compromisedPassword):
+                    .monitorItemDetailFromCompromisedPassword
 
                 case .excludedItems:
                     nil
@@ -125,7 +128,7 @@ private extension SecuritySection {
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
 
-        case .excludedItems, .missing2fa, .weakPasswords:
+        case .compromisedPasswords, .excludedItems, .missing2fa, .weakPasswords:
             SecuritySectionHeaderKey(title: "")
         }
     }

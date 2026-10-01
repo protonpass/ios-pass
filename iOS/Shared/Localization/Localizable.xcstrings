@@ -36779,6 +36779,26 @@
         }
       }
     },
+    "Compromised password alert ignored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password alert ignored"
+          }
+        }
+      }
+    },
+    "Compromised password alert restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password alert restored"
+          }
+        }
+      }
+    },
     "Compromised passwords" : {
       "localizations" : {
         "en" : {
@@ -90187,6 +90207,26 @@
         }
       }
     },
+    "Missing 2FA alert ignored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing 2FA alert ignored"
+          }
+        }
+      }
+    },
+    "Missing 2FA alert restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing 2FA alert restored"
+          }
+        }
+      }
+    },
     "Missing username" : {
       "localizations" : {
         "be" : {
@@ -95347,6 +95387,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未偵測到外露"
+          }
+        }
+      }
+    },
+    "No compromised passwords were found in your login items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No compromised passwords were found in your login items"
           }
         }
       }
@@ -120862,6 +120912,26 @@
         }
       }
     },
+    "Reused password alert ignored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused password alert ignored"
+          }
+        }
+      }
+    },
+    "Reused password alert restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reused password alert restored"
+          }
+        }
+      }
+    },
     "Reused passwords" : {
       "localizations" : {
         "be" : {
@@ -143614,6 +143684,16 @@
         }
       }
     },
+    "These passwords appeared in data breaches. Change them to keep your accounts safe." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These passwords appeared in data breaches. Change them to keep your accounts safe."
+          }
+        }
+      }
+    },
     "This is your last attempt. You will be logged out after failing to authenticate again." : {
       "comment" : "Local authentication",
       "localizations" : {
@@ -160095,6 +160175,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "我们已向 %@ 发送了验证码，请在下方输入："
+          }
+        }
+      }
+    },
+    "Weak password alert ignored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak password alert ignored"
+          }
+        }
+      }
+    },
+    "Weak password alert restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weak password alert restored"
           }
         }
       }

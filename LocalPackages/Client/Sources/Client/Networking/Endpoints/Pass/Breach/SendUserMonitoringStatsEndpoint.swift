@@ -25,12 +25,14 @@ struct SendUserMonitoringStatsRequest: Encodable {
     let inactive2FA: Int
     let excludedItems: Int
     let weakPasswords: Int
+    let compromisedPasswords: Int?
 
     enum CodingKeys: String, CodingKey {
         case reusedPasswords = "ReusedPasswords"
         case inactive2FA = "Inactive2FA"
         case excludedItems = "ExcludedItems"
         case weakPasswords = "WeakPasswords"
+        case compromisedPasswords = "CompromisedPasswords"
     }
 }
 

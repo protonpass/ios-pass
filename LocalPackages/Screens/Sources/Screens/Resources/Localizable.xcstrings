@@ -16152,6 +16152,26 @@
         }
       }
     },
+    "Compromised password detection" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password detection"
+          }
+        }
+      }
+    },
+    "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches."
+          }
+        }
+      }
+    },
     "Confirm" : {
       "localizations" : {
         "be" : {
@@ -28061,6 +28081,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "發生錯誤"
+          }
+        }
+      }
+    },
+    "Excluded from monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluded from monitoring"
           }
         }
       }
@@ -50636,6 +50666,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已複製密碼"
+          }
+        }
+      }
+    },
+    "Password exposed on the dark web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password exposed on the dark web."
           }
         }
       }

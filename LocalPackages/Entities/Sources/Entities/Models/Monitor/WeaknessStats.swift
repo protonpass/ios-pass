@@ -36,7 +36,7 @@ public struct WeaknessStats: Equatable, Sendable {
         counts[kind] ?? 0
     }
 
-    public var hasWeakOrReusedPasswords: Bool {
-        (count(for: .weakPassword) + count(for: .reusedPassword)) > 0
+    public var hasPasswordsWithWeaknesses: Bool {
+        (count(for: .weakPassword) + count(for: .reusedPassword) + count(for: .compromisedPassword)) > 0
     }
 }

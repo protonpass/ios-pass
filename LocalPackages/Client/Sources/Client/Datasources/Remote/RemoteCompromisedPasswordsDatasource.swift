@@ -1,0 +1,128 @@
+//
+// RemoteCompromisedPasswordsDatasource.swift
+// Proton Pass - Created on 18/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Core
+import Entities
+import Foundation
+
+/// Talks to Proton's public k-anonymity compromised-password service.
+/// Only the 6-character SHA-1 prefix is ever sent - the full password/hash never leaves the device.
+// sourcery: AutoMockable
+public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
+    func getLastChangeTimestamp() async throws -> Int
+
+    /// Conditional range query for an uppercase SHA-1 hex prefix (6 chars). Pass the
+    /// previously stored, opaque `etag` to receive `304 Not Modified` when unchanged.
+    func query(prefix6: String, etag: String?) async throws -> CompromisedRangeResponse
+}
+
+public extension URLSessionConfiguration {
+    static var compromisedPasswordCheck: URLSessionConfiguration {
+        let configuration = URLSessionConfiguration.ephemeral
+        // URLCache would absorb 304s before our ETag handling sees them
+        configuration.urlCache = nil
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+        return configuration
+    }
+}
+
+public final class RemoteCompromisedPasswordsDatasource: RemoteCompromisedPasswordsDatasourceProtocol, Sendable {
+    private let gunzipper: any GunzipperProtocol
+    private let session: URLSession
+    private let userAgent: String
+    private let baseURLString: String
+
+    public init(gunzipper: any GunzipperProtocol,
+                userAgent: String,
+                baseURLString: String = Constants.CompromisedPasswords.baseUrl,
+                sessionConfiguration: URLSessionConfiguration = .compromisedPasswordCheck) {
+        self.gunzipper = gunzipper
+        self.userAgent = userAgent
+        self.baseURLString = baseURLString
+        session = URLSession(configuration: sessionConfiguration)
+    }
+}
+
+public extension RemoteCompromisedPasswordsDatasource {
+    func getLastChangeTimestamp() async throws -> Int {
+        let request = try baseRequest(path: "/split/sha1/last_change")
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw PassError.compromisePassword(.invalidResponse)
+        }
+        guard httpResponse.statusCode == 200 else {
+            throw PassError.compromisePassword(.unexpectedStatusCode(httpResponse.statusCode))
+        }
+        guard let text = String(data: data, encoding: .utf8),
+              let timestamp = Int(text.trimmingCharacters(in: .whitespacesAndNewlines)) else {
+            throw PassError.compromisePassword(.invalidLastChangePayload)
+        }
+        return timestamp
+    }
+
+    func query(prefix6: String, etag: String?) async throws -> CompromisedRangeResponse {
+        let prefix = prefix6.uppercased()
+        guard prefix.count == 6 else {
+            throw PassError.compromisePassword(.invalidPrefixSize(prefix.count))
+        }
+        let p0 = prefix.prefix(2)
+        let p2 = prefix.dropFirst(2).prefix(2)
+        let p4 = prefix.dropFirst(4).prefix(2)
+        var request = try baseRequest(path: "/split/sha1/\(p0)/\(p2)/\(p4)/\(prefix).gz")
+
+        request.setValue("true", forHTTPHeaderField: "Add-Padding")
+        // ETags are opaque: the stored value already carries its quoting, so send it verbatim.
+        if let etag, !etag.isEmpty {
+            request.setValue(etag, forHTTPHeaderField: "If-None-Match")
+        }
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw PassError.compromisePassword(.invalidResponse)
+        }
+
+        switch httpResponse.statusCode {
+        case 304:
+            return .notModified
+
+        case 200:
+            let newEtag = httpResponse.value(forHTTPHeaderField: "ETag")
+            let body = try gunzipper.unzip(data)
+            return .modified(etag: newEtag, body: body)
+
+        default:
+            throw PassError.compromisePassword(.unexpectedStatusCode(httpResponse.statusCode))
+        }
+    }
+}
+
+private extension RemoteCompromisedPasswordsDatasource {
+    func baseRequest(path: String) throws -> URLRequest {
+        let urlString = "\(baseURLString)\(path)"
+        guard let url = URL(string: urlString) else {
+            throw PassError.compromisePassword(.invalidURL(urlString))
+        }
+
+        var request = URLRequest(url: url)
+        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
+        return request
+    }
+}

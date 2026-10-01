@@ -20,7 +20,6 @@
 
 import Foundation
 
-/// Proton Pass errors
 public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)
@@ -65,6 +64,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case group(GroupFailureReason)
     case folder(FolderFailureReason)
     case bugReport(BugReportFailureReason)
+    case compromisePassword(CompromisedPasswordsFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -192,6 +192,9 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
             reason.debugDescription
 
         case let .bugReport(reason):
+            reason.debugDescription
+
+        case let .compromisePassword(reason):
             reason.debugDescription
         }
     }
