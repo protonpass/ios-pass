@@ -707,7 +707,7 @@ private struct WebsiteSection<Field: Hashable>: View {
                                 Button(action: {
                                     withAnimation {
                                         if viewModel.autofillUrls.count == 1 {
-                                            url.value.url = ""
+                                            url.value = .init(url: "", mode: .default)
                                         } else {
                                             viewModel.autofillUrls.removeAll { $0.id == url.id }
                                         }

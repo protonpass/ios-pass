@@ -8531,6 +8531,16 @@
         }
       }
     },
+    "Advanced rules are not available on iOS due to limitations in the operating system APIs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced rules are not available on iOS due to limitations in the operating system APIs."
+          }
+        }
+      }
+    },
     "Alias" : {
       "localizations" : {
         "be" : {
@@ -23109,6 +23119,16 @@
         }
       }
     },
+    "DEFAULT" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DEFAULT"
+          }
+        }
+      }
+    },
     "Default SimpleLogin vault" : {
       "localizations" : {
         "be" : {
@@ -28062,6 +28082,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exact (sub) domain"
+          }
+        }
+      }
+    },
+    "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs."
           }
         }
       }
@@ -73222,6 +73252,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "大写字母"
+          }
+        }
+      }
+    },
+    "URL matching" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL matching"
           }
         }
       }

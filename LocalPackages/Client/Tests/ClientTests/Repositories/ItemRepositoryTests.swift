@@ -42,7 +42,6 @@ struct ItemRepositoryTests {
     private let passKeyManager: PassKeyManagerProtocolMock
     private let featureFlagsRepository: FeatureFlagsRepositoryMock
     private let logManager: LogManagerProtocolMock
-    private let featureFlagsRepository: FeatureFlagsRepositoryMock
 
     init() {
         symmetricKeyProvider = SymmetricKeyProviderMock()
@@ -204,6 +203,7 @@ private extension ItemRepositoryTests {
                        localShareDatasource: localShareDatasource,
                        shareEventIDRepository: shareEventIDRepository,
                        passKeyManager: passKeyManager,
+                       featureFlagsRepository: featureFlagsRepository,
                        logManager: logManager)
     }
 
