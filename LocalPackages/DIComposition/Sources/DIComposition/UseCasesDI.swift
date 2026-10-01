@@ -1053,11 +1053,11 @@ public extension UseCasesContainer {
                                  keychain: self.keychain) }
     }
 
-    var getLastEventIdIfNotExist: Factory<any GetLastEventIdIfNotExistUseCase> {
+    var getAndStoreLastEventId: Factory<any GetAndStoreLastEventIdUseCase> {
         self {
             let container = RepositoryContainer.shared
-            return GetLastEventIdIfNotExist(localDatasource: container.localUserEventIdDatasource(),
-                                            remoteDatasource: container.remoteUserEventsDatasource())
+            return GetAndStoreLastEventId(localDatasource: container.localUserEventIdDatasource(),
+                                          remoteDatasource: container.remoteUserEventsDatasource())
         }
     }
 
