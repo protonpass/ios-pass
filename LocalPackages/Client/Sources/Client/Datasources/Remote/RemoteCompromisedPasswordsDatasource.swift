@@ -23,7 +23,7 @@ import Entities
 import Foundation
 
 /// Talks to Proton's public k-anonymity compromised-password service.
-/// Only the 6-character SHA-1 prefix is ever sent — the full password/hash never leaves the device.
+/// Only the 6-character SHA-1 prefix is ever sent - the full password/hash never leaves the device.
 // sourcery: AutoMockable
 public protocol RemoteCompromisedPasswordsDatasourceProtocol: Sendable {
     func getLastChangeTimestamp() async throws -> Int

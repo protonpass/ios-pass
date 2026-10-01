@@ -25,12 +25,12 @@ import Foundation
 
 /// Detects passwords present in a breach corpus via the k-anonymity range-query model, honouring
 /// the corpus `last_change` freshness gate and per-prefix `ETag` conditional requests. The full
-/// password/hash never leaves the device — only the 6-character SHA-1 prefix is transmitted.
+/// password/hash never leaves the device - only the 6-character SHA-1 prefix is transmitted.
 // sourcery: AutoMockable
 public protocol CompromisedPasswordCheckerProtocol: Sendable {
     /// Returns the set of item Ids (itemId + shareId) whose password is present in the breach corpus.
     /// An Id absent from the set is either not breached or "unknown" (e.g. an uncached item whose
-    /// network query failed) — callers must not distinguish the two. Per-prefix network/parse failures
+    /// network query failed) - callers must not distinguish the two. Per-prefix network/parse failures
     /// and corpus-timestamp failures keep cached results; symmetric-key and local-cache failures throw.
     ///
     /// The full corpus re-scan runs at most once per rolling 24h; a created or updated login is a
@@ -116,7 +116,8 @@ public extension CompromisedPasswordChecker {
 
         // Restarting the window even after a failure stops one bad prefix from forcing a rescan every refresh.
         // The corpus marker waits for full success, so the next daily scan re-queries what failed.
-        if let currentLastChange {
+        // A cancelled scan aborted its own requests, so it restarts nothing and the next refresh rescans.
+        if let currentLastChange, !Task.isCancelled {
             scanTracker.recordFullScan(userId: userId)
             if allSucceeded {
                 scanTracker.recordCorpusLastChange(currentLastChange, userId: userId)
@@ -182,9 +183,15 @@ private extension CompromisedPasswordChecker {
                        userId: String)
         async -> (breachCounts: [String: Int], allSucceeded: Bool) {
         let checkedAt = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
-        let outcomes = await batchProcess(groups: candidates.groupedByPrefix,
-                                          cachedChecks: cachedChecks,
-                                          checkedAt: checkedAt)
+        let outcomes: [PrefixOutcome]
+        do {
+            outcomes = try await batchProcess(groups: candidates.groupedByPrefix,
+                                              cachedChecks: cachedChecks,
+                                              checkedAt: checkedAt)
+        } catch {
+            // Only cancellation gets here, as process(prefix:) turns every request failure into an outcome
+            return ([:], false)
+        }
 
         var breachCounts = [String: Int]()
         var checksToSave = [CompromisedPasswordCheck]()
@@ -204,8 +211,8 @@ private extension CompromisedPasswordChecker {
 
     func batchProcess(groups: [String: [DerivedCompromisedPasswordCandidate]],
                       cachedChecks: [String: CompromisedPasswordCheck],
-                      checkedAt: Int) async -> [PrefixOutcome] {
-        await Array(groups).parallelMap(parallelism: maxConcurrentRequests) { prefix, candidates in
+                      checkedAt: Int) async throws -> [PrefixOutcome] {
+        try await Array(groups).parallelMap(parallelism: maxConcurrentRequests) { prefix, candidates in
             await self.process(prefix: prefix,
                                candidates: candidates,
                                cachedChecks: cachedChecks,
@@ -218,7 +225,7 @@ private extension CompromisedPasswordChecker {
                  cachedChecks: [String: CompromisedPasswordCheck],
                  checkedAt: Int) async -> PrefixOutcome {
         // Only reuse a stored ETag (and thus accept a 304) when every item in this prefix has a
-        // matching, still-valid cached result to fall back on — otherwise force a fresh body.
+        // matching, still-valid cached result to fall back on - otherwise force a fresh body.
         let cachedEtags = Set(candidates.compactMap { cachedChecks[$0.id]?.etag }.filter { !$0.isEmpty })
         let everyCandidateHasValidCache = candidates.allSatisfy { candidate in
             guard let cachedCheck = cachedChecks[candidate.id] else {

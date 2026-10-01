@@ -157,8 +157,9 @@ private struct SecurityWeaknessRow: View {
     let onShowItemDetail: (ItemContent) -> Void
     let onRetryFetchReusedItems: () -> Void
 
-    private var isReusedPassword: Bool {
-        if case .weakness(.reusedPassword, _) = weakness {
+    /// An item whose reuse check is ignored leaves its reuse group, so there are no other logins to list
+    private var showsReusedItems: Bool {
+        if case .weakness(.reusedPassword, isExcluded: false) = weakness {
             true
         } else {
             false
@@ -179,7 +180,7 @@ private struct SecurityWeaknessRow: View {
                         Text(verbatim: weakness.title)
                             .font(.subheadline).fontWeight(.bold)
                             .foregroundStyle(weakness.color)
-                        if isReusedPassword {
+                        if showsReusedItems {
                             if case let .fetched(items) = reusedItems {
                                 Text("\(items.count) other logins use this password", bundle: .module)
                                     .font(.subheadline)
@@ -204,7 +205,7 @@ private struct SecurityWeaknessRow: View {
                     }
                 }
 
-                if isReusedPassword {
+                if showsReusedItems {
                     ReusedPasswordSection(reusedItems: reusedItems,
                                           onShowReusedItemList: onShowReusedItemList,
                                           onShowItemDetail: onShowItemDetail,

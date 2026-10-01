@@ -21,6 +21,7 @@
 import Foundation
 import PassRustCore
 
+// sourcery: AutoMockable
 public protocol GunzipperProtocol: Sendable {
     func unzip(_ data: Data) throws -> Data
 }

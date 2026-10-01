@@ -20,6 +20,7 @@
 
 import Foundation
 
+// sourcery: AutoMockable
 public protocol LocalTimestampDatasourceProtocol: Sendable {
     func getTimestamp(key: String) -> Int?
     func setTimestamp(_ value: Int?, key: String)
