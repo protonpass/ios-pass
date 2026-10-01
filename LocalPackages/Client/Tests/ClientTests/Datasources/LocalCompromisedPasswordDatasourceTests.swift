@@ -61,7 +61,7 @@ struct LocalCompromisedPasswordDatasourceTests {
         try await sut.upsert([expected], userId: userId)
         let result = try await sut.getChecks(userId: userId)
         
-        // Full Equatable comparison — pins that no field (etag, prefix, hash…) is dropped
+        // Full Equatable comparison - pins that no field (etag, prefix, hash…) is dropped
         // or transformed by the persistence layer.
         #expect(result == [expected])
     }
@@ -109,7 +109,7 @@ struct LocalCompromisedPasswordDatasourceTests {
     @Test func `upsert with same shareId and itemId replaces instead of duplicating`() async throws {
         let userId = UUID().uuidString
         let original = CompromisedPasswordCheck.random()
-        // Same identity, everything else changed — models a password change + re-check.
+        // Same identity, everything else changed - models a password change + re-check.
         let updated = CompromisedPasswordCheck.random(shareId: original.shareId,
                                                       itemId: original.itemId)
         
@@ -177,7 +177,7 @@ struct LocalCompromisedPasswordDatasourceTests {
     }
     
     @Test func `batch upsert containing duplicate identities keeps a single row`() async throws {
-        // Two entries with the same (shareId, itemId) in ONE call — last-write-wins
+        // Two entries with the same (shareId, itemId) in ONE call - last-write-wins
         // vs. duplicate-rows is a real behavioral fork; this pins it to "single row".
         let userId = UUID().uuidString
         let first = CompromisedPasswordCheck.random()

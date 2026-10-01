@@ -147,7 +147,7 @@ struct CompromisedPasswordCheckerTests {
         let localTimestamp = MockLocalTimestampDatasource()
         let passwordHash = fingerprint("12345")
 
-        // Corpus reportedly changed (newer than stored), so it tries the network — which fails.
+        // Corpus reportedly changed (newer than stored), so it tries the network - which fails.
         remote.stubbedGetLastChangeTimestampResult = 2_000
         remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
         localTimestamp.setTimestamp(1_000, key: Constants.CompromisedPasswords.lastCorpusChangeKey("user"))
@@ -211,6 +211,27 @@ struct CompromisedPasswordCheckerTests {
         #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == now)
         #expect(localTimestamp
             .getTimestamp(key: Constants.CompromisedPasswords.lastCorpusChangeKey("user")) == 1_000)
+    }
+
+    @Test
+    func `A cancelled scan leaves the daily window and corpus marker untouched`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        let localTimestamp = MockLocalTimestampDatasource()
+
+        remote.stubbedGetLastChangeTimestampResult = 2_000
+        remote.stubbedQueryResult = .notModified
+        local.stubbedGetChecksResult = []
+        let sut = makeSUT(remote: remote, local: local, localTimeStamp: localTimestamp)
+        let candidate = candidate()
+
+        _ = try await Task {
+            withUnsafeCurrentTask { $0?.cancel() }
+            return try await sut.check(userId: "user", candidates: [candidate])
+        }.value
+
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == nil)
+        #expect(localTimestamp.getTimestamp(key: Constants.CompromisedPasswords.lastCorpusChangeKey("user")) == nil)
     }
 
     @Test

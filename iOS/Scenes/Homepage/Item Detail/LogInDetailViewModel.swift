@@ -100,7 +100,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     return
                 }
                 if issues.contains(where: {
-                    if case .weakness(.reusedPassword, _) = $0 {
+                    if case .weakness(.reusedPassword, isExcluded: false) = $0 {
                         true
                     } else {
                         false

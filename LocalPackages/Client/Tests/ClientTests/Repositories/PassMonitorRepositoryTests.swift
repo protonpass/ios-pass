@@ -39,11 +39,16 @@ enum FixtureWeakness {
 
 private actor GatedCompromisedPasswordChecker: CompromisedPasswordCheckerProtocol {
     private(set) var invocationCount = 0
+    private(set) var maxConcurrentChecks = 0
+    private var runningChecks = 0
     private var isOpen = false
     private var waiters = [CheckedContinuation<Void, Never>]()
 
     func check(userId: String, candidates: [CompromisedPasswordCandidate]) async -> Set<String> {
         invocationCount += 1
+        runningChecks += 1
+        maxConcurrentChecks = max(maxConcurrentChecks, runningChecks)
+        defer { runningChecks -= 1 }
         if !isOpen {
             await withCheckedContinuation { waiters.append($0) }
         }
@@ -479,13 +484,8 @@ struct PassMonitorRepositoryTests {
         let sut = makePaidSut(checker: checker)
 
         let refresh = Task { try await sut.refreshSecurityChecks() }
-        // Wait for both this refresh and the one `init` schedules to be parked in the checker
-        var spins = 0
-        while await checker.invocationCount < 2, spins < 10_000 {
-            spins += 1
-            await Task.yield()
-        }
-        try #require(await checker.invocationCount == 2)
+        // Checks run one at a time, so only one of this refresh and the `init` one parks in the checker
+        try await waitUntil { await checker.invocationCount == 1 }
 
         await sut.reset()
         await checker.open()
@@ -493,6 +493,83 @@ struct PassMonitorRepositoryTests {
 
         #expect(sut.weaknessStats.value == nil)
         #expect(sut.itemsWithSecurityIssues.value.isEmpty)
+    }
+
+    @Test
+    func `Local weakness results are published while the compromised check is still running`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+        let checker = GatedCompromisedPasswordChecker()
+        let sut = makePaidSut(checker: checker)
+
+        let refresh = Task { try await sut.refreshSecurityChecks() }
+        try await waitUntil { await checker.invocationCount == 1 }
+
+        let localStats = try #require(sut.weaknessStats.value)
+        #expect(localStats.count(for: .weakPassword) == 1)
+        #expect(localStats.count(for: .compromisedPassword) == 0)
+
+        await checker.open()
+        try await refresh.value
+        // The gated checker reports every candidate (the weak and the strong login) as breached
+        try await waitUntil { sut.weaknessStats.value?.count(for: .compromisedPassword) == 2 }
+    }
+
+    @Test
+    func `Overlapping compromised checks run one at a time`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+        let checker = GatedCompromisedPasswordChecker()
+        let sut = makePaidSut(checker: checker)
+
+        let refresh = Task { try await sut.refreshSecurityChecks() }
+        let stats = Task { try await sut.sendUserMonitorStats() }
+        try await waitUntil { await checker.invocationCount == 1 }
+        for _ in 0..<1_000 {
+            await Task.yield()
+        }
+
+        await checker.open()
+        try await refresh.value
+        try await stats.value
+
+        #expect(await checker.maxConcurrentChecks == 1)
+    }
+
+    @Test
+    func `Monitor stats report only counts items excluded from monitoring`() async throws {
+        let items = createEncryptedLoginItems(weakness: [.fullyExcluded])
+        let shareId = try #require(items.first).shareId
+        let loginData = LogInItemData.mock(username: "test", password: "aaaaa")
+        let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                           note: "n",
+                                                                           itemUuid: UUID().uuidString,
+                                                                           data: .login(loginData),
+                                                                           customFields: [])
+        // 128 = skipReusedPasswordCheck
+        let partiallyExcluded = SymmetricallyEncryptedItem
+            .random(shareId: shareId,
+                    item: .random(flags: 128),
+                    encryptedContent: try content.encrypt(symmetricKey: symmetricKeyProviderMockFactory.key))
+        itemRepository.stubbedGetActiveLogInItemsResult = items + [partiallyExcluded]
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = []
+        let remote = RemoteBreachDataSourceProtocolMock()
+        let sut = makePaidSut(checker: checker, remoteDataSource: remote)
+
+        try await sut.refreshSecurityChecks()
+        try await sut.sendUserMonitorStats()
+
+        #expect(try #require(sut.weaknessStats.value).excludedItems == 2)
+        let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
+        #expect(sent.excludedItems == 1)
+    }
+
+    func waitUntil(_ condition: () async -> Bool) async throws {
+        var spins = 0
+        while await !condition(), spins < 10_000 {
+            spins += 1
+            await Task.yield()
+        }
+        try #require(await condition())
     }
 
     @Test

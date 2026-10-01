@@ -32,7 +32,7 @@ public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Compar
         self
     }
 
-    /// Product-defined display order — lower value is shown first / treated as higher priority.
+    /// Product-defined display order - lower value is shown first / treated as higher priority.
     public var displayPriority: Int {
         switch self {
         case .weakPassword: 0
