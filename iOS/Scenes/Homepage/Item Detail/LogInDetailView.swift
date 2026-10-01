@@ -396,12 +396,14 @@ private extension LogInDetailView {
     /// stays a plain row rather than gaining a box nested inside the detail section.
     @ViewBuilder
     func urlRow(_ url: AutofillUrl) -> some View {
-        if viewModel.domainMatchingSupported, url.mode != .default, let title = url.mode.title {
+        if viewModel.domainMatchingSupported {
             VStack(alignment: .leading, spacing: 4) {
                 urlText(url.url)
 
-                Text(verbatim: title)
-                    .foregroundStyle(PassColor.textWeak)
+                if url.mode != .default, let title = url.mode.title {
+                    Text(verbatim: title)
+                        .foregroundStyle(PassColor.textWeak)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DesignConstant.sectionPadding / 2)

@@ -70,7 +70,7 @@ public struct EditDomainMatchingView: View {
                     }
 
                     ToolbarItem(placement: .topBarTrailing) {
-                        CapsuleTextButton(title: #localized("Save"),
+                        CapsuleTextButton(title: #localized("Save", bundle: .module),
                                           titleColor: PassColor.textInvert,
                                           backgroundColor: itemContentType.normMajor1Color,
                                           action: { onSave(selectedMode); dismiss() })
@@ -117,6 +117,7 @@ private extension EditDomainMatchingView {
         let urlString = url.value.url
         let rawDescription =
             #localized("Adjust autofill behaviors to change where logins are suggested and filled for %@.",
+                       bundle: .module,
                        urlString)
         // Heuristic to detect if the URL is valid or not in order to highlight it
         // Because for example if the URL is simply "a", we would end up highlighting
@@ -130,7 +131,7 @@ private extension EditDomainMatchingView {
                 }
                 return attributedString
             }()
-            Text(attributedString)
+            Text(attributedString) // ignore:missing_bundle
         } else {
             Text(verbatim: rawDescription)
                 .foregroundStyle(PassColor.textWeak)
