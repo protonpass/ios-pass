@@ -189,10 +189,10 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
-             .monitorItemDetailFromWeakPassword,
-             .monitorItemDetailFromCompromisedPassword:
+             .monitorItemDetailFromWeakPassword:
             Image(systemName: "person.badge.shield.checkmark.fill")
 
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
@@ -244,10 +244,10 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
-             .monitorItemDetailFromCompromisedPassword,
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
@@ -298,10 +298,10 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
-             .monitorItemDetailFromCompromisedPassword,
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color

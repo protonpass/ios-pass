@@ -344,7 +344,9 @@ struct PassMonitorRepositoryTests {
     @Test
     func `Reuse suppression is ignored when per-check exclusion is disabled`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
-        let sut = makePaidSut(checker: CompromisedPasswordCheckerProtocolMock(),
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = []
+        let sut = makePaidSut(checker: checker,
                               isFeatureEnabled: { $0 != .passMonitorPerCheckExclusion })
 
         try await sut.refreshSecurityChecks()
