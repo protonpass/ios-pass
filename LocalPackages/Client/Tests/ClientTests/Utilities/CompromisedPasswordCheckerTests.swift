@@ -25,6 +25,7 @@ import CoreMocks
 import CryptoKit
 import Entities
 import Foundation
+import os
 import Testing
 
 private struct StubDateProvider: CurrentDateProviderProtocol {
@@ -264,6 +265,9 @@ struct CompromisedPasswordCheckerTests {
         remote.stubbedQueryResult = .modified(etag: "\"v1\"",
                                               body: Data("0000000000000000000000000000000000:3\n".utf8))
         local.stubbedGetChecksResult = []
+        // The generated mock's own counter is a plain `var` bumped from concurrent child tasks
+        let queryCount = OSAllocatedUnfairLock(initialState: 0)
+        remote.closureQuery = { queryCount.withLock { $0 += 1 } }
 
         // Distinct passwords -> distinct SHA-1 prefixes, more than the concurrency limit, which
         // forces the bounded backfill path.
@@ -276,7 +280,7 @@ struct CompromisedPasswordCheckerTests {
 
         // With a Set return, not-breached items collapse away: coverage is observed via the query
         // counter (one conditional GET per distinct prefix), and the breached set is empty.
-        #expect(remote.invokedQueryCount == 12)
+        #expect(queryCount.withLock { $0 } == 12)
         #expect(results.isEmpty)
     }
 

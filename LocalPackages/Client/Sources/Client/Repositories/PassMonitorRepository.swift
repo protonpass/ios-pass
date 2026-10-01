@@ -421,11 +421,11 @@ private extension PassMonitorRepository {
     }
 
     func isCompromisedCheckEnabled(userId: String) async -> Bool {
-        guard isFeatureEnabled(FeatureFlagType.passCompromisedPasswords) else {
+        guard isFeatureEnabled(FeatureFlagType.passCompromisedPasswords),
+              let plan = await (try? accessRepository.getPlan(userId: userId)) else {
             return false
         }
-        let isFreeUser = await (try? accessRepository.getPlan(userId: userId).isFreeUser) ?? true
-        return !isFreeUser
+        return !plan.isFreeUser
     }
 
     func excludableChecks(compromisedCheckEnabled: Bool) -> Set<WeaknessKind> {
