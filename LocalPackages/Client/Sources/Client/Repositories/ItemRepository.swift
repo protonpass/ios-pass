@@ -23,6 +23,7 @@ import Core
 import CoreData
 @preconcurrency import CryptoKit
 import Entities
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 
 // swiftlint:disable function_parameter_count
@@ -206,6 +207,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let localShareDatasource: any LocalShareDatasourceProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
 
     public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
@@ -219,6 +221,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 localShareDatasource: any LocalShareDatasourceProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
+                featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
@@ -226,6 +229,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.localShareDatasource = localShareDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
+        self.featureFlagsRepository = featureFlagsRepository
         self.userManager = userManager
         logger = .init(manager: logManager)
         // swiftlint:disable:next todo
@@ -688,7 +692,8 @@ public extension ItemRepository {
         let request = try UpdateItemRequest(oldRevision: oldItem,
                                             key: latestItemKey.keyData,
                                             keyRotation: latestItemKey.keyRotation,
-                                            itemContent: newItemContent)
+                                            itemContent: newItemContent,
+                                            domainMatchingSupported: domainMatchingSupported)
 
         let updatedItemRevision = try await remoteDatasource.updateItem(userId: userId,
                                                                         shareId: shareId,
@@ -824,6 +829,7 @@ public extension ItemRepository {
         logger.trace("Importing \(logins.count) logins for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let chunks = logins.chunked(into: 100)
+        let isDomainMatchingSupported = domainMatchingSupported
         for chunk in chunks {
             let itemsToImport: [ItemToImport] = try chunk.map { login in
                 let loginData = ItemContentData.login(.init(email: login.email,
@@ -831,6 +837,8 @@ public extension ItemRepository {
                                                             password: login.password,
                                                             totpUri: "",
                                                             urls: [login.url],
+                                                            autofillUrls: [AutofillUrl(url: login.url,
+                                                                                       mode: .default)],
                                                             allowedAndroidApps: [],
                                                             passkeys: []))
                 let content = ItemContentProtobuf(name: login.name,
@@ -838,7 +846,9 @@ public extension ItemRepository {
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])
-                return try .init(containerKey: vaultKey, itemContent: content)
+                return try .init(containerKey: vaultKey,
+                                 itemContent: content,
+                                 domainMatchingSupported: isDomainMatchingSupported)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
@@ -926,6 +936,17 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
+    /// Mirrors `GetFeatureFlagStatus`, which lives in `UseCases` and so is not reachable from
+    /// `Client`. Duplicated rather than threaded down as a parameter through four call layers.
+    var domainMatchingSupported: Bool {
+        let flag = FeatureFlagType.passAutofillUrlAdvancedModes
+        if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
+            return true
+        }
+
+        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
+    }
+
     func getSymmetricKey() async throws -> SymmetricKey {
         try await symmetricKeyProvider.getSymmetricKey()
     }
@@ -980,7 +1001,8 @@ private extension ItemRepository {
                                                                           keyRotation: nil)
         return try CreateItemRequest(containerKey: latestContainerKey,
                                      itemContent: itemContent,
-                                     folderId: folderId)
+                                     folderId: folderId,
+                                     domainMatchingSupported: domainMatchingSupported)
     }
 }
 

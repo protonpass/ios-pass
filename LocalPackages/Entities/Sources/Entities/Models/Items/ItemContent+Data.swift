@@ -61,12 +61,36 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
 
 // MARK: - Login
 
+public enum AutofillUrlMode: Sendable, Equatable, Hashable {
+    case `default`
+    case exact
+    case never
+    case startWith
+    case pattern
+    case regularExpression
+    case exactPath
+    /// A mode added to the protobuf after this build. Carries the raw value so saving an
+    /// item edited on this client does not overwrite another platform's rule with `.default`.
+    case unrecognized(Int)
+}
+
+public struct AutofillUrl: Sendable, Equatable, Hashable {
+    public var url: String
+    public var mode: AutofillUrlMode
+
+    public init(url: String, mode: AutofillUrlMode) {
+        self.url = url
+        self.mode = mode
+    }
+}
+
 public struct LogInItemData: Sendable, Equatable, Hashable {
     public let email: String
     public let username: String
     public let password: String
     public let totpUri: String
     public let urls: [String]
+    public let autofillUrls: [AutofillUrl]
     public let allowedAndroidApps: [AllowedAndroidApp]
     public let passkeys: [Passkey]
 
@@ -75,6 +99,7 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
                 password: String,
                 totpUri: String,
                 urls: [String],
+                autofillUrls: [AutofillUrl],
                 allowedAndroidApps: [AllowedAndroidApp],
                 passkeys: [Passkey]) {
         self.email = email
@@ -82,8 +107,27 @@ public struct LogInItemData: Sendable, Equatable, Hashable {
         self.password = password
         self.totpUri = totpUri
         self.urls = urls
+        self.autofillUrls = autofillUrls
         self.allowedAndroidApps = allowedAndroidApps
         self.passkeys = passkeys
+    }
+
+    /// `autofillUrls` only exists from content format version 8 on; every item created
+    /// before that carries its websites in `urls` alone. Read websites through this and
+    /// never through `autofillUrls` directly, or pre-feature items look website-less.
+    public var resolvedAutofillUrls: [AutofillUrl] {
+        if autofillUrls.isEmpty {
+            return urls.map { AutofillUrl(url: $0, mode: .default) }
+        }
+        return autofillUrls
+    }
+
+    /// Websites eligible for autofill. `.never` stays in `urls` because it is still one of
+    /// the item's websites for display, search, favicons and 2FA monitoring; it just must
+    /// not reach the credential store. An unrecognized mode stays autofillable so a rule
+    /// this build cannot interpret degrades to the pre-feature behaviour.
+    public var autofillableUrls: [String] {
+        resolvedAutofillUrls.filter { $0.mode != .never }.map(\.url)
     }
 
     /// This variable should be used as the new main authentication variable

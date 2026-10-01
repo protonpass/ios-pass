@@ -669,6 +669,7 @@ private extension CreateEditLoginView {
 
 private struct WebsiteSection<Field: Hashable>: View {
     @ObservedObject var viewModel: CreateEditLoginViewModel
+    @State private var selectedAutofillUrl: IdentifiableObject<AutofillUrl>?
     let focusedField: FocusState<Field?>.Binding
     let field: Field
     let onSubmit: () -> Void
@@ -679,17 +680,15 @@ private struct WebsiteSection<Field: Hashable>: View {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Website")
-                    .editableSectionTitleText(for: viewModel.urls.first?.value)
+                    .editableSectionTitleText(for: viewModel.autofillUrls.first?.value.url)
+
                 VStack(alignment: .leading) {
-                    ForEach($viewModel.urls) { $url in
+                    ForEach($viewModel.autofillUrls) { $url in
                         HStack {
-                            TextField(text: $url.value) {
+                            TextField(text: $url.value.url) {
                                 Text(verbatim: "https://")
                             }
                             .focused(focusedField, equals: field)
-                            .onChange(of: viewModel.urls) {
-                                viewModel.invalidURLs.removeAll()
-                            }
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
@@ -697,13 +696,20 @@ private struct WebsiteSection<Field: Hashable>: View {
                                 PassColor.textNorm : PassColor.signalDanger)
                             .onSubmit(onSubmit)
 
-                            if !url.value.isEmpty {
+                            if !url.value.url.isEmpty {
+                                if viewModel.domainMatchingSupported {
+                                    Button(action: { selectedAutofillUrl = url },
+                                           label: {
+                                               ItemDetailSectionIcon(icon: IconProvider.threeDotsVertical)
+                                           })
+                                }
+
                                 Button(action: {
                                     withAnimation {
-                                        if viewModel.urls.count == 1 {
-                                            url.value = ""
+                                        if viewModel.autofillUrls.count == 1 {
+                                            url.value = .init(url: "", mode: .default)
                                         } else {
-                                            viewModel.urls.removeAll { $0.id == url.id }
+                                            viewModel.autofillUrls.removeAll { $0.id == url.id }
                                         }
                                     }
                                 }, label: {
@@ -713,39 +719,63 @@ private struct WebsiteSection<Field: Hashable>: View {
                             }
                         }
 
-                        if viewModel.urls.count > 1 || viewModel.urls.first?.value.isEmpty == false {
+                        if viewModel.domainMatchingSupported,
+                           !url.value.url.isEmpty,
+                           let title = url.value.mode.title {
+                            Text(verbatim: title)
+                                .font(.callout)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .foregroundStyle(viewModel.itemContentType.normMajor2Color)
+                                .padding(.vertical, 6)
+                                .padding(.horizontal, 10)
+                                .background(PassColor.inputBackgroundNorm)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+
+                        if url.id != viewModel.autofillUrls.last?.id {
                             PassSectionDivider()
+                                .padding(.top, 4)
                         }
                     }
 
                     addUrlButton
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .animation(.default, value: viewModel.urls)
+                .onChange(of: viewModel.autofillUrls) {
+                    viewModel.invalidURLs.removeAll()
+                }
+                .animation(.default, value: viewModel.autofillUrls)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(.rect)
+        .sheet(item: $selectedAutofillUrl) { autofillUrl in
+            EditDomainMatchingView(url: autofillUrl,
+                                   onSave: { newMode in
+                                       viewModel.update(mode: newMode, for: autofillUrl)
+                                   })
+        }
     }
 
-    private func isValid(_ url: IdentifiableObject<String>) -> Bool {
-        !viewModel.invalidURLs.contains { $0 == url.value }
+    private func isValid(_ url: IdentifiableObject<AutofillUrl>) -> Bool {
+        !viewModel.invalidURLs.contains { $0 == url.value.url }
     }
 
     @ViewBuilder
     private var addUrlButton: some View {
-        if viewModel.urls.first?.value.isEmpty == false {
+        if viewModel.autofillUrls.first?.value.url.isEmpty == false {
             Button(action: {
-                if viewModel.urls.last?.value.isEmpty == false {
+                if viewModel.autofillUrls.last?.value.url.isEmpty == false {
                     // Only add new URL when last URL has value to avoid adding blank URLs
-                    viewModel.urls.append(.init(value: ""))
+                    viewModel.autofillUrls.append(.init(value: .init(url: "",
+                                                                     mode: .default)))
                 }
             }, label: {
                 Label("Add", systemImage: "plus")
             })
-            .opacityReduced(viewModel.urls.last?.value.isEmpty == true)
+            .opacityReduced(viewModel.autofillUrls.last?.value.url.isEmpty == true)
         }
     }
 }

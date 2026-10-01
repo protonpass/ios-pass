@@ -73,8 +73,8 @@ private extension LogInDetailView {
 
                         usernamePassword2FaSection
 
-                        if !viewModel.urls.isEmpty {
-                            urlsSection
+                        if !viewModel.autofillUrls.isEmpty {
+                            autofillUrlsSection
                                 .padding(.top, 8)
                         }
 
@@ -353,7 +353,7 @@ private extension LogInDetailView {
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    var urlsSection: some View {
+    var autofillUrlsSection: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.earth, color: iconTintColor)
 
@@ -362,24 +362,22 @@ private extension LogInDetailView {
                     .sectionTitleText()
 
                 VStack(alignment: .leading, spacing: 12) {
-                    ForEach(viewModel.urls, id: \.self) { url in
+                    ForEach(viewModel.autofillUrls, id: \.self) { url in
                         Button(action: {
-                            viewModel.openUrl(url)
+                            viewModel.openUrl(url.url)
                         }, label: {
-                            Text(url)
-                                .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
-                                .multilineTextAlignment(.leading)
-                                .lineLimit(2)
+                            urlRow(url)
                         })
                         .contextMenu {
                             Button(action: {
-                                viewModel.openUrl(url)
+                                viewModel.openUrl(url.url)
                             }, label: {
                                 Text("Open")
                             })
 
                             Button(action: {
-                                viewModel.copyToClipboard(text: url, message: #localized("Website copied"))
+                                viewModel.copyToClipboard(text: url.url,
+                                                          message: #localized("Website copied"))
                             }, label: {
                                 Text("Copy")
                             })
@@ -388,10 +386,38 @@ private extension LogInDetailView {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .animation(.default, value: viewModel.urls)
+            .animation(.default, value: viewModel.autofillUrls)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    /// The enclosing box exists to group a url with its matching rule, so a url without one
+    /// stays a plain row rather than gaining a box nested inside the detail section.
+    @ViewBuilder
+    func urlRow(_ url: AutofillUrl) -> some View {
+        if viewModel.domainMatchingSupported {
+            VStack(alignment: .leading, spacing: 4) {
+                urlText(url.url)
+
+                if url.mode != .default, let title = url.mode.title {
+                    Text(verbatim: title)
+                        .foregroundStyle(PassColor.textWeak)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(DesignConstant.sectionPadding / 2)
+            .roundedEditableSection()
+        } else {
+            urlText(url.url)
+        }
+    }
+
+    func urlText(_ url: String) -> some View {
+        Text(verbatim: url)
+            .foregroundStyle(viewModel.itemContent.type.normMajor2Color)
+            .multilineTextAlignment(.leading)
+            .lineLimit(2)
     }
 }
 

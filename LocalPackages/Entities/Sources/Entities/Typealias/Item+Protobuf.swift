@@ -60,6 +60,8 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
                          password: data.password,
                          totpUri: data.totpUri,
                          urls: data.urls,
+                         autofillUrls: data.autofillUrls.map { .init(url: $0.url,
+                                                                     mode: $0.mode.toNativeMode) },
                          allowedAndroidApps: platformSpecific.android.allowedApps,
                          passkeys: data.passkeys))
 
@@ -114,6 +116,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.login.password = logInData.password
             content.login.totpUri = logInData.totpUri
             content.login.urls = logInData.urls
+            content.login.autofillUrls = logInData.autofillUrls.map(\.toProtobufUrl)
             content.login.passkeys = logInData.passkeys
             platformSpecific.android.allowedApps = logInData.allowedAndroidApps
 
@@ -143,5 +146,44 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
         }
 
         extraFields = customFields.toProtonPassItemV1ExtraFields
+    }
+}
+
+private extension ProtonPassItemV1_AutofillUrl.Mode {
+    var toNativeMode: AutofillUrlMode {
+        switch self {
+        case .default: .default
+        case .exact: .exact
+        case .never: .never
+        case .startWith: .startWith
+        case .pattern: .pattern
+        case .regularExpression: .regularExpression
+        case .exactPath: .exactPath
+        case let .UNRECOGNIZED(value): .unrecognized(value)
+        }
+    }
+}
+
+private extension AutofillUrlMode {
+    var toProtobufMode: ProtonPassItemV1_AutofillUrl.Mode {
+        switch self {
+        case .default: .default
+        case .exact: .exact
+        case .never: .never
+        case .startWith: .startWith
+        case .pattern: .pattern
+        case .regularExpression: .regularExpression
+        case .exactPath: .exactPath
+        case let .unrecognized(value): .init(rawValue: value) ?? .default
+        }
+    }
+}
+
+private extension AutofillUrl {
+    var toProtobufUrl: ProtonPassItemV1_AutofillUrl {
+        var protobuf = ProtonPassItemV1_AutofillUrl()
+        protobuf.url = url
+        protobuf.mode = mode.toProtobufMode
+        return protobuf
     }
 }
