@@ -32,11 +32,11 @@ public struct SetPINCodeView: View {
     public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 12) {
-                Text(viewModel.state.title)
+                Text(verbatim: viewModel.state.title)
                     .font(.largeTitle.bold())
                     .foregroundStyle(PassColor.textNorm)
 
-                Text(viewModel.state.description)
+                Text(verbatim: viewModel.state.description)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)
 
@@ -50,7 +50,7 @@ public struct SetPINCodeView: View {
                     .focused($isFocused)
 
                 if let error = viewModel.error {
-                    Text(error.description)
+                    Text(verbatim: error.description)
                         .foregroundStyle(PassColor.signalDanger)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

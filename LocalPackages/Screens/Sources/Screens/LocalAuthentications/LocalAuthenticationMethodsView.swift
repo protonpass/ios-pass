@@ -43,7 +43,7 @@ public struct LocalAuthenticationMethodsView: View {
                     SelectableOptionRow(action: { onSelect(uiModel) },
                                         height: .compact,
                                         content: {
-                                            Text(uiModel.title)
+                                            Text(verbatim: uiModel.title)
                                                 .foregroundStyle(isSelected ?
                                                     PassColor.interactionNormMajor2 : PassColor
                                                     .textNorm)
