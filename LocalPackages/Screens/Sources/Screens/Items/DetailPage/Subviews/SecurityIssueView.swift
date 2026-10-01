@@ -27,6 +27,7 @@ import SwiftUI
 public struct SecurityIssueView: View, Equatable {
     let weaknesses: [ItemWeaknessDisplay]
     let reusedItems: FetchableObject<[ItemContent]>
+    let isPerCheckExclusionEnabled: Bool
     let onToggleMonitoring: (ItemWeaknessDisplay) -> Void
     let onShowReusedItemList: () -> Void
     let onShowItemDetail: (ItemContent) -> Void
@@ -35,12 +36,14 @@ public struct SecurityIssueView: View, Equatable {
 
     public init(weaknesses: [ItemWeaknessDisplay],
                 reusedItems: FetchableObject<[ItemContent]>,
+                isPerCheckExclusionEnabled: Bool,
                 onToggleMonitoring: @escaping (ItemWeaknessDisplay) -> Void,
                 onShowReusedItemList: @escaping () -> Void,
                 onShowItemDetail: @escaping (ItemContent) -> Void,
                 onRetryFetchReusedItems: @escaping () -> Void) {
         self.weaknesses = weaknesses
         self.reusedItems = reusedItems
+        self.isPerCheckExclusionEnabled = isPerCheckExclusionEnabled
         self.onToggleMonitoring = onToggleMonitoring
         self.onShowReusedItemList = onShowReusedItemList
         self.onShowItemDetail = onShowItemDetail
@@ -60,6 +63,7 @@ public struct SecurityIssueView: View, Equatable {
                     ForEach(weaknesses) { weakness in
                         SecurityWeaknessRow(weakness: weakness,
                                             reusedItems: reusedItems,
+                                            isToggleable: isPerCheckExclusionEnabled || weakness == .fullyExcluded,
                                             onToggleMonitoring: { onToggleMonitoring(weakness) },
                                             onShowReusedItemList: onShowReusedItemList,
                                             onShowItemDetail: onShowItemDetail,
@@ -78,7 +82,9 @@ public struct SecurityIssueView: View, Equatable {
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.weaknesses == rhs.weaknesses && lhs.reusedItems == rhs.reusedItems
+        lhs.weaknesses == rhs.weaknesses &&
+            lhs.reusedItems == rhs.reusedItems &&
+            lhs.isPerCheckExclusionEnabled == rhs.isPerCheckExclusionEnabled
     }
 }
 
@@ -145,13 +151,15 @@ private struct SecurityIssueSummary: View {
 private struct SecurityWeaknessRow: View {
     let weakness: ItemWeaknessDisplay
     let reusedItems: FetchableObject<[ItemContent]>
+    let isToggleable: Bool
     let onToggleMonitoring: () -> Void
     let onShowReusedItemList: () -> Void
     let onShowItemDetail: (ItemContent) -> Void
     let onRetryFetchReusedItems: () -> Void
 
-    private var isReusedPassword: Bool {
-        if case .weakness(.reusedPassword, _) = weakness {
+    /// An item whose reuse check is ignored leaves its reuse group, so there are no other logins to list
+    private var showsReusedItems: Bool {
+        if case .weakness(.reusedPassword, isExcluded: false) = weakness {
             true
         } else {
             false
@@ -172,7 +180,7 @@ private struct SecurityWeaknessRow: View {
                         Text(verbatim: weakness.title)
                             .font(.subheadline).fontWeight(.bold)
                             .foregroundStyle(weakness.color)
-                        if isReusedPassword {
+                        if showsReusedItems {
                             if case let .fetched(items) = reusedItems {
                                 Text("\(items.count) other logins use this password", bundle: .module)
                                     .font(.subheadline)
@@ -185,17 +193,19 @@ private struct SecurityWeaknessRow: View {
                     }
 
                     Spacer()
-                    CapsuleTextButton(title: weakness.isExcluded
-                        ? #localized("Restore alert", bundle: .module) : #localized("Ignore", bundle: .module),
-                        titleColor: PassColor.interactionNormMajor2,
-                        font: .subheadline,
-                        backgroundColor: PassColor.loginInteractionNormMinor2,
-                        maxWidth: nil,
-                        horizontalPadding: buttonPadding,
-                        action: onToggleMonitoring)
+                    if isToggleable {
+                        CapsuleTextButton(title: weakness.isExcluded
+                            ? #localized("Restore alert", bundle: .module) : #localized("Ignore", bundle: .module),
+                            titleColor: PassColor.interactionNormMajor2,
+                            font: .subheadline,
+                            backgroundColor: PassColor.loginInteractionNormMinor2,
+                            maxWidth: nil,
+                            horizontalPadding: buttonPadding,
+                            action: onToggleMonitoring)
+                    }
                 }
 
-                if isReusedPassword {
+                if showsReusedItems {
                     ReusedPasswordSection(reusedItems: reusedItems,
                                           onShowReusedItemList: onShowReusedItemList,
                                           onShowItemDetail: onShowItemDetail,

@@ -25,12 +25,12 @@ import Foundation
 
 /// Detects passwords present in a breach corpus via the k-anonymity range-query model, honouring
 /// the corpus `last_change` freshness gate and per-prefix `ETag` conditional requests. The full
-/// password/hash never leaves the device — only the 6-character SHA-1 prefix is transmitted.
+/// password/hash never leaves the device - only the 6-character SHA-1 prefix is transmitted.
 // sourcery: AutoMockable
 public protocol CompromisedPasswordCheckerProtocol: Sendable {
     /// Returns the set of item Ids (itemId + shareId) whose password is present in the breach corpus.
     /// An Id absent from the set is either not breached or "unknown" (e.g. an uncached item whose
-    /// network query failed) — callers must not distinguish the two. Per-prefix network/parse failures
+    /// network query failed) - callers must not distinguish the two. Per-prefix network/parse failures
     /// and corpus-timestamp failures keep cached results; symmetric-key and local-cache failures throw.
     ///
     /// The full corpus re-scan runs at most once per rolling 24h; a created or updated login is a
@@ -42,7 +42,7 @@ public protocol CompromisedPasswordCheckerProtocol: Sendable {
 public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtocol, Sendable {
     private let remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol
     private let localDatasource: any LocalCompromisedPasswordDatasourceProtocol
-    private let localTimestampDatasource: any LocalTimestampDatasourceProtocol
+    private let scanTracker: any CompromisedPasswordScanTrackerProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let dateProvider: any CurrentDateProviderProtocol
     private let maxConcurrentRequests: Int
@@ -50,14 +50,14 @@ public final class CompromisedPasswordChecker: CompromisedPasswordCheckerProtoco
 
     public init(remoteDatasource: any RemoteCompromisedPasswordsDatasourceProtocol,
                 localDatasource: any LocalCompromisedPasswordDatasourceProtocol,
-                localTimestampDatasource: any LocalTimestampDatasourceProtocol,
+                scanTracker: any CompromisedPasswordScanTrackerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 maxConcurrentRequests: Int = 8,
                 dateProvider: any CurrentDateProviderProtocol) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
-        self.localTimestampDatasource = localTimestampDatasource
+        self.scanTracker = scanTracker
         self.symmetricKeyProvider = symmetricKeyProvider
         self.dateProvider = dateProvider
         self.maxConcurrentRequests = maxConcurrentRequests
@@ -80,21 +80,15 @@ public extension CompromisedPasswordChecker {
 
         let cached = try await loadCachedChecks(userId: userId, derived: derivedCandidates)
 
-        let now = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
-        let lastRun = localTimestampDatasource
-            .getTimestamp(key: Constants.CompromisedPasswords.lastRunKey(userId))
-        let dueForFullCheck = isDueForFullCheck(now: now, lastRun: lastRun)
-
         var currentLastChange: Int?
         let corpusUnchanged: Bool
         var allSucceeded = true
-        if dueForFullCheck {
+        if scanTracker.isFullScanDue(userId: userId) {
             do {
-                currentLastChange = try await remoteDatasource.getLastChangeTimestamp()
-                corpusUnchanged = isCorpusUnchanged(current: currentLastChange,
-                                                    stored: localTimestampDatasource
-                                                        .getTimestamp(key: Constants.CompromisedPasswords
-                                                            .lastCorpusChangeKey(userId)))
+                let lastChange = try await remoteDatasource.getLastChangeTimestamp()
+                currentLastChange = lastChange
+                corpusUnchanged = scanTracker.isCorpusUnchanged(userId: userId,
+                                                                currentLastChange: lastChange)
             } catch {
                 logger.warning("Failed to fetch last timestamp for compromised password")
                 // Same policy as a failed prefix query: serve cached results rather than dropping
@@ -107,28 +101,30 @@ public extension CompromisedPasswordChecker {
             corpusUnchanged = true
         }
 
-        let (reusable, toCheck) = partition(derivedCandidates, cached: cached, corpusUnchanged: corpusUnchanged)
+        let (cachedBreachCounts, candidatesToQuery) = splitByCacheHit(derivedCandidates,
+                                                                      cachedChecks: cached,
+                                                                      corpusUnchanged: corpusUnchanged)
 
-        var results = reusable
-        if !toCheck.isEmpty {
-            let (checked, succeeded) = await checkRemotely(toCheck, cached: cached, userId: userId)
-            results.merge(checked) { _, new in new }
-            allSucceeded = allSucceeded && succeeded
+        var results = cachedBreachCounts
+        if !candidatesToQuery.isEmpty {
+            let remote = await checkRemotely(candidatesToQuery,
+                                             cachedChecks: cached,
+                                             userId: userId)
+            results.merge(remote.breachCounts) { _, new in new }
+            allSucceeded = allSucceeded && remote.allSucceeded
         }
 
         // Restarting the window even after a failure stops one bad prefix from forcing a rescan every refresh.
         // The corpus marker waits for full success, so the next daily scan re-queries what failed.
-        if let currentLastChange {
-            localTimestampDatasource.setTimestamp(now,
-                                                  key: Constants.CompromisedPasswords.lastRunKey(userId))
+        // A cancelled scan aborted its own requests, so it restarts nothing and the next refresh rescans.
+        if let currentLastChange, !Task.isCancelled {
+            scanTracker.recordFullScan(userId: userId)
             if allSucceeded {
-                localTimestampDatasource.setTimestamp(currentLastChange,
-                                                      key: Constants.CompromisedPasswords
-                                                          .lastCorpusChangeKey(userId))
+                scanTracker.recordCorpusLastChange(currentLastChange, userId: userId)
             }
         }
 
-        logger.info("Finished fetching and checking compromised passwords")
+        logger.info("Finished fetching and checking compromised passwords for \(candidates.count) logins")
         return Set(results.filter { $0.value > 0 }.map(\.key))
     }
 }
@@ -156,170 +152,143 @@ private extension CompromisedPasswordChecker {
                 stale.append(IDs(shareId: check.shareId, itemId: check.itemId))
             }
         }
-        if !stale.isEmpty {
-            do {
-                try await localDatasource.remove(userId: userId, staleItemIds: stale)
-            } catch {
-                logger.warning("Failed to remove \(stale.count) stale CompromisedPasswordCheck")
-            }
+        do {
+            try await localDatasource.remove(userId: userId, staleItemIds: stale)
+        } catch {
+            logger.warning("Failed to remove \(stale.count) stale CompromisedPasswordCheck")
         }
         return cached
     }
 
-    func isCorpusUnchanged(current: Int?, stored: Int?) -> Bool {
-        guard let current, let stored else { return false }
-        return current <= stored
-    }
-
-    func isDueForFullCheck(now: Int, lastRun: Int?) -> Bool {
-        guard let lastRun else { return true }
-        let elapsed = now - lastRun
-        guard elapsed >= 0 else { return true }
-        return elapsed >= Constants.CompromisedPasswords.minimumCheckInterval
-    }
-
-    func partition(_ derivedAll: [DerivedCompromisedPasswordCandidate],
-                   cached: [String: CompromisedPasswordCheck],
-                   corpusUnchanged: Bool)
-        -> (reusable: [String: Int], toCheck: [DerivedCompromisedPasswordCandidate]) {
-        var reusable = [String: Int]()
-        var toCheck = [DerivedCompromisedPasswordCandidate]()
-        for derived in derivedAll {
+    func splitByCacheHit(_ candidates: [DerivedCompromisedPasswordCandidate],
+                         cachedChecks: [String: CompromisedPasswordCheck],
+                         corpusUnchanged: Bool)
+        -> (cachedBreachCounts: [String: Int], candidatesToQuery: [DerivedCompromisedPasswordCandidate]) {
+        var cachedBreachCounts = [String: Int]()
+        var candidatesToQuery = [DerivedCompromisedPasswordCandidate]()
+        for candidate in candidates {
             if corpusUnchanged,
-               let row = cached[derived.id],
-               row.passwordHash == derived.passwordHash {
-                reusable[derived.id] = row.breachCount
+               let cachedCheck = cachedChecks[candidate.id],
+               cachedCheck.passwordHash == candidate.passwordHash {
+                cachedBreachCounts[candidate.id] = cachedCheck.breachCount
             } else {
-                toCheck.append(derived)
+                candidatesToQuery.append(candidate)
             }
         }
-        return (reusable, toCheck)
+        return (cachedBreachCounts, candidatesToQuery)
     }
 
-    func checkRemotely(_ toCheck: [DerivedCompromisedPasswordCandidate],
-                       cached: [String: CompromisedPasswordCheck],
+    func checkRemotely(_ candidates: [DerivedCompromisedPasswordCandidate],
+                       cachedChecks: [String: CompromisedPasswordCheck],
                        userId: String)
-        async -> (results: [String: Int], succeeded: Bool) {
-        var groups = [String: [DerivedCompromisedPasswordCandidate]]()
-        for derived in toCheck {
-            groups[derived.prefix, default: []].append(derived)
+        async -> (breachCounts: [String: Int], allSucceeded: Bool) {
+        let checkedAt = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
+        let outcomes: [PrefixOutcome]
+        do {
+            outcomes = try await batchProcess(groups: candidates.groupedByPrefix,
+                                              cachedChecks: cachedChecks,
+                                              checkedAt: checkedAt)
+        } catch {
+            // Only cancellation gets here, as process(prefix:) turns every request failure into an outcome
+            return ([:], false)
         }
 
-        let now = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
-        let outcomes = await runBounded(groups: groups, cached: cached, now: now)
-
-        var results = [String: Int]()
-        var rows = [CompromisedPasswordCheck]()
+        var breachCounts = [String: Int]()
+        var checksToSave = [CompromisedPasswordCheck]()
         var allSucceeded = true
         for outcome in outcomes {
-            results.merge(outcome.results) { _, new in new }
-            rows.append(contentsOf: outcome.rows)
+            breachCounts.merge(outcome.breachCounts) { _, new in new }
+            checksToSave.append(contentsOf: outcome.checks)
             allSucceeded = allSucceeded && outcome.succeeded
         }
-        if !rows.isEmpty {
-            do {
-                try await localDatasource.upsert(rows, userId: userId)
-            } catch {
-                logger.warning("Failed to upsert \(rows.count) CompromisedPasswordCheck")
-            }
+        do {
+            try await localDatasource.upsert(checksToSave, userId: userId)
+        } catch {
+            logger.warning("Failed to upsert \(checksToSave.count) CompromisedPasswordCheck")
         }
-        return (results, allSucceeded)
+        return (breachCounts, allSucceeded)
     }
 
-    func runBounded(groups: [String: [DerivedCompromisedPasswordCandidate]],
-                    cached: [String: CompromisedPasswordCheck],
-                    now: Int) async -> [PrefixOutcome] {
-        await Array(groups).parallelMap(parallelism: maxConcurrentRequests) { entry in
-            await self.process(prefix: entry.0, derived: entry.1, cached: cached, now: now)
+    func batchProcess(groups: [String: [DerivedCompromisedPasswordCandidate]],
+                      cachedChecks: [String: CompromisedPasswordCheck],
+                      checkedAt: Int) async throws -> [PrefixOutcome] {
+        try await Array(groups).parallelMap(parallelism: maxConcurrentRequests) { prefix, candidates in
+            await self.process(prefix: prefix,
+                               candidates: candidates,
+                               cachedChecks: cachedChecks,
+                               checkedAt: checkedAt)
         }
     }
 
     func process(prefix: String,
-                 derived: [DerivedCompromisedPasswordCandidate],
-                 cached: [String: CompromisedPasswordCheck],
-                 now: Int) async -> PrefixOutcome {
+                 candidates: [DerivedCompromisedPasswordCandidate],
+                 cachedChecks: [String: CompromisedPasswordCheck],
+                 checkedAt: Int) async -> PrefixOutcome {
         // Only reuse a stored ETag (and thus accept a 304) when every item in this prefix has a
-        // matching, still-valid cached result to fall back on — otherwise force a fresh body.
-        let storedEtags = Set(derived.compactMap { cached[$0.id]?.etag }.filter { !$0.isEmpty })
-        let canConditional = storedEtags.count == 1 && derived.allSatisfy { derived in
-            guard let row = cached[derived.id] else {
+        // matching, still-valid cached result to fall back on - otherwise force a fresh body.
+        let cachedEtags = Set(candidates.compactMap { cachedChecks[$0.id]?.etag }.filter { !$0.isEmpty })
+        let everyCandidateHasValidCache = candidates.allSatisfy { candidate in
+            guard let cachedCheck = cachedChecks[candidate.id] else {
                 return false
             }
-            return row.passwordHash == derived.passwordHash && row.prefix == prefix && !row.etag.isEmpty
+            return cachedCheck.passwordHash == candidate.passwordHash
+                && cachedCheck.prefix == prefix
+                && !cachedCheck.etag.isEmpty
         }
-        let etagToSend = canConditional ? storedEtags.first : nil
-        var results = [String: Int]()
-        var rows = [CompromisedPasswordCheck]()
+        let etag = cachedEtags.count == 1 && everyCandidateHasValidCache ? cachedEtags.first : nil
+        var breachCounts = [String: Int]()
+        var checks = [CompromisedPasswordCheck]()
 
         do {
-            let response = try await remoteDatasource.query(prefix6: prefix, etag: etagToSend)
+            let response = try await remoteDatasource.query(prefix6: prefix, etag: etag)
             switch response {
             case .notModified:
-                for item in derived {
-                    guard let row = cached[item.id] else {
+                for candidate in candidates {
+                    guard let cachedCheck = cachedChecks[candidate.id] else {
                         continue
                     }
-                    results[item.id] = row.breachCount
-                    rows.append(.init(shareId: item.shareId,
-                                      itemId: item.itemId,
-                                      passwordHash: row.passwordHash,
-                                      prefix: row.prefix,
-                                      etag: row.etag,
-                                      breachCount: row.breachCount,
-                                      checkedAt: now))
+                    breachCounts[candidate.id] = cachedCheck.breachCount
+                    checks.append(.init(shareId: candidate.shareId,
+                                        itemId: candidate.itemId,
+                                        passwordHash: cachedCheck.passwordHash,
+                                        prefix: cachedCheck.prefix,
+                                        etag: cachedCheck.etag,
+                                        breachCount: cachedCheck.breachCount,
+                                        checkedAt: checkedAt))
                 }
-                return .init(results: results, rows: rows, succeeded: true)
+                return .init(breachCounts: breachCounts, checks: checks, succeeded: true)
 
             case let .modified(newEtag, body):
-                let suffixes = parseRange(body)
-                for item in derived {
-                    let breachCount = suffixes[item.suffix]
-                    results[item.id] = breachCount ?? 0
-                    rows.append(.init(shareId: item.shareId,
-                                      itemId: item.itemId,
-                                      passwordHash: item.passwordHash,
-                                      prefix: prefix,
-                                      etag: newEtag ?? "",
-                                      breachCount: breachCount ?? 0,
-                                      checkedAt: now))
+                let breachCountsBySuffix = body.parseBreachRange().countsBySuffix
+                for candidate in candidates {
+                    let breachCount = breachCountsBySuffix[candidate.suffix] ?? 0
+                    breachCounts[candidate.id] = breachCount
+                    checks.append(.init(shareId: candidate.shareId,
+                                        itemId: candidate.itemId,
+                                        passwordHash: candidate.passwordHash,
+                                        prefix: prefix,
+                                        etag: newEtag ?? "",
+                                        breachCount: breachCount,
+                                        checkedAt: checkedAt))
                 }
-                return .init(results: results, rows: rows, succeeded: true)
+                return .init(breachCounts: breachCounts, checks: checks, succeeded: true)
             }
         } catch {
             logger.error(error)
             // Keep cached results on error; never invalidate or mark unbreached.
-            for item in derived {
-                if let row = cached[item.id] {
-                    results[item.id] = row.breachCount
-                }
+            let cachedBreachCounts = candidates.compactMap { candidate in
+                cachedChecks[candidate.id].map { (candidate.id, $0.breachCount) }
             }
-            return .init(results: results, rows: [], succeeded: false)
+            return .init(breachCounts: Dictionary(cachedBreachCounts, uniquingKeysWith: { _, new in new }),
+                         checks: [],
+                         succeeded: false)
         }
-    }
-
-    /// Parses `SUFFIX:COUNT` lines into a suffix → count map. Padding entries (from
-    /// `Add-Padding`) simply never match a real suffix, so they are harmless.
-    func parseRange(_ body: Data) -> [String: Int] {
-        guard let text = String(data: body, encoding: .utf8) else {
-            return [:]
-        }
-        var result = [String: Int]()
-        for line in text.split(whereSeparator: \.isNewline) {
-            let parts = line.split(separator: ":", maxSplits: 1)
-            guard parts.count == 2 else {
-                continue
-            }
-            let suffix = parts[0].trimmingCharacters(in: .whitespaces).uppercased()
-            let breachCounts = Int(parts[1].trimmingCharacters(in: .whitespaces)) ?? 0
-            result[suffix] = breachCounts
-        }
-        return result
     }
 }
 
 // MARK: - Internal data struct
 
-private extension CompromisedPasswordChecker {
+extension CompromisedPasswordChecker {
     /// The plaintext candidate is deliberately not retained, so the password only lives for the duration
     /// of the initializer.
     struct DerivedCompromisedPasswordCandidate: ItemIdentifiable {
@@ -349,11 +318,19 @@ private extension CompromisedPasswordChecker {
             folderId = nil
         }
     }
+}
 
+private extension [CompromisedPasswordChecker.DerivedCompromisedPasswordCandidate] {
+    var groupedByPrefix: [String: Self] {
+        Dictionary(grouping: self, by: \.prefix)
+    }
+}
+
+private extension CompromisedPasswordChecker {
     struct PrefixOutcome {
         /// Breach count keyed by itemId + shareId.
-        let results: [String: Int]
-        let rows: [CompromisedPasswordCheck]
+        let breachCounts: [String: Int]
+        let checks: [CompromisedPasswordCheck]
         let succeeded: Bool
     }
 }

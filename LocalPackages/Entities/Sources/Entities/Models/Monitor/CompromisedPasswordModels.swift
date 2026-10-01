@@ -72,8 +72,8 @@ public struct CompromisedPasswordCheck: Sendable, Equatable {
 }
 
 public enum CompromisedRangeResponse: Sendable {
-    /// HTTP 304 — the range slice has not changed; the caller must reuse its cached result.
+    /// HTTP 304 - the range slice has not changed; the caller must reuse its cached result.
     case notModified
-    /// HTTP 200 — gunzipped body of `SUFFIX:COUNT` lines, plus the response `ETag` (if any).
+    /// HTTP 200 - gunzipped body of `SUFFIX:COUNT` lines, plus the response `ETag` (if any).
     case modified(etag: String?, body: Data)
 }
