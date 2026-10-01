@@ -74,13 +74,13 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
         }
 
         let newAutofillUrl = AutofillUrl(url: newUrl, mode: .default)
+        let newAutofillUrls = oldData.resolvedAutofillUrls + [newAutofillUrl]
         let newLoginData = ItemContentData.login(.init(email: oldData.email,
                                                        username: oldData.username,
                                                        password: oldData.password,
                                                        totpUri: oldData.totpUri,
-                                                       urls: oldData.urls + [newUrl],
-                                                       autofillUrls: oldData.resolvedAutofillUrls +
-                                                           [newAutofillUrl],
+                                                       urls: newAutofillUrls.map(\.url),
+                                                       autofillUrls: newAutofillUrls,
                                                        allowedAndroidApps: oldData.allowedAndroidApps,
                                                        passkeys: oldData.passkeys))
         let newContent = ItemContentProtobuf(name: oldContent.name,
