@@ -213,12 +213,11 @@ struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
 
 private extension MonitorListSection {
     var isSectionned: Bool {
-        switch self {
-        case .excludedItems, .weakness(.compromisedPassword), .weakness(.missing2FA), .weakness(.weakPassword):
-            false
-
-        case .weakness(.reusedPassword):
+        // Only reused password is sectioned (logins with same password are grouped)
+        if case let .weakness(kind) = self, kind == .reusedPassword {
             true
+        } else {
+            false
         }
     }
 }
