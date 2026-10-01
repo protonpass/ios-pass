@@ -23,6 +23,7 @@
 import ClientMocks
 import Core
 import CoreMocks
+import os
 import Testing
 import TestingToolkit
 import Entities
@@ -220,6 +221,9 @@ private extension UserEventsSynchronizerTests {
         await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
         shareRepository.stubbedRefreshShareResult = .random(targetType: args.refreshedShareType)
+        // The generated mock's own counter is a plain `var` bumped from concurrent child tasks
+        let refreshItemCount = OSAllocatedUnfairLock(initialState: 0)
+        itemRepository.closureRefreshItem = { refreshItemCount.withLock { $0 += 1 } }
 
         if var events = args.events {
             remoteUserEventsDatasource.closureGetUserEvents = {
@@ -234,7 +238,7 @@ private extension UserEventsSynchronizerTests {
                 args.getUserEventsRouteCalled)
 
         if let refreshItemInvokeCount = args.refreshItemInvokeCount {
-            #expect(itemRepository.invokedRefreshItemCount == refreshItemInvokeCount)
+            #expect(refreshItemCount.withLock { $0 } == refreshItemInvokeCount)
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
