@@ -54,7 +54,7 @@ struct SortFilterItemsMenu: View {
                             Label(title: {
                                 Text("Select items")
                             }, icon: {
-                                IconProvider.checkmarkCircle
+                                IconProvider.checkmarkCircle as Image
                             })
                         }
                         Divider()
@@ -74,7 +74,7 @@ struct SortFilterItemsMenu: View {
                             Label(title: {
                                 Text("Reset filters")
                             }, icon: {
-                                IconProvider.arrowUpAndLeft
+                                IconProvider.arrowUpAndLeft as Image
                             })
                         }
                     }
@@ -161,7 +161,7 @@ private extension SortFilterItemsMenu {
                     Text(verbatim: selectedType.title)
                 })
             }, icon: {
-                IconProvider.arrowDownArrowUp
+                IconProvider.arrowDownArrowUp as Image
             })
         })
     }

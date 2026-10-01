@@ -30,14 +30,14 @@ import Stores
 import SwiftUI
 
 @MainActor
-final class SettingsViewModel: ObservableObject, DeinitPrintable {
+final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresenting {
     deinit { print(deinitMessage) }
 
     let isShownAsSheet: Bool
     private let favIconRepository = dependency(\RepositoryContainer.favIconRepository)
-    private let logger = dependency(\ToolingContainer.logger)
+    let logger = dependency(\ToolingContainer.logger)
     private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
-    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = dependency(\UseCasesContainer.indexItemsForSpotlight)
     private let getSpotlightVaults = dependency(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = dependency(\UseCasesContainer.updateSpotlightVaults)
@@ -46,7 +46,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
     private let updateUserPreferences = dependency(\UseCasesContainer.updateUserPreferences)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\UseCasesContainer.fullContentSync) private var fullContentSync
+    @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
     @LazyInjected(\RepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
 
@@ -260,12 +260,10 @@ extension SettingsViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                router.present(for: .fullSync)
-                logger.info("Doing full sync")
                 let userId = try await userManager.getActiveUserId()
-                await fullContentSync(userId: userId, shouldStopEventLoop: true)
-                logger.info("Done full sync")
-                router.display(element: .successMessage(config: .refresh))
+                await presentFullSync(userId: userId,
+                                      shouldStopEventLoop: true,
+                                      reason: "settings")
             } catch {
                 handle(error)
             }

@@ -122,6 +122,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 }
 
 extension ItemType {
+    @MainActor
     var icon: Image {
         switch self {
         case .login:
@@ -147,6 +148,7 @@ extension ItemType {
         }
     }
 
+    @MainActor
     var tintColor: Color {
         switch self {
         case .login:
@@ -172,6 +174,7 @@ extension ItemType {
         }
     }
 
+    @MainActor
     var backgroundColor: Color {
         switch self {
         case .login:

@@ -25,6 +25,7 @@ import Entities
 import FactoryKit
 import Stores
 import SwiftUI
+import UseCases
 
 public struct ContainerDestinationSelectionView: View {
     @Binding private var selectedContainer: ShareSelectionPayload
@@ -33,9 +34,11 @@ public struct ContainerDestinationSelectionView: View {
 
     @State private var expandedContainerIds = Set<String>()
     @State private var shares: [ShareContent] = []
+    @State private var folderSupportState: FolderSupportState = .notSupported
 
     private let appContentManager = dependency(\ServiceContainer.appContentManager)
     private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
+    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
 
     public init(selectedContainer: Binding<ShareSelectionPayload>,
                 isFreeUser: Bool,
@@ -54,7 +57,7 @@ public struct ContainerDestinationSelectionView: View {
                 }
 
                 ContainerList(shares: shares,
-                              folderSupported: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                              folderSupported: folderSupportState.canCreateAndModifyFolders,
                               expandedContainerIds: $expandedContainerIds,
                               selectedContainer: $selectedContainer)
             }
@@ -72,6 +75,10 @@ public struct ContainerDestinationSelectionView: View {
         }
         .onReceive(appContentManager.$state) { _ in
             shares = appContentManager.getAllEditableVaultContents().sortedByHidden()
+        }
+        .onReceive(accessRepository.access) { access in
+            folderSupportState = .init(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                                       plan: access?.access.plan)
         }
     }
 

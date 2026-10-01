@@ -260,7 +260,7 @@ struct ProfileTabView: View {
 
                     OptionRow(height: .tall) {
                         if let message = type.fallbackToPasscodeMessage {
-                            StaticToggle(.localized(message),
+                            StaticToggle(message,
                                          isOn: viewModel.fallbackToPasscode,
                                          action: { viewModel.toggleFallbackToPasscode() })
                         }
@@ -324,7 +324,7 @@ struct ProfileTabView: View {
         VStack {
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
-                    StaticToggle(.localized("QuickType bar suggestions"),
+                    StaticToggle(#localized("QuickType bar suggestions"),
                                  isOn: viewModel.quickTypeBar,
                                  action: { viewModel.toggleQuickTypeBar() })
                 }
@@ -332,7 +332,7 @@ struct ProfileTabView: View {
                 PassSectionDivider()
 
                 OptionRow(height: .medium) {
-                    StaticToggle(.localized("Copy 2FA code"),
+                    StaticToggle(#localized("Copy 2FA code"),
                                  isOn: viewModel.automaticallyCopyTotpCode,
                                  action: { viewModel.toggleAutomaticCopyTotpCode() })
                 }

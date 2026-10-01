@@ -68,13 +68,13 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     // MARK: - weaknessStats
     public var invokedWeaknessStatsSetter = false
     public var invokedWeaknessStatsSetterCount = 0
-    public var invokedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>?
-    public var invokedWeaknessStatsList = [CurrentValueSubject<WeaknessStats, Never>?]()
+    public var invokedWeaknessStats: CurrentValueSubject<WeaknessStats?, Never>?
+    public var invokedWeaknessStatsList = [CurrentValueSubject<WeaknessStats?, Never>?]()
     public var invokedWeaknessStatsGetter = false
     public var invokedWeaknessStatsGetterCount = 0
-    public nonisolated(unsafe) var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats, Never>!
+    public nonisolated(unsafe) var stubbedWeaknessStats: CurrentValueSubject<WeaknessStats?, Never>!
 
-    public var weaknessStats: CurrentValueSubject<WeaknessStats, Never> {
+    public var weaknessStats: CurrentValueSubject<WeaknessStats?, Never> {
          get {
             return stubbedWeaknessStats
         }
@@ -112,11 +112,11 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
     public var closureGetItemsWithSamePassword: () -> () = {}
     public var invokedGetItemsWithSamePasswordfunction = false
     public var invokedGetItemsWithSamePasswordCount = 0
-    public var invokedGetItemsWithSamePasswordParameters: (item: ItemContent, Void)?
-    public var invokedGetItemsWithSamePasswordParametersList = [(item: ItemContent, Void)]()
-    public nonisolated(unsafe) var stubbedGetItemsWithSamePasswordResult: [ItemContent]!
+    public var invokedGetItemsWithSamePasswordParameters: (item: Entities.ItemContent, Void)?
+    public var invokedGetItemsWithSamePasswordParametersList = [(item: Entities.ItemContent, Void)]()
+    public nonisolated(unsafe) var stubbedGetItemsWithSamePasswordResult: [Entities.ItemContent]!
 
-    public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
+    public func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent] {
         invokedGetItemsWithSamePasswordfunction = true
         invokedGetItemsWithSamePasswordCount += 1
         invokedGetItemsWithSamePasswordParameters = (item, ())

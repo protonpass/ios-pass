@@ -23,6 +23,7 @@
 import ClientMocks
 import Core
 import CoreMocks
+import os
 import Testing
 import TestingToolkit
 import Entities
@@ -71,6 +72,39 @@ struct UserEventsSynchronizerTests {
     }
 }
 
+private extension UserEvents {
+    static func make(lastEventID: String,
+                     itemsUpdated: [ItemEvent] = [],
+                     itemsDeleted: [ItemEvent] = [],
+                     aliasNoteChanged: [ItemEvent] = [],
+                     invitesChanged: ChangeEvent? = nil,
+                     sharesCreated: [ShareEvent] = [],
+                     sharesUpdated: [ShareEvent] = [],
+                     sharesDeleted: [ShareEvent] = [],
+                     refreshUser: Bool = false,
+                     eventsPending: Bool = false,
+                     fullRefresh: Bool = false) -> Self {
+        .init(lastEventID: lastEventID,
+              itemsUpdated: itemsUpdated,
+              itemsDeleted: itemsDeleted,
+              aliasNoteChanged: aliasNoteChanged,
+              invitesChanged: invitesChanged,
+              groupInvitesChanged: nil,
+              sharesCreated: sharesCreated,
+              sharesUpdated: sharesUpdated,
+              sharesDeleted: sharesDeleted,
+              sharesWithInvitesToCreate: [],
+              foldersUpdated: [],
+              foldersDeleted: [],
+              pendingAliasToCreateChanged: nil,
+              breachUpdate: nil,
+              organizationUpdate: nil,
+              refreshUser: refreshUser,
+              eventsPending: eventsPending,
+              fullRefresh: fullRefresh)
+    }
+}
+
 private struct Args {
     var lastEventId: String?
     var events: [UserEvents]?
@@ -83,6 +117,10 @@ private struct Args {
     var refreshInviteInvokeCount: Int?
     var syncSimpleLoginNoteInvokeCount: Int?
     var storedLastEventId: String?
+    /// Type of the share returned by the stubbed `refreshShare`
+    var refreshedShareType: TargetType = .vault
+    var refreshFoldersInvokeCount: Int?
+    var refreshItemsInvokeCount: Int?
 
     static var noLocalLastEventIdTriggerFullRefresh: Self {
         .init(result: [.fullRefreshNeeded],
@@ -91,26 +129,7 @@ private struct Args {
 
     static var fullRefresh: Self {
         .init(lastEventId: .random(),
-              events: [
-                .init(lastEventID: .random(),
-                      itemsUpdated: [],
-                      itemsDeleted: [],
-                      aliasNoteChanged: [],
-                      invitesChanged: nil,
-                      groupInvitesChanged: nil,
-                      sharesCreated: [],
-                      sharesUpdated: [],
-                      sharesDeleted: [],
-                      sharesWithInvitesToCreate: [],
-                      foldersUpdated: [],
-                      foldersDeleted: [],
-                      pendingAliasToCreateChanged: nil,
-                      breachUpdate: nil,
-                      organizationUpdate: nil,
-                      refreshUser: false,
-                      eventsPending: false,
-                      fullRefresh: true)
-              ],
+              events: [.make(lastEventID: .random(), fullRefresh: true)],
               result: [.fullRefreshNeeded],
               getUserEventsRouteCalled: true)
     }
@@ -118,24 +137,12 @@ private struct Args {
     static var oneEventBatch: Self {
         .init(lastEventId: .random(),
               events: [
-                .init(lastEventID: "TestID",
-                      itemsUpdated: .random(count: 5),
-                      itemsDeleted: .random(count: 8),
-                      aliasNoteChanged: .random(count: 14),
-                      invitesChanged: nil,
-                      groupInvitesChanged: nil,
-                      sharesCreated: [],
-                      sharesUpdated: .random(count: 19),
-                      sharesDeleted: .random(count: 21),
-                      sharesWithInvitesToCreate: [],
-                      foldersUpdated: [],
-                      foldersDeleted: [],
-                      pendingAliasToCreateChanged: nil,
-                      breachUpdate: nil,
-                      organizationUpdate: nil,
-                      refreshUser: false,
-                      eventsPending: false,
-                      fullRefresh: false)
+                  .make(lastEventID: "TestID",
+                        itemsUpdated: .random(count: 5),
+                        itemsDeleted: .random(count: 8),
+                        aliasNoteChanged: .random(count: 14),
+                        sharesUpdated: .random(count: 19),
+                        sharesDeleted: .random(count: 21))
               ],
               result: [.dataUpdated],
               getUserEventsRouteCalled: true,
@@ -150,42 +157,21 @@ private struct Args {
     static var twoEventBatches: Self {
         .init(lastEventId: .random(),
               events: [
-                .init(lastEventID: "TestID1",
-                      itemsUpdated: .random(count: 7),
-                      itemsDeleted: .random(count: 16),
-                      aliasNoteChanged: .random(count: 90),
-                      invitesChanged: nil,
-                      groupInvitesChanged: nil,
-                      sharesCreated: [],
-                      sharesUpdated: .random(count: 3),
-                      sharesDeleted: .random(count: 8),
-                      sharesWithInvitesToCreate: [],
-                      foldersUpdated: [],
-                      foldersDeleted: [],
-                      pendingAliasToCreateChanged: nil,
-                      breachUpdate: nil,
-                      organizationUpdate: nil,
-                      refreshUser: true,
-                      eventsPending: true,
-                      fullRefresh: false),
-                .init(lastEventID: "TestID2",
-                      itemsUpdated: .random(count: 10),
-                      itemsDeleted: .random(count: 3),
-                      aliasNoteChanged: .random(count: 3),
-                      invitesChanged: .init(eventToken: .random()),
-                      groupInvitesChanged: nil,
-                      sharesCreated: [],
-                      sharesUpdated: .random(count: 27),
-                      sharesDeleted: .random(count: 14),
-                      sharesWithInvitesToCreate: [],
-                      foldersUpdated: [],
-                      foldersDeleted: [],
-                      pendingAliasToCreateChanged: nil,
-                      breachUpdate: nil,
-                      organizationUpdate: nil,
-                      refreshUser: false,
-                      eventsPending: false,
-                      fullRefresh: false)
+                  .make(lastEventID: "TestID1",
+                        itemsUpdated: .random(count: 7),
+                        itemsDeleted: .random(count: 16),
+                        aliasNoteChanged: .random(count: 90),
+                        sharesUpdated: .random(count: 3),
+                        sharesDeleted: .random(count: 8),
+                        refreshUser: true,
+                        eventsPending: true),
+                  .make(lastEventID: "TestID2",
+                        itemsUpdated: .random(count: 10),
+                        itemsDeleted: .random(count: 3),
+                        aliasNoteChanged: .random(count: 3),
+                        invitesChanged: .init(eventToken: .random()),
+                        sharesUpdated: .random(count: 27),
+                        sharesDeleted: .random(count: 14))
               ],
               result: [.dataUpdated, .invitesChanged, .refreshUser],
               getUserEventsRouteCalled: true,
@@ -197,6 +183,28 @@ private struct Args {
               syncSimpleLoginNoteInvokeCount: 2,
               storedLastEventId: "TestID2")
     }
+
+    static var createdVaultShare: Self {
+        createdShare(type: .vault, refreshFoldersInvokeCount: 1)
+    }
+
+    /// Item shares have no folders, the endpoint answers 403 for them
+    static var createdItemShare: Self {
+        createdShare(type: .item, refreshFoldersInvokeCount: 0)
+    }
+
+    private static func createdShare(type: TargetType, refreshFoldersInvokeCount: Int) -> Self {
+        .init(lastEventId: .random(),
+              events: [.make(lastEventID: "CreatedShareID", sharesCreated: .random(count: 1))],
+              result: [.dataUpdated],
+              getUserEventsRouteCalled: true,
+              refreshShareInvokeCount: 1,
+              deleteShareInvokeCount: 0,
+              storedLastEventId: "CreatedShareID",
+              refreshedShareType: type,
+              refreshFoldersInvokeCount: refreshFoldersInvokeCount,
+              refreshItemsInvokeCount: 1)
+    }
 }
 
 private extension UserEventsSynchronizerTests {
@@ -205,11 +213,17 @@ private extension UserEventsSynchronizerTests {
             Args.noLocalLastEventIdTriggerFullRefresh,
             Args.fullRefresh,
             Args.oneEventBatch,
-            Args.twoEventBatches
+            Args.twoEventBatches,
+            Args.createdVaultShare,
+            Args.createdItemShare
           ])
     func sync(args: Args) async throws {
         await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
+        shareRepository.stubbedRefreshShareResult = .random(targetType: args.refreshedShareType)
+        // The generated mock's own counter is a plain `var` bumped from concurrent child tasks
+        let refreshItemCount = OSAllocatedUnfairLock(initialState: 0)
+        itemRepository.closureRefreshItem = { refreshItemCount.withLock { $0 += 1 } }
 
         if var events = args.events {
             remoteUserEventsDatasource.closureGetUserEvents = {
@@ -224,11 +238,11 @@ private extension UserEventsSynchronizerTests {
                 args.getUserEventsRouteCalled)
 
         if let refreshItemInvokeCount = args.refreshItemInvokeCount {
-            #expect(itemRepository.invokedRefreshItemCount == refreshItemInvokeCount)
+            #expect(refreshItemCount.withLock { $0 } == refreshItemInvokeCount)
         }
 
         if let deleteItemsInvokeCount = args.deleteItemsInvokeCount {
-            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount36 == deleteItemsInvokeCount)
+            #expect(itemRepository.invokedDeleteItemsLocallyItemsAsyncCount35 == deleteItemsInvokeCount)
         }
 
         if let refreshShareInvokeCount = args.refreshShareInvokeCount {
@@ -251,6 +265,33 @@ private extension UserEventsSynchronizerTests {
             #expect(localUserEventIdDatasource.invokedUpsertLastEventIdParameters?.lastEventId ==
                     storedLastEventId)
         }
+
+        if let refreshFoldersInvokeCount = args.refreshFoldersInvokeCount {
+            #expect(folderRepositoryProtocolMock.invokedRefreshFoldersUserIdShareIdAsyncCount5 ==
+                    refreshFoldersInvokeCount)
+        }
+
+        if let refreshItemsInvokeCount = args.refreshItemsInvokeCount {
+            #expect(itemRepository.invokedRefreshItemsCount == refreshItemsInvokeCount)
+        }
+    }
+
+    /// A failing folder refresh must not advance the event cursor, otherwise the batch is skipped and the
+    /// local data it describes is never reconciled.
+    @Test("Failing to refresh the folders of a created share does not advance the last event ID")
+    func failedFolderRefreshKeepsLastEventId() async throws {
+        await slNoteSynchronizer.stubResults()
+        localUserEventIdDatasource.stubbedGetLastEventIdResult = .random()
+        shareRepository.stubbedRefreshShareResult = .random(targetType: .vault)
+        folderRepositoryProtocolMock.refreshFoldersUserIdShareIdThrowableError5 = PassError.unexpectedError
+
+        remoteUserEventsDatasource.stubbedGetUserEventsResult =
+            .make(lastEventID: "NeverStored", sharesCreated: .random(count: 1))
+
+        await #expect(throws: (any Error).self) {
+            try await sut.sync(userId: .random())
+        }
+        #expect(!localUserEventIdDatasource.invokedUpsertLastEventIdfunction)
     }
 }
 

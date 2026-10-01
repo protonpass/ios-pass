@@ -61,6 +61,17 @@ public extension ItemIdentifiable {
 }
 
 public extension Array where Element: ItemIdentifiable {
+    /// Items belonging to `shareId`, narrowed to `containerIds` when given.
+    /// `nil` means the whole share at any depth; a set means those containers only, so callers
+    /// pass a folder's subtree to include descendants or a single id to exclude them.
+    func scoped(toShare shareId: String, containerIds: Set<String>?) -> Self {
+        filter { item in
+            guard item.shareId == shareId else { return false }
+            guard let containerIds else { return true }
+            return containerIds.contains(item.parentId)
+        }
+    }
+
     func contains(_ item: some ItemIdentifiable) -> Bool {
         contains(where: { $0.shareId == item.shareId && $0.itemId == item.itemId })
     }

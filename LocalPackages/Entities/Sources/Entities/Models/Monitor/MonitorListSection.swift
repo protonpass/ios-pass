@@ -1,7 +1,7 @@
 //
-// SecurityWeakness.swift
-// Proton Pass - Created on 08/03/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// MonitorListSection.swift
+// Proton Pass - Created on 16/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,10 +20,9 @@
 
 import Foundation
 
-public enum SecurityWeakness: Equatable, Sendable, Hashable {
-    case weakPasswords
-    case reusedPasswords
-    case breaches
-    case missing2FA
+/// Selects which list the Pass Monitor weakness-detail screen shows (and the matching dashboard row).
+/// Dark Web Monitoring is intentionally NOT here - it is an account-level concern with its own route.
+public enum MonitorListSection: Sendable, Hashable {
+    case weakness(WeaknessKind)
     case excludedItems
 }

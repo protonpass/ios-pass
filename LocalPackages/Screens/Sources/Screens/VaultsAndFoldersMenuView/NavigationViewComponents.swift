@@ -72,7 +72,7 @@ struct VaultScopeRow: View {
                 EmptyView()
 
             case let .precise(payload):
-                VaultTrailingMenu(vault: payload.share, haveItems: itemCount > 0, viewModel: viewModel)
+                VaultTrailingMenu(vault: payload.share, viewModel: viewModel)
 
             case .trash:
                 TrashTrailingMenu(viewModel: viewModel)
@@ -106,7 +106,6 @@ private struct ThreeDotsMenuLabel: View {
 
 private struct VaultTrailingMenu: View {
     let vault: Share
-    let haveItems: Bool
     let viewModel: VaultsAndFoldersMenuViewModel
 
     var body: some View {
@@ -125,9 +124,10 @@ private struct VaultTrailingMenu: View {
                 })
             }
 
-            if viewModel.folderSupported, viewModel.canAddFolderAtVaultRoot(for: vault), vault.shareRole != .read {
+            if viewModel.canAddFolderAtVaultRoot(for: vault),
+               vault.shareRole != .read {
                 Button(action: {
-                    if viewModel.shouldUpsell {
+                    if viewModel.folderSupportState.shouldUpsell {
                         viewModel.upgradeSubscription()
                     } else {
                         viewModel.folderAction = .createNewFolder(vault, parentFolderId: nil)
@@ -150,7 +150,7 @@ private struct VaultTrailingMenu: View {
                     Label(title: {
                         Text("Share", bundle: .module)
                     }, icon: {
-                        IconProvider.userPlus
+                        IconProvider.userPlus as Image
                     })
                 })
             }
@@ -162,19 +162,19 @@ private struct VaultTrailingMenu: View {
                     Label(title: {
                         Text(vault.isManager ? "Manage access" : "View members", bundle: .module)
                     }, icon: {
-                        IconProvider.users
+                        IconProvider.users as Image
                     })
                 })
             }
 
-            if viewModel.canMoveItems(vault: vault), haveItems {
+            if viewModel.canMoveItems(vault: vault) {
                 Button(action: {
                     viewModel.router.present(for: .moveItemsBetweenVaults(.allItems(vault)))
                 }, label: {
                     Label(title: {
                         Text("Move all items", bundle: .module)
                     }, icon: {
-                        IconProvider.folderArrowIn
+                        IconProvider.folderArrowIn as Image
                     })
                 })
             }
@@ -189,7 +189,7 @@ private struct VaultTrailingMenu: View {
                            Label(title: {
                                Text("Delete vault", bundle: .module)
                            }, icon: {
-                               IconProvider.trash
+                               IconProvider.trash as Image
                            })
                        })
             } else if vault.groupID == nil {
@@ -200,7 +200,7 @@ private struct VaultTrailingMenu: View {
                            Label(title: {
                                Text("Leave vault", bundle: .module)
                            }, icon: {
-                               IconProvider.trash
+                               IconProvider.trash as Image
                            })
                        })
             }
@@ -221,7 +221,7 @@ private struct TrashTrailingMenu: View {
                     Label(title: {
                         Text("Restore all items", bundle: .module)
                     }, icon: {
-                        IconProvider.clockRotateLeft
+                        IconProvider.clockRotateLeft as Image
                     })
                 }
 
@@ -235,7 +235,7 @@ private struct TrashTrailingMenu: View {
                            Label(title: {
                                Text("Empty trash", bundle: .module)
                            }, icon: {
-                               IconProvider.trashCross
+                               IconProvider.trashCross as Image
                            })
                        })
             }, label: { ThreeDotsMenuLabel() })

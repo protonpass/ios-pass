@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct DetailMonitoredItemView: View {
@@ -229,7 +230,7 @@ private extension DetailMonitoredItemView {
                     if viewModel.isCustomEmail {
                         Button { viewModel.removeCustomMailFromMonitor() } label: {
                             Label(title: { Text("Remove") },
-                                  icon: { IconProvider.trash })
+                                  icon: { IconProvider.trash as Image })
                         }
                     } else {
                         ToggleMonitorButton(monitored: viewModel.isMonitored,

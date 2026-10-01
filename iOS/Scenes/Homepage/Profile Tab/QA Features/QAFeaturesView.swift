@@ -55,6 +55,7 @@ struct QAFeaturesView: View {
                     PasswordPolicySection()
                     FeatureDiscoverySection()
                     DismissibleUIElementsSection()
+                    FolderForceSyncSection()
 
                     InAppNotificationSection(onDismiss: dismiss.callAsFunction)
                     Toggle(isOn: $displayUpgradeAppBanner) {

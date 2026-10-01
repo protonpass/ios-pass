@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Macro
@@ -52,10 +53,7 @@ private extension LogInDetailView {
             ScrollViewReader { value in
                 ScrollView {
                     VStack(spacing: 0) {
-                        if viewModel.showSecurityIssues, let issues = viewModel.securityIssues {
-                            securityIssuesView(issues: issues)
-                                .padding(.vertical)
-                        }
+                        securityIssuesView
 
                         if let vaultContent = viewModel.shareContent?.share.vaultContent {
                             ItemPathBreadcrumbView(vaultContent: vaultContent, path: viewModel.path)
@@ -122,6 +120,7 @@ private extension LogInDetailView {
             }
         }
         .animation(.default, value: viewModel.moreInfoSectionExpanded)
+        .animation(.default, value: viewModel.securityIssues)
         .itemDetailSetUp(viewModel)
     }
 }
@@ -397,125 +396,17 @@ private extension LogInDetailView {
 }
 
 private extension LogInDetailView {
-    func securityIssuesView(issues: [SecurityWeakness]) -> some View {
-        VStack {
-            ForEach(issues, id: \.self) {
-                securityWeaknessRow(weakness: $0)
-            }
-        }
-    }
-
     @ViewBuilder
-    func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
-        let rowType = weakness.secureRowType
-        let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
-        HStack(spacing: DesignConstant.sectionPadding) {
-            if showIcon, let iconName = rowType.detailIcon {
-                VStack {
-                    Image(systemName: iconName)
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundStyle(rowType.iconColor)
-                        .frame(width: 28)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    Spacer()
-                }
-            }
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                if let title = weakness.detailTitle {
-                    Text(title)
-                        .fontWeight(.bold)
-                        .foregroundStyle(rowType.iconColor)
-                }
-                if weakness == .reusedPasswords {
-                    reusedList(rowType: rowType)
-                        .padding(.vertical, DesignConstant.sectionPadding / 4)
-                }
-                if let infos = weakness.infos {
-                    Text(infos)
-                        .font(.callout)
-                        .foregroundStyle(rowType.iconColor)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.reusedItems)
-        .roundedDetailSection(backgroundColor: rowType.detailBackground,
-                              borderColor: rowType.border)
-    }
-
-    @ViewBuilder
-    func reusedList(rowType: SecureRowType) -> some View {
-        switch viewModel.reusedItems {
-        case .fetching:
-            ProgressView()
-                .tint(rowType.iconColor)
-
-        case let .fetched(reusedItems):
-            let reuseText: () -> Text = {
-                Text("\(reusedItems.count) other logins use this password")
-                    .fontWeight(.bold)
-                    .foregroundStyle(rowType.iconColor)
-            }
-            if reusedItems.count > 5 {
-                reuseText()
-                HStack {
-                    CapsuleTextButton(title: #localized("See all"),
-                                      titleColor: rowType.iconColor,
-                                      backgroundColor: rowType.iconColor.opacity(0.2),
-                                      action: { viewModel.showItemList() })
-                        .fixedSize(horizontal: true, vertical: true)
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                VStack(alignment: .leading) {
-                    reuseText()
-                    ReusedItemsPassListView(reusedPasswordItems: reusedItems,
-                                            action: { viewModel.showDetail(for: $0) })
-                }
-            }
-
-        case let .error(error):
-            RetryableErrorView(mode: .defaultHorizontal,
-                               tintColor: PassColor.loginInteractionNormMajor2,
-                               error: error,
-                               onRetry: viewModel.fetchSimilarPasswordItems)
-        }
-    }
-}
-
-struct ReusedItemsPassListView: View {
-    let reusedPasswordItems: [ItemContent]
-    let action: (ItemContent) -> Void
-
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .center, spacing: 8) {
-                ForEach(reusedPasswordItems) { item in
-                    Button {
-                        action(item)
-                    } label: {
-                        HStack(alignment: .center, spacing: 8) {
-                            ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                  size: .small,
-                                                  alternativeBackground: true)
-                            Text(item.title)
-                                .lineLimit(1)
-                                .foregroundStyle(PassColor.textNorm)
-                                .padding(.trailing, 8)
-                        }
-                        .padding(8)
-                        .frame(maxWidth: 165, alignment: .leading)
-                        .background(item.type.normMinor1Color)
-                        .cornerRadius(16)
-                    }
-                }
-            }
+    var securityIssuesView: some View {
+        if let issues = viewModel.securityIssues, !issues.isEmpty {
+            SecurityIssueView(weaknesses: issues,
+                              reusedItems: viewModel.reusedItems,
+                              isPerCheckExclusionEnabled: viewModel.isPerCheckExclusionEnabled,
+                              onToggleMonitoring: viewModel.toggleMonitoring(weakness:),
+                              onShowReusedItemList: viewModel.showItemList,
+                              onShowItemDetail: viewModel.showDetail(for:),
+                              onRetryFetchReusedItems: viewModel.fetchSimilarPasswordItems)
+                .padding(.vertical)
         }
     }
 }

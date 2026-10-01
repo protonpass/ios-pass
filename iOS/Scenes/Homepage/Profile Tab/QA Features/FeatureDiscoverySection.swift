@@ -65,7 +65,7 @@ private extension FeatureDiscoveryView {
     var content: some View {
         Section {
             ForEach(NewFeature.allCases, id: \.self) { feature in
-                StaticToggle(.verbatim(feature.description),
+                StaticToggle(feature.description,
                              isOn: !eligibleDiscoveries.contains(feature),
                              action: {
                                  if eligibleDiscoveries.contains(feature) {

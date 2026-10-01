@@ -74,6 +74,9 @@ final class SearchResultsViewModel: ObservableObject {
         case .trash:
             #localized("Trash")
 
+        case let .precise(selection) where selection.folder != nil:
+            selection.title
+
         default:
             #localized("Current vault")
         }

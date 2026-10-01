@@ -109,6 +109,10 @@ public extension ToolingContainer {
                               doh: self.doh(),
                               authManager: self.authManager()) }
     }
+
+    var gunzipper: Factory<any GunzipperProtocol> {
+        self { Gunzipper() }
+    }
 }
 
 // MARK: User centric tools

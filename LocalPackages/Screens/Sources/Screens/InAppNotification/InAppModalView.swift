@@ -53,7 +53,7 @@ public struct InAppModalView: View {
                     AsyncImage(url: imageUrl,
                                content: { image in
                                    image.resizable()
-                                       .aspectRatio(contentMode: .fit)
+                                       .scaledToFit()
                                        .frame(minHeight: 150, idealHeight: 180, maxHeight: 180)
                                },
                                placeholder: {

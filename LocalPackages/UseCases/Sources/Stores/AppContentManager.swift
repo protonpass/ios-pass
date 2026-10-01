@@ -24,7 +24,6 @@ import Core
 @preconcurrency import CryptoKit
 import Entities
 import Foundation
-import Macro
 import ProtonCoreLogin
 import SwiftUI
 import UseCases
@@ -94,7 +93,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let indexAllLoginItems: any IndexAllLoginItemsUseCase
     private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
     private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
-    private let getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase
+    private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
@@ -102,6 +101,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
+    private var fullSyncTask: (userId: String, task: Task<Bool, Never>)?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -121,7 +121,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 indexAllLoginItems: any IndexAllLoginItemsUseCase,
                 indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
                 deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
-                getLastEventIdIfNotExist: any GetLastEventIdIfNotExistUseCase,
+                getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
@@ -137,7 +137,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.indexAllLoginItems = indexAllLoginItems
         self.indexItemsForSpotlight = indexItemsForSpotlight
         self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
-        self.getLastEventIdIfNotExist = getLastEventIdIfNotExist
+        self.getAndStoreLastEventId = getAndStoreLastEventId
         self.getFeatureFlagStatus = getFeatureFlagStatus
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
@@ -150,7 +150,13 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         getAllShares().numberOfOwnedVault <= 1
     }
 
+    public var isFullSyncing: Bool {
+        fullSyncTask != nil
+    }
+
     public func reset() {
+        fullSyncTask?.task.cancel()
+        fullSyncTask = nil
         state = .loading
         shareSelection = .all
         itemCount = .zero
@@ -215,7 +221,48 @@ public extension AppContentManager {
     }
 
     /// Delete everything and download again
-    func fullSync(userId: String) async {
+    ///
+    /// Several unrelated triggers can land here at once (settings, server-forced refresh, crash
+    /// resume, folder repair). A caller for the *same* user joins the sync already in flight
+    /// instead of starting a parallel wipe, and must not return early: callers present a
+    /// non-dismissible progress screen that only closes on a `vaultSyncEventStream` terminal
+    /// event, so returning without awaiting the real completion would strand that screen forever.
+    /// A caller for a different user waits its turn and then runs its own sync - joining would
+    /// report that user as synced without having downloaded anything for them.
+    ///
+    /// The loop is load-bearing: several callers can be parked on the same `await`, and they
+    /// resume one at a time on the main actor. `fullSyncTask` is assigned synchronously after
+    /// `Task { }` with no suspension in between, so whoever resumes second observes the new task
+    /// and joins it rather than starting a duplicate.
+    @discardableResult
+    func fullSync(userId: String) async -> Bool {
+        while let inFlight = fullSyncTask {
+            logger.info("Full sync already in progress, joining it for user \(userId)")
+            let succeeded = await inFlight.task.value
+            if inFlight.userId == userId {
+                return succeeded
+            }
+        }
+
+        let task = Task { [weak self] in
+            guard let self else { return false }
+
+            defer { fullSyncTask = nil }
+            return await performFullSync(userId: userId)
+        }
+        fullSyncTask = (userId, task)
+        return await task.value
+    }
+
+    func localFullSync(userId: String) async throws {
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        state = .loading
+        try await loadContents(userId: userId, for: shares)
+    }
+}
+
+private extension AppContentManager {
+    func performFullSync(userId: String) async -> Bool {
         vaultSyncEventStream.send(.started)
 
         incompleteFullSyncUserId = userId
@@ -287,20 +334,16 @@ public extension AppContentManager {
             try await loadContents(userId: userId, for: remoteShares.shares)
 
             // 5. Get the lastEventID as a starting point for user events sync loop
-            try await getLastEventIdIfNotExist(userId: userId)
+            try await getAndStoreLastEventId(userId: userId)
         } catch {
             vaultSyncEventStream.send(.error(userId: userId, error: error))
-            return
+            return false
         }
 
         incompleteFullSyncUserId = nil
+        await markFolderForceSyncDone()
         vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
-    }
-
-    func localFullSync(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        state = .loading
-        try await loadContents(userId: userId, for: shares)
+        return true
     }
 }
 
@@ -436,16 +479,11 @@ public extension AppContentManager {
         }
     }
 
-    func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
-        try await itemRepository.getItemContent(shareId: shareId, itemId: itemId)
-    }
-
     @MainActor
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     func getFilteredItems() -> [ItemUiModel] {
         guard let sharesData = state.loadedContent else { return [] }
 
@@ -461,30 +499,8 @@ public extension AppContentManager {
             break // Proceed to share selection logic
         }
 
-        let hiddenShareIds = sharesData.hiddenSharesIds // shares.values.compactMap(\.share).hiddenShareIds
-
         // 2. Determine base items based on share selection
-        // (hidden shares are computed lazily only when needed)
-        let baseItems: [ItemUiModel] = switch shareSelection {
-        case .all:
-            sharesData.visibleShareContents.flatMap(\.allItems)
-
-        case let .precise(selection):
-            if let shareContent = sharesData.shares[selection.share.id] {
-                shareContent.flattenedItems(from: selection.folder?.folderId ?? selection.share.shareId)
-            } else {
-                []
-            }
-
-        case .sharedByMe:
-            sharesData.itemsSharedByMe
-
-        case .sharedWithMe:
-            sharesData.itemsSharedWithMe
-
-        case .trash:
-            sharesData.trashedItems.filter { !hiddenShareIds.contains($0.shareId) }
-        }
+        let baseItems = sharesData.items(for: shareSelection)
 
         // 3. Apply final type filter if needed
         switch filterOption {
@@ -576,6 +592,17 @@ extension AppContentManager: LimitationCounterProtocol {
 // MARK: - Private APIs
 
 private extension AppContentManager {
+    func markFolderForceSyncDone() async {
+        guard var state = preferencesManager.userPreferences.value?.folderForceSync,
+              !state.done else { return }
+        state.done = true
+        do {
+            try await preferencesManager.updateUserPreferences(\.folderForceSync, value: state)
+        } catch {
+            logger.error(error)
+        }
+    }
+
     func setUp() {
         $state
             .removeDuplicates()
@@ -601,9 +628,11 @@ private extension AppContentManager {
 
     func updateItemCount() {
         guard let sharesData = state.loadedContent else { return }
+        let items = sharesData.items(for: shareSelection)
+
         switch shareSelection {
         case .all:
-            itemCount = ItemCount(items: sharesData.shares.flatMap(\.value.allItems),
+            itemCount = ItemCount(items: items,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
 
@@ -612,7 +641,6 @@ private extension AppContentManager {
                 itemCount = ItemCount(items: [], sharedByMe: 0, sharedWithMe: 0)
                 return
             }
-            let items = share.allItems
             let shouldCount = !share.share.isVaultRepresentation
 
             if share.share.owner {
@@ -622,17 +650,17 @@ private extension AppContentManager {
             }
 
         case .sharedByMe:
-            itemCount = ItemCount(items: sharesData.itemsSharedByMe,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: 0)
 
         case .sharedWithMe:
-            itemCount = ItemCount(items: sharesData.itemsSharedWithMe,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: 0,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
 
         case .trash:
-            itemCount = ItemCount(items: sharesData.trashedItems,
+            itemCount = ItemCount(items: items,
                                   sharedByMe: 0,
                                   sharedWithMe: 0)
         }
@@ -640,11 +668,7 @@ private extension AppContentManager {
 
     func createDefaultVault() async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultContent(name: #localized("Personal"),
-                                 description: #localized("Personal"),
-                                 color: .color1,
-                                 icon: .icon1)
-        try await shareRepository.createVault(userId: nil, vault: vault)
+        try await shareRepository.createVault(userId: nil, vault: .defaultVault)
         logger.info("Created default vault for user")
     }
 

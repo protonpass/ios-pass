@@ -1,0 +1,57 @@
+//
+// WeaknessKind.swift
+// Proton Pass - Created on 15/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Foundation
+
+/// Single source of truth for weakness identity, display order and the per-check exclusion flag.
+/// Item-scoped and individually excludable, unlike breaches, which are account-level (Dark Web Monitoring).
+public enum WeaknessKind: Sendable, Hashable, CaseIterable, Identifiable, Comparable {
+    case weakPassword
+    case compromisedPassword
+    case reusedPassword
+    case missing2FA
+
+    public var id: Self {
+        self
+    }
+
+    /// Product-defined display order - lower value is shown first / treated as higher priority.
+    public var displayPriority: Int {
+        switch self {
+        case .weakPassword: 0
+        case .compromisedPassword: 1
+        case .reusedPassword: 2
+        case .missing2FA: 3
+        }
+    }
+
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.displayPriority < rhs.displayPriority
+    }
+
+    public var skipFlag: ItemFlags {
+        switch self {
+        case .weakPassword: .skipWeakPasswordCheck
+        case .compromisedPassword: .skipCompromisedPasswordCheck
+        case .reusedPassword: .skipReusedPasswordCheck
+        case .missing2FA: .skip2FACheck
+        }
+    }
+}

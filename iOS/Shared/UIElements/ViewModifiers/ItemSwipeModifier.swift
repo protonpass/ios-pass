@@ -48,7 +48,7 @@ struct ItemSwipeModifier: ViewModifier {
                         Label(title: {
                             Text("Restore")
                         }, icon: {
-                            IconProvider.clockRotateLeft
+                            IconProvider.clockRotateLeft as Image
                         })
                     })
                     .tint(PassColor.signalSuccess)
@@ -64,7 +64,7 @@ struct ItemSwipeModifier: ViewModifier {
                         Label(title: {
                             Text("Permanently delete")
                         }, icon: {
-                            IconProvider.trashCross
+                            IconProvider.trashCross as Image
                         })
                     })
                     .tint(PassColor.signalDanger)
@@ -79,7 +79,7 @@ struct ItemSwipeModifier: ViewModifier {
                         Label(title: {
                             Text("Trash")
                         }, icon: {
-                            IconProvider.trash
+                            IconProvider.trash as Image
                         })
                     })
                     .tint(PassColor.signalDanger)

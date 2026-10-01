@@ -71,6 +71,10 @@ public extension ItemFlagable {
     var twoFACheckDisabled: Bool {
         itemFlags.contains(.skip2FACheck)
     }
+
+    var suppressedChecks: Set<WeaknessKind> {
+        Set(WeaknessKind.allCases.filter { itemFlags.contains($0.skipFlag) })
+    }
 }
 
 public struct ItemFlags: Sendable, OptionSet {

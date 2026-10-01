@@ -91,13 +91,13 @@ private extension AccountList {
             Menu(content: {
                 Button(action: { onManage(detail) },
                        label: { Label(title: { Text("Manage account", bundle: .module) },
-                                      icon: { IconProvider.cogWheel }) })
+                                      icon: { IconProvider.cogWheel as Image }) })
 
                 Divider()
 
                 Button(action: { onSignOut(detail) },
                        label: { Label(title: { Text("Sign out", bundle: .module) },
-                                      icon: { IconProvider.arrowOutFromRectangle }) })
+                                      icon: { IconProvider.arrowOutFromRectangle as Image }) })
             }, label: {
                 icon(with: IconProvider.threeDotsVertical,
                      foregroundColor: PassColor.textWeak)

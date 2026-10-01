@@ -71,6 +71,10 @@ private extension UseCasesContainer {
         RepositoryContainer.shared.publicKeyRepository()
     }
 
+    var folderRepository: any FolderRepositoryProtocol {
+        RepositoryContainer.shared.folderRepository()
+    }
+
     @MainActor
     var appContentManager: any AppContentManagerProtocol {
         ServiceContainer.shared.appContentManager()
@@ -238,7 +242,8 @@ public extension UseCasesContainer {
 
 public extension UseCasesContainer {
     var getPendingUserInvitations: Factory<any GetPendingUserInvitationsUseCase> {
-        self { GetPendingUserInvitations(repository: self.inviteRepository) }
+        self { GetPendingUserInvitations(repository: self.inviteRepository,
+                                         userManager: self.userManager) }
     }
 
     var refreshInvitations: Factory<any RefreshInvitationsUseCase> {
@@ -247,13 +252,14 @@ public extension UseCasesContainer {
     }
 
     var rejectInvitation: Factory<any RejectInvitationUseCase> {
-        self { RejectInvitation(repository: self.inviteRepository,
-                                userManager: self.userManager) }
+        self { RejectInvitation(repository: self.inviteRepository) }
     }
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
-        self { AcceptInvitation(repository: self.inviteRepository,
-                                userManager: self.userManager,
+        self { AcceptInvitation(inviteRepository: self.inviteRepository,
+                                itemRepository: self.itemRepository,
+                                shareRepository: self.shareRepository,
+                                folderRepository: self.folderRepository,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                 logManager: self.logManager) }
@@ -263,10 +269,6 @@ public extension UseCasesContainer {
         self { DecodeShareVaultInformation(getEmailPublicKey: self.getEmailPublicKey(),
                                            getInviteDecryptionKeys: self.getInviteDecryptionKeys(),
                                            logManager: self.logManager) }
-    }
-
-    var updateCachedInvitations: Factory<any UpdateCachedInvitationsUseCase> {
-        self { UpdateCachedInvitations(repository: self.inviteRepository) }
     }
 
     var revokeInvitation: Factory<any RevokeInvitationUseCase> {
@@ -371,12 +373,15 @@ public extension UseCasesContainer {
         self { GetAllPinnedItems(itemRepository: self.itemRepository) }
     }
 
+    @MainActor
     var getSearchableItems: Factory<any GetSearchableItemsUseCase> {
         self { GetSearchableItems(itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
                                   getAllPinnedItems: self.getAllPinnedItems(),
                                   dedupShare: self.dedupShare(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider) }
+                                  symmetricKeyProvider: self.symmetricKeyProvider,
+                                  appContentManager: self.appContentManager,
+                                  logManager: self.logManager) }
     }
 
     var getItemHistory: Factory<any GetItemHistoryUseCase> {
@@ -489,10 +494,7 @@ public extension UseCasesContainer {
 public extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<any GetAllSecurityAffectedLoginsUseCase> {
         self {
-            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
-                                         symmetricKeyProvider: DataContainer.shared
-                                             .nonSendableSymmetricKeyProvider(),
-                                         getPasswordStrength: self.getPasswordStrength())
+            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository)
         }
     }
 
@@ -577,13 +579,11 @@ public extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
-                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
-        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager,
-                                 userManager: self.userManager) }
+        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager) }
     }
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
@@ -593,8 +593,7 @@ public extension UseCasesContainer {
     }
 
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
-        self { RecreateSecureLink(passKeyManager: self.passKeyManager,
-                                  userManager: self.userManager) }
+        self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
     }
 
     var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
@@ -776,6 +775,35 @@ public extension UseCasesContainer {
     var fullContentSync: Factory<any FullContentSyncUseCase> {
         self { FullContentSync(syncEventLoop: ServiceContainer.shared.syncEventLoop(),
                                appContentManager: self.appContentManager) }
+    }
+}
+
+// MARK: - Folders
+
+public extension UseCasesContainer {
+    var userHasRemoteFolders: Factory<any UserHasRemoteFoldersUseCase> {
+        self { UserHasRemoteFolders(shareRepository: RepositoryContainer.shared.shareRepository(),
+                                    remoteFolderDatasource: RepositoryContainer.shared
+                                        .remoteFolderDatasource()) }
+    }
+
+    var shouldShowFolderSyncBanner: Factory<any ShouldShowFolderSyncBannerUseCase> {
+        self { ShouldShowFolderSyncBanner(getUserPreferences: self.getUserPreferences(),
+                                          getFeatureFlagStatus: self.getFeatureFlagStatus(),
+                                          userHasRemoteFolders: self.userHasRemoteFolders(),
+                                          userManager: self.userManager,
+                                          storage: kSharedUserDefaults,
+                                          logManager: self.logManager) }
+    }
+
+    var shouldForceSyncForFolders: Factory<any ShouldForceSyncForFoldersUseCase> {
+        self { ShouldForceSyncForFolders(getUserPreferences: self.getUserPreferences(),
+                                         getFeatureFlagStatus: self.getFeatureFlagStatus(),
+                                         refreshFeatureFlags: self.refreshFeatureFlags(),
+                                         userHasRemoteFolders: self.userHasRemoteFolders(),
+                                         updateUserPreferences: self.updateUserPreferences(),
+                                         reachability: ServiceContainer.shared
+                                             .reachabilityService()) }
     }
 }
 
@@ -980,7 +1008,10 @@ public extension UseCasesContainer {
                                        userEventIdDatasource: container.localUserEventIdDatasource(),
                                        coreEventIdDatasource: container.localCoreEventIdDatasource(),
                                        folderDatasource: container.localFolderDatasource(),
-                                       folderKeysDatasource: container.localFolderKeyDatasource())
+                                       folderKeysDatasource: container.localFolderKeyDatasource(),
+                                       compromisedPasswordDatasource: container
+                                           .localCompromisedPasswordDatasource(),
+                                       localTimestampDatasource: container.localTimestampDatasource())
         }
     }
 
@@ -1022,11 +1053,11 @@ public extension UseCasesContainer {
                                  keychain: self.keychain) }
     }
 
-    var getLastEventIdIfNotExist: Factory<any GetLastEventIdIfNotExistUseCase> {
+    var getAndStoreLastEventId: Factory<any GetAndStoreLastEventIdUseCase> {
         self {
             let container = RepositoryContainer.shared
-            return GetLastEventIdIfNotExist(localDatasource: container.localUserEventIdDatasource(),
-                                            remoteDatasource: container.remoteUserEventsDatasource())
+            return GetAndStoreLastEventId(localDatasource: container.localUserEventIdDatasource(),
+                                          remoteDatasource: container.remoteUserEventsDatasource())
         }
     }
 

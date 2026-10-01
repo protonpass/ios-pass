@@ -51,10 +51,9 @@ protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorDidFailLocallyAuthenticating(_ errorMessage: String?)
 }
 
-final class HomepageCoordinator: Coordinator, DeinitPrintable {
+final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresenting {
     deinit { print(deinitMessage) }
 
-    // Injected & self-initialized properties
     let logger = dependency(\ToolingContainer.logger)
     let preferencesManager = dependency(\ToolingContainer.preferencesManager)
     private let telemetryEventRepository = dependency(\RepositoryContainer.telemetryEventRepository)
@@ -67,11 +66,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
 
-    // App cover/local authentication
     @LazyInjected(\UIComponentsContainer.window) var window
     weak var appCoverView: UIView?
 
-    // Lazily initialised properties
     @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
     @LazyInjected(\UIComponentsContainer.bannerManager) var bannerManager
     @LazyInjected(\ToolingContainer.apiManager) var apiManager
@@ -88,7 +85,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\ServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
-    // Use cases
     private let refreshFeatureFlags = dependency(\UseCasesContainer.refreshFeatureFlags)
     let revokeCurrentSession = dependency(\UseCasesContainer.revokeCurrentSession)
     private let makeAccountSettingsUrl = dependency(\UseCasesContainer.makeAccountSettingsUrl)
@@ -107,6 +103,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\UseCasesContainer.fullContentSync) var fullContentSync
+    @LazyInjected(\UseCasesContainer.shouldForceSyncForFolders) private var shouldForceSyncForFolders
     @LazyInjected(\UseCasesContainer.postbackConversionValue) var postbackConversionValue
 
     private let getAppPreferences = dependency(\UseCasesContainer.getAppPreferences)
@@ -114,7 +111,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
-    // References
+    private var checkingFolderForceSync = false
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -127,6 +124,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
 
     var authenticated = false
+    private var folderSupportState: FolderSupportState = .notSupported
 
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
@@ -243,23 +241,32 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
-        Publishers.CombineLatest(appContentManager.$shareSelection, appContentManager.$state)
+        Publishers.CombineLatest3(appContentManager.$shareSelection,
+                                  appContentManager.$state,
+                                  accessRepository.access)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selection, _ in
+            .sink { [weak self] selection, _, access in
                 guard let self else { return }
+                // A nil plan yields `.notSupported`, so a not-yet-loaded plan can't let free
+                // users slip an item into a folder they can only read
+                folderSupportState = .init(flagEnabled: getFeatureFlagStatus(for: FeatureFlagType.passFolder),
+                                           plan: access?.access.plan)
                 var createButtonDisabled = false
                 switch selection {
                 case .all, .trash:
                     createButtonDisabled = !appContentManager.hasEditableContainers
 
                 case let .precise(selection):
-                    createButtonDisabled = !selection.share.canEdit
+                    // Upsellable folder selections stay enabled so the tap can offer the upgrade
+                    let folderAllowed = folderSupportState.canCreateAndModifyFolders ||
+                        folderSupportState.shouldUpsell
+                    createButtonDisabled = !selection.canCreateItem(folderAllowed: folderAllowed)
 
                 default:
                     createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
-                itemsTabViewModel?.hideCreateButton(createButtonDisabled)
+                itemsTabViewModel?.setCanCreateItem(!createButtonDisabled)
             }
             .store(in: &cancellables)
 
@@ -289,9 +296,7 @@ private extension HomepageCoordinator {
                     do {
                         logger.info("App goes back to foreground")
                         if let window {
-                            // Configurations could be changed from extensions
-                            // (logged out, token refreshed...), so we need to set up
-                            // everything as if the app is first launched
+                            // Extensions may have logged out or refreshed tokens, so set up as on first launch
                             try await setUpBeforeLaunching(rootContainer: .window(window))
                         } else {
                             assertionFailure("window should not be nil")
@@ -306,6 +311,8 @@ private extension HomepageCoordinator {
                         refreshFeatureFlags()
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
+                        forceSyncForFoldersIfNeededForActiveUser()
+
                         try await sendUserMonitoringStats()
                     } catch {
                         logger.error(message: "Failed to set up after entering foreground", error: error)
@@ -363,11 +370,43 @@ private extension HomepageCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 await appContentManager.refresh(userId: userId)
+                await forceSyncForFoldersIfNeeded(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
                 logger.error(message: "Failed to synchronise data", error: error)
             }
+        }
+    }
+
+    func forceSyncForFoldersIfNeededForActiveUser() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                await forceSyncForFoldersIfNeeded(userId: userId)
+            } catch {
+                logger.error(message: "Failed to resolve active user for folder force sync", error: error)
+            }
+        }
+    }
+
+    /// One-shot repair for users upgrading from a build that dropped items inside folders.
+    /// Active user only: `PreferencesManager` resolves the active user, so other runs write the wrong row.
+    /// Kept off the event loop, which fires mid-task: it shows a blocking screen and wipes local data.
+    func forceSyncForFoldersIfNeeded(userId: String) async {
+        guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
+        checkingFolderForceSync = true
+        defer { checkingFolderForceSync = false }
+
+        do {
+            guard try await shouldForceSyncForFolders(userId: userId) else { return }
+            guard !appContentManager.isFullSyncing else { return }
+            await presentFullSync(userId: userId,
+                                  shouldStopEventLoop: true,
+                                  reason: "folders migration")
+        } catch {
+            logger.error(message: "Failed folder force sync check", error: error)
         }
     }
 
@@ -430,7 +469,6 @@ private extension HomepageCoordinator {
                 itemsTabViewModel?.isEditMode = false
             }
 
-            // Refresh to reload data after item creation or edits.
             itemsTabViewModel?.refresh()
             createEditItemCoordinator?.refresh()
         }
@@ -494,9 +532,6 @@ private extension HomepageCoordinator {
         }
     }
 
-    /// Filters task cancellation errors as they should not be shown to the user
-    /// - Parameter error: The current error to check
-    /// - Returns: A boolean to indicate if we should display the error banner
     func shouldDisplayError(error: any Error) -> Bool {
         if error is CancellationError {
             return false
@@ -640,10 +675,10 @@ extension HomepageCoordinator {
 
                 case let .itemDetail(content,
                                      automaticDisplay,
-                                     showSecurityIssues):
+                                     showExcludedWeaknesses):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
-                                          showSecurityIssues: showSecurityIssues)
+                                          showExcludedWeaknesses: showExcludedWeaknesses)
 
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
@@ -657,8 +692,8 @@ extension HomepageCoordinator {
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
 
-                case let .securityDetail(securityWeakness):
-                    presentSecurity(securityWeakness)
+                case let .securityDetail(filter):
+                    presentSecurity(filter)
 
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
@@ -894,14 +929,31 @@ extension HomepageCoordinator {
     }
 
     func presentAcceptRejectInvite(with invite: Invite) {
-        let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
+        weak var viewController: UIViewController?
 
-        let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(invite.isVault ? .medium : .custom(270),
-                                     parentViewController: rootViewController)
+        let view = AcceptRejectInviteView(invite: invite) { [weak self] result in
+            viewController?.dismiss(animated: true) { [weak self] in
+                guard let self else { return }
+                switch result {
+                case let .success(itemContent):
+                    if let itemContent {
+                        router.present(for: .itemDetail(itemContent))
+                    }
+                    refresh()
 
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
+                case let .failure(error):
+                    router.display(element: .displayErrorBanner(error))
+                }
+            }
+        }
+
+        let hostingController = UIHostingController(rootView: view)
+        viewController = hostingController
+        hostingController.setDetentType(invite.isVault ? .medium : .custom(270),
+                                        parentViewController: rootViewController)
+
+        hostingController.sheetPresentationController?.prefersGrabberVisible = true
+        present(hostingController)
     }
 
     func presentLogsView(for module: PassModule) {
@@ -909,9 +961,9 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
-        coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
+        coordinator.showDetail(for: itemContent, asSheet: asSheet, showExcludedWeaknesses: showExcludedWeaknesses)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
@@ -943,8 +995,14 @@ extension HomepageCoordinator {
     }
 
     func presentCreateItemView(for itemType: ItemType) {
+        // Ahead of the folder upsell: the generator creates nothing, so it is unaffected by
+        // folder entitlements.
         if itemType == .password {
             presentPasswordGenerator()
+            return
+        }
+        if appContentManager.shareSelection.isFolderSelection, folderSupportState.shouldUpsell {
+            router.present(for: .upgradeFlow)
             return
         }
         Task { [weak self] in
@@ -1053,9 +1111,7 @@ extension HomepageCoordinator {
 
     // periphery:ignore:parameters configuration,dismissal
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
-        // We are skipping the intermediate feature explanation screens in upsell flow
-        // This is temporary until we have the new designs for these steps
-        // We are redirecting the user directly to the payment screen.
+        // The feature explanation screens have no designs, so upsell goes straight to payment
         startUpgradeFlow()
     }
 
@@ -1200,7 +1256,8 @@ extension HomepageCoordinator {
     }
 
     func presentSignInToAnotherDeviceView() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             do {
                 guard let userData = try await userManager.getActiveUserData(),
                       let passphrase = userData.getMailboxPassword,
@@ -1306,7 +1363,7 @@ extension HomepageCoordinator {
     }
 
     func adaptivelyDismissCurrentDetailView() {
-        // Dismiss differently because show differently
+        // The detail view is either presented modally or pushed, depending on where it was opened
         if rootViewController != topMostViewController {
             dismissTopMostViewController()
         } else {
@@ -1345,9 +1402,9 @@ extension HomepageCoordinator {
 // MARK: - Security Center
 
 extension HomepageCoordinator {
-    func presentSecurity(_ securityWeakness: SecurityWeakness) {
+    func presentSecurity(_ type: MonitorListSection) {
         let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness),
+        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
                                                         isSheet: isSheet),
                        isSheet: isSheet)
 
@@ -1489,7 +1546,6 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
                                         presentationOption: ChildCoordinatorPresentationOption) {
         switch viewOption {
         case .sheet:
-            // Nothing special to set up
             break
 
         case .sheetWithGrabber:
@@ -1728,9 +1784,7 @@ extension HomepageCoordinator {
 
                 addNewEvent(type: .create(type))
                 dismissAllViewControllers(animated: true) {
-                    // We have eventual crashes after creating items
-                    // Looks like it's because the keyboard is not fully dismissed
-                    // and in between we try to show a banner
+                    // Showing the toast before the keyboard finishes dismissing crashed after item creation
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         displayToastMessage()
                     }
@@ -1740,7 +1794,7 @@ extension HomepageCoordinator {
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
 
-                // MMP: optionally get the plan and post back. We don't care if errors occur.
+                // MMP conversion postback, best effort
                 if let isFreeUser = try? await accessRepository.getPlan(userId: userId).isFreeUser {
                     try? await postbackConversionValue(isFreeUser ? 3 : 61,
                                                        coarseValue: isFreeUser ? .medium : .high,
@@ -1858,11 +1912,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async {
-        await router.present(for: .fullSync)
-        logger.info("Full syncing triggered by user events")
-        await fullContentSync(userId: userId, shouldStopEventLoop: false)
-        logger.info("Done full syncing triggered by user events")
-        await router.display(element: .successMessage(config: .refresh))
+        await presentFullSync(userId: userId,
+                              shouldStopEventLoop: false,
+                              reason: "user events")
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {

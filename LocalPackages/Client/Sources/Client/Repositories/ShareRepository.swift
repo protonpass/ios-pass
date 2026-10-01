@@ -51,7 +51,9 @@ public protocol ShareRepositoryProtocol: Sendable, Actor {
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
     /// Go fetch and store the latest data of a share because we know it's updated (e.g via user events system)
-    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws
+    /// - Returns: the freshly fetched share, before symmetric encryption
+    @discardableResult
+    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws -> Share
 
     func getUsersLinkedToVaultShare(to shareId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
@@ -171,7 +173,7 @@ public extension ShareRepository {
             let hasUndecryptableShares = StateHolder(initialValue: false)
             let shares = try await remoteDatasource.getShares(userId: userId)
             logger.trace("Decrypting \(shares.count) remote shares for user \(userId)")
-            let decryptedShares: [Share] = await shares
+            let decryptedShares: [Share] = try await shares
                 .compactParallelMap(parallelism: 5) { [weak self] in
                     guard let self else { return nil }
                     do {
@@ -223,7 +225,8 @@ public extension ShareRepository {
         logger.trace("Upserted \(shares.count) shares for user \(userId), shares \(shareIds)")
     }
 
-    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws {
+    @discardableResult
+    func refreshShare(userId: String, shareId: String, eventToken: String?) async throws -> Share {
         logger.trace("Refreshing share \(shareId) for user \(userId)")
         let share = try await remoteDatasource.getShare(shareId: shareId,
                                                         userId: userId,
@@ -234,6 +237,7 @@ public extension ShareRepository {
                                                             symmetricKey: key)
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Refreshed share \(shareId) for user \(userId)")
+        return share
     }
 
     func getUsersLinkedToVaultShare(to shareId: String,

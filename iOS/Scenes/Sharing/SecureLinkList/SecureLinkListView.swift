@@ -23,6 +23,7 @@
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecureLinkListView: View {
@@ -145,7 +146,7 @@ private extension SecureLinkListView {
                                    Label(title: {
                                        Text("Remove all inactive links")
                                    }, icon: {
-                                       IconProvider.crossCircle
+                                       IconProvider.crossCircle as Image
                                    })
                                })
                     } label: {
@@ -304,7 +305,7 @@ private extension SecureLinkListView {
                        Label(title: {
                            Text(isInactive ? "Remove inactive link" : "Remove link")
                        }, icon: {
-                           IconProvider.crossCircle
+                           IconProvider.crossCircle as Image
                        })
                    })
         } label: {
@@ -346,8 +347,6 @@ private extension SecureLinkListView {
     }
 }
 
-/// Set up common UI appearance for item detail pages
-/// e.g. navigation bar, background color, toolbar
 private struct CommonViewSetUpModifier: ViewModifier {
     let title: String
 

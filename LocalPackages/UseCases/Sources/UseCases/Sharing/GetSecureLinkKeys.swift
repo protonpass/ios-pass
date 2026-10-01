@@ -37,36 +37,31 @@ public extension GetSecureLinkKeysUseCase {
 
 public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     private let passKeyManager: any PassKeyManagerProtocol
-    private let userManager: any UserManagerProtocol
 
-    public init(passKeyManager: any PassKeyManagerProtocol,
-                userManager: any UserManagerProtocol) {
+    public init(passKeyManager: any PassKeyManagerProtocol) {
         self.passKeyManager = passKeyManager
-        self.userManager = userManager
     }
 
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
     public func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys {
-        let userId = try await userManager.getActiveUserId()
-
-        let fullParentId = if item.shareId != item.parentId {
-            item.parentId + share.shareId
-        } else {
-            share.shareId
-        }
+        let userId = item.userId
 
         let itemKeyInfo = if share.shareType == .vault {
             try await passKeyManager.getLatestItemKey(userId: userId,
                                                       shareId: item.shareId,
-                                                      parentId: fullParentId,
+                                                      folderId: item.folderId,
                                                       itemId: item.itemId)
         } else {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
         }
 
-        let shareKeyInfo = try await passKeyManager.getContainerKey(containerId: fullParentId, keyRotation: nil)
+        let shareKeyInfo = try await passKeyManager.getContainerKey(userId: userId,
+                                                                    shareId: item.shareId,
+                                                                    folderId: share.shareType == .vault ?
+                                                                        item.folderId : nil,
+                                                                    keyRotation: nil)
 
         let linkKey = try Data.random()
 

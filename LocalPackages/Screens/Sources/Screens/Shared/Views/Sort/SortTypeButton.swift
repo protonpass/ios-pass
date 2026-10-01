@@ -39,7 +39,7 @@ public struct SortTypeButton: View {
                         selectedSortType = type
                     }, label: {
                         HStack {
-                            Text(type.title)
+                            Text(verbatim: type.title)
                             Spacer()
                             if type == selectedSortType {
                                 Image(systemName: "checkmark")

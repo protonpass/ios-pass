@@ -27,6 +27,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+@MainActor
 enum SecureRowType {
     case info, warning, danger, success, upsell
 
@@ -62,17 +63,6 @@ enum SecureRowType {
         }
     }
 
-    /// Icon used in item detail pages
-    var detailIcon: String? {
-        switch self {
-        case .info:
-            "exclamationmark.square.fill"
-
-        default:
-            icon
-        }
-    }
-
     var background: Color {
         switch self {
         case .danger:
@@ -89,17 +79,6 @@ enum SecureRowType {
 
         case .upsell:
             PassColor.interactionNormMinor2
-        }
-    }
-
-    /// Background used in item detail pages
-    var detailBackground: Color {
-        switch self {
-        case .info:
-            PassColor.loginInteractionNormMinor2
-
-        default:
-            background
         }
     }
 
@@ -242,25 +221,32 @@ private extension PassMonitorView {
                                 subTitle: "Advanced account protection program",
                                 action: { viewModel.showSentinelSheet = true })
                 }
-                Section {
-                    VStack(spacing: DesignConstant.sectionPadding) {
-                        weakPasswordsRow(weaknessStats.weakPasswords)
-                        reusedPasswordsRow(weaknessStats.reusedPasswords)
-                        missing2FARow(weaknessStats.missing2FA)
-                            .padding(.top, 16)
-                        excludedItemsRow(weaknessStats.excludedItems)
-                    }
-                } header: {
-                    HStack {
-                        Text("Passwords Health")
-                            .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm)
-                        Spacer()
-                    }.padding(.top, DesignConstant.sectionPadding)
-                }
+                passwordHealthSection(weaknessStats)
             }
         }
         .padding(DesignConstant.sectionPadding)
+    }
+
+    func passwordHealthSection(_ weaknessStats: WeaknessStats) -> some View {
+        Section {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                ForEach(viewModel.weaknessKinds) { kind in
+                    weaknessRow(kind: kind,
+                                count: weaknessStats.count(for: kind),
+                                upsellEntry: kind == .compromisedPassword ? .compromisedPasswords : nil)
+                        .padding(.top, kind == .missing2FA ? 16 : 0)
+                }
+                excludedItemsRow(weaknessStats.excludedItems)
+            }
+        } header: {
+            HStack {
+                Text("Passwords Health")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm)
+                Spacer()
+            }
+            .padding(.top, DesignConstant.sectionPadding)
+        }
     }
 
     var passPlusBadge: some View {
@@ -409,7 +395,7 @@ private extension PassMonitorView {
                            subTitle: "No breaches detected",
                            action: {
                                router.navigate(to: .darkWebMonitorHome(breaches))
-                               viewModel.addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                               viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
                            })
         } else {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
@@ -460,8 +446,7 @@ private extension PassMonitorView {
                                   backgroundColor: PassColor.passwordInteractionNormMajor2,
                                   action: {
                                       router.navigate(to: .darkWebMonitorHome(breaches))
-                                      viewModel
-                                          .addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                                      viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
                                   })
             }
             .padding(24)
@@ -474,32 +459,21 @@ private extension PassMonitorView {
 }
 
 private extension PassMonitorView {
-    func weakPasswordsRow(_ weakPasswords: Int) -> some View {
-        passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
-                       title: "Weak Passwords",
-                       subTitle: "Change your passwords",
-                       count: weakPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
-    }
-}
-
-private extension PassMonitorView {
-    func reusedPasswordsRow(_ reusedPasswords: Int) -> some View {
-        passMonitorRow(rowType: reusedPasswords > 0 ? .warning : .success,
-                       title: "Reused passwords",
-                       subTitle: "Generate unique passwords",
-                       count: reusedPasswords,
-                       action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
-    }
-}
-
-private extension PassMonitorView {
-    func missing2FARow(_ missing2FA: Int) -> some View {
-        passMonitorRow(rowType: .info,
-                       title: "Inactive 2FA",
-                       subTitle: "Set up 2FA for more security",
-                       count: missing2FA,
-                       action: { viewModel.showSecurityWeakness(type: .missing2FA) })
+    @ViewBuilder
+    func weaknessRow(kind: WeaknessKind, count: Int, upsellEntry: UpsellEntry? = nil) -> some View {
+        if let upsellEntry, viewModel.isFreeUser {
+            passMonitorRow(rowType: .upsell,
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           badge: true,
+                           action: { viewModel.upsell(entryPoint: upsellEntry) })
+        } else {
+            passMonitorRow(rowType: kind.toSecureRowType(count),
+                           title: kind.dashboardTitle,
+                           subTitle: kind.dashboardSubtitle,
+                           count: count,
+                           action: { viewModel.showSecurityWeakness(filter: .weakness(kind)) })
+        }
     }
 }
 
@@ -509,7 +483,7 @@ private extension PassMonitorView {
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
                        count: excludedItems,
-                       action: { viewModel.showSecurityWeakness(type: .excludedItems) })
+                       action: { viewModel.showSecurityWeakness(filter: .excludedItems) })
     }
 }
 
@@ -556,7 +530,7 @@ private extension PassMonitorView {
                             }
                     }
                 }
-                .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(.rect)
 
                 if loading {
@@ -579,11 +553,23 @@ private extension PassMonitorView {
                                           width: 12)
                 }
             }
-            .padding(.horizontal, DesignConstant.sectionPadding)
+            .padding(DesignConstant.sectionPadding)
             .roundedDetailSection(backgroundColor: loading ? .clear : rowType.background,
                                   borderColor: loading ? PassColor.inputBorderNorm : rowType.border)
         }
         .buttonStyle(.plain)
         .animation(.default, value: loading)
+    }
+}
+
+private extension WeaknessKind {
+    func toSecureRowType(_ count: Int) -> SecureRowType {
+        switch self {
+        case .compromisedPassword, .reusedPassword, .weakPassword:
+            count > 0 ? .warning : .success
+
+        case .missing2FA:
+            .info
+        }
     }
 }

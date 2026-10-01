@@ -85,7 +85,7 @@ private extension OnboardingPassPlusView {
                 PassPlusTitle()
 
                 ForEach(features) { feature in
-                    Text(feature.description)
+                    Text(feature.description, bundle: .module)
                         .font(.callout)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     PerkDetailView(perk: feature.lowerPerk)

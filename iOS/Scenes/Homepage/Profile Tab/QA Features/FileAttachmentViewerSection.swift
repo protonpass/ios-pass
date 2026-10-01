@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import DIComposition
 import FactoryKit
@@ -33,7 +34,7 @@ struct FileAttachmentViewerSection: View {
 
     var body: some View {
         Section(content: {
-            StaticToggle(.verbatim("Dismissed file attachments banner"),
+            StaticToggle("Dismissed file attachments banner",
                          isOn: dismissedFileAttachmentsBanner,
                          action: {
                              Task {

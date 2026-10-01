@@ -23,14 +23,14 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct CustomSectionHeader: View {
-    let title: TextContent
+    let title: String
     let collapsed: Bool
     let editable: Bool
     let onToggle: () -> Void
     let onEditTitle: () -> Void
     let onRemove: () -> Void
 
-    public init(title: TextContent,
+    public init(title: String,
                 collapsed: Bool,
                 editable: Bool,
                 onToggle: @escaping () -> Void,
@@ -46,7 +46,7 @@ public struct CustomSectionHeader: View {
 
     public var body: some View {
         HStack(alignment: .center) {
-            Label(title: { Text(title) },
+            Label(title: { Text(verbatim: title) },
                   icon: {
                       Image(systemName: collapsed ? "chevron.down" : "chevron.up")
                           .resizable()
@@ -62,11 +62,11 @@ public struct CustomSectionHeader: View {
             if editable {
                 Menu(content: {
                     Label(title: { Text("Edit section's title", bundle: .module) },
-                          icon: { IconProvider.pencil })
+                          icon: { IconProvider.pencil as Image })
                         .buttonEmbeded(action: onEditTitle)
 
                     Label(title: { Text("Remove section", bundle: .module) },
-                          icon: { IconProvider.crossCircle })
+                          icon: { IconProvider.crossCircle as Image })
                         .buttonEmbeded(action: onRemove)
                 }, label: {
                     IconProvider.threeDotsVertical
