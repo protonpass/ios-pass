@@ -64,11 +64,11 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         // First we remove existing indexed credentials.
         // Deliberately every url, not just the autofillable ones: a url whose mode just
         // became `.never` was indexed under its old mode and still has to be removed.
-        let oldPasswords = data.urls.map {
+        let oldPasswords = data.resolvedAutofillUrls.map {
             CredentialIdentity.password(.init(shareId: item.shareId,
                                               itemId: item.item.itemID,
                                               username: data.authIdentifier,
-                                              url: $0,
+                                              url: $0.url,
                                               lastUseTime: item.item.lastUseTime ?? 0))
         }
 
