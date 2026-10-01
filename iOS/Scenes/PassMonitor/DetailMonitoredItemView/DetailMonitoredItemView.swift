@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct DetailMonitoredItemView: View {

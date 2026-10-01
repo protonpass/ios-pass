@@ -24,6 +24,7 @@ import Core
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecurityWeaknessDetailView: View {
@@ -121,7 +122,7 @@ private extension SecurityWeaknessDetailView {
             }, header: {
                 Label(title: { Text(key.title) },
                       icon: {
-                          if viewModel.type.collapsible {
+                          if viewModel.type.isSectionned {
                               Image(systemName: collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
                                   .resizable()
                                   .scaledToFit()
@@ -130,7 +131,7 @@ private extension SecurityWeaknessDetailView {
                       })
                       .foregroundStyle(PassColor.textWeak)
                       .frame(maxWidth: .infinity, alignment: .leading)
-                      .if(viewModel.type.collapsible) { view in
+                      .if(viewModel.type.isSectionned) { view in
                           view
                               .padding(.top, DesignConstant.sectionPadding)
                               .buttonEmbeded {
@@ -210,22 +211,14 @@ struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
     }
 }
 
-private extension SecurityWeakness {
+private extension MonitorListSection {
     var isSectionned: Bool {
-        switch self {
-        case .excludedItems, .missing2FA, .weakPasswords:
-            false
-
-        default:
+        // Only reused password is sectioned (logins with same password are grouped)
+        if case let .weakness(kind) = self, kind == .reusedPassword {
             true
+        } else {
+            false
         }
-    }
-
-    var collapsible: Bool {
-        if case .reusedPasswords = self {
-            return true
-        }
-        return false
     }
 }
 

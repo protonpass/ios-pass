@@ -101,7 +101,6 @@
 		3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */; };
 		3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3562BCF229BDBF2500564508 /* SectionIndexTitles.swift */; };
 		3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */; };
-		3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
 		3552D0C72CA6D579004156D8 /* ItemsForTextInsertionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552D0C62CA6D579004156D8 /* ItemsForTextInsertionView.swift */; };
 		3552D0C92CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */; };
 		3552D0CB2CA6ECAB004156D8 /* FetchItemsForTextInsertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552D0CA2CA6ECAB004156D8 /* FetchItemsForTextInsertion.swift */; };
@@ -125,7 +124,6 @@
 		3559BAA22A5B32600020E172 /* Browser+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */; };
 		3559BAA62A5B32600020E172 /* AppLockTime+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */; };
 		355A2E732C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */; };
-		355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
 		355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */; };
 		355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */; };
 		355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */; };
@@ -546,6 +544,7 @@
 		5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
 		5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
 		5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
+		5BD5DD4C2FE2B14B00079983 /* WeaknessKind+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */; };
 		5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */; };
 		5BD870D92BB46C7800A9F1A8 /* PasswordReusedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */; };
 		5BDD9AEE2CC9094700C120B3 /* PasswordPolicySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDD9AED2CC9094700C120B3 /* PasswordPolicySection.swift */; };
@@ -559,7 +558,7 @@
 		5BECDE4A2B90EC900040FCA7 /* PassMonitorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */; };
 		5BECDE4E2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */; };
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
-		5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */; };
+		5BECDE512B9B230C0040FCA7 /* MonitorListSection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */; };
 		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */; };
 		5BF0DA1A2F5A100000000002 /* FolderForceSyncSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF0DA1A2F5A100000000001 /* FolderForceSyncSection.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
@@ -751,7 +750,6 @@
 		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
 		355895B229D79565001E2207 /* FeedbackChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackChannelsView.swift; sourceTree = "<group>"; };
 		355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+AppCover.swift"; sourceTree = "<group>"; };
-		355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSquircleThumbnail.swift; sourceTree = "<group>"; };
 		355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteView.swift; sourceTree = "<group>"; };
 		355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteViewModel.swift; sourceTree = "<group>"; };
 		355C138829DB71D800264CD0 /* HomepageTabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageTabbarView.swift; sourceTree = "<group>"; };
@@ -1031,6 +1029,7 @@
 		5BD4A9072B10E6E300C44C08 /* AutoFillCredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredentialsFetchResult.swift; sourceTree = "<group>"; };
 		5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PasswordStrength+Extensions.swift"; sourceTree = "<group>"; };
 		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
+		5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WeaknessKind+Extensions.swift"; sourceTree = "<group>"; };
 		5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedView.swift; sourceTree = "<group>"; };
 		5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedViewModel.swift; sourceTree = "<group>"; };
 		5BDD9AED2CC9094700C120B3 /* PasswordPolicySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordPolicySection.swift; sourceTree = "<group>"; };
@@ -1043,7 +1042,7 @@
 		5BECDE482B90EC900040FCA7 /* PassMonitorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassMonitorViewModel.swift; sourceTree = "<group>"; };
 		5BECDE4C2B97789A0040FCA7 /* SecurityWeaknessDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailView.swift; sourceTree = "<group>"; };
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
-		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
+		5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MonitorListSection+Extensions.swift"; sourceTree = "<group>"; };
 		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEditDetails.swift"; sourceTree = "<group>"; };
 		5BF0DA1A2F5A100000000001 /* FolderForceSyncSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderForceSyncSection.swift; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
@@ -1089,8 +1088,27 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
-		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = FolderMoveListView; sourceTree = "<group>"; };
+		538548E92D58ACF300AEFB66 /* Action */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Action;
+			sourceTree = "<group>";
+		};
+		5B24897F2F3261CE0046097D /* FolderMoveListView */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = FolderMoveListView;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1542,7 +1560,6 @@
 			children = (
 				354AD95F28CB5934000E645B /* EmptyTrashView.swift */,
 				354F769928C87CD500EB2383 /* EmptyVaultView.swift */,
-				355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */,
 				3569B2A029B788600070830B /* ItemsTabView.swift */,
 				3569B2A329B7BA280070830B /* ItemsTabViewModel.swift */,
 				357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */,
@@ -2239,6 +2256,7 @@
 		5B98D6812CEDD886000AE3E1 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				5BD5DD4B2FE2B14B00079983 /* WeaknessKind+Extensions.swift */,
 				531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */,
 				5B159D302D00AB3500150125 /* ShareContent+Extensions.swift */,
 				35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */,
@@ -2246,7 +2264,7 @@
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
-				5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */,
+				5BECDE502B9B230C0040FCA7 /* MonitorListSection+Extensions.swift */,
 				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
@@ -3159,7 +3177,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				531A48102D80833D00DDC7FB /* SshDetailViewModel.swift in Sources */,
-				3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */,
 				531A48202D808F1500DDC7FB /* CustomDetailViewModel.swift in Sources */,
 				3524A4672CB6B240001EC572 /* IdentityDetailViewModel.swift in Sources */,
 				531A48132D80853600DDC7FB /* SshKeyComponent+Extensions.swift in Sources */,
@@ -3518,7 +3535,6 @@
 				5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */,
 				5B3FD1A52BFCE24E00434294 /* CreateEditIdentityViewModel.swift in Sources */,
 				358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */,
-				355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */,
 				5B1453C12A6EAD300048B022 /* SwiftUIRouter.swift in Sources */,
 				35AC9A562A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift in Sources */,
 				5BECDE442B90D6E90040FCA7 /* HomepageCoordinator+TabBar.swift in Sources */,
@@ -3557,6 +3573,7 @@
 				53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
+				5BD5DD4C2FE2B14B00079983 /* WeaknessKind+Extensions.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				534090622D70B062002E42F8 /* CreateEditSshKeyViewModel.swift in Sources */,
 				5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */,
@@ -3612,7 +3629,7 @@
 				356650D92AAF608A00BFF4F3 /* FullSyncProgressViewModel.swift in Sources */,
 				5B1453E52A72BF570048B022 /* ShareRole+Extensions.swift in Sources */,
 				355895AF29D76E67001E2207 /* LogsView.swift in Sources */,
-				5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */,
+				5BECDE512B9B230C0040FCA7 /* MonitorListSection+Extensions.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
@@ -3790,7 +3807,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3873,7 +3890,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -3954,7 +3971,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4027,7 +4044,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4134,7 +4151,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4207,7 +4224,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4276,7 +4293,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4355,7 +4372,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4399,7 +4416,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4497,7 +4514,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -4570,7 +4587,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4639,7 +4656,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4718,7 +4735,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";
@@ -4762,7 +4779,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -4842,7 +4859,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -4886,7 +4903,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4928,7 +4945,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4970,7 +4987,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5080,7 +5097,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5122,7 +5139,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5220,7 +5237,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios;
 				PRODUCT_NAME = "Proton Pass";
@@ -5261,7 +5278,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.macos;
 				PRODUCT_NAME = "Proton Pass";
 				SDKROOT = macosx;
@@ -5339,7 +5356,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5381,7 +5398,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5421,7 +5438,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5461,7 +5478,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = me.proton.pass.ios.action;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5533,7 +5550,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -5602,7 +5619,7 @@
 				INFOPLIST_FILE = iOSUITests/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.21.1;
+				MARKETING_VERSION = 1.22.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_SWIFT_FLAGS = "";

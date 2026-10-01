@@ -50,6 +50,14 @@ final class PassMonitorViewModel: ObservableObject {
     private let refreshAccessAndMonitorState = dependency(\UseCasesContainer.refreshAccessAndMonitorState)
     let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
+    @LazyInjected(\UseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+
+    var weaknessKinds: [WeaknessKind] {
+        let isCompromisedPasswordsEnabled = getFeatureFlagStatus(for: FeatureFlagType.passCompromisedPasswords)
+        return WeaknessKind.allCases
+            .filter { $0 != .compromisedPassword || isCompromisedPasswordsEnabled }
+            .sorted()
+    }
 
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
@@ -72,9 +80,11 @@ final class PassMonitorViewModel: ObservableObject {
         }
     }
 
-    func showSecurityWeakness(type: SecurityWeakness) {
-        router.present(for: .securityDetail(type))
-        addTelemetryEvent(with: type.telemetryEventType)
+    func showSecurityWeakness(filter: MonitorListSection) {
+        router.present(for: .securityDetail(filter))
+        if let eventType = filter.telemetryEventType {
+            addTelemetryEvent(with: eventType)
+        }
     }
 
     func sentinelSheetAction() {
@@ -211,26 +221,5 @@ private extension PassMonitorViewModel {
                 column: UInt = #column) {
         logger.error(error, file: file, function: function, line: line, column: column)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-extension SecurityWeakness {
-    var telemetryEventType: TelemetryEventType {
-        switch self {
-        case .weakPasswords:
-            .monitorDisplayWeakPasswords
-
-        case .reusedPasswords:
-            .monitorDisplayReusedPasswords
-
-        case .breaches:
-            .monitorDisplayDarkWebMonitoring
-
-        case .missing2FA:
-            .monitorDisplayMissing2FA
-
-        case .excludedItems:
-            .monitorDisplayExcludedItems
-        }
     }
 }

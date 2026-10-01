@@ -95,16 +95,14 @@ public enum SheetDestination: Equatable, Hashable {
     case editItem(ItemContent)
     case cloneItem(ItemContent)
     case updateItem(type: ItemContentType, updated: Bool)
-    /// automaticDisplay is needed as items details presentation can start from different points and should not
-    /// have the same display.
-    /// Search and security centre act the same when it comes to display whereas the main list tab has a different
-    /// flow.
-    case itemDetail(ItemContent, automaticDisplay: Bool = true, showSecurityIssues: Bool = false)
+    /// `automaticDisplay` differs by entry point: search and the security centre share one presentation,
+    /// the main list tab uses another.
+    case itemDetail(ItemContent, automaticDisplay: Bool = true, showExcludedWeaknesses: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults
     case editSpotlightVaults
     case passkeyDetail(Passkey)
-    case securityDetail(SecurityWeakness)
+    case securityDetail(MonitorListSection)
     case securityKeys
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)
@@ -139,9 +137,7 @@ public enum UIElementDisplay {
     case errorMessage(String)
     case successMessage(String? = nil, config: NavigationConfiguration? = nil)
     case infosMessage(String? = nil,
-                      // Sometimes we don't want to show a toast message over a presented sheet
-                      // (e.g. we don't want to display  "The app is ready to use" toast while onboarding the
-                      // user)
+                      // e.g. no "The app is ready to use" toast over the onboarding sheet
                       showWhenNoSheets: Bool = false,
                       config: NavigationConfiguration? = nil)
 }

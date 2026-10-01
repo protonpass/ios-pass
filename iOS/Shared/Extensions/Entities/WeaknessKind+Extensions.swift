@@ -1,0 +1,67 @@
+//
+// WeaknessKind+Extensions.swift
+// Proton Pass - Created on 17/06/2026.
+// Copyright (c) 2026 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import Entities
+import Macro
+import SwiftUI
+
+// MARK: - Pass Monitor dashboard presentation
+
+extension WeaknessKind {
+    var dashboardTitle: LocalizedStringKey {
+        switch self {
+        case .weakPassword: "Weak passwords"
+        case .compromisedPassword: "Compromised passwords"
+        case .reusedPassword: "Reused passwords"
+        case .missing2FA: "Inactive 2FA"
+        }
+    }
+
+    var dashboardSubtitle: LocalizedStringKey {
+        switch self {
+        case .weakPassword: "Change your passwords"
+        case .compromisedPassword: "Common passwords that frequently appear in data breaches"
+        case .reusedPassword: "Generate unique passwords"
+        case .missing2FA: "Set up 2FA for more security"
+        }
+    }
+}
+
+// MARK: - Per-check monitoring toasts
+
+extension WeaknessKind {
+    var alertIgnoredMessage: String {
+        switch self {
+        case .weakPassword: #localized("Weak password alert ignored")
+        case .compromisedPassword: #localized("Compromised password alert ignored")
+        case .reusedPassword: #localized("Reused password alert ignored")
+        case .missing2FA: #localized("Missing 2FA alert ignored")
+        }
+    }
+
+    var alertRestoredMessage: String {
+        switch self {
+        case .weakPassword: #localized("Weak password alert restored")
+        case .compromisedPassword: #localized("Compromised password alert restored")
+        case .reusedPassword: #localized("Reused password alert restored")
+        case .missing2FA: #localized("Missing 2FA alert restored")
+        }
+    }
+}

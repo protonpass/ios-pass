@@ -4,7 +4,7 @@
 import PackageDescription
 
 var platforms: [SupportedPlatform] = [
-    .macOS(.v12),
+    .macOS(.v13),
     .iOS(.v17),
     .tvOS(.v16),
     .watchOS(.v8)
@@ -19,8 +19,6 @@ let package = Package(name: "Client",
                       defaultLocalization: "en",
                       platforms: platforms,
                       products: [
-                          // Products define the executables and libraries a package produces, and make them
-                          // visible to other packages.
                           .library(name: "Client",
                                    targets: ["Client"]),
                           .library(name: "ClientMocks",
@@ -35,10 +33,6 @@ let package = Package(name: "Client",
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                       ],
                       targets: [
-                          // Targets are the basic building blocks of a package. A target can define a module or a
-                          // test suite.
-                          // Targets can depend on other targets in this package, and on products in packages this
-                          // package depends on.
                           .target(name: "Client",
                                   dependencies: [
                                       .product(name: "ProtonCoreDataModel", package: "protoncore_ios"),
