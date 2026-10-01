@@ -18,25 +18,49 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import ProtonCoreNetworking
 
+// swiftlint:disable discouraged_optional_boolean
+
 public struct UpdateItemFlagsRequest: Sendable, Encodable {
-    // swiftlint:disable:next discouraged_optional_boolean
     private(set) var skipHealthCheck: Bool?
+    private(set) var skipWeakPasswordCheck: Bool?
+    private(set) var skipCompromisedPasswordCheck: Bool?
+    private(set) var skipReusedPasswordCheck: Bool?
+    private(set) var skip2FACheck: Bool?
 
     init(flags: [ItemFlag]) {
         for flag in flags {
             switch flag {
             case let .skipHealthCheck(value):
                 skipHealthCheck = value
+
+            case let .skipWeakPasswordCheck(value):
+                skipWeakPasswordCheck = value
+
+            case let .skipCompromisedPasswordCheck(value):
+                skipCompromisedPasswordCheck = value
+
+            case let .skipReusedPasswordCheck(value):
+                skipReusedPasswordCheck = value
+
+            case let .skip2FACheck(value):
+                skip2FACheck = value
             }
         }
     }
 
     enum CodingKeys: String, CodingKey {
         case skipHealthCheck = "SkipHealthCheck"
+        case skipWeakPasswordCheck = "SkipWeakPasswordCheck"
+        case skipCompromisedPasswordCheck = "SkipCompromisedPasswordCheck"
+        case skipReusedPasswordCheck = "SkipReusedPasswordCheck"
+        case skip2FACheck = "Skip2FACheck"
     }
 }
+
+// swiftlint:enable discouraged_optional_boolean
 
 struct UpdateItemFlagsEndpoint: Endpoint {
     typealias Body = UpdateItemFlagsRequest

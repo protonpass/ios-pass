@@ -38,10 +38,12 @@ final class ItemDetailCoordinator: DeinitPrintable {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
 
-    func showDetail(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
+    func showDetail(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
         let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
-            makeLoginItemDetailPage(from: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
+            makeLoginItemDetailPage(from: itemContent,
+                                    asSheet: asSheet,
+                                    showExcludedWeaknesses: showExcludedWeaknesses)
 
         case .note:
             makeNoteDetailPage(from: itemContent, asSheet: asSheet)
@@ -71,7 +73,6 @@ final class ItemDetailCoordinator: DeinitPrintable {
         router.navigate(to: .detail(view: itemDetailPage.view, asSheet: asSheet))
     }
 
-    /// Refresh the currently presented item detail page
     func refresh(onItemNotFound: @escaping () -> Void) {
         currentViewModel?.refresh(onItemNotFound: onItemNotFound)
     }
@@ -85,11 +86,11 @@ private extension ItemDetailCoordinator {
 
     func makeLoginItemDetailPage(from itemContent: ItemContent,
                                  asSheet: Bool,
-                                 showSecurityIssues: Bool = false) -> ItemDetailPage {
+                                 showExcludedWeaknesses: Bool = false) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
-                                             showSecurityIssues: showSecurityIssues)
+                                             showExcludedWeaknesses: showExcludedWeaknesses)
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }
 

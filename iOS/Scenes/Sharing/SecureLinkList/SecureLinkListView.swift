@@ -23,6 +23,7 @@
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SecureLinkListView: View {
@@ -346,8 +347,6 @@ private extension SecureLinkListView {
     }
 }
 
-/// Set up common UI appearance for item detail pages
-/// e.g. navigation bar, background color, toolbar
 private struct CommonViewSetUpModifier: ViewModifier {
     let title: String
 

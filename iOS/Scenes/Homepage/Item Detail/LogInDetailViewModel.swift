@@ -42,14 +42,14 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var passwordScore: PasswordScore?
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
-    @Published private(set) var securityIssues: [SecurityWeakness]?
+    @Published private(set) var securityIssues: [ItemWeaknessDisplay]?
     @Published private(set) var reusedItems: FetchableObject<[ItemContent]> = .fetching
 
     var isAlias: Bool {
         aliasItem != nil
     }
 
-    let showSecurityIssues: Bool
+    let showExcludedWeaknesses: Bool
 
     private let scorePassword = dependency(\UseCasesContainer.scorePassword)
     private let getLoginSecurityIssues = dependency(\UseCasesContainer.getLoginSecurityIssues)
@@ -62,33 +62,47 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: any UpgradeCheckerProtocol,
-         showSecurityIssues: Bool) {
-        self.showSecurityIssues = showSecurityIssues
+         showExcludedWeaknesses: Bool) {
+        self.showExcludedWeaknesses = showExcludedWeaknesses
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
-        if showSecurityIssues {
-            getLoginSecurityIssues(itemId: itemContent.itemId)
-                .subscribe(on: DispatchQueue.global())
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] newSecurityIssues in
-                    guard let self else {
-                        return
-                    }
-                    securityIssues = newSecurityIssues
+        getLoginSecurityIssues(itemId: itemContent.id)
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] affected in
+                guard let self else {
+                    return
                 }
-                .store(in: &cancellables)
+                guard let affected else {
+                    securityIssues = nil
+                    return
+                }
+                if showExcludedWeaknesses {
+                    var rows = affected.suppressedChecks.sorted().map {
+                        ItemWeaknessDisplay.weakness($0, isExcluded: true)
+                    }
+                    if affected.isFullyExcluded {
+                        rows.append(.fullyExcluded)
+                    }
+                    securityIssues = rows
+                } else {
+                    securityIssues = affected.activeWeaknesses.sorted().map {
+                        ItemWeaknessDisplay.weakness($0, isExcluded: false)
+                    }
+                }
+            }
+            .store(in: &cancellables)
 
-            $securityIssues.receive(on: DispatchQueue.main)
-                .sink { [weak self] issues in
-                    guard let self, let issues else {
-                        return
-                    }
-                    if issues.contains(.reusedPasswords) {
-                        fetchSimilarPasswordItems()
-                    }
-                }.store(in: &cancellables)
-        }
+        $securityIssues.receive(on: DispatchQueue.main)
+            .sink { [weak self] issues in
+                guard let self, let issues else {
+                    return
+                }
+                if issues.contains(where: \.isReusedPasswordWeakness) {
+                    fetchSimilarPasswordItems()
+                }
+            }.store(in: &cancellables)
     }
 
     override func bindValues() {
@@ -184,8 +198,7 @@ extension LogInDetailViewModel {
                 if let content = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
                                                                          itemId: aliasItem.itemId) {
                     router.present(for: .itemDetail(content,
-                                                    automaticDisplay: true,
-                                                    showSecurityIssues: false))
+                                                    automaticDisplay: true))
                 }
             } catch {
                 handle(error)
@@ -212,28 +225,15 @@ extension LogInDetailViewModel {
                 return
             }
             do {
-                reusedItems = .fetching
+                if !reusedItems.isFetched {
+                    reusedItems = .fetching
+                }
                 let items = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
                 reusedItems = .fetched(items)
             } catch {
                 reusedItems = .error(error)
                 handle(error)
             }
-        }
-    }
-}
-
-extension SecurityWeakness {
-    var secureRowType: SecureRowType {
-        switch self {
-        case .excludedItems, .reusedPasswords, .weakPasswords:
-            .warning
-
-        case .missing2FA:
-            .info
-
-        case .breaches:
-            .danger
         }
     }
 }

@@ -20,6 +20,7 @@
 
 import Client
 import DesignSystem
+import Screens
 import SwiftUI
 
 struct ItemSearchResultView: View, Equatable {

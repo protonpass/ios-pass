@@ -494,10 +494,7 @@ public extension UseCasesContainer {
 public extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<any GetAllSecurityAffectedLoginsUseCase> {
         self {
-            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
-                                         symmetricKeyProvider: DataContainer.shared
-                                             .nonSendableSymmetricKeyProvider(),
-                                         getPasswordStrength: self.getPasswordStrength())
+            GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository)
         }
     }
 
@@ -1011,7 +1008,10 @@ public extension UseCasesContainer {
                                        userEventIdDatasource: container.localUserEventIdDatasource(),
                                        coreEventIdDatasource: container.localCoreEventIdDatasource(),
                                        folderDatasource: container.localFolderDatasource(),
-                                       folderKeysDatasource: container.localFolderKeyDatasource())
+                                       folderKeysDatasource: container.localFolderKeyDatasource(),
+                                       compromisedPasswordDatasource: container
+                                           .localCompromisedPasswordDatasource(),
+                                       localTimestampDatasource: container.localTimestampDatasource())
         }
     }
 

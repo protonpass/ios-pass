@@ -54,7 +54,6 @@ protocol HomepageCoordinatorDelegate: AnyObject {
 final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresenting {
     deinit { print(deinitMessage) }
 
-    // Injected & self-initialized properties
     let logger = dependency(\ToolingContainer.logger)
     let preferencesManager = dependency(\ToolingContainer.preferencesManager)
     private let telemetryEventRepository = dependency(\RepositoryContainer.telemetryEventRepository)
@@ -67,11 +66,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
 
-    // App cover/local authentication
     @LazyInjected(\UIComponentsContainer.window) var window
     weak var appCoverView: UIView?
 
-    // Lazily initialised properties
     @LazyInjected(\ServiceContainer.syncEventLoop) var eventLoop
     @LazyInjected(\UIComponentsContainer.bannerManager) var bannerManager
     @LazyInjected(\ToolingContainer.apiManager) var apiManager
@@ -88,7 +85,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     @LazyInjected(\ServiceContainer.featureDiscoveryManager)
     private var featureDiscoveryManager
 
-    // Use cases
     private let refreshFeatureFlags = dependency(\UseCasesContainer.refreshFeatureFlags)
     let revokeCurrentSession = dependency(\UseCasesContainer.revokeCurrentSession)
     private let makeAccountSettingsUrl = dependency(\UseCasesContainer.makeAccountSettingsUrl)
@@ -115,7 +111,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
-    // References
     private var checkingFolderForceSync = false
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
@@ -301,9 +296,7 @@ private extension HomepageCoordinator {
                     do {
                         logger.info("App goes back to foreground")
                         if let window {
-                            // Configurations could be changed from extensions
-                            // (logged out, token refreshed...), so we need to set up
-                            // everything as if the app is first launched
+                            // Extensions may have logged out or refreshed tokens, so set up as on first launch
                             try await setUpBeforeLaunching(rootContainer: .window(window))
                         } else {
                             assertionFailure("window should not be nil")
@@ -398,16 +391,9 @@ private extension HomepageCoordinator {
         }
     }
 
-    /// One-shot repair for users upgrading from a build without folder support, which could not
-    /// decrypt items inside folders and so dropped them.
-    ///
-    /// Only ever run this for the active user: the repair state lives in that user's preferences
-    /// and `PreferencesManager` resolves the active user internally, so running it for anyone else
-    /// would read and write the wrong account's row.
-    ///
-    /// Deliberately not driven from the sync event loop. It presents a non-dismissible progress
-    /// screen and wipes local data before re-downloading, which must not happen on a timer while
-    /// the user is mid-task.
+    /// One-shot repair for users upgrading from a build that dropped items inside folders.
+    /// Active user only: `PreferencesManager` resolves the active user, so other runs write the wrong row.
+    /// Kept off the event loop, which fires mid-task: it shows a blocking screen and wipes local data.
     func forceSyncForFoldersIfNeeded(userId: String) async {
         guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
         checkingFolderForceSync = true
@@ -483,7 +469,6 @@ private extension HomepageCoordinator {
                 itemsTabViewModel?.isEditMode = false
             }
 
-            // Refresh to reload data after item creation or edits.
             itemsTabViewModel?.refresh()
             createEditItemCoordinator?.refresh()
         }
@@ -547,9 +532,6 @@ private extension HomepageCoordinator {
         }
     }
 
-    /// Filters task cancellation errors as they should not be shown to the user
-    /// - Parameter error: The current error to check
-    /// - Returns: A boolean to indicate if we should display the error banner
     func shouldDisplayError(error: any Error) -> Bool {
         if error is CancellationError {
             return false
@@ -693,10 +675,10 @@ extension HomepageCoordinator {
 
                 case let .itemDetail(content,
                                      automaticDisplay,
-                                     showSecurityIssues):
+                                     showExcludedWeaknesses):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
-                                          showSecurityIssues: showSecurityIssues)
+                                          showExcludedWeaknesses: showExcludedWeaknesses)
 
                 case .editSpotlightSearchableContent:
                     presentEditSpotlightSearchableContentView()
@@ -710,8 +692,8 @@ extension HomepageCoordinator {
                 case let .passkeyDetail(passkey):
                     presentPasskeyDetailView(for: passkey)
 
-                case let .securityDetail(securityWeakness):
-                    presentSecurity(securityWeakness)
+                case let .securityDetail(filter):
+                    presentSecurity(filter)
 
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
@@ -979,9 +961,9 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showSecurityIssues: Bool = false) {
+    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
-        coordinator.showDetail(for: itemContent, asSheet: asSheet, showSecurityIssues: showSecurityIssues)
+        coordinator.showDetail(for: itemContent, asSheet: asSheet, showExcludedWeaknesses: showExcludedWeaknesses)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
@@ -1129,9 +1111,7 @@ extension HomepageCoordinator {
 
     // periphery:ignore:parameters configuration,dismissal
     func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
-        // We are skipping the intermediate feature explanation screens in upsell flow
-        // This is temporary until we have the new designs for these steps
-        // We are redirecting the user directly to the payment screen.
+        // The feature explanation screens have no designs, so upsell goes straight to payment
         startUpgradeFlow()
     }
 
@@ -1383,7 +1363,7 @@ extension HomepageCoordinator {
     }
 
     func adaptivelyDismissCurrentDetailView() {
-        // Dismiss differently because show differently
+        // The detail view is either presented modally or pushed, depending on where it was opened
         if rootViewController != topMostViewController {
             dismissTopMostViewController()
         } else {
@@ -1422,9 +1402,9 @@ extension HomepageCoordinator {
 // MARK: - Security Center
 
 extension HomepageCoordinator {
-    func presentSecurity(_ securityWeakness: SecurityWeakness) {
+    func presentSecurity(_ type: MonitorListSection) {
         let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness),
+        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
                                                         isSheet: isSheet),
                        isSheet: isSheet)
 
@@ -1566,7 +1546,6 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
                                         presentationOption: ChildCoordinatorPresentationOption) {
         switch viewOption {
         case .sheet:
-            // Nothing special to set up
             break
 
         case .sheetWithGrabber:
@@ -1805,9 +1784,7 @@ extension HomepageCoordinator {
 
                 addNewEvent(type: .create(type))
                 dismissAllViewControllers(animated: true) {
-                    // We have eventual crashes after creating items
-                    // Looks like it's because the keyboard is not fully dismissed
-                    // and in between we try to show a banner
+                    // Showing the toast before the keyboard finishes dismissing crashed after item creation
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         displayToastMessage()
                     }
@@ -1817,7 +1794,7 @@ extension HomepageCoordinator {
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
 
-                // MMP: optionally get the plan and post back. We don't care if errors occur.
+                // MMP conversion postback, best effort
                 if let isFreeUser = try? await accessRepository.getPlan(userId: userId).isFreeUser {
                     try? await postbackConversionValue(isFreeUser ? 3 : 61,
                                                        coarseValue: isFreeUser ? .medium : .high,

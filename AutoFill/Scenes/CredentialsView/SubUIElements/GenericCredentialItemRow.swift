@@ -21,6 +21,7 @@
 import Client
 import DesignSystem
 import Entities
+import Screens
 import SwiftUI
 
 struct GenericCredentialItemRow: View {

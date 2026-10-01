@@ -28,7 +28,6 @@ import ProtonCoreLogin
 @preconcurrency import ProtonCoreServices
 import ProtonCoreUtilities
 
-/// Contain all repositories
 public final class RepositoryContainer: SharedContainer, AutoRegistering {
     public static let shared = RepositoryContainer()
     public let manager = ContainerManager()
@@ -156,6 +155,18 @@ public extension RepositoryContainer {
         self { RemoteBreachDataSource(apiServicing: self.apiManager) }
     }
 
+    var remoteCompromisedPasswordsDatasource: Factory<any RemoteCompromisedPasswordsDatasourceProtocol> {
+        self {
+            let container = ToolingContainer.shared
+            return RemoteCompromisedPasswordsDatasource(gunzipper: container.gunzipper(),
+                                                        userAgent: container.appVersion())
+        }
+    }
+
+    var localCompromisedPasswordDatasource: Factory<any LocalCompromisedPasswordDatasourceProtocol> {
+        self { LocalCompromisedPasswordDatasource(databaseService: self.databaseService) }
+    }
+
     var localItemReadEventDatasource: Factory<any LocalItemReadEventDatasourceProtocol> {
         self { LocalItemReadEventDatasource(databaseService: self.databaseService) }
     }
@@ -277,6 +288,10 @@ public extension RepositoryContainer {
 
     var localPasswordPreferencesDatasource: Factory<any LocalPasswordPreferencesDatasourceProtocol> {
         self { LocalPasswordPreferencesDatasource(store: kSharedUserDefaults) }
+    }
+
+    var localTimestampDatasource: Factory<any LocalTimestampDatasourceProtocol> {
+        self { LocalTimestampDatasource(userDefault: .standard) }
     }
 }
 
@@ -469,11 +484,33 @@ public extension RepositoryContainer {
 public extension RepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
-            PassMonitorRepository(itemRepository: self.itemRepository(),
-                                  shareRepository: self.shareRepository(),
-                                  remoteDataSource: self.remoteBreachDataSource(),
-                                  symmetricKeyProvider: self.symmetricKeyProvider,
-                                  userManager: self.userManager)
+            let getFeatureFlagStatus = UseCasesContainer.shared.getFeatureFlagStatus()
+            return PassMonitorRepository(itemRepository: self.itemRepository(),
+                                         shareRepository: self.shareRepository(),
+                                         remoteDataSource: self.remoteBreachDataSource(),
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         userManager: self.userManager,
+                                         accessRepository: self.accessRepository(),
+                                         compromisedPasswordChecker: self.compromisedPasswordChecker(),
+                                         isFeatureEnabled: { getFeatureFlagStatus(for: $0) })
+        }
+    }
+
+    var compromisedPasswordChecker: Factory<any CompromisedPasswordCheckerProtocol> {
+        self {
+            CompromisedPasswordChecker(remoteDatasource: self.remoteCompromisedPasswordsDatasource(),
+                                       localDatasource: self.localCompromisedPasswordDatasource(),
+                                       scanTracker: self.compromisedPasswordScanTracker(),
+                                       symmetricKeyProvider: self.symmetricKeyProvider,
+                                       logManager: self.logManager,
+                                       dateProvider: self.currentDateProvider)
+        }
+    }
+
+    var compromisedPasswordScanTracker: Factory<any CompromisedPasswordScanTrackerProtocol> {
+        self {
+            CompromisedPasswordScanTracker(localTimestampDatasource: self.localTimestampDatasource(),
+                                           dateProvider: self.currentDateProvider)
         }
     }
 }

@@ -19,55 +19,63 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Testing
+import Foundation
 
-final class StringExtensionTests: XCTestCase {
-    func testGenerateInitials() {
-        XCTAssertEqual("John doe wick".initials(), "JD")
-        XCTAssertEqual("john doe wick".initials(), "JD")
-        XCTAssertEqual("john-doe wick".initials(), "JW")
-        XCTAssertEqual("   john wick doe".initials(), "JW")
-        XCTAssertEqual("john↑doe".initials(), "JO")
-        XCTAssertEqual("johndoe".initials(), "JO")
-        XCTAssertEqual("john wick".initials(), "JW")
-        XCTAssertEqual("j".initials(), "J")
-        XCTAssertEqual("".initials(), "")
-        XCTAssertEqual("012".initials(), "01")
+@Suite("String extensions")
+struct StringExtensionTests {
+
+    @Test(arguments: [
+        ("John doe wick", "JD"),
+        ("john doe wick", "JD"),
+        ("john-doe wick", "JW"),
+        ("   john wick doe", "JW"),
+        ("john↑doe", "JO"),     // ↑ is not a separator → single word, first two chars
+        ("johndoe", "JO"),
+        ("john wick", "JW"),
+        ("j", "J"),
+        ("", ""),
+        ("012", "01"),
+    ])
+    func `initials`(input: String, expected: String) {
+        #expect(input.initials() == expected)
     }
 
-    func testCharacterCount() {
-        XCTAssertEqual("teststring".characterCount("t"), 3)
-        XCTAssertEqual("test long string".characterCount(" "), 2)
-        XCTAssertEqual("🤘 string with emoji 😊😊 and special character (◕‿◕)".characterCount("😊"), 2)
+    @Test(arguments: [
+        ("teststring", Character("t"), 3),
+        ("test long string", Character(" "), 2),
+        ("🤘 string with emoji 😊😊 and special character (◕‿◕)", Character("😊"), 2),
+    ])
+    func `characterCount`(input: String, needle: Character, expected: Int) {
+        #expect(input.characterCount(needle) == expected)
     }
 
-    func testConvertToCardNumber() {
-        XCTAssertEqual("341234569865".toCreditCardNumber(),
-                       "3412 345698 65")
-        XCTAssertEqual("341234569865857".toCreditCardNumber(),
-                       "3412 345698 65857")
-        XCTAssertEqual("3712345698658579".toCreditCardNumber(),
-                       "3712 3456 9865 8579")
-        XCTAssertEqual("671934946329032".toCreditCardNumber(),
-                       "6719 3494 6329 032")
+    @Test(arguments: [
+        ("341234569865", "3412 345698 65"),
+        ("341234569865857", "3412 345698 65857"),
+        ("3712345698658579", "3712 3456 9865 8579"),
+        ("671934946329032", "6719 3494 6329 032"),
+    ])
+    func `toCreditCardNumber`(input: String, expected: String) {
+        #expect(input.toCreditCardNumber() == expected)
     }
 
-    func testConvertToMaskedCardNumber() {
-        XCTAssertEqual("341234569865".toMaskedCreditCardNumber(),
-                       "3412 •••• 9865")
-        XCTAssertEqual("341234569865857".toMaskedCreditCardNumber(),
-                       "3412 •••••• 65857")
-        XCTAssertEqual("3712345698658579".toMaskedCreditCardNumber(),
-                       "3712 •••• •••• 8579")
-        XCTAssertEqual("671934946329032".toMaskedCreditCardNumber(),
-                       "6719 •••• •••• 032")
-        XCTAssertEqual("67193494632903247021".toMaskedCreditCardNumber(),
-                       "6719 •••• •••• •••• 7021")
+    @Test(arguments: [
+        ("341234569865", "3412 •••• 9865"),
+        ("341234569865857", "3412 •••••• 65857"),
+        ("3712345698658579", "3712 •••• •••• 8579"),
+        ("671934946329032", "6719 •••• •••• 032"),
+        ("67193494632903247021", "6719 •••• •••• •••• 7021"),
+    ])
+    func `toMaskedCreditCardNumber`(input: String, expected: String) {
+        #expect(input.toMaskedCreditCardNumber() == expected)
     }
-    
-    func testReplaceAllCharsExceptFirstAndLast() {
-        XCTAssertEqual("ABBBB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AzzzB")
-        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
-        XCTAssertEqual("AB".replaceAllCharsExceptFirstAndLast(withChar: "z"), "AB")
+
+    @Test(arguments: [
+        ("ABBBB", "AzzzB"),
+        ("AB", "AB"),
+    ])
+    func `replaceAllCharsExceptFirstAndLast`(input: String, expected: String) {
+        #expect(input.replaceAllCharsExceptFirstAndLast(withChar: "z") == expected)
     }
 }

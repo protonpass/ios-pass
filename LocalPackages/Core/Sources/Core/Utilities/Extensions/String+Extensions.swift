@@ -62,10 +62,6 @@ public extension String {
         return String(first2Words.first?.prefix(2) ?? "").uppercased()
     }
 
-    var spacesRemoved: String {
-        replacingOccurrences(of: " ", with: "")
-    }
-
     // periphery:ignore
     func characterCount(_ character: Character) -> Int {
         count(where: { $0 == character })
@@ -77,8 +73,6 @@ public extension String {
 
         let noSpacesCardNumber = spacesRemoved
 
-        // Only consider amex card if number of character <= 15
-        // otherwise treat it as normal card
         if isAmex, noSpacesCardNumber.count <= 15 {
             var formatted = noSpacesCardNumber
             if formatted.count > 4 {
@@ -171,15 +165,12 @@ public extension String {
     }
 
     static func concatenateOptionalStrings(_ strings: [String?], separator: String = "") -> String {
-        // Filter out nil values and empty strings, then unwrap the non-nil, non-empty values
         let nonNilNonEmptyStrings = strings.compactMap { $0?.isEmpty == false ? $0 : nil }
-        // Join the non-nil, non-empty strings with a space separator
         return nonNilNonEmptyStrings.joined(separator: separator)
     }
 
     // periphery:ignore
     static func concatenateOptionalStrings(_ strings: String?..., separator: String = "") -> String {
-        // Call the array-based function with the variadic arguments
         concatenateOptionalStrings(strings, separator: separator)
     }
 
@@ -187,10 +178,6 @@ public extension String {
         var content: [String?] = [self]
         content.append(contentsOf: strings)
         return String.concatenateOptionalStrings(content, separator: separator)
-    }
-
-    var accentsRemoved: String {
-        folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
     }
 
     @MainActor
@@ -212,6 +199,18 @@ public extension String {
 }
 
 // MARK: Computed Extensions
+
+public extension String {
+    var accentsRemoved: String {
+        folding(options: .diacriticInsensitive, locale: .init(identifier: "en_US"))
+    }
+
+    var spacesRemoved: String {
+        replacingOccurrences(of: " ", with: "")
+    }
+}
+
+// MARK: Computed Extensions Substring
 
 public extension Substring {
     var toString: String {
