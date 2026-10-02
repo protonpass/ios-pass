@@ -1219,3 +1219,11 @@ public extension UseCasesContainer {
         self { SanitizeFileName() }
     }
 }
+
+// MARK: - CXP
+
+public extension UseCasesContainer {
+    var parseCxpImport: Factory<any ParseCxpImportUseCase> {
+        self { ParseCxpImport() }
+    }
+}
