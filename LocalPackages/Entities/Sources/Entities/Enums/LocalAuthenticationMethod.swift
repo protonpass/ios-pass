@@ -30,7 +30,7 @@ public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
     public var type: String {
         switch self {
         case .biometric:
-            "Biometric"
+            "biometric"
 
         case .pin:
             "pin"
