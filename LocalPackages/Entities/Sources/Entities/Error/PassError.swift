@@ -65,6 +65,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case folder(FolderFailureReason)
     case bugReport(BugReportFailureReason)
     case compromisePassword(CompromisedPasswordsFailureReason)
+    case unsupportedCxfVersion(String)
 
     public var debugDescription: String {
         switch self {
@@ -196,6 +197,9 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
 
         case let .compromisePassword(reason):
             reason.debugDescription
+
+        case let .unsupportedCxfVersion(version):
+            "Unsupported CXF version \(version)"
         }
     }
 
