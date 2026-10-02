@@ -38,6 +38,7 @@ protocol CreateEditLoginViewModelDelegate: AnyObject {
 }
 
 @MainActor
+// swiftlint:disable:next type_body_length
 final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -54,7 +55,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private var originalTotpUri = ""
     @Published var totpUri = ""
     @Published private(set) var totpUriErrorMessage = ""
-    @Published var urls: [IdentifiableObject<String>] = [.init(value: "")]
+    @Published var autofillUrls: [IdentifiableObject<AutofillUrl>] = [.init(value: .init(url: "",
+                                                                                         mode: .default))]
     @Published var invalidURLs = [String]()
 
     @Published private(set) var loading = false
@@ -87,6 +89,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
+    var domainMatchingSupported: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAutofillUrlAdvancedModes)
+    }
+
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol) throws {
         try super.init(mode: mode,
@@ -115,8 +121,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
                 allowedAndroidApps = data.allowedAndroidApps
                 passkeys = data.passkeys
-                if !data.urls.isEmpty {
-                    urls = data.urls.map { .init(value: $0) }
+                if let websites = data.resolvedAutofillUrls.nilIfEmpty {
+                    // Leave the blank placeholder row in place for an item with no website at all
+                    autofillUrls = websites.map { .init(value: $0) }
                 }
             }
 
@@ -131,7 +138,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
-                urls = [url ?? request?.relyingPartyIdentifier ?? ""].map { .init(value: $0) }
+                autofillUrls = [url ?? request?.relyingPartyIdentifier ?? ""]
+                    .map { .init(value: .init(url: $0, mode: .default)) }
             }
 
             // We only show upsell button when in create mode
@@ -165,9 +173,18 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @MainActor
     override func generateItemContent() async -> ItemContentProtobuf? {
         do {
-            let sanitizedUrls = urls.compactMap { URLUtils.Sanitizer.sanitize($0.value) }
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
                                                                 editedUri: totpUri)
+
+            let sanitizedAutofillUrls = autofillUrls.compactMap { url in
+                if let value = URLUtils.Sanitizer.sanitize(url.value.url) {
+                    return AutofillUrl(url: value, mode: url.value.mode)
+                }
+                return nil
+            }
+
+            let sanitizedUrls = sanitizedAutofillUrls.map(\.url)
+
             var passkeys = passkeys
             if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
@@ -192,6 +209,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
+                                                        autofillUrls: sanitizedAutofillUrls,
                                                         allowedAndroidApps: allowedAndroidApps,
                                                         passkeys: passkeys))
             return ItemContentProtobuf(name: title,
@@ -348,7 +366,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func validateURLs() -> Bool {
-        invalidURLs = urls.map(\.value).compactMap { url in
+        invalidURLs = autofillUrls.map(\.value.url).compactMap { url in
             if url.isEmpty {
                 return nil
             }
@@ -386,6 +404,15 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .failure(error):
             handle(error)
         }
+    }
+
+    func update(mode: AutofillUrlMode, for url: IdentifiableObject<AutofillUrl>) {
+        let id = url.id
+        guard let index = autofillUrls.firstIndex(where: { $0.id == id }) else {
+            assertionFailure("AutofillURL not found \(id)")
+            return
+        }
+        autofillUrls[index].value.mode = mode
     }
 }
 

@@ -344,6 +344,7 @@ public extension RepositoryContainer {
                            localShareDatasource: self.localShareDatasource(),
                            shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
+                           featureFlagsRepository: self.featureFlagsRepository(),
                            logManager: self.logManager)
         }
     }
