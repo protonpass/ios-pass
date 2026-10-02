@@ -332,6 +332,10 @@ extension ProfileTabViewModel {
         router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
     }
 
+    func beginExportFlow() {
+        router.present(for: .cxpExport)
+    }
+
     func showTutorial() {
         router.present(for: .tutorial)
     }
