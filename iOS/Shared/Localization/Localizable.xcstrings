@@ -61773,6 +61773,16 @@
         }
       }
     },
+    "Export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export data to another app"
+          }
+        }
+      }
+    },
     "Extra password" : {
       "localizations" : {
         "be" : {
