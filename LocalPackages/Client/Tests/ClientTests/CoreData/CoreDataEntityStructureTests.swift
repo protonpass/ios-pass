@@ -21,49 +21,28 @@
 @testable import Client
 import Core
 import CoreData
-import XCTest
+import Testing
 
-final class CoreDataEntityStructureTests: XCTestCase {
-    var container: NSPersistentContainer!
-
-    override func setUp() {
-        super.setUp()
-        container = DatabaseService.build(name: kProtonPassContainerName, inMemory: true)
-    }
-
-    override func tearDown() {
-        container = nil
-        super.tearDown()
-    }
+@Suite(.tags(.models))
+struct CoreDataEntityStructureTests {
+    let container = DatabaseService.build(name: kProtonPassContainerName, inMemory: true)
 
     func verifyAttribute(named name: String,
                          on entity: NSEntityDescription,
                          hasType type: NSAttributeDescription.AttributeType) {
-        guard !name.isEmpty else {
-            XCTFail("Attribute name can not be empty")
-            return
-        }
         guard let attribute = entity.attributesByName[name] else {
-            XCTFail("\(entity.name ?? "") is missing expected attribute \(name)")
+            Issue.record("\(entity.name ?? "") is missing expected attribute \(name)")
             return
         }
-        XCTAssertEqual(attribute.type, type)
+        #expect(attribute.type == type)
     }
 
-    func entity(byName name: String) -> NSEntityDescription {
-        guard let entity = container.managedObjectModel.entitiesByName[name] else {
-            continueAfterFailure = false
-            XCTFail("Entity \(name) not found")
-
-            // fatalError() to trick the compiler.
-            // Should not be called because stopped by `continueAfterFailure = false` above
-            fatalError("👻🐶😜")
-        }
-        return entity
+    func entity(byName name: String) throws -> NSEntityDescription {
+        try #require(container.managedObjectModel.entitiesByName[name], "Entity \(name) not found")
     }
 
-    func testShareEntity() {
-        let sut = entity(byName: "ShareEntity")
+    @Test func `the ShareEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "ShareEntity")
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
         verifyAttribute(named: "contentKeyRotation", on: sut, hasType: .integer64)
@@ -79,8 +58,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "addressID", on: sut, hasType: .string)
     }
 
-    func testShareKeyEntity() {
-        let sut = entity(byName: "ShareKeyEntity")
+    @Test func `the ShareKeyEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "ShareKeyEntity")
         verifyAttribute(named: "createTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "key", on: sut, hasType: .string)
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
@@ -90,8 +69,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
-    func testItemEntity() {
-        let sut = entity(byName: "ItemEntity")
+    @Test func `the ItemEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "ItemEntity")
         verifyAttribute(named: "aliasEmail", on: sut, hasType: .string)
         verifyAttribute(named: "content", on: sut, hasType: .string)
         verifyAttribute(named: "contentFormatVersion", on: sut, hasType: .integer64)
@@ -111,31 +90,31 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "flags", on: sut, hasType: .integer64)
     }
 
-    func testShareEventIDEntity() {
-        let sut = entity(byName: "ShareEventIDEntity")
+    @Test func `the ShareEventIDEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "ShareEventIDEntity")
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "lastEventID", on: sut, hasType: .string)
     }
 
-    func testSearchEntryEntity() {
-        let sut = entity(byName: "SearchEntryEntity")
+    @Test func `the SearchEntryEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "SearchEntryEntity")
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
-    func testTelemetryEventEntity() {
-        let sut = entity(byName: "TelemetryEventEntity")
+    @Test func `the TelemetryEventEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "TelemetryEventEntity")
         verifyAttribute(named: "uuid", on: sut, hasType: .string)
         verifyAttribute(named: "rawValue", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .double)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
-    func testAccessEntity() {
-        let sut = entity(byName: "AccessEntity")
+    @Test func `the AccessEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "AccessEntity")
         verifyAttribute(named: "aliasLimit", on: sut, hasType: .integer64)
         verifyAttribute(named: "displayName", on: sut, hasType: .string)
         verifyAttribute(named: "hideUpgrade", on: sut, hasType: .boolean)
@@ -160,14 +139,14 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "folderAllowed", on: sut, hasType: .boolean)
     }
 
-    func testSpotlightVaultEntity() {
-        let sut = entity(byName: "SpotlightVaultEntity")
+    @Test func `the SpotlightVaultEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "SpotlightVaultEntity")
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
     }
 
-    func testOrganizationEntity() {
-        let sut = entity(byName: "OrganizationEntity")
+    @Test func `the OrganizationEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "OrganizationEntity")
         verifyAttribute(named: "canUpdate", on: sut, hasType: .boolean)
         verifyAttribute(named: "exportMode", on: sut, hasType: .integer64)
         verifyAttribute(named: "forceLockSeconds", on: sut, hasType: .integer64)
@@ -180,36 +159,36 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
-    func testUserPreferencesEntity() {
-        let sut = entity(byName: "UserPreferencesEntity")
+    @Test func `the UserPreferencesEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "UserPreferencesEntity")
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "encryptedContent", on: sut, hasType: .binaryData)
     }
 
-    func testUserProfileEntity() {
-        let sut = entity(byName: "UserProfileEntity")
+    @Test func `the UserProfileEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "UserProfileEntity")
         verifyAttribute(named: "updateTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "isActive", on: sut, hasType: .boolean)
     }
 
-    func testItemReadEventEntity() {
-        let sut = entity(byName: "ItemReadEventEntity")
+    @Test func `the ItemReadEventEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "ItemReadEventEntity")
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .double)
     }
     
-    func testAuthCredentialEntity() {
-        let sut = entity(byName: "AuthCredentialEntity")
+    @Test func `the AuthCredentialEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "AuthCredentialEntity")
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
         verifyAttribute(named: "module", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
-    func testFolderEntity() {
-        let sut = entity(byName: "FolderEntity")
+    @Test func `the FolderEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "FolderEntity")
         verifyAttribute(named: "folderID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
@@ -222,8 +201,8 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "symmetricallyEncryptedContent", on: sut, hasType: .string)
     }
 
-    func testFolderKeyEntity() {
-        let sut = entity(byName: "FolderKeyEntity")
+    @Test func `the FolderKeyEntity model has the expected attributes`() throws {
+        let sut = try entity(byName: "FolderKeyEntity")
         verifyAttribute(named: "folderID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "userID", on: sut, hasType: .string)

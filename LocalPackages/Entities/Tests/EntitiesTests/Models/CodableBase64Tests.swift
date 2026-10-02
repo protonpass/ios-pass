@@ -19,37 +19,32 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Entities
-import XCTest
+import Testing
 
-final class CodableBase64Tests: XCTestCase {
+@Suite(.tags(.entity))
+struct CodableBase64Tests {
     struct Person: CodableBase64 {
         let name: String
         let age: Int
     }
 
-    func testSerializeBase64() throws {
-        // Given
+    @Test func `an object serializes to the base64 of its JSON`() throws {
         let johnDoe = Person(name: "John Doe", age: 31)
 
-        // When
         let base64String = try johnDoe.serializeBase64()
 
-        // Then
         // iOS 17 fix: serialization process doesn't respect property order
         // so we compare against 2 possible base 64 strings
-        XCTAssertTrue(["eyJhZ2UiOjMxLCJuYW1lIjoiSm9obiBEb2UifQ==",
-                       "eyJuYW1lIjoiSm9obiBEb2UiLCJhZ2UiOjMxfQ=="].contains(base64String))
+        #expect(["eyJhZ2UiOjMxLCJuYW1lIjoiSm9obiBEb2UifQ==",
+                 "eyJuYW1lIjoiSm9obiBEb2UiLCJhZ2UiOjMxfQ=="].contains(base64String))
     }
 
-    func testDeserializeBase64() throws {
-        // Given
+    @Test func `an object deserializes from the base64 of its JSON`() throws {
         let base64String = "eyJuYW1lIjoiSm9obiBEb2UiLCJhZ2UiOjMxfQ=="
 
-        // When
         let person = try Person.deserializeBase64(base64String)
 
-        // Then
-        XCTAssertEqual(person.name, "John Doe")
-        XCTAssertEqual(person.age, 31)
+        #expect(person.name == "John Doe")
+        #expect(person.age == 31)
     }
 }

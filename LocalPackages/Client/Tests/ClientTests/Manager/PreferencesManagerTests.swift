@@ -21,249 +21,204 @@
 
 @testable import Client
 import ClientMocks
-import CoreMocks
 import Combine
+import CoreMocks
 import CryptoKit
 import Entities
-import XCTest
+import Testing
 
-final class PreferencesManagerTest: XCTestCase {
-    var userManager: UserManagerProtocolMock!
-    var keychainMockProvider: KeychainProtocolMockProvider!
-    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
-    var appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock!
-    var lastAppPreferences: AppPreferences!
-    var sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocol!
-    var userPreferencesDatasource: LocalUserPreferencesDatasourceProtocol!
-    var sut: PreferencesManagerProtocol!
-    var cancellables: Set<AnyCancellable>!
+@Suite(.tags(.manager))
+struct PreferencesManagerTests {
+    private let userManager = UserManagerProtocolMock()
+    private let appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock
+    private let sharedPreferencesDatasource: any LocalSharedPreferencesDatasourceProtocol
+    private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
+    private let sut: any PreferencesManagerProtocol
 
-    override func setUp() {
-        super.setUp()
-        userManager = .init()
+    init() {
         userManager.stubbedGetActiveUserDataResult = .random()
 
-        keychainMockProvider = .init()
+        let keychainMockProvider = KeychainProtocolMockProvider()
         keychainMockProvider.setUp()
 
-        symmetricKeyProviderMockFactory = .init()
+        let symmetricKeyProviderMockFactory = SymmetricKeyProviderMockFactory()
         symmetricKeyProviderMockFactory.setUp()
 
-        appPreferencesDatasource = .init()
-        appPreferencesDatasource.stubbedGetPreferencesResult = lastAppPreferences
-        appPreferencesDatasource.closureUpsertPreferences = {
-            if let prefs = self.appPreferencesDatasource.invokedUpsertPreferencesParameters?.0 {
-                self.lastAppPreferences = prefs
-            }
+        let appPreferencesDatasource = LocalAppPreferencesDatasourceProtocolMock()
+        appPreferencesDatasource.closureUpsertPreferences = { [weak appPreferencesDatasource] in
+            guard let appPreferencesDatasource else { return }
+            appPreferencesDatasource.stubbedGetPreferencesResult =
+                appPreferencesDatasource.invokedUpsertPreferencesParameters?.preferences
         }
-        appPreferencesDatasource.closureRemovePreferences = {
-            self.lastAppPreferences = nil
+        appPreferencesDatasource.closureRemovePreferences = { [weak appPreferencesDatasource] in
+            guard let appPreferencesDatasource else { return }
+            appPreferencesDatasource.stubbedGetPreferencesResult = nil
         }
+        self.appPreferencesDatasource = appPreferencesDatasource
 
         sharedPreferencesDatasource =
-        LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
-                                         keychain: keychainMockProvider.getKeychain())
+            LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
+                                             keychain: keychainMockProvider.getKeychain())
 
         userPreferencesDatasource =
-        LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
-                                       databaseService: DatabaseService(inMemory: true))
-
-        cancellables = .init()
+            LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
+                                           databaseService: DatabaseService(inMemory: true))
 
         sut = PreferencesManager(userManager: userManager,
                                  appPreferencesDatasource: appPreferencesDatasource,
                                  sharedPreferencesDatasource: sharedPreferencesDatasource,
-                                 userPreferencesDatasource: userPreferencesDatasource, 
+                                 userPreferencesDatasource: userPreferencesDatasource,
                                  logManager: LogManagerProtocolMock())
-    }
-
-    override func tearDown() {
-        keychainMockProvider = nil
-        symmetricKeyProviderMockFactory = nil
-        userPreferencesDatasource = nil
-        sharedPreferencesDatasource = nil
-        sut = nil
-        cancellables = nil
-        super.tearDown()
     }
 }
 
 // MARK: - App preferences
-extension PreferencesManagerTest {
-    func testCreateDefaultAppPreferences() async throws {
+
+extension PreferencesManagerTests {
+    @Test func `setting up creates default app preferences`() async throws {
         try await sut.setUp()
-        XCTAssertEqual(sut.appPreferences.value, .default)
+        #expect(sut.appPreferences.value == .default)
     }
 
-    func testReceiveEventWhenUpdatingAppPreferences() async throws {
-        // Given
+    @Test func `updating app preferences emits the new value`() async throws {
         try await sut.setUp()
-        let expectation = expectation(description: "Should receive update event")
         let newValue = Int.random(in: 1...100)
+        var cancellables = Set<AnyCancellable>()
+        var receivedValues = [Int]()
         sut.appPreferencesUpdates
             .filter(\.createdItemsCount)
-            .sink { value in
-                if value == newValue {
-                    expectation.fulfill()
-                }
-            }
+            .sink { receivedValues.append($0) }
             .store(in: &cancellables)
 
-        // When
         try await sut.updateAppPreferences(\.createdItemsCount, value: newValue)
 
-        // Then
-        XCTAssertEqual(sut.appPreferences.value?.createdItemsCount, newValue)
-        await fulfillment(of: [expectation], timeout: 1)
+        #expect(sut.appPreferences.value?.createdItemsCount == newValue)
+        #expect(receivedValues == [newValue])
     }
 
-    func testRemoveAppPreferences() async throws {
+    @Test func `removing app preferences deletes them from the datasource`() async throws {
         try await sut.setUp()
         await sut.removeAppPreferences()
         let preferences = try appPreferencesDatasource.getPreferences()
-        XCTAssertNil(preferences)
+        #expect(preferences == nil)
     }
 }
 
 // MARK: - Shared preferences
-extension PreferencesManagerTest {
-    func testCreateDefaultSharedPreferences() async throws {
+
+extension PreferencesManagerTests {
+    @Test func `setting up creates default shared preferences`() async throws {
         try await sut.setUp()
-        XCTAssertEqual(sut.sharedPreferences.value, SharedPreferences.default)
+        #expect(sut.sharedPreferences.value == SharedPreferences.default)
     }
 
-    func testReceiveEventWhenUpdatingSharedPreferences() async throws {
-        // Given
+    @Test func `updating shared preferences emits the new values including nil`() async throws {
         try await sut.setUp()
+        var cancellables = Set<AnyCancellable>()
 
-        let expectationAppLockTime = expectation(description: "Should receive update event")
-        let newAppLockTime = try XCTUnwrap(AppLockTime.random())
+        let newAppLockTime = try #require(AppLockTime.random())
+        var receivedAppLockTimes = [AppLockTime]()
         sut.sharedPreferencesUpdates
             .filter(\.appLockTime)
-            .sink { value in
-                if value == newAppLockTime {
-                    expectationAppLockTime.fulfill()
-                }
-            }
+            .sink { receivedAppLockTimes.append($0) }
             .store(in: &cancellables)
 
-        let expectationPinCode = expectation(description: "Should receive update event")
         // Explicitly test nil to see if we can receive events for nullable values
         let newPinCode: String? = nil
+        var receivedPinCodes = [String?]()
         sut.sharedPreferencesUpdates
             .filter(\.pinCode)
-            .sink { value in
-                if value == newPinCode {
-                    expectationPinCode.fulfill()
-                }
-            }
+            .sink { receivedPinCodes.append($0) }
             .store(in: &cancellables)
 
-        // When
         try await sut.updateSharedPreferences(\.appLockTime, value: newAppLockTime)
         try await sut.updateSharedPreferences(\.pinCode, value: newPinCode)
 
-        // Then
-        XCTAssertEqual(sut.sharedPreferences.value?.appLockTime, newAppLockTime)
-        XCTAssertEqual(sut.sharedPreferences.value?.pinCode, newPinCode)
-        await fulfillment(of: [expectationAppLockTime, expectationPinCode], timeout: 1)
+        #expect(sut.sharedPreferences.value?.appLockTime == newAppLockTime)
+        #expect(sut.sharedPreferences.value?.pinCode == newPinCode)
+        #expect(receivedAppLockTimes == [newAppLockTime])
+        #expect(receivedPinCodes == [newPinCode])
     }
 
-    func testRemoveSharedPreferences() async throws {
+    @Test func `removing shared preferences deletes them from the datasource`() async throws {
         try await sut.setUp()
         try await sut.removeSharedPreferences()
         let preferences = try await sharedPreferencesDatasource.getPreferences()
-        XCTAssertNil(preferences)
+        #expect(preferences == nil)
     }
 }
 
 // MARK: - User's preferences
-extension PreferencesManagerTest {
-    func testCreateDefaultUserPreferences() async throws {
+
+extension PreferencesManagerTests {
+    @Test func `setting up creates default user preferences`() async throws {
         try await sut.setUp()
-        XCTAssertEqual(sut.userPreferences.value, UserPreferences.default)
+        #expect(sut.userPreferences.value == UserPreferences.default)
     }
 
-    func testReceiveEventWhenUpdatingUserPreferences() async throws {
-        // Given
+    @Test func `updating user preferences emits the new value`() async throws {
         try await sut.setUp()
-        let expectation = expectation(description: "Should receive update event")
-        let newValue = try XCTUnwrap(SpotlightSearchableContent.random())
+        let newValue = try #require(SpotlightSearchableContent.random())
+        var cancellables = Set<AnyCancellable>()
+        var receivedValues = [SpotlightSearchableContent]()
         sut.userPreferencesUpdates
             .filter(\.spotlightSearchableContent)
-            .sink { value in
-                if value == newValue {
-                    expectation.fulfill()
-                }
-            }
+            .sink { receivedValues.append($0) }
             .store(in: &cancellables)
 
-        // When
         try await sut.updateUserPreferences(\.spotlightSearchableContent, value: newValue)
 
-        // Then
-        XCTAssertEqual(sut.userPreferences.value?.spotlightSearchableContent, newValue)
-        await fulfillment(of: [expectation], timeout: 1)
+        #expect(sut.userPreferences.value?.spotlightSearchableContent == newValue)
+        #expect(receivedValues == [newValue])
     }
 
-    func testRemoveUserPreferences() async throws {
+    @Test func `removing user preferences deletes them and clears the current value`() async throws {
         try await sut.setUp()
         try await sut.removeUserPreferences()
         if let userId = try? await userManager.getActiveUserId() {
             let preferences = try await userPreferencesDatasource.getPreferences(for: userId)
-            XCTAssertNil(preferences)
+            #expect(preferences == nil)
         }
-        XCTAssertNil(sut.userPreferences.value)
+        #expect(sut.userPreferences.value == nil)
     }
 }
 
-extension PreferencesManagerTest {
-    func testFilterMultipleKeysPath() async throws {
+extension PreferencesManagerTests {
+    @Test func `filtering by several key paths emits once per matching update`() async throws {
         try await sut.setUp()
-        let expectation1 = expectation(description: "Should receive 1 update event")
-        expectation1.expectedFulfillmentCount = 1
-
-        let expectation2 = expectation(description: "Should receive 1 update event")
-        expectation2.expectedFulfillmentCount = 1
-
-        let expectation3 = expectation(description: "Should receive 2 update events")
-        expectation3.expectedFulfillmentCount = 2
-
-        let expectation4 = expectation(description: "Should receive 3 update events")
-        expectation4.expectedFulfillmentCount = 3
+        var cancellables = Set<AnyCancellable>()
+        var onboardedCount = 0
+        var thresholdCount = 0
+        var onboardedOrThresholdCount = 0
+        var anyOfThreeCount = 0
 
         sut.appPreferencesUpdates
             .filter([\.onboarded])
-            .sink { _ in
-                expectation1.fulfill()
-            }
+            .sink { _ in onboardedCount += 1 }
             .store(in: &cancellables)
 
         sut.appPreferencesUpdates
             .filter([\.telemetryThreshold])
-            .sink { _ in
-                expectation2.fulfill()
-            }
+            .sink { _ in thresholdCount += 1 }
             .store(in: &cancellables)
 
         sut.appPreferencesUpdates
             .filter([\.onboarded, \.telemetryThreshold])
-            .sink { _ in
-                expectation3.fulfill()
-            }
+            .sink { _ in onboardedOrThresholdCount += 1 }
             .store(in: &cancellables)
 
         sut.appPreferencesUpdates
             .filter([\.onboarded, \.telemetryThreshold, \.createdItemsCount])
-            .sink { _ in
-                expectation4.fulfill()
-            }
+            .sink { _ in anyOfThreeCount += 1 }
             .store(in: &cancellables)
 
         try await sut.updateAppPreferences(\.onboarded, value: .random())
         try await sut.updateAppPreferences(\.telemetryThreshold, value: .random(in: 1...10))
         try await sut.updateAppPreferences(\.createdItemsCount, value: .random(in: 1...10))
-        await fulfillment(of: [expectation1, expectation2, expectation3, expectation4],
-                          timeout: 1)
+
+        #expect(onboardedCount == 1)
+        #expect(thresholdCount == 1)
+        #expect(onboardedOrThresholdCount == 2)
+        #expect(anyOfThreeCount == 3)
     }
 }

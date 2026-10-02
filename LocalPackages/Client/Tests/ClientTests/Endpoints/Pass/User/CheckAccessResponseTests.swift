@@ -21,11 +21,11 @@
 
 @testable import Client
 import Entities
-import XCTest
+import Testing
 
-final class CheckAccessResponseTests: XCTestCase {
-    func testDecode() throws {
-        // Given
+@Suite(.tags(.endpoint))
+struct CheckAccessResponseTests {
+    @Test func `check access response decodes plan monitor invites and user data`() throws {
         let string = """
 {
    "Code":1000,
@@ -68,7 +68,7 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        displayName: "Unlimited",
                                                        hideUpgrade: true,
                                                        manageAlias: false,
-                                                       trialEnd: 163823923,
+                                                       trialEnd: 163_823_923,
                                                        vaultLimit: 1,
                                                        aliasLimit: 10,
                                                        totpLimit: 3,
@@ -85,10 +85,8 @@ final class CheckAccessResponseTests: XCTestCase {
                                            minVersionUpgrade: nil,
                                            userData: UserAliasSyncData.default))
 
-        // When
         let sut = try CheckAccessResponse.decode(from: string)
 
-        // Then
-        XCTAssertEqual(sut, expectedResult)
+        #expect(sut == expectedResult)
     }
 }

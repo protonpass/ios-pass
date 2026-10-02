@@ -27,8 +27,7 @@ struct TelemetryEventTypeTests {
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
 
-    @Test("TelemetryEventType can be encoded and decoded",
-          arguments: [
+    @Test(arguments: [
             TelemetryEventType.create(.login),  // Replace `.someContentType` with actual value for ItemContentType
                           .read(.login),
                           .update(.login),
@@ -61,7 +60,7 @@ struct TelemetryEventTypeTests {
                           .notificationChangeStatus(key: "exampleKey", status: 1),
                           .notificationCtaClick(key: "exampleKey")
                       ])
-    func encodingDecodingTelemetryEventType(type: TelemetryEventType) throws {
+    func `telemetry event types survive an encode and decode round trip`(type: TelemetryEventType) throws {
                     // Test encoding
                     let encodedData = try encoder.encode(type)
                     let encodedString = String(data: encodedData, encoding: .utf8)!
