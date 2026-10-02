@@ -3225,6 +3225,28 @@
         }
       }
     },
+    "%lld items imported" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item imported"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items imported"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld logins imported" : {
       "comment" : "Message of the alert after successfully importing items",
       "localizations" : {
@@ -4226,6 +4248,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld of %lld items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld of %2$lld items"
           }
         }
       }
@@ -38163,6 +38195,26 @@
         }
       }
     },
+    "Import items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import items"
+          }
+        }
+      }
+    },
+    "Import items\nfrom %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import items\nfrom %@"
+          }
+        }
+      }
+    },
     "Import logins (%1$lld/%2$lld)" : {
       "comment" : "Title of the importer, first placeholder is the number of selected logins to import, second placeholder is the total number of logins.",
       "localizations" : {
@@ -45839,6 +45891,16 @@
         }
       }
     },
+    "Not all item types are supported by other password managers." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not all item types are supported by other password managers."
+          }
+        }
+      }
+    },
     "Not now" : {
       "localizations" : {
         "be" : {
@@ -51797,6 +51859,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass 監控"
+          }
+        }
+      }
+    },
+    "Passkeys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkeys"
           }
         }
       }
@@ -71588,6 +71660,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "要與其他保管庫交互，您需要升級您的帳戶。"
+          }
+        }
+      }
+    },
+    "TOTP codes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTP codes"
           }
         }
       }
