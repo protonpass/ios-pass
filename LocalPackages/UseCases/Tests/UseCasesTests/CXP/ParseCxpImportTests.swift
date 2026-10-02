@@ -65,13 +65,26 @@ struct ParseCxpImportTests {
     @available(iOS 26.0, *)
     @Test
     func `apple credential data round-trips to a parsable payload`() throws {
-        let data = try JSONDecoder().decode(ASExportedCredentialData.self,
-                                            from: Data(CxfFixture.loginPasskeyTotp.utf8))
-        let payload = try #require(try String(bytes: JSONEncoder().encode(data), encoding: .utf8))
+        let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self,
+                                              from: Data(CxfFixture.loginPasskeyTotp.utf8))
+        let payload = try #require(try String(bytes: JSONEncoder.cxf.encode(data), encoding: .utf8))
 
         let result = try sut.parse(payload: payload, exporterName: data.exporterDisplayName)
 
         #expect(result.exporterName == "Example Exporter")
+        #expect(result.vaults.flatMap(\.items).count == 1)
+    }
+
+    @available(iOS 26.0, *)
+    @Test
+    func `apple credential data with fractional timestamp encodes to a parsable payload`() throws {
+        let fixture = CxfFixture.loginPasskeyTotp.replacing("1700000000", with: "1700000000.823753")
+        let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(fixture.utf8))
+        let payload = try #require(try String(bytes: JSONEncoder.cxf.encode(data), encoding: .utf8))
+
+        let result = try sut.parse(payload: payload, exporterName: data.exporterDisplayName)
+
+        #expect(data.timestamp.timeIntervalSince1970.rounded(.down) == 1_700_000_000)
         #expect(result.vaults.flatMap(\.items).count == 1)
     }
 }

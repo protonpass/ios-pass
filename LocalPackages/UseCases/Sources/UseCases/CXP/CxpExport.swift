@@ -57,7 +57,7 @@ public struct CxpExport: CxpExportUseCase {
             throw PassError.unsupportedCxfVersion(exportOptions.formatVersion.rawValue)
         }
         let payload = try await exportPayload(shares: shares)
-        let data = try JSONDecoder().decode(ASExportedCredentialData.self, from: Data(payload.utf8))
+        let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(payload.utf8))
         try await manager.exportCredentials(data)
     }
 }

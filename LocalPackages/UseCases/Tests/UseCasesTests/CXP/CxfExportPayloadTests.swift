@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@testable import UseCases
 import AuthenticationServices
 import Entities
 import Foundation
@@ -55,9 +56,10 @@ struct CxfExportPayloadTests {
         timestamp: 1_700_000_000)
 
         let payload = try CxfSerialization().export(input: input).payload
-        let data = try JSONDecoder().decode(ASExportedCredentialData.self, from: Data(payload.utf8))
+        let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(payload.utf8))
 
         #expect(data.exporterDisplayName == "Proton Pass")
+        #expect(data.timestamp == Date(timeIntervalSince1970: 1_700_000_000))
         let item = try #require(data.accounts.first?.items.first)
         #expect(item.title == "Proton")
         #expect(item.favorite == true)
