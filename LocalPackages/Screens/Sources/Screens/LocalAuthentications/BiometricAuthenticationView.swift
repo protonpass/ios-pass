@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import LocalAuthentication
+import Macro
 import SwiftUI
 
 struct BiometricAuthenticationView: View {
@@ -33,8 +35,10 @@ struct BiometricAuthenticationView: View {
 
                 switch viewModel.state {
                 case .noAttempts:
-                    if viewModel.promptDismissed {
-                        Text("Please authenticate", bundle: .module)
+                    if let promptDismissal = viewModel.promptDismissal {
+                        Text(promptDismissal.unavailabilityMessage ?? #localized("Please authenticate",
+                                                                                 bundle: .module))
+                            .multilineTextAlignment(.center)
                             .foregroundStyle(PassColor.textNorm)
                         retryButton
                             .padding(.top)
@@ -45,12 +49,14 @@ struct BiometricAuthenticationView: View {
                          bundle: .module)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
+                    unavailabilityMessage
                     retryButton
                         .padding(.top)
 
                 case let .remainingAttempts(count):
                     Text("\(count) remaining attempt(s)", bundle: .module)
                         .foregroundStyle(PassColor.textNorm)
+                    unavailabilityMessage
                     retryButton
                         .padding(.top)
 
@@ -71,6 +77,12 @@ struct BiometricAuthenticationView: View {
                 viewModel.onAuth()
                 viewModel.biometricallyAuthenticate()
             }
+            // Covers -1004 from prompting before we were frontmost, and a sheet cancelled by backgrounding
+            .onReceive(UIApplication.didBecomeActiveNotification) {
+                if viewModel.promptDismissal != nil {
+                    viewModel.biometricallyAuthenticate()
+                }
+            }
         }
     }
 }
@@ -87,6 +99,37 @@ private extension BiometricAuthenticationView {
         Button(action: viewModel.biometricallyAuthenticate) {
             Text("Try again", bundle: .module)
                 .foregroundStyle(PassColor.interactionNormMajor2)
+        }
+    }
+
+    @ViewBuilder
+    var unavailabilityMessage: some View {
+        if let message = viewModel.promptDismissal?.unavailabilityMessage {
+            Text(verbatim: message)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(PassColor.textNorm)
+                .padding(.top)
+        }
+    }
+}
+
+private extension LAError.Code {
+    var unavailabilityMessage: String? {
+        switch self {
+        case .biometryLockout:
+            #localized("Biometrics are locked. Unlock your device with your passcode, then try again.",
+                       bundle: .module)
+
+        case .biometryNotAvailable:
+            #localized("Biometrics are not available. Allow them for Proton Pass in Settings, then try again.",
+                       bundle: .module)
+
+        case .biometryNotEnrolled:
+            #localized("Biometrics are not set up on this device. Set them up in Settings, then try again.",
+                       bundle: .module)
+
+        default:
+            nil
         }
     }
 }

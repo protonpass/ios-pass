@@ -32,9 +32,9 @@ import Macro
 final class LocalAuthenticationViewModel: DeinitPrintable {
     private(set) var state: LocalAuthenticationState = .noAttempts
 
-    /// The last prompt was dismissed without reaching a verdict, so no attempt was consumed and
-    /// nothing will re-prompt on its own. Drives the retry button.
-    private(set) var promptDismissed = false
+    /// Why the last prompt was dismissed without reaching a verdict, so no attempt was consumed.
+    /// Drives the retry button and the re-prompt when the app becomes active again.
+    private(set) var promptDismissal: LAError.Code?
 
     // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier
     // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
@@ -82,7 +82,9 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
-        updateStateBasedOnFailedAttemptCount()
+        // SwiftUI builds and discards a view model on every parent re-render, so init must not call
+        // `onFailure`: see `logOutIfAttemptsExhausted`.
+        state = .init(failedAttemptCount: failedAttemptCount, maxAttemptCount: maxAttemptCount)
 
         preferencesManager
             .sharedPreferencesUpdates
@@ -104,7 +106,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
             defer {
                 biometricCheckTask = nil
             }
-            promptDismissed = false
+            promptDismissal = nil
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
@@ -120,7 +122,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
                                      bundle: .module))
             } catch let error as LAError where error.reachedNoVerdict {
-                promptDismissed = true
+                promptDismissal = error.code
                 logger.warning("\(mode.type) prompt dismissed without a verdict. \(error)")
             } catch {
                 await recordFailure(error)
@@ -159,17 +161,18 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         logger.debug("Manual log out")
         onFailure(nil)
     }
+
+    func logOutIfAttemptsExhausted() {
+        if case .exhausted = state {
+            onFailure(nil)
+        }
+    }
 }
 
 private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
-        let newState = LocalAuthenticationState(failedAttemptCount: failedAttemptCount,
-                                                maxAttemptCount: maxAttemptCount)
-        if case .exhausted = newState {
-            onFailure(nil)
-        } else {
-            state = newState
-        }
+        state = .init(failedAttemptCount: failedAttemptCount, maxAttemptCount: maxAttemptCount)
+        logOutIfAttemptsExhausted()
     }
 
     func recordFailure(_ error: (any Error)?) async {

@@ -90,6 +90,7 @@ private extension LocalAuthenticationView {
                     .padding()
             }
         }
+        .onAppear(perform: viewModel.logOutIfAttemptsExhausted)
     }
 
     @ToolbarContentBuilder

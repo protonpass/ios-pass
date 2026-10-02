@@ -23,7 +23,9 @@ import LocalAuthentication
 public extension LAError {
     /// `true` when the biometric sheet was never shown, or was dismissed by the system without the
     /// user's face/finger ever being judged. Notably `notInteractive` (-1004, "Caller is not running
-    /// foreground"), raised when we prompt before the app or extension is frontmost.
+    /// foreground"), raised when we prompt before the app or extension is frontmost. The `biometry*`
+    /// cases fail before any sheet is shown (system lockout, Face ID denied for the app, nothing
+    /// enrolled), so counting them would log the user out after 3 taps without a single scan.
     ///
     /// None of these is a wrong face, so none may consume an unlock attempt: 3 consumed attempts
     /// revoke the session and log the user out. `userCancel` and `userFallback` are excluded on
@@ -32,6 +34,9 @@ public extension LAError {
     var reachedNoVerdict: Bool {
         switch code {
         case .appCancel,
+             .biometryLockout,
+             .biometryNotAvailable,
+             .biometryNotEnrolled,
              .notInteractive,
              .systemCancel:
             true

@@ -27,7 +27,10 @@ struct LAErrorTests {
     @Test("Errors raised without ever asking the user reach no verdict",
           arguments: [LAError.Code.notInteractive,
                       .systemCancel,
-                      .appCancel])
+                      .appCancel,
+                      .biometryLockout,
+                      .biometryNotAvailable,
+                      .biometryNotEnrolled])
     func reachedNoVerdict_whenPromptNeverAnswered_returnsTrue(code: LAError.Code) {
         #expect(LAError(code).reachedNoVerdict)
     }
@@ -36,9 +39,6 @@ struct LAErrorTests {
           arguments: [LAError.Code.authenticationFailed,
                       .userCancel,
                       .userFallback,
-                      .biometryLockout,
-                      .biometryNotAvailable,
-                      .biometryNotEnrolled,
                       .passcodeNotSet,
                       .invalidContext])
     func reachedNoVerdict_whenOutcomeIsKnown_returnsFalse(code: LAError.Code) {

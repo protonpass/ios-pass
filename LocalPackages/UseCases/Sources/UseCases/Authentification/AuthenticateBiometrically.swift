@@ -42,28 +42,17 @@ public struct AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     }
 
     public func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
-        var retriesLeft = 5
-        while true {
-            let context = LAContext()
-            do {
-                // swiftlint:disable:next todo
-                // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
-                // Think about other way to make biometric change detection future proof
-                /*
-                 if try checkIfUserBiometricsSettingsChanged(context: context) {
-                     throw PassError.biometricChange
-                 }
-                 */
+        let context = LAContext()
+        // swiftlint:disable:next todo
+        // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
+        // Think about other way to make biometric change detection future proof
+        /*
+         if try checkIfUserBiometricsSettingsChanged(context: context) {
+             throw PassError.biometricChange
+         }
+         */
 
-                return try await context.evaluatePolicy(policy, localizedReason: reason)
-            } catch let error as LAError where error.code == .notInteractive && retriesLeft > 0 {
-                // -1004 "Caller is not running foreground": the system refused to show the sheet
-                // because our UI isn't frontmost yet. Transient, so ask again shortly instead of
-                // reporting it.
-                retriesLeft -= 1
-                try await Task.sleep(for: .milliseconds(250))
-            }
-        }
+        return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
     // periphery:ignore
