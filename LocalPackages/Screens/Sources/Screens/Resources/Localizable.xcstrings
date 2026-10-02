@@ -17142,6 +17142,16 @@
         }
       }
     },
+    "Continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
     "Control what lands in your inbox" : {
       "localizations" : {
         "be" : {
@@ -28560,6 +28570,16 @@
         }
       }
     },
+    "Enter your password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your password"
+          }
+        }
+      }
+    },
     "Error occurred" : {
       "localizations" : {
         "be" : {
@@ -29496,6 +29516,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "到期日已複製"
+          }
+        }
+      }
+    },
+    "Export vaults (%1$lld/%2$lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export vaults (%1$lld/%2$lld)"
           }
         }
       }
@@ -53068,6 +53098,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請進行身分驗證"
+          }
+        }
+      }
+    },
+    "Please confirm your password in order to export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please confirm your password in order to export data to another app"
           }
         }
       }

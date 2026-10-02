@@ -117,6 +117,7 @@ public enum SheetDestination: Equatable, Hashable {
     case breachDetail(Breach)
     case breach(BreachDetailsInfo)
     case cxpImport(CxpImportResult)
+    case cxpExport
     case addMailbox
     case passwordHistory
     case signInToAnotherDevice
