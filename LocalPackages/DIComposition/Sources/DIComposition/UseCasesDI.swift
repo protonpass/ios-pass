@@ -1226,4 +1226,9 @@ public extension UseCasesContainer {
     var parseCxpImport: Factory<any ParseCxpImportUseCase> {
         self { ParseCxpImport() }
     }
+
+    var importCxpItems: Factory<any ImportCxpItemsUseCase> {
+        self { ImportCxpItems(shareRepository: self.shareRepository,
+                              itemRepository: self.itemRepository) }
+    }
 }
