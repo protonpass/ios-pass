@@ -50,6 +50,7 @@ let package = Package(name: "UseCases",
                                       .product(name: "PassRustCore", package: "PassRustCore"),
                                       .product(name: "Sentry", package: "sentry-cocoa"),
                                       .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios"),
+                                      .product(name: "ProtonCorePasswordRequest", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreTelemetry", package: "protoncore_ios")
                                   ],
                                   resources: [],
