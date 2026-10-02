@@ -81,7 +81,8 @@ struct PinAuthenticationView: View {
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMajor1.opacity(0.3),
-                                        disabled: pinCode.count < Constants.PINCode.minLength,
+                                        disabled: pinCode.count < Constants.PINCode.minLength
+                                            || viewModel.isCheckingPinCode,
                                         height: 60,
                                         action: {
                                             viewModel.checkPinCode(pinCode)

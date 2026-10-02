@@ -97,8 +97,8 @@ private extension SetPINCodeViewModel {
     }
 
     func set(pinCode: String) {
-        // Deliberately unstructured and uncancelled: the two writes below must both land
-        // or the app ends up with PIN auth enabled and no PIN stored.
+        // Store the PIN before switching the method, so a failed second write can't leave
+        // PIN auth enabled with no PIN stored.
         guard !isSaving else { return }
         isSaving = true
         Task { [weak self] in

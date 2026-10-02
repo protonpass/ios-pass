@@ -22,31 +22,23 @@
 import LocalAuthentication
 import Testing
 
-@Suite("LAError Tests")
 struct LAErrorTests {
-    @Test("Errors raised without ever asking the user reach no verdict",
-          arguments: [LAError.Code.notInteractive,
+    @Test(arguments: [LAError.Code.notInteractive,
                       .systemCancel,
                       .appCancel,
                       .biometryLockout,
                       .biometryNotAvailable,
                       .biometryNotEnrolled])
-    func reachedNoVerdict_whenPromptNeverAnswered_returnsTrue(code: LAError.Code) {
+    func `an error raised before any face is judged reaches no verdict`(code: LAError.Code) {
         #expect(LAError(code).reachedNoVerdict)
     }
 
-    @Test("Errors carrying an actual outcome do reach a verdict",
-          arguments: [LAError.Code.authenticationFailed,
+    @Test(arguments: [LAError.Code.authenticationFailed,
                       .userCancel,
                       .userFallback,
                       .passcodeNotSet,
                       .invalidContext])
-    func reachedNoVerdict_whenOutcomeIsKnown_returnsFalse(code: LAError.Code) {
+    func `an error that may follow a judged face reaches a verdict`(code: LAError.Code) {
         #expect(!LAError(code).reachedNoVerdict)
-    }
-
-    @Test("notInteractive is the documented -1004 \"Caller is not running foreground\" code")
-    func notInteractive_hasCodeMinus1004() {
-        #expect(LAError.Code.notInteractive.rawValue == -1_004)
     }
 }

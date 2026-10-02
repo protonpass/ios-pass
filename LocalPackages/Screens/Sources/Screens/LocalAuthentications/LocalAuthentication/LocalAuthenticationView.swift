@@ -41,7 +41,24 @@ public struct LocalAuthenticationView: View {
         }
     }
 
-    public init(mode: LocalAuthenticationMethod,
+    public enum Mode: Sendable {
+        case biometric, pin
+
+        public init?(_ method: LocalAuthenticationMethod) {
+            switch method {
+            case .biometric:
+                self = .biometric
+
+            case .pin:
+                self = .pin
+
+            case .none:
+                return nil
+            }
+        }
+    }
+
+    public init(mode: Mode,
                 delayed: Bool = false,
                 manuallyAvoidKeyboard: Bool = false,
                 logOutButtonMode: LogOutButtonMode = .topRight,
@@ -80,9 +97,6 @@ private extension LocalAuthenticationView {
 
             case .pin:
                 PinAuthenticationView(viewModel: viewModel)
-
-            case .none:
-                EmptyView()
             }
 
             if case .topRight = logOutButtonMode {

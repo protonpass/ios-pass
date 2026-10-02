@@ -21,25 +21,19 @@
 @testable import Entities
 import Testing
 
-@Suite("LocalAuthenticationState Tests")
 struct LocalAuthenticationStateTests {
-    private static let maxAttemptCount = 3
-
-    @Test("Failed attempt count maps to the lockout state",
-          arguments: [(failedAttemptCount: 0, expected: LocalAuthenticationState.noAttempts),
+    @Test(arguments: [(failedAttemptCount: 0, expected: LocalAuthenticationState.noAttempts),
                       (failedAttemptCount: 1, expected: .remainingAttempts(2)),
                       (failedAttemptCount: 2, expected: .lastAttempt),
                       (failedAttemptCount: 3, expected: .exhausted),
                       (failedAttemptCount: 4, expected: .exhausted)])
-    func init_mapsFailedAttemptCountToState(failedAttemptCount: Int,
-                                           expected: LocalAuthenticationState) {
-        let state = LocalAuthenticationState(failedAttemptCount: failedAttemptCount,
-                                            maxAttemptCount: Self.maxAttemptCount)
-        #expect(state == expected)
+    func `failed attempt count maps to its state out of three attempts`(failedAttemptCount: Int,
+                                                                       expected: LocalAuthenticationState) {
+        #expect(LocalAuthenticationState(failedAttemptCount: failedAttemptCount, maxAttemptCount: 3) == expected)
     }
 
-    @Test("A single max attempt goes straight from no attempts to exhausted")
-    func init_whenOnlyOneAttemptAllowed_skipsIntermediateStates() {
+    @Test
+    func `a single allowed attempt goes straight from no attempts to exhausted`() {
         #expect(LocalAuthenticationState(failedAttemptCount: 0, maxAttemptCount: 1) == .noAttempts)
         #expect(LocalAuthenticationState(failedAttemptCount: 1, maxAttemptCount: 1) == .exhausted)
     }

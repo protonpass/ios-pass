@@ -110,7 +110,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
         .overlay {
-            if !authenticated, method != .none {
+            if !authenticated, let mode = LocalAuthenticationView.Mode(method) {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
@@ -118,7 +118,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                     successMode = .default
                 }
 
-                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                LocalAuthenticationView(mode: mode,
                                         delayed: delayed,
                                         manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                         logOutButtonMode: logOutButtonMode,

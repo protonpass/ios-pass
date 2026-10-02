@@ -14011,6 +14011,36 @@
         }
       }
     },
+    "Biometrics are locked. Unlock your device with your passcode, then try again." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are locked. Unlock your device with your passcode, then try again."
+          }
+        }
+      }
+    },
+    "Biometrics are not available. Allow them for Proton Pass in Settings, then try again." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are not available. Allow them for Proton Pass in Settings, then try again."
+          }
+        }
+      }
+    },
+    "Biometrics are not set up on this device. Set them up in Settings, then try again." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are not set up on this device. Set them up in Settings, then try again."
+          }
+        }
+      }
+    },
     "Built-in 2FA" : {
       "localizations" : {
         "be" : {

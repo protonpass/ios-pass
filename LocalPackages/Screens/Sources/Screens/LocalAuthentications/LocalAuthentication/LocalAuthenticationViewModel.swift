@@ -40,7 +40,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
     // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
     let manuallyAvoidKeyboard: Bool
-    let mode: LocalAuthenticationMethod
+    let mode: LocalAuthenticationView.Mode
     let onAuth: () -> Void
 
     private let delayed: Bool
@@ -59,8 +59,11 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     @ObservationIgnored
     private var biometricCheckTask: Task<Void, Never>?
-    @ObservationIgnored
     private var pinCheckTask: Task<Void, Never>?
+
+    var isCheckingPinCode: Bool {
+        pinCheckTask != nil
+    }
 
     var delayedTime: ContinuousClock.Instant.Duration {
         delayed ? .milliseconds(200) : .milliseconds(0)
@@ -70,7 +73,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
     }
 
-    init(mode: LocalAuthenticationMethod,
+    init(mode: LocalAuthenticationView.Mode,
          delayed: Bool,
          manuallyAvoidKeyboard: Bool,
          onAuth: @escaping () -> Void,
@@ -123,7 +126,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                                      bundle: .module))
             } catch let error as LAError where error.reachedNoVerdict {
                 promptDismissal = error.code
-                logger.warning("\(mode.type) prompt dismissed without a verdict. \(error)")
+                logger.warning("\(mode) prompt dismissed without a verdict. \(error)")
             } catch {
                 await recordFailure(error)
             }
@@ -179,7 +182,7 @@ private extension LocalAuthenticationViewModel {
         do {
             try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-            let logMessage = "\(mode.type) authentication failed. Increased failed attempt count."
+            let logMessage = "\(mode) authentication failed. Increased failed attempt count."
             if let error {
                 logger.error(logMessage + " Reason \(error)")
             } else {

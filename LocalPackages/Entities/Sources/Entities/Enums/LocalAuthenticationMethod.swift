@@ -26,17 +26,4 @@ public enum LocalAuthenticationMethod: Codable, CaseIterable, Sendable {
     public static var `default`: Self {
         .none
     }
-
-    public var type: String {
-        switch self {
-        case .biometric:
-            "biometric"
-
-        case .pin:
-            "pin"
-
-        case .none:
-            "none"
-        }
-    }
 }
