@@ -318,17 +318,14 @@ private extension AppContentManager {
                 }
             }
 
-            // 4. Refresh invite and sl notes
-            if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
-                async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
-                do {
-                    _ = try await (syncAliases, refreshInvites)
-                } catch {
-                    // We logs the errors silently to let the full content refresh continue offering a better
-                    // experience to the user.
-                    logger.error(error)
-                }
+            async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+            async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+            do {
+                _ = try await (syncAliases, refreshInvites)
+            } catch {
+                // We logs the errors silently to let the full content refresh continue offering a better
+                // experience to the user.
+                logger.error(error)
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
@@ -719,9 +716,7 @@ private extension AppContentManager {
             shareSelection = .all
         }
 
-        if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-            try await inviteRepository.loadLocalInvites(userId: userId)
-        }
+        try await inviteRepository.loadLocalInvites(userId: userId)
 
         indexContent(userPreferences: userPreferences)
     }

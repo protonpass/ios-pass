@@ -39,9 +39,6 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// Called at the beginning of every sync loop.
     func syncEventLoopDidBeginNewLoop(userId: String)
 
-    /// Return `true` if user events is enabled
-    func syncEventLoopShouldUseUserEvents() async -> Bool
-
     /// Called when a loop is skipped
     /// - Parameters:
     ///    - reason: E.g no internet connection, previous loop not yet finished.
@@ -131,7 +128,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     private var activeTasks = [String: Task<Void, any Error>]()
 
     // Injected params
-    private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
     private let coreEventsSynchronizer: any CoreEventsSynchronizerProtocol
     private let logger: Logger
@@ -142,14 +138,12 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     private let queue = DispatchQueue(label: "me.proton.pass.synceventloop")
 
     public init(currentDateProvider: any CurrentDateProviderProtocol,
-                synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
                 coreEventsSynchronizer: any CoreEventsSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
-        self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
         self.coreEventsSynchronizer = coreEventsSynchronizer
         logger = .init(manager: logManager)
@@ -285,7 +279,6 @@ private extension SyncEventLoop {
     func executeEventSync(userId: String) async {
         do {
             delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
-            let userEventsEnabled = await delegate?.syncEventLoopShouldUseUserEvents()
             if Task.isCancelled {
                 return
             }
@@ -293,18 +286,14 @@ private extension SyncEventLoop {
             try await coreEventsSynchronizer.sync(userId: userId)
 
             let hasNewEvents: Bool
-            if userEventsEnabled == true {
-                let result = try await userEventsSynchronizer.sync(userId: userId)
+            let result = try await userEventsSynchronizer.sync(userId: userId)
 
-                if result.contains(.fullRefreshNeeded) {
-                    try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
-                    return
-                }
-
-                hasNewEvents = result.contains(.dataUpdated)
-            } else {
-                hasNewEvents = try await synchronizer.sync(userId: userId)
+            if result.contains(.fullRefreshNeeded) {
+                try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
+                return
             }
+
+            hasNewEvents = result.contains(.dataUpdated)
 
             // We only execute the additionalTasks for the main active account
             if userManager.activeUserId == userId {

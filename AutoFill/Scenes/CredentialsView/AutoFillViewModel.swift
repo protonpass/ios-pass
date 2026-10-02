@@ -59,7 +59,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ServiceContainer.userEventsSynchronizer) private var userEventsSynchronizer
     @LazyInjected(\ToolingContainer.logger) var logger
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
     @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
@@ -204,7 +204,7 @@ extension AutoFillViewModel {
         do {
             var shouldRefreshItems = false
             for user in users {
-                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
+                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id).contains(.dataUpdated)
                 shouldRefreshItems = shouldRefreshItems || hasNewEvents
             }
 

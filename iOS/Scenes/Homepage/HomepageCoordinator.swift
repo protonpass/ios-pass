@@ -162,12 +162,6 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
-        // User event caches invites locally so no need to fetch invites as part of event loop
-        if !getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-            eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
-                                              task: refreshInvitations.callAsFunction))
-        }
-
         authenticated = getSharedPreferences().localAuthenticationMethod == .none
 
         accessRepository.didUpdateToNewPlan
@@ -1901,10 +1895,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 
     nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
         logger.info("Began new sync loop for userId \(userId)")
-    }
-
-    func syncEventLoopShouldUseUserEvents() async -> Bool {
-        await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
