@@ -61,8 +61,7 @@ struct TelemetryEventRepositoryTests {
 }
 
 extension TelemetryEventRepositoryTests {
-    @Test("Add new events")
-    mutating func testAddNewEvents() async throws {
+    @Test mutating func `add new events`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -99,8 +98,7 @@ extension TelemetryEventRepositoryTests {
         #expect(events3[0].type == .delete(.login))
     }
 
-    @Test("Auto generate threshold when current threshold is nil")
-    mutating func testAutoGenerateThresholdWhenCurrentThresholdIsNil() async throws {
+    @Test mutating func `auto generate threshold when current threshold is nil`() async throws {
         // Given
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
@@ -125,8 +123,7 @@ extension TelemetryEventRepositoryTests {
         #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    @Test("Do not send event when threshold not reached")
-    mutating func testDoNotSendEventWhenThresholdNotReached() async throws {
+    @Test mutating func `do not send event when threshold not reached`() async throws {
         // Given
         let givenCurrentDate = Date.now
         var mockedCurrentDateProvider = MockedCurrentDateProvider()
@@ -152,8 +149,7 @@ extension TelemetryEventRepositoryTests {
         #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    @Test("Send all events and random new threshold if threshold is reached")
-    mutating func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
+    @Test mutating func `send all events and random new threshold if threshold is reached`() async throws {
         // Given
         let user1 = UserData.random()
         let user2 = UserData.random()
@@ -331,8 +327,7 @@ extension TelemetryEventRepositoryTests {
         #expect(itemReadEventRepository.invokedSendAllEventsCount == 1)
     }
 
-    @Test("Remove all local events when threshold is reached but telemetry is off")
-    mutating func testRemoveAllLocalEventsWhenThresholdIsReachedButTelemetryIsOff() async throws {
+    @Test mutating func `remove all local events when threshold is reached but telemetry is off`() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID
@@ -411,8 +406,7 @@ extension TelemetryEventRepositoryTests {
         #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    @Test("Send item read events for B2B when threshold is reached but telemetry is off")
-    mutating func testSendItemReadEventsForB2BWhenThresholdIsReachedButTelemetryIsOff() async throws {
+    @Test mutating func `send item read events for B2B when threshold is reached but telemetry is off`() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID
@@ -472,8 +466,7 @@ extension TelemetryEventRepositoryTests {
         #expect(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    @Test("Send item read events for B2B when threshod is reached")
-    mutating func testSendItemReadEventsForB2BWhenThresholdIsReached() async throws {
+    @Test mutating func `send item read events for B2B when threshold is reached`() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID

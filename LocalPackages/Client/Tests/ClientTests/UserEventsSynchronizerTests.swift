@@ -208,8 +208,7 @@ private struct Args {
 }
 
 private extension UserEventsSynchronizerTests {
-    @Test("User events sync",
-          arguments: [
+    @Test(arguments: [
             Args.noLocalLastEventIdTriggerFullRefresh,
             Args.fullRefresh,
             Args.oneEventBatch,
@@ -217,7 +216,7 @@ private extension UserEventsSynchronizerTests {
             Args.createdVaultShare,
             Args.createdItemShare
           ])
-    func sync(args: Args) async throws {
+    func `user events sync applies the expected refreshes`(args: Args) async throws {
         await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = args.lastEventId
         shareRepository.stubbedRefreshShareResult = .random(targetType: args.refreshedShareType)
@@ -278,8 +277,7 @@ private extension UserEventsSynchronizerTests {
 
     /// A failing folder refresh must not advance the event cursor, otherwise the batch is skipped and the
     /// local data it describes is never reconciled.
-    @Test("Failing to refresh the folders of a created share does not advance the last event ID")
-    func failedFolderRefreshKeepsLastEventId() async throws {
+    @Test func `failing to refresh the folders of a created share does not advance the last event ID`() async throws {
         await slNoteSynchronizer.stubResults()
         localUserEventIdDatasource.stubbedGetLastEventIdResult = .random()
         shareRepository.stubbedRefreshShareResult = .random(targetType: .vault)

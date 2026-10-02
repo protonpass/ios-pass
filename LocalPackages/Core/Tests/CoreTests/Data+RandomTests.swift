@@ -19,10 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Foundation
+import Testing
 
-final class DataPlusRandomTests: XCTestCase {
-    func testRandomData() throws {
+@Suite(.tags(.utilities))
+struct DataPlusRandomTests {
+    @Test func `random data has the requested byte count`() throws {
         // Given
         let givenByteCount = Int.random(in: 100...1_000)
 
@@ -30,6 +32,6 @@ final class DataPlusRandomTests: XCTestCase {
         let randomData = try Data.random(byteCount: givenByteCount)
 
         // Then
-        XCTAssertEqual(randomData.count, givenByteCount)
+        #expect(randomData.count == givenByteCount)
     }
 }

@@ -21,22 +21,23 @@
 
 @testable import Client
 import Entities
-import XCTest
+import Testing
+import TestingToolkit
 
-final class PromoteNewUserInviteRequestTests: XCTestCase {
-    func testEncodable() throws {
+@Suite(.tags(.endpoint))
+struct PromoteNewUserInviteRequestTests {
+    @Test func `promote new user invite request encodes its keys`() throws {
         let key = ItemKey(key: "some_key", keyRotation: 123)
         let sut = PromoteNewUserInviteRequest(keys: [key])
-        try assertEncodeCorrectly(sut,
-"""
-{
-  "Keys" : [
-    {
-      "Key" : "some_key",
-      "KeyRotation" : 123
-    }
-  ]
-}
-""")
+        #expect(try sortedPrettyJSON(sut) == """
+        {
+          "Keys" : [
+            {
+              "Key" : "some_key",
+              "KeyRotation" : 123
+            }
+          ]
+        }
+        """)
     }
 }

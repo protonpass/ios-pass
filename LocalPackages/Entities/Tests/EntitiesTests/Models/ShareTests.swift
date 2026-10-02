@@ -61,8 +61,7 @@ struct ShareTests {
         }
         """.data(using: .utf8)!
     
-    @Test("Share can be decoded")
-    func decodingShare() throws {
+    @Test func `a share can be decoded`() throws {
         let share = try decoder.decode(Share.self, from: validVaultJSON)
         #expect(share.shareID ==  "12345")
         #expect(share.vaultID == "vault123")
@@ -81,14 +80,12 @@ struct ShareTests {
         #expect(share.hidden)
     }
 
-    @Test("Share can't be decoded")
-    func failDecodingShare() throws {
+    @Test func `a share cannot be decoded from invalid JSON`() throws {
         #expect(throws: DecodingError.self) { try decoder.decode(Share.self, from: invalidJSON) }
     }
     
     
-    @Test("Check computed properties")
-    func computedProperties() throws {
+    @Test func `check computed properties`() throws {
         let share = try decoder.decode(Share.self, from: validVaultJSON)
         #expect(share.isManager)
         #expect(share.reachedSharingLimit == false)
@@ -98,8 +95,7 @@ struct ShareTests {
 
     }
     
-    @Test("Decoding item share")
-    func decodingWithNilContent() throws {
+    @Test func `decoding item share`() throws {
         let json = """
             {
                 "shareID": "12345",
@@ -134,8 +130,7 @@ struct ShareTests {
         #expect(!share.hidden)
     }
     
-    @Test("Share edge cases for members. Reached limit")
-    func reachedLimiteForMembers() throws {
+    @Test func `share reports reached member limits`() throws {
         let json = """
             {
                 "shareID": "12345",

@@ -22,9 +22,9 @@ import Core
 import Foundation
 import Testing
 
+@Suite(.tags(.utilities))
 struct BinaryIntegerExtensionsTests {
-    @Test
-    func toAsciiData() {
+    @Test func `integers convert to their ASCII digit bytes`() {
         #expect(1.toAsciiData == Data([49]))
         #expect(2.toAsciiData == Data([50]))
         #expect(12.toAsciiData == Data([49, 50]))

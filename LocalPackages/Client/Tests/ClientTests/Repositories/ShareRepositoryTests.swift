@@ -56,8 +56,7 @@ struct ShareRepositoryTests {
         )
     }
     
-    @Test("Get Shares with Success")
-    func getSharesWithSuccess() async throws {
+    @Test func `get shares with success`() async throws {
         // Arrange
         let userId = "testUser"
         let mockShares = [SymmetricallyEncryptedShare(encryptedContent: nil, share: Share.random())]
@@ -72,8 +71,7 @@ struct ShareRepositoryTests {
         #expect(localDatasourceMock.invokedGetAllSharesUserIdAsyncParameters2?.userId == userId)
     }
     
-    @Test("Get Shares with Failure")
-    func getSharesFailure() async throws {
+    @Test func `get shares with failure`() async throws {
         // Arrange
         let userId = "testUser"
         let expectedError = PassError.unexpectedError
@@ -83,8 +81,7 @@ struct ShareRepositoryTests {
         #expect(localDatasourceMock.invokedGetAllSharesUserIdAsync2)
     }
     
-    @Test("Get Share with Success")
-    func getShareWithSuccess() async throws {
+    @Test func `get share with success`() async throws {
         // Arrange
         let user = UserData.random()
         let shareId = "shareId"
@@ -101,8 +98,7 @@ struct ShareRepositoryTests {
         #expect(localDatasourceMock.invokedGetSharefunction)
     }
     
-    @Test("Delete all local shares for current user")
-    func deleteAllCurrentUserSharesLocallySuccess() async throws {
+    @Test func `delete all local shares for current user`() async throws {
         // Arrange
         let user = UserData.random()
         userManager.stubbedGetActiveUserDataResult = user
