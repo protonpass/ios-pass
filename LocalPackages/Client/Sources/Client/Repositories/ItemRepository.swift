@@ -123,8 +123,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws
-
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
     func updateCachedAliasInfo(userId: String,
@@ -726,13 +724,6 @@ public extension ItemRepository {
         try await localDatasource.upsertItems(encryptedItems)
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
-    }
-
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
-        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
-        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
-        itemsWereUpdated.send()
-        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
     func updateLastUseTime(userId: String,

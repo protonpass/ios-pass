@@ -25,7 +25,6 @@ public protocol ShareEventIDRepositoryProtocol: Sendable {
     /// Get local last event ID if any. If not fetch from remote and save to local database and return.
     @discardableResult
     func getLastEventId(forceRefresh: Bool, userId: String, shareId: String) async throws -> String
-    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
 }
 
 public actor ShareEventIDRepository: ShareEventIDRepositoryProtocol {
@@ -58,14 +57,6 @@ public extension ShareEventIDRepository {
             return localLastEventId
         }
         return try await fetchLastEventIdFromRemoteAndSaveToLocal(userId: userId, shareId: shareId)
-    }
-
-    func upsertLastEventId(userId: String,
-                           shareId: String,
-                           lastEventId: String) async throws {
-        try await localDatasource.upsertLastEventId(userId: userId,
-                                                    shareId: shareId,
-                                                    lastEventId: lastEventId)
     }
 }
 

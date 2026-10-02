@@ -270,10 +270,6 @@ public extension RepositoryContainer {
         self { LocalSearchEntryDatasource(databaseService: self.databaseService) }
     }
 
-    var remoteSyncEventsDatasource: Factory<any RemoteSyncEventsDatasourceProtocol> {
-        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager) }
-    }
-
     var remoteFolderDatasource: Factory<any RemoteFolderDatasourceProtocol> {
         self { RemoteFolderDatasource(apiServicing: self.apiManager) }
     }
