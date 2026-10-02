@@ -36,8 +36,8 @@ struct BiometricAuthenticationView: View {
                 switch viewModel.state {
                 case .noAttempts:
                     if let promptDismissal = viewModel.promptDismissal {
-                        Text(promptDismissal.unavailabilityMessage ?? #localized("Please authenticate",
-                                                                                 bundle: .module))
+                        Text(verbatim: promptDismissal.unavailabilityMessage ?? #localized("Please authenticate",
+                                                                                           bundle: .module))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(PassColor.textNorm)
                         retryButton
