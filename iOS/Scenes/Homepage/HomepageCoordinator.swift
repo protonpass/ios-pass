@@ -43,8 +43,6 @@ import StoreKit
 import Stores
 import SwiftUI
 
-private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
-
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
@@ -61,7 +59,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
     let appContentManager = dependency(\ServiceContainer.appContentManager)
-    private let refreshInvitations = dependency(\UseCasesContainer.refreshInvitations)
     private let loginMethod = dependency(\DataContainer.loginMethod)
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
@@ -1925,18 +1922,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
         logger.error(message: "User \(userId)", error: error)
-    }
-
-    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {
-        logger.trace("Began executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFinishAdditionalTask(userId: String, label: String) {
-        logger.info("Finished executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
-        logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
 }
 
