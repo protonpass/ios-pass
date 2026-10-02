@@ -21,6 +21,7 @@
 @testable import Entities
 import Testing
 
+@Suite(.tags(.entity))
 struct LocalAuthenticationStateTests {
     @Test(arguments: [(failedAttemptCount: 0, expected: LocalAuthenticationState.noAttempts),
                       (failedAttemptCount: 1, expected: .remainingAttempts(2)),
@@ -32,8 +33,7 @@ struct LocalAuthenticationStateTests {
         #expect(LocalAuthenticationState(failedAttemptCount: failedAttemptCount, maxAttemptCount: 3) == expected)
     }
 
-    @Test
-    func `a single allowed attempt goes straight from no attempts to exhausted`() {
+    @Test func `a single allowed attempt goes straight from no attempts to exhausted`() {
         #expect(LocalAuthenticationState(failedAttemptCount: 0, maxAttemptCount: 1) == .noAttempts)
         #expect(LocalAuthenticationState(failedAttemptCount: 1, maxAttemptCount: 1) == .exhausted)
     }

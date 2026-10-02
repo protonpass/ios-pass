@@ -22,6 +22,7 @@
 import LocalAuthentication
 import Testing
 
+@Suite(.tags(.entity))
 struct LAErrorTests {
     @Test(arguments: [LAError.Code.notInteractive,
                       .systemCancel,

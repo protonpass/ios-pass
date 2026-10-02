@@ -22,6 +22,7 @@
 import LocalAuthentication
 import Testing
 
+@Suite(.tags(.entity))
 struct LocalAuthenticationMethodUiModelTests {
     @Test(arguments: [(uiModel: LocalAuthenticationMethodUiModel.none, expected: LocalAuthenticationMethod.none),
                       (uiModel: .biometric(.faceID), expected: .biometric),
