@@ -763,6 +763,9 @@ extension HomepageCoordinator {
                                           }),
                             dismissible: false)
 
+                case .cxpExport:
+                    present(CxpExportView())
+
                 case .addMailbox:
                     dismissTopMostViewController { [weak self] in
                         guard let self else { return }
