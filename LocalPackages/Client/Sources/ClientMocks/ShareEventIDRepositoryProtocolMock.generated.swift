@@ -44,21 +44,4 @@ public final class ShareEventIDRepositoryProtocolMock: @unchecked Sendable, Shar
         closureGetLastEventId()
         return stubbedGetLastEventIdResult
     }
-    // MARK: - upsertLastEventId
-    public var upsertLastEventIdUserIdShareIdLastEventIdThrowableError2: Error?
-    public var closureUpsertLastEventId: () -> () = {}
-    public var invokedUpsertLastEventIdfunction = false
-    public var invokedUpsertLastEventIdCount = 0
-    public var invokedUpsertLastEventIdParameters: (userId: String, shareId: String, lastEventId: String)?
-    public var invokedUpsertLastEventIdParametersList = [(userId: String, shareId: String, lastEventId: String)]()
-
-    public func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        invokedUpsertLastEventIdfunction = true
-        invokedUpsertLastEventIdCount += 1
-        invokedUpsertLastEventIdParameters = (userId, shareId, lastEventId)
-        if let error = upsertLastEventIdUserIdShareIdLastEventIdThrowableError2 {
-            throw error
-        }
-        closureUpsertLastEventId()
-    }
 }
