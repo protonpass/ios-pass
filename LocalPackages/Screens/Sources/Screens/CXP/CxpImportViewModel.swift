@@ -62,11 +62,9 @@ extension CxpImportViewModel {
             importedCount = 0
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await importCxpItems(userId: userId, result: result) { [weak self] count in
-                    Task { @MainActor [weak self] in
-                        guard let self, importing else { return }
-                        importedCount = count
-                    }
+                try await importCxpItems(userId: userId, result: result) { @MainActor [weak self] count in
+                    guard let self else { return }
+                    importedCount = count
                 }
                 importSuccessMessage = #localized("%lld items imported", bundle: .module, itemCount)
             } catch {

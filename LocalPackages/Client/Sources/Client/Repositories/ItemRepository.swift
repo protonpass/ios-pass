@@ -167,7 +167,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func importItems(userId: String,
                      shareId: String,
                      contents: [ItemContentProtobuf],
-                     onProgress: (@Sendable (_ importedCount: Int) -> Void)?) async throws
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -836,7 +836,7 @@ public extension ItemRepository {
     func importItems(userId: String,
                      shareId: String,
                      contents: [ItemContentProtobuf],
-                     onProgress: (@Sendable (_ importedCount: Int) -> Void)?) async throws {
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
         logger.trace("Importing \(contents.count) items for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let isDomainMatchingSupported = domainMatchingSupported
@@ -853,7 +853,7 @@ public extension ItemRepository {
                                                                items: itemsToImport)
             try await upsertItems(userId: userId, items: items, shareId: shareId)
             importedCount += items.count
-            onProgress?(importedCount)
+            await onProgress?(importedCount)
         }
         itemsWereUpdated.send()
         logger.info("Imported \(contents.count) items for user \(userId)")
