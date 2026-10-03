@@ -19,113 +19,78 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Testing
 
 // swiftlint:disable line_length
-final class LogFormatterTests: XCTestCase {
-    func testDefaultFormatterWithFatalEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_737_395,
-                             subsystem: "me.proton.pass.ios",
-                             category: "host_application",
-                             level: .fatal,
-                             message: "Fatal error occurred",
-                             file: "AppDelegate",
-                             function: "logIn()",
-                             line: 123,
-                             column: 456)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T09:16:35.0000 | 🔴 FATAL | me.proton.pass.ios | host_application | AppDelegate.logIn():123:456 - Fatal error occurred")
+@Suite(.tags(.logging))
+struct LogFormatterTests {
+    @Test(arguments: [
+        (LogEntry(timestamp: 1_672_737_395,
+                  subsystem: "me.proton.pass.ios",
+                  category: "host_application",
+                  level: .fatal,
+                  message: "Fatal error occurred",
+                  file: "AppDelegate",
+                  function: "logIn()",
+                  line: 123,
+                  column: 456),
+         "2023-01-03T09:16:35.0000 | 🔴 FATAL | me.proton.pass.ios | host_application | AppDelegate.logIn():123:456 - Fatal error occurred"),
+        (LogEntry(timestamp: 1_672_745_274,
+                  subsystem: "me.proton.pass.ios",
+                  category: "host_application",
+                  level: .error,
+                  message: "Failed to sign up",
+                  file: "SignUpViewController",
+                  function: "signUp()",
+                  line: 82,
+                  column: 39),
+         "2023-01-03T11:27:54.0000 | 🔴 ERROR | me.proton.pass.ios | host_application | SignUpViewController.signUp():82:39 - Failed to sign up"),
+        (LogEntry(timestamp: 1_672_732_899,
+                  subsystem: "me.proton.pass.ios.autofill",
+                  category: "autofill_extension",
+                  level: .warning,
+                  message: "No credentials found",
+                  file: "CredentialsViewController",
+                  function: "fetchCredentials()",
+                  line: 189,
+                  column: 20),
+         "2023-01-03T08:01:39.0000 | 🟡 WARNING | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.fetchCredentials():189:20 - No credentials found"),
+        (LogEntry(timestamp: 1_672_732_899,
+                  subsystem: "me.proton.pass.ios.autofill",
+                  category: "autofill_extension",
+                  level: .info,
+                  message: "Autofilled successfully",
+                  file: "CredentialsViewController",
+                  function: "autoFill()",
+                  line: 45,
+                  column: 1),
+         "2023-01-03T08:01:39.0000 | 🔵 INFO | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.autoFill():45:1 - Autofilled successfully"),
+        (LogEntry(timestamp: 1_672_732_899,
+                  subsystem: "me.proton.mail",
+                  category: "mail_composer",
+                  level: .trace,
+                  message: "Automatically saved email",
+                  file: "ComposerViewController",
+                  function: "composeEmail()",
+                  line: 45,
+                  column: 1),
+         "2023-01-03T08:01:39.0000 | ⚫ TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email"),
+        (LogEntry(timestamp: 1_672_732_899,
+                  subsystem: "me.proton.mail",
+                  category: "mail_composer",
+                  level: .debug,
+                  message: "Email content",
+                  file: "ComposerViewController",
+                  function: "composeEmail()",
+                  line: 56,
+                  column: 190),
+         "2023-01-03T08:01:39.0000 | 🟣 DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
+    ])
+    func `default formatter renders every field with the level emoji`(entry: LogEntry, expected: String) {
+        #expect(LogFormatter.default.format(entry: entry) == expected)
     }
 
-    func testDefaultFormatterWithErrorEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_745_274,
-                             subsystem: "me.proton.pass.ios",
-                             category: "host_application",
-                             level: .error,
-                             message: "Failed to sign up",
-                             file: "SignUpViewController",
-                             function: "signUp()",
-                             line: 82,
-                             column: 39)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T11:27:54.0000 | 🔴 ERROR | me.proton.pass.ios | host_application | SignUpViewController.signUp():82:39 - Failed to sign up")
-    }
-
-    func testDefaultFormatterWithWarningEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_732_899,
-                             subsystem: "me.proton.pass.ios.autofill",
-                             category: "autofill_extension",
-                             level: .warning,
-                             message: "No credentials found",
-                             file: "CredentialsViewController",
-                             function: "fetchCredentials()",
-                             line: 189,
-                             column: 20)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | 🟡 WARNING | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.fetchCredentials():189:20 - No credentials found")
-    }
-
-    func testDefaultFormatterWithInfoEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_732_899,
-                             subsystem: "me.proton.pass.ios.autofill",
-                             category: "autofill_extension",
-                             level: .info,
-                             message: "Autofilled successfully",
-                             file: "CredentialsViewController",
-                             function: "autoFill()",
-                             line: 45,
-                             column: 1)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | 🔵 INFO | me.proton.pass.ios.autofill | autofill_extension | CredentialsViewController.autoFill():45:1 - Autofilled successfully")
-    }
-
-    func testDefaultFormatterWithTraceEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_732_899,
-                             subsystem: "me.proton.mail",
-                             category: "mail_composer",
-                             level: .trace,
-                             message: "Automatically saved email",
-                             file: "ComposerViewController",
-                             function: "composeEmail()",
-                             line: 45,
-                             column: 1)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | ⚫ TRACE | me.proton.mail | mail_composer | ComposerViewController.composeEmail():45:1 - Automatically saved email")
-    }
-
-    func testDefaultFormatterWithDebugEntry() {
-        let formatter = LogFormatter.default
-        let entry = LogEntry(timestamp: 1_672_732_899,
-                             subsystem: "me.proton.mail",
-                             category: "mail_composer",
-                             level: .debug,
-                             message: "Email content",
-                             file: "ComposerViewController",
-                             function: "composeEmail()",
-                             line: 56,
-                             column: 190)
-
-        let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | 🟣 DEBUG | me.proton.mail | mail_composer | ComposerViewController.composeEmail():56:190 - Email content")
-    }
-
-    func testStandardHtmlFormatter() {
+    @Test func `standard html formatter colors subsystem and category without location`() {
         let style = LogFormatStyle(subsystemColors: ["me.proton.mail": "#FF6F00"],
                                    categoryColors: ["mail_composer": "#AEEA00"])
         let formatter = LogFormatter(format: .html(style), options: .standard)
@@ -140,11 +105,11 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> - Email content")
+        #expect(formattedEntry ==
+            "2023-01-03T08:01:39.0000 | DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> - Email content")
     }
 
-    func testVerboseHtmlFormatter() {
+    @Test func `verbose html formatter colors subsystem and category with location`() {
         let style = LogFormatStyle(subsystemColors: ["me.proton.mail": "#FF6F00"],
                                    categoryColors: ["mail_composer": "#AEEA00"])
         let formatter = LogFormatter(format: .html(style))
@@ -159,7 +124,9 @@ final class LogFormatterTests: XCTestCase {
                              column: 190)
 
         let formattedEntry = formatter.format(entry: entry)
-        XCTAssertEqual(formattedEntry,
-                       "2023-01-03T08:01:39.0000 | 🟣 DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
+        #expect(formattedEntry ==
+            "2023-01-03T08:01:39.0000 | 🟣 DEBUG | <span style=\"color:#FF6F00\">me.proton.mail</span> | <span style=\"color:#AEEA00\">mail_composer</span> | ComposerViewController.composeEmail():56:190 - Email content")
     }
 }
+
+// swiftlint:enable line_length

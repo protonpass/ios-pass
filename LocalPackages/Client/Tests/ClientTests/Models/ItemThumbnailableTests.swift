@@ -19,83 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import XCTest
 import Entities
+import Testing
 
-final class ItemThumbnailableTests: XCTestCase {
+@Suite(.tags(.models))
+struct ItemThumbnailableTests {
     struct DummyItem: ItemThumbnailable {
         let title: String
         let url: String?
         let type: ItemContentType
     }
 
-    func testAlwaysIconTypeForNotes() {
-        // Given
-        let item = DummyItem(title: .random(), url: nil, type: .note)
+    @Test(arguments: [ItemContentType.note, .alias])
+    func `notes and aliases always use the icon thumbnail`(type: ItemContentType) {
+        let item = DummyItem(title: .random(), url: nil, type: type)
 
-        // When
-        let data = item.thumbnailData()
-
-        // Then
-        switch data {
-        case let .icon(type):
-            XCTAssertEqual(type, .note)
-        default:
-            XCTFail("Should be icon type")
-        }
+        #expect(item.thumbnailData() == .icon(type: type))
     }
 
-    func testAlwaysIconTypeForAliases() {
-        // Given
-        let item = DummyItem(title: .random(), url: nil, type: .alias)
+    @Test func `a login without url uses the initials thumbnail`() {
+        let item = DummyItem(title: "proton pass login item", url: nil, type: .login)
 
-        // When
-        let data = item.thumbnailData()
-
-        // Then
-        switch data {
-        case let .icon(type):
-            XCTAssertEqual(type, .alias)
-        default:
-            XCTFail("Should be alias type")
-        }
+        #expect(item.thumbnailData() == .initials(type: .login, initials: "PP"))
     }
 
-    func testInitialsTypeForLoginWithNoUrl() {
-        // Given
-        let title = "proton pass login item"
-        let item = DummyItem(title: title, url: nil, type: .login)
-
-        // When
-        let data = item.thumbnailData()
-
-        // Then
-        switch data {
-        case let .initials(type, initials):
-            XCTAssertEqual(type, .login)
-            XCTAssertEqual(initials, "PP")
-        default:
-            XCTFail("Should be initials type")
-        }
-    }
-
-    func testFavIconTypeForLoginWithUrl() {
-        // Given
-        let givenTitle = "proton pass login item"
+    @Test func `a login with url uses the fav icon thumbnail`() {
         let givenUrl = String.random()
-        let item = DummyItem(title: givenTitle, url: givenUrl, type: .login)
+        let item = DummyItem(title: "proton pass login item", url: givenUrl, type: .login)
 
-        // When
-        let data = item.thumbnailData()
-
-        // Then
-        switch data {
-        case let .favIcon(type, url, initials):
-            XCTAssertEqual(type, .login)
-            XCTAssertEqual(url, givenUrl)
-            XCTAssertEqual(initials, "PP")
-        default:
-            XCTFail("Should be fav icon type")
-        }
+        #expect(item.thumbnailData() == .favIcon(type: .login, url: givenUrl, initials: "PP"))
     }
 }

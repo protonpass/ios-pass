@@ -22,19 +22,17 @@ import Core
 import Foundation
 import Testing
 
+@Suite(.tags(.utilities))
 struct ComparableTests {
-    @Test
-    func `clamp keeps a value that is already within range`() {
+    @Test func `clamp keeps a value that is already within range`() {
         #expect(10.clamp(to: 4...64) == 10)
     }
     
-    @Test
-    func `clamp raises a value below the lower bound`() {
+    @Test func `clamp raises a value below the lower bound`() {
         #expect(2.clamp(to: 4...64) == 4)
     }
     
-    @Test
-    func `clamp lowers a value above the upper bound`() {
+    @Test func `clamp lowers a value above the upper bound`() {
         #expect(80.clamp(to: 4...64) == 64)
     }
 }

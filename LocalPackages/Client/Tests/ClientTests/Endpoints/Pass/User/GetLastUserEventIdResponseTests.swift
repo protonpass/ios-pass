@@ -24,8 +24,7 @@ import Testing
 
 @Suite(.tags(.endpoint))
 struct GetLastUserEventIdResponseTests {
-    @Test("Decode")
-    func decode() throws {
+    @Test func `decodes the last user event ID response`() throws {
         let given = """
             {
                 "EventID": "TestID",

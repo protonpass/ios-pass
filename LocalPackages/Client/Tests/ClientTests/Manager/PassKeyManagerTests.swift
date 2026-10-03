@@ -60,8 +60,7 @@ struct PassKeyManagerTests {
 
     // MARK: - getShareKey Tests
 
-    @Test("getShareKey returns cached key when available")
-    func getShareKeyCacheHit() async throws {
+    @Test func `getShareKey returns cached key when available`() async throws {
         // Arrange
         let shareId = "share-1"
         let keyRotation: Int64 = 1
@@ -94,8 +93,7 @@ struct PassKeyManagerTests {
         #expect(shareKeyRepository.invokedGetKeysCount == 0) // Cache was used
     }
 
-    @Test("getShareKey fetches from repository when not cached")
-    func getShareKeyCacheMiss() async throws {
+    @Test func `getShareKey fetches from repository when not cached`() async throws {
         // Arrange
         let shareId = "share-1"
         let keyRotation: Int64 = 1
@@ -121,8 +119,7 @@ struct PassKeyManagerTests {
         #expect(key.keyRotation == keyRotation)
     }
 
-    @Test("getShareKey throws when key rotation not found")
-    func getShareKeyThrowsWhenKeyRotationNotFound() async throws {
+    @Test func `getShareKey throws when key rotation not found`() async throws {
         // Arrange
         let shareId = "share-1"
         let requestedRotation: Int64 = 5
@@ -148,8 +145,7 @@ struct PassKeyManagerTests {
 
     // MARK: - getLatestShareKey Tests
 
-    @Test("getLatestShareKey returns cached latest key when available")
-    func getLatestShareKeyCacheHit() async throws {
+    @Test func `getLatestShareKey returns cached latest key when available`() async throws {
         // Arrange
         let shareId = "share-1"
         let keyRotation: Int64 = 3
@@ -181,8 +177,7 @@ struct PassKeyManagerTests {
         #expect(shareKeyRepository.invokedGetKeysCount == 0)
     }
 
-    @Test("getLatestShareKey returns key with highest rotation")
-    func getLatestShareKeyReturnsHighestRotation() async throws {
+    @Test func `getLatestShareKey returns key with highest rotation`() async throws {
         // Arrange
         let shareId = "share-1"
         let keyData = Data(repeating: 0x34, count: 32)
@@ -212,8 +207,7 @@ struct PassKeyManagerTests {
 
     // MARK: - getContainerKey Tests
 
-    @Test("getContainerKey returns cached key for specific rotation")
-    func getContainerKeyWithRotation() async throws {
+    @Test func `getContainerKey returns cached key for specific rotation`() async throws {
         // Arrange - Pre-populate cache via getShareKey
         let shareId = "share-1"
         let keyRotation: Int64 = 2
@@ -243,8 +237,7 @@ struct PassKeyManagerTests {
         #expect(containerKey.keyRotation == keyRotation)
     }
 
-    @Test("getContainerKey returns latest cached key when rotation is nil")
-    func getContainerKeyWithoutRotation() async throws {
+    @Test func `getContainerKey returns latest cached key when rotation is nil`() async throws {
         // Arrange - Pre-populate cache with multiple rotations
         let shareId = "share-1"
         let keyData = Data(repeating: 0x78, count: 32)
@@ -277,8 +270,7 @@ struct PassKeyManagerTests {
         #expect(containerKey.keyRotation == 2)
     }
 
-    @Test("getContainerKey throws when key not found")
-    func getContainerKeyThrowsWhenNotFound() async throws {
+    @Test func `getContainerKey throws when key not found`() async throws {
         // Arrange - No keys loaded
         shareKeyRepository.stubbedGetAllLocalKeysResult = []
         folderKeyDatasource.stubbedGetAllFolderKeysAsyncResult1 = []
@@ -294,8 +286,7 @@ struct PassKeyManagerTests {
 
     // MARK: - Key Loading Tests
 
-    @Test("All accounts share one preload even with concurrent calls")
-    func keysLoadedOnlyOnce() async throws {
+    @Test func `all accounts share one preload even with concurrent calls`() async throws {
         let a = Data(repeating: 0x9A, count: 32)
         let b = Data(repeating: 0x9B, count: 32)
         shareKeyRepository.stubbedGetAllLocalKeysResult = [
@@ -321,8 +312,7 @@ struct PassKeyManagerTests {
 
     // MARK: - decryptAndStoreFolderKeys Tests
 
-    @Test("decryptAndStoreFolderKeys does nothing with empty folders")
-    func decryptAndStoreFolderKeysWithEmptyFolders() async throws {
+    @Test func `decryptAndStoreFolderKeys does nothing with empty folders`() async throws {
         // Act
         try await sut.decryptAndStoreFolderKeys(userId: "user-1", shareId: "share-1", folders: [])
 
@@ -330,8 +320,7 @@ struct PassKeyManagerTests {
         #expect(!folderKeyDatasource.invokedUpsertFolderKeysfunction)
     }
 
-    @Test("decryptAndStoreFolderKeys throws when share key not cached")
-    func decryptAndStoreFolderKeysThrowsWhenNoShareKey() async throws {
+    @Test func `decryptAndStoreFolderKeys throws when share key not cached`() async throws {
         // Arrange
         let folder = Folder(
             vaultID: "share-1",
@@ -351,8 +340,7 @@ struct PassKeyManagerTests {
 
     // MARK: - Error Handling Tests
 
-    @Test("getShareKey propagates repository errors")
-    func getShareKeyPropagatesErrors() async throws {
+    @Test func `getShareKey propagates repository errors`() async throws {
         // Arrange
         let expectedError = NSError(domain: "test", code: 1)
         shareKeyRepository.getKeysThrowableError = expectedError
@@ -363,8 +351,7 @@ struct PassKeyManagerTests {
         }
     }
 
-    @Test("getLatestShareKey propagates repository errors")
-    func getLatestShareKeyPropagatesErrors() async throws {
+    @Test func `getLatestShareKey propagates repository errors`() async throws {
         // Arrange
         let expectedError = NSError(domain: "test", code: 2)
         shareKeyRepository.getKeysThrowableError = expectedError
@@ -375,8 +362,7 @@ struct PassKeyManagerTests {
         }
     }
 
-    @Test("getLatestShareKey throws when no keys returned")
-    func getLatestShareKeyThrowsWhenEmpty() async throws {
+    @Test func `getLatestShareKey throws when no keys returned`() async throws {
         // Arrange
         shareKeyRepository.stubbedGetKeysResult = []
 
@@ -396,7 +382,7 @@ private extension Data {
 }
 
 extension PassKeyManagerTests {
-    @Test func uniqueShareIDsKeepAccountKeysDistinct() async throws {
+    @Test func `unique share IDs keep each account's keys distinct`() async throws {
         let a = Data(repeating: 0x11, count: 32)
         let b = Data(repeating: 0x22, count: 32)
         shareKeyRepository.stubbedGetAllLocalKeysResult = [
@@ -413,7 +399,7 @@ extension PassKeyManagerTests {
         #expect(folderKeyDatasource.invokedGetAllFolderKeysAsyncCount1 == 1)
     }
 
-    @Test func rootsAndSameFolderIDInDifferentSharesUseDistinctKeys() async throws {
+    @Test func `roots and the same folder ID in different shares use distinct keys`() async throws {
         let rootA = Data(repeating: 0x31, count: 32)
         let rootB = Data(repeating: 0x32, count: 32)
         let folderA = Data(repeating: 0x33, count: 32)
@@ -434,7 +420,7 @@ extension PassKeyManagerTests {
         #expect(shareKeyRepository.invokedRefreshKeysCount == 0)
     }
 
-    @Test func refreshUsesRequestedAccountAndRawShareID() async throws {
+    @Test func `refresh uses the requested account and raw share ID`() async throws {
         let bytes = Data(repeating: 0x41, count: 32)
         shareKeyRepository.stubbedRefreshKeysResult = [try encryptedShare(user: "B", share: "raw-share", bytes: bytes)]
         let key = try await sut.getContainerKey(userId: "B", shareId: "raw-share", folderId: nil)
@@ -444,21 +430,21 @@ extension PassKeyManagerTests {
         #expect(shareKeyRepository.invokedRefreshKeysCount == 1)
     }
 
-    @Test func missingFolderNeverCallsShareKeyAPI() async throws {
+    @Test func `missing folder never calls the share key API`() async throws {
         await #expect(throws: PassError.self) {
             try await sut.getContainerKey(userId: "B", shareId: "share-B", folderId: "folder", keyRotation: 1)
         }
         #expect(shareKeyRepository.invokedRefreshKeysCount == 0)
     }
 
-    @Test func foreignAccountRepositoryMaterialCannotSatisfyLookup() async throws {
+    @Test func `another account's repository material cannot satisfy a lookup`() async throws {
         shareKeyRepository.stubbedGetKeysResult = [try encryptedShare(user: "A", share: "share-A", bytes: Data(repeating: 7, count: 32))]
         await #expect(throws: PassError.self) {
             try await sut.getShareKey(userId: "B", shareId: "share-B", keyRotation: 1)
         }
     }
 
-    @Test func folderKeysPersistUnderRequestedAccount() async throws {
+    @Test func `folder keys persist under the requested account`() async throws {
         let root = Data(repeating: 0x51, count: 32)
         let folderBytes = Data(repeating: 0x52, count: 32)
         shareKeyRepository.stubbedRefreshKeysResult = [try encryptedShare(user: "B", share: "share-B", bytes: root)]
@@ -476,7 +462,7 @@ extension PassKeyManagerTests {
         #expect(shareKeyRepository.invokedRefreshKeysParameters?.userId == "B")
     }
 
-    @Test func everyItemKeyAPIPreservesFolderAndAccountIdentity() async throws {
+    @Test func `every item key API preserves folder and account identity`() async throws {
         let wrongRoot = Data(repeating: 0x61, count: 32)
         let folderBytes = Data(repeating: 0x62, count: 32)
         let foreignFolder = Data(repeating: 0x63, count: 32)
@@ -520,7 +506,7 @@ extension PassKeyManagerTests {
 
 extension PassKeyManagerTests {
     @Test(.timeLimit(.minutes(1)))
-    func anotherAccountLookupDuringFolderRefreshDoesNotChangeOwnership() async throws {
+    func `another account's lookup during a folder refresh does not change ownership`() async throws {
         let accountA = Data(repeating: 0x81, count: 32)
         let accountB = Data(repeating: 0x82, count: 32)
         let folderBytes = Data(repeating: 0x83, count: 32)
@@ -581,7 +567,7 @@ private actor SuspendedKeyRepository: ShareKeyRepositoryProtocol {
 }
 
 extension PassKeyManagerTests {
-    @Test func attachmentKeysForItemShareIgnoreVaultFolderMetadata() async throws {
+    @Test func `attachment keys for an item share ignore vault folder metadata`() async throws {
         let shareBytes = Data(repeating: 0x91, count: 32)
         let folderBytes = Data(repeating: 0x92, count: 32)
         shareKeyRepository.stubbedGetKeysResult = [try encryptedShare(user: "B", share: "share-B", bytes: shareBytes)]

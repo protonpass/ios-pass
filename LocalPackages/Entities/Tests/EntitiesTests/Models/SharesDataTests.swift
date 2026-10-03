@@ -24,12 +24,11 @@ import Testing
 
 // MARK: - SharesDataTests
 
-@Suite("SharesData Tests")
+@Suite(.tags(.entity))
 struct SharesDataTests {
     // MARK: - Initialization Tests
 
-    @Test
-    func `Init with empty shares and trashedItems creates empty SharesData`() {
+    @Test func `init with empty shares and trashedItems creates empty SharesData`() {
         let sharesData = SharesData(shares: [], trashedItems: [])
 
         #expect(sharesData.shares.isEmpty)
@@ -38,8 +37,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedWithMe.isEmpty)
     }
 
-    @Test
-    func `Init builds dictionary correctly from shares array`() {
+    @Test func `init builds dictionary correctly from shares array`() {
         let share1 = Share.random(shareID: "share-1")
         let share2 = Share.random(shareID: "share-2")
 
@@ -53,8 +51,7 @@ struct SharesDataTests {
         #expect(sharesData.shares["share-2"]?.id == "share-2")
     }
 
-    @Test
-    func `Init stores trashedItems correctly`() {
+    @Test func `init stores trashedItems correctly`() {
         let trashedItem1 = ItemUiModel.mock(itemId: "trashed-1", shareId: "share-1", state: .trashed)
         let trashedItem2 = ItemUiModel.mock(itemId: "trashed-2", shareId: "share-1", state: .trashed)
 
@@ -65,8 +62,7 @@ struct SharesDataTests {
 
     // MARK: - itemsSharedByMe Tests
 
-    @Test
-    func `itemsSharedByMe includes shared items from manager role shares`() {
+    @Test func `itemsSharedByMe includes shared items from manager role shares`() {
         // Create a manager share (shareRoleID = "1")
         let managerShare = Share.random(shareID: "manager-share", shareRoleID: "1")
         let sharedItem = ItemUiModel.mock(itemId: "shared-item", shareId: "manager-share", shared: true)
@@ -78,8 +74,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedByMe.first?.itemId == "shared-item")
     }
 
-    @Test
-    func `itemsSharedByMe excludes non-shared items from manager shares`() {
+    @Test func `itemsSharedByMe excludes non-shared items from manager shares`() {
         let managerShare = Share.random(shareID: "manager-share", shareRoleID: "1")
         let nonSharedItem = ItemUiModel.mock(itemId: "non-shared", shareId: "manager-share", shared: false)
 
@@ -89,8 +84,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedByMe.isEmpty)
     }
 
-    @Test
-    func `itemsSharedByMe excludes items from non-manager shares`() {
+    @Test func `itemsSharedByMe excludes items from non-manager shares`() {
         // Create a read-only share (shareRoleID = "3")
         let readShare = Share.random(shareID: "read-share", shareRoleID: "3")
         let sharedItem = ItemUiModel.mock(itemId: "shared-item", shareId: "read-share", shared: true)
@@ -101,8 +95,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedByMe.isEmpty)
     }
 
-    @Test
-    func `itemsSharedByMe includes shared trashed items from manager shares`() {
+    @Test func `itemsSharedByMe includes shared trashed items from manager shares`() {
         let managerShare = Share.random(shareID: "manager-share", shareRoleID: "1")
         let content = ShareContent(share: managerShare, elements: [])
 
@@ -121,8 +114,7 @@ struct SharesDataTests {
 
     // MARK: - itemsSharedWithMe Tests
 
-    @Test
-    func `itemsSharedWithMe includes items from non-vault non-owner shares`() {
+    @Test func `itemsSharedWithMe includes items from non-vault non-owner shares`() {
         // Create item share (targetType = 2) where user is not owner
         let itemShare = Share.random(shareID: "item-share", targetType: 2, owner: false)
         let item = ItemUiModel.mock(itemId: "shared-item", shareId: "item-share")
@@ -134,8 +126,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedWithMe.first?.itemId == "shared-item")
     }
 
-    @Test
-    func `itemsSharedWithMe excludes items from vault shares`() {
+    @Test func `itemsSharedWithMe excludes items from vault shares`() {
         // Create vault share (targetType = 1) where user is not owner
         let vaultShare = Share.random(shareID: "vault-share", targetType: 1, owner: false)
         let item = ItemUiModel.mock(itemId: "vault-item", shareId: "vault-share")
@@ -146,8 +137,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedWithMe.isEmpty)
     }
 
-    @Test
-    func `itemsSharedWithMe excludes items from owner shares`() {
+    @Test func `itemsSharedWithMe excludes items from owner shares`() {
         let ownerShare = Share.random(shareID: "owner-share", targetType: 2, owner: true)
         let item = ItemUiModel.mock(itemId: "my-item", shareId: "owner-share")
 
@@ -157,8 +147,7 @@ struct SharesDataTests {
         #expect(sharesData.itemsSharedWithMe.isEmpty)
     }
 
-    @Test
-    func `itemsSharedWithMe includes trashed items from qualifying shares`() {
+    @Test func `itemsSharedWithMe includes trashed items from qualifying shares`() {
         let itemShare = Share.random(shareID: "item-share", targetType: 2, owner: false)
         let content = ShareContent(share: itemShare, elements: [])
 
@@ -177,8 +166,7 @@ struct SharesDataTests {
 
     // MARK: - filteredOrderedVaults Tests
 
-    @Test
-    func `filteredOrderedVaults returns only shares with vaultName`() {
+    @Test func `filteredOrderedVaults returns only shares with vaultName`() {
         let vaultShare = Share.random(shareID: "vault-share", targetType: 1)
             .copy(with: VaultContent(name: "My Vault", description: "", color: .color1, icon: .icon1))
         let itemShare = Share.random(shareID: "item-share", targetType: 2)
@@ -193,8 +181,7 @@ struct SharesDataTests {
         #expect(vaults.first?.id == "vault-share")
     }
 
-    @Test
-    func `filteredOrderedVaults sorts by name alphabetically`() {
+    @Test func `filteredOrderedVaults sorts by name alphabetically`() {
         let vaultA = Share.random(shareID: "vault-a", targetType: 1, createTime: 100)
             .copy(with: VaultContent(name: "Alpha", description: "", color: .color1, icon: .icon1))
         let vaultB = Share.random(shareID: "vault-b", targetType: 1, createTime: 50)
@@ -215,8 +202,7 @@ struct SharesDataTests {
         #expect(vaults[2].share.vaultName == "Charlie")
     }
 
-    @Test
-    func `filteredOrderedVaults sorts by createTime when names are equal`() {
+    @Test func `filteredOrderedVaults sorts by createTime when names are equal`() {
         let vault1 = Share.random(shareID: "vault-1", targetType: 1, createTime: 100)
             .copy(with: VaultContent(name: "Same Name", description: "", color: .color1, icon: .icon1))
         let vault2 = Share.random(shareID: "vault-2", targetType: 1, createTime: 50)
@@ -239,14 +225,12 @@ struct SharesDataTests {
 
     // MARK: - isEmpty Tests
 
-    @Test
-    func `isEmpty returns true when all collections are empty`() {
+    @Test func `isEmpty returns true when all collections are empty`() {
         let sharesData = SharesData(shares: [], trashedItems: [])
         #expect(sharesData.isEmpty)
     }
 
-    @Test
-    func `isEmpty returns false when shares is not empty`() {
+    @Test func `isEmpty returns false when shares is not empty`() {
         let share = Share.random(shareID: "share-1")
         let content = ShareContent(share: share, elements: [])
 
@@ -254,15 +238,13 @@ struct SharesDataTests {
         #expect(!sharesData.isEmpty)
     }
 
-    @Test
-    func `isEmpty returns false when trashedItems is not empty`() {
+    @Test func `isEmpty returns false when trashedItems is not empty`() {
         let trashedItem = ItemUiModel.mock(itemId: "trashed", shareId: "share-1", state: .trashed)
         let sharesData = SharesData(shares: [], trashedItems: [trashedItem])
         #expect(!sharesData.isEmpty)
     }
 
-    @Test
-    func `isEmpty returns false when itemsSharedByMe is not empty`() {
+    @Test func `isEmpty returns false when itemsSharedByMe is not empty`() {
         let managerShare = Share.random(shareID: "manager-share", shareRoleID: "1")
         let sharedItem = ItemUiModel.mock(itemId: "shared", shareId: "manager-share", shared: true)
         let content = ShareContent(share: managerShare, elements: [.item(sharedItem)])
@@ -271,8 +253,7 @@ struct SharesDataTests {
         #expect(!sharesData.isEmpty)
     }
 
-    @Test
-    func `isEmpty returns false when itemsSharedWithMe is not empty`() {
+    @Test func `isEmpty returns false when itemsSharedWithMe is not empty`() {
         let itemShare = Share.random(shareID: "item-share", targetType: 2, owner: false)
         let item = ItemUiModel.mock(itemId: "item", shareId: "item-share")
         let content = ShareContent(share: itemShare, elements: [.item(item)])
@@ -283,8 +264,7 @@ struct SharesDataTests {
 
     // MARK: - hiddenSharesIds Tests
 
-    @Test
-    func `hiddenSharesIds returns IDs of hidden shares`() {
+    @Test func `hiddenSharesIds returns IDs of hidden shares`() {
         // flags = 1 means hidden (ShareFlags.hidden = 1 << 0)
         let hiddenShare = Share.random(shareID: "hidden-share", flags: 1)
         let visibleShare = Share.random(shareID: "visible-share", flags: 0)
@@ -298,8 +278,7 @@ struct SharesDataTests {
         #expect(sharesData.hiddenSharesIds.contains("hidden-share"))
     }
 
-    @Test
-    func `hiddenSharesIds returns empty when no hidden shares`() {
+    @Test func `hiddenSharesIds returns empty when no hidden shares`() {
         let visibleShare1 = Share.random(shareID: "visible-1", flags: 0)
         let visibleShare2 = Share.random(shareID: "visible-2", flags: 0)
 
@@ -313,8 +292,7 @@ struct SharesDataTests {
 
     // MARK: - visibleShareContents Tests
 
-    @Test
-    func `visibleShareContents returns only non-hidden shares`() {
+    @Test func `visibleShareContents returns only non-hidden shares`() {
         let hiddenShare = Share.random(shareID: "hidden-share", flags: 1)
         let visibleShare = Share.random(shareID: "visible-share", flags: 0)
 
@@ -327,8 +305,7 @@ struct SharesDataTests {
         #expect(sharesData.visibleShareContents.first?.id == "visible-share")
     }
 
-    @Test
-    func `visibleShareContents returns all shares when none are hidden`() {
+    @Test func `visibleShareContents returns all shares when none are hidden`() {
         let share1 = Share.random(shareID: "share-1", flags: 0)
         let share2 = Share.random(shareID: "share-2", flags: 0)
 
@@ -342,8 +319,7 @@ struct SharesDataTests {
 
     // MARK: - Complex Scenario Tests
 
-    @Test
-    func `Complex scenario with mixed shares and items`() {
+    @Test func `complex scenario with mixed shares and items`() {
         // Manager share with shared items
         let managerShare = Share.random(shareID: "manager-share", targetType: 2, shareRoleID: "1", owner: true)
         let sharedByMeItem = ItemUiModel.mock(itemId: "shared-by-me", shareId: "manager-share", shared: true)
@@ -449,8 +425,7 @@ struct SharesDataTests {
                             ])
     }
 
-    @Test
-    func `items(for:) on a folder returns its direct children only`() throws {
+    @Test func `items(for:) on a folder returns its direct children only`() throws {
         let content = nestedVault()
         let sharesData = SharesData(shares: [content], trashedItems: [])
         let folder = try #require(content.folder(for: "folder-parent"))
@@ -460,8 +435,7 @@ struct SharesDataTests {
         #expect(items.map(\.itemId) == ["parent-item"])
     }
 
-    @Test
-    func `items(for:) on a vault returns root items only`() {
+    @Test func `items(for:) on a vault returns root items only`() {
         let content = nestedVault()
         let sharesData = SharesData(shares: [content], trashedItems: [])
 
@@ -470,16 +444,14 @@ struct SharesDataTests {
         #expect(items.map(\.itemId) == ["root-item"])
     }
 
-    @Test
-    func `items(for:) on an unknown share returns nothing`() {
+    @Test func `items(for:) on an unknown share returns nothing`() {
         let sharesData = SharesData(shares: [], trashedItems: [])
         let share = Share.random(shareID: "missing", targetType: 1)
 
         #expect(sharesData.items(for: .precise(.init(share: share, folder: nil))).isEmpty)
     }
 
-    @Test
-    func `items(for: .all) excludes items of hidden shares`() {
+    @Test func `items(for: .all) excludes items of hidden shares`() {
         let visible = ShareContent(share: Share.random(shareID: "visible", targetType: 1),
                                    elements: [.item(ItemUiModel.mock(itemId: "visible-item",
                                                                      shareId: "visible"))])
@@ -491,8 +463,7 @@ struct SharesDataTests {
         #expect(sharesData.items(for: .all).map(\.itemId) == ["visible-item"])
     }
 
-    @Test
-    func `items(for: .trash) excludes trashed items of hidden shares`() {
+    @Test func `items(for: .trash) excludes trashed items of hidden shares`() {
         let visible = ShareContent(share: Share.random(shareID: "visible", targetType: 1), elements: [])
         let hidden = ShareContent(share: Share.random(shareID: "hidden", targetType: 1, flags: 1),
                                   elements: [])
@@ -507,8 +478,7 @@ struct SharesDataTests {
 
     // MARK: - Hashable Tests
 
-    @Test
-    func `SharesData is hashable`() {
+    @Test func `shares data is hashable`() {
         let share = Share.random(shareID: "share-1")
         let content = ShareContent(share: share, elements: [])
         let trashedItem = ItemUiModel.mock(itemId: "trashed", shareId: "share-1", state: .trashed)

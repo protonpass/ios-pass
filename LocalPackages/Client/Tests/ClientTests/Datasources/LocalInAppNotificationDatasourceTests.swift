@@ -32,8 +32,7 @@ struct LocalInAppNotificationDatasourceTests {
         sut = LocalInAppNotificationDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get in app notification by userID, sorted by priority descending")
-    func get() async throws {
+    @Test func `get in app notification by userID, sorted by priority descending`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -56,8 +55,7 @@ struct LocalInAppNotificationDatasourceTests {
         #expect(itemsForUser1.first == morePrioNotification)
     }
 
-    @Test("Upsert in app notification")
-    func upsert() async throws {
+    @Test func `upsert in app notification`() async throws {
         // Given
         let userId = String.random()
         // Creating a mock with all default values
@@ -76,8 +74,7 @@ struct LocalInAppNotificationDatasourceTests {
         #expect(defaultNotification == updatedNotification)
     }
 
-    @Test("Remove all in app notification for one user")
-    func removeAll() async throws {
+    @Test func `remove all in app notification for one user`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -97,8 +94,7 @@ struct LocalInAppNotificationDatasourceTests {
         #expect(items2.count == 5)
     }
     
-    @Test("Remove one in app notification for one user")
-    func removeOne() async throws {
+    @Test func `remove one in app notification for one user`() async throws {
         // Given
         let userId = String.random()
 

@@ -30,8 +30,7 @@ struct LocalNotificationTimeDatasourceTests {
         sut = LocalNotificationTimeDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get, upsert and remove timestamp")
-    func getUpsertAndRemove() async throws {
+    @Test func `get, upsert and remove timestamp`() async throws {
         let userId1 = String.random()
         let userId2 = String.random()
 

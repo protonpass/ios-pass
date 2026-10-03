@@ -24,16 +24,16 @@ import Testing
 
 @Suite(.tags(.entity))
 struct ShareSelectionPayloadTests {
-    @Test("Can create item", arguments: [
+    @Test(arguments: [
         (ShareRole.manager, false, false, true),
         (ShareRole.manager, true, false, false),
         (ShareRole.manager, true, true, true),
         (ShareRole.read, false, true, false)
     ])
-    func canCreateItem(role: ShareRole,
-                       folderSelected: Bool,
-                       folderAllowed: Bool,
-                       expectation: Bool) {
+    func `item creation depends on role, folder selection and folder support`(role: ShareRole,
+                                                                              folderSelected: Bool,
+                                                                              folderAllowed: Bool,
+                                                                              expectation: Bool) {
         let share = Share.random(targetType: 1, shareRoleID: role.rawValue)
         let folder = folderSelected ? FolderUiModel.mock(folderId: "folder-1", shareId: share.shareId) : nil
         let sut = ShareSelectionPayload(share: share, folder: folder)

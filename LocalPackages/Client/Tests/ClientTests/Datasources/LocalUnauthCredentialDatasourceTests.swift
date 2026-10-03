@@ -23,41 +23,33 @@
 import CoreMocks
 import Foundation
 import ProtonCoreNetworking
-import XCTest
+import Testing
 
-final class LocalUnauthCredentialDatasourceTests: XCTestCase {
-    var keychainMockProvider: KeychainProtocolMockProvider!
-    var sut: LocalUnauthCredentialDatasourceProtocol!
+@Suite(.tags(.localDatasource))
+struct LocalUnauthCredentialDatasourceTests {
+    let sut: any LocalUnauthCredentialDatasourceProtocol
 
-    override func setUp() {
-        super.setUp()
-        keychainMockProvider = .init()
+    init() {
+        let keychainMockProvider = KeychainProtocolMockProvider()
         keychainMockProvider.setUp()
         sut = LocalUnauthCredentialDatasource(keychain: keychainMockProvider.getKeychain())
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-}
-
-extension LocalUnauthCredentialDatasourceTests {
-    func testGetAndUpsertCredential() throws {
-        try XCTAssertNil(sut.getUnauthCredential())
+    @Test func `unauth credential can be upserted, updated and removed`() throws {
+        #expect(try sut.getUnauthCredential() == nil)
 
         let givenCredential = AuthCredential.random()
         try sut.upsertUnauthCredential(givenCredential)
 
-        let result1 = try XCTUnwrap(sut.getUnauthCredential())
-        XCTAssertTrue(result1.isEqual(to: givenCredential))
+        let result1 = try #require(try sut.getUnauthCredential())
+        #expect(result1.isEqual(to: givenCredential))
 
         let updatedCredential = AuthCredential.random()
         try sut.upsertUnauthCredential(updatedCredential)
-        let result2 = try XCTUnwrap(sut.getUnauthCredential())
-        XCTAssertTrue(result2.isEqual(to: updatedCredential))
+        let result2 = try #require(try sut.getUnauthCredential())
+        #expect(result2.isEqual(to: updatedCredential))
 
         try sut.removeUnauthCredential()
-        try XCTAssertNil(sut.getUnauthCredential())
+        #expect(try sut.getUnauthCredential() == nil)
     }
 }

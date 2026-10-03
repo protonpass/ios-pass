@@ -20,24 +20,16 @@
 
 @testable import Client
 import Entities
-import XCTest
+import Foundation
+import Testing
 
-final class LocalTelemetryEventDatasourceTests: XCTestCase {
-    var sut: LocalTelemetryEventDatasource!
-
-    override func setUp() {
-        super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalTelemetryEventDatasourceTests {
+    let sut = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalTelemetryEventDatasourceTests {
-    func testInsertGetAndRemoveEvents() async throws {
+    @Test func `events are returned oldest first in batches and can be removed`() async throws {
         // Given
         let givenUserId = String.random()
         let event1 = try await givenInsertedEvent(userId: givenUserId)
@@ -51,38 +43,30 @@ extension LocalTelemetryEventDatasourceTests {
 
         // Then
         let allEvents = try await sut.getAllEvents(userId: givenUserId)
-        XCTAssertEqual(allEvents.count, 8)
+        #expect(allEvents.count == 8)
 
         // When
         let firstThreeEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
-        XCTAssertEqual(firstThreeEvents.count, 3)
-        XCTAssertEqual(firstThreeEvents[0], event1)
-        XCTAssertEqual(firstThreeEvents[1], event2)
-        XCTAssertEqual(firstThreeEvents[2], event3)
+        #expect(firstThreeEvents == [event1, event2, event3])
 
         // When
         try await sut.remove(events: firstThreeEvents, userId: givenUserId)
         let secondThreeEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
-        XCTAssertEqual(secondThreeEvents.count, 3)
-        XCTAssertEqual(secondThreeEvents[0], event4)
-        XCTAssertEqual(secondThreeEvents[1], event5)
-        XCTAssertEqual(secondThreeEvents[2], event6)
+        #expect(secondThreeEvents == [event4, event5, event6])
 
         // When
         try await sut.remove(events: secondThreeEvents, userId: givenUserId)
         let lastEvents = try await sut.getOldestEvents(count: 3, userId: givenUserId)
 
         // Then
-        XCTAssertEqual(lastEvents.count, 2)
-        XCTAssertEqual(lastEvents[0], event7)
-        XCTAssertEqual(lastEvents[1], event8)
+        #expect(lastEvents == [event7, event8])
     }
 
-    func testRemoveAllEvents() async throws {
+    @Test func `all events of a user can be removed`() async throws {
         // Given
         let givenUserId = String.random()
         _ = try await givenInsertedEvent(userId: givenUserId)
@@ -94,7 +78,7 @@ extension LocalTelemetryEventDatasourceTests {
         let allEvents = try await sut.getAllEvents(userId: givenUserId)
 
         // Then
-        XCTAssertEqual(allEvents.count, 0)
+        #expect(allEvents.isEmpty)
     }
 
     func givenInsertedEvent(userId: String) async throws -> TelemetryEvent {

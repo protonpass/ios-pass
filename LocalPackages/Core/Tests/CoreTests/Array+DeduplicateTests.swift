@@ -20,9 +20,10 @@
 //
 
 @testable import Core
-import XCTest
+import Testing
 
-final class ArrayDeduplicateTests: XCTestCase {
+@Suite(.tags(.utilities))
+struct ArrayDeduplicateTests {
     struct Vault: Equatable {
         let shareId: String
         let vaultId: String
@@ -35,7 +36,7 @@ final class ArrayDeduplicateTests: XCTestCase {
         }
     }
 
-    func testDeduplication() {
+    @Test func `deduplicate keeps the first element for each key`() {
         // Given
         let vault1 = Vault(shareId: "share1", vaultId: "vault1")
         let vault2 = Vault(shareId: "share1", vaultId: "vault2")
@@ -49,10 +50,10 @@ final class ArrayDeduplicateTests: XCTestCase {
         let result = sut.deduplicate(by: \.shareId)
 
         // Then
-        XCTAssertEqual(result, [vault1, vault3, vault5])
+        #expect(result == [vault1, vault3, vault5])
     }
     
-    func testUniqueness() {
+    @Test func `uniqued keeps the element chosen by the resolver for each key`() {
         // Given
         let vault1 = Vault(shareId: "share1", vaultId: "vault1")
         let vault2 = Vault(shareId: "share1", vaultId: "vault2", weight: 2)
@@ -68,6 +69,6 @@ final class ArrayDeduplicateTests: XCTestCase {
         }
 
         // Then
-        XCTAssertEqual(result, [vault2, vault3, vault5])
+        #expect(result == [vault2, vault3, vault5])
     }
 }

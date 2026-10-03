@@ -22,40 +22,39 @@
 @testable import Client
 import Entities
 import Foundation
-import XCTest
+import Testing
 
-final class LocalAppPreferencesDatasourceTests: XCTestCase {
-    var sut: LocalAppPreferencesDatasourceProtocol!
+@Suite(.tags(.localDatasource))
+final class LocalAppPreferencesDatasourceTests {
+    private let suiteName = "LocalAppPreferencesDatasourceTests.\(UUID().uuidString)"
+    private let defaults: UserDefaults
+    private let sut: any LocalAppPreferencesDatasourceProtocol
 
-    override func setUp() {
-        super.setUp()
-        let userDefaults = UserDefaults.standard
-        userDefaults.removeAllObjects()
-        sut = LocalAppPreferencesDatasource(userDefault: userDefaults)
+    init() throws {
+        defaults = try #require(UserDefaults(suiteName: suiteName))
+        defaults.removePersistentDomain(forName: suiteName)
+        sut = LocalAppPreferencesDatasource(userDefault: defaults)
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
+    deinit {
+        defaults.removePersistentDomain(forName: suiteName)
     }
-}
 
-extension LocalAppPreferencesDatasourceTests {
-    func testGetAndUpsertPreferences() throws {
-        try XCTAssertNil(sut.getPreferences())
+    @Test func `preferences can be upserted, updated and removed`() throws {
+        #expect(try sut.getPreferences() == nil)
 
         let givenPrefs = AppPreferences.random()
         try sut.upsertPreferences(givenPrefs)
 
-        let result1 = try XCTUnwrap(sut.getPreferences())
-        XCTAssertEqual(result1, givenPrefs)
+        let result1 = try #require(try sut.getPreferences())
+        #expect(result1 == givenPrefs)
 
         let updatedPrefs = AppPreferences.random()
         try sut.upsertPreferences(updatedPrefs)
-        let result2 = try XCTUnwrap(sut.getPreferences())
-        XCTAssertEqual(result2, updatedPrefs)
+        let result2 = try #require(try sut.getPreferences())
+        #expect(result2 == updatedPrefs)
 
         sut.removePreferences()
-        try XCTAssertNil(sut.getPreferences())
+        #expect(try sut.getPreferences() == nil)
     }
 }

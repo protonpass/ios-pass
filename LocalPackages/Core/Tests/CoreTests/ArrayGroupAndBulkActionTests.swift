@@ -20,15 +20,16 @@
 //
 
 @testable import Core
-import XCTest
+import Testing
 
 private struct Item {
     let shareId: String
     let itemId: String
 }
 
-final class ArrayGroupAndBulkActionTests: XCTestCase {
-    func testGroupAndBulkAction() async throws {
+@Suite(.tags(.utilities))
+struct ArrayGroupAndBulkActionTests {
+    @Test func `action is called once per share with only the selected items`() async throws {
         // Given
         let share0 = String.random()
         let share1 = String.random()
@@ -55,9 +56,7 @@ final class ArrayGroupAndBulkActionTests: XCTestCase {
                              item0Share1, item1Share1,
                              item1Share3]
 
-        let share0IsHandled = expectation(description: "Share0 should be handled")
-        let share1IsHandled = expectation(description: "Share1 should be handled")
-        let share3IsHandled = expectation(description: "Share3 should be handled")
+        var actionedItemIds = [String: [String]]()
 
         // When
         try await allItems.groupAndBulkAction(
@@ -67,30 +66,14 @@ final class ArrayGroupAndBulkActionTests: XCTestCase {
                     $0.shareId == item.shareId && $0.itemId == item.itemId
                 })
             }, action: { items, shareId in
-                switch shareId {
-                case share0:
-                    if items.count == 1, items.first?.itemId == item1Share0.itemId {
-                        share0IsHandled.fulfill()
-                    }
-
-                case share1:
-                    if items.count == 2,
-                       items.contains(where: { $0.shareId == share1 && $0.itemId == item0Share1.itemId }),
-                       items.contains(where: { $0.shareId == share1 && $0.itemId == item1Share1.itemId }) {
-                        share1IsHandled.fulfill()
-                    }
-
-                case share3:
-                    if items.count == 1, items.first?.itemId == item1Share3.itemId {
-                        share3IsHandled.fulfill()
-                    }
-
-                default:
-                    XCTFail("Should not action on not matched items")
-                }
+                actionedItemIds[shareId, default: []] += items.map(\.itemId)
             })
 
         // Then
-        await fulfillment(of: [share0IsHandled, share1IsHandled, share3IsHandled])
+        #expect(actionedItemIds == [
+            share0: [item1Share0.itemId],
+            share1: [item0Share1.itemId, item1Share1.itemId],
+            share3: [item1Share3.itemId]
+        ])
     }
 }

@@ -22,11 +22,10 @@
 @testable import Core
 import Entities
 import EntitiesMocks
-import XCTest
+import Testing
 
-final class ShareIdToUserManagerTests: XCTestCase {
-    var sut: ShareIdToUserManager!
-
+@Suite(.tags(.manager))
+struct ShareIdToUserManagerTests {
     private struct Item: ItemIdentifiable {
         var folderId: String?
         
@@ -38,37 +37,18 @@ final class ShareIdToUserManagerTests: XCTestCase {
         }
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-}
-
-extension ShareIdToUserManagerTests {
-    func testGetUser() throws {
+    @Test func `user is only found for items whose share has been indexed`() throws {
         // Given
         let vault = Share.random()
         let item1 = Item.random()
         let user = UserUiModel.random()
 
         // When
-        sut = .init(users: [user])
+        let sut = ShareIdToUserManager(users: [user])
 
         // Then
-        XCTAssertThrowsError(try sut.getUser(for: item1)) { error in
-            if let passError = error as? PassError {
-                switch passError {
-                case let .userManager(reason):
-                    if case let .noUserFound(shareId, itemId) = reason,
-                       shareId == item1.shareId,
-                       itemId == item1.itemId {
-                        break
-                    }
-                    fallthrough
-                default:
-                    XCTFail("Unexpected error \(error)")
-                }
-            }
+        #expect(throws: PassError.userManager(.noUserFound(shareId: item1.shareId, itemId: item1.itemId))) {
+            try sut.getUser(for: item1)
         }
 
         // When
@@ -76,6 +56,6 @@ extension ShareIdToUserManagerTests {
         sut.index(vaults: [vault], userId: user.id)
 
         // Then
-        XCTAssertEqual(try sut.getUser(for: item2), user)
+        #expect(try sut.getUser(for: item2) == user)
     }
 }

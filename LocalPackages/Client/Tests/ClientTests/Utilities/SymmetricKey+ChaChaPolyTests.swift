@@ -20,19 +20,17 @@
 
 @testable import Client
 import CryptoKit
-import XCTest
+import Testing
 
-final class SymmetricKeyPlusChaChaPolyTests: XCTestCase {
-    func testEncryptAndDecrypt() throws {
-        // Given
+@Suite(.tags(.utilities))
+struct SymmetricKeyPlusChaChaPolyTests {
+    @Test func `clear text survives an encryption round trip`() throws {
         let givenClearText = String.random(length: .random(in: 100...200))
         let givenSymmetricKey = SymmetricKey.random()
 
-        // When
         let cypherText = try givenSymmetricKey.encrypt(givenClearText)
 
-        // Then
         let clearText = try givenSymmetricKey.decrypt(cypherText)
-        XCTAssertEqual(clearText, givenClearText)
+        #expect(clearText == givenClearText)
     }
 }

@@ -33,8 +33,7 @@ struct LocalTextAutoFillHistoryEntryDatasourceTests {
         sut = LocalTextAutoFillHistoryEntryDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get items by userID, sorted by time descending")
-    func get() async throws {
+    @Test func `get items by userID, sorted by time descending`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -56,8 +55,7 @@ struct LocalTextAutoFillHistoryEntryDatasourceTests {
         #expect(itemsForUser2 == itemsForUser2.sorted(by: { $0.timestamp > $1.timestamp }))
     }
 
-    @Test("Upsert items")
-    func upsert() async throws {
+    @Test func `upsert items`() async throws {
         // Given
         let userId = String.random()
         let item = try await sut.givenInsertedEntry(userID: userId)
@@ -75,8 +73,7 @@ struct LocalTextAutoFillHistoryEntryDatasourceTests {
         #expect(Int(updatedItem.timestamp) == Int(date.timeIntervalSince1970))
     }
 
-    @Test("Remove all items")
-    func removeAll() async throws {
+    @Test func `remove all items`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()

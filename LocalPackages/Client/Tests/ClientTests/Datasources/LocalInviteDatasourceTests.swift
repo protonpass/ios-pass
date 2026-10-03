@@ -33,8 +33,7 @@ struct LocalInviteDatasourceTests {
 
     // MARK: - User invites
     
-    @Test("Insert and get user invites")
-    func insertAndGetUserInvites() async throws {
+    @Test func `insert and get user invites`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -61,8 +60,7 @@ struct LocalInviteDatasourceTests {
         #expect(invites2.contains(invite4))
     }
 
-    @Test("Upsert user invites")
-    func upsert() async throws {
+    @Test func `upsert user invites`() async throws {
         // Given
         let userId = String.random()
         let invite = UserInvite.random()
@@ -78,8 +76,7 @@ struct LocalInviteDatasourceTests {
         #expect(finalInvites.contains(updatedInvite))
     }
 
-    @Test("Remove by userID and invites")
-    func removeByUserIdAndInvite() async throws {
+    @Test func `remove by userID and invites`() async throws {
         // Given
         let userId = String.random()
         let invite = UserInvite.random()
@@ -93,8 +90,7 @@ struct LocalInviteDatasourceTests {
         #expect(finalInvites.isEmpty)
     }
 
-    @Test("Remove by userID")
-    func removeByUserId() async throws {
+    @Test func `remove by userID`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -114,8 +110,7 @@ struct LocalInviteDatasourceTests {
     
     // MARK: - Group invites
 
-    @Test("Insert and get group invites")
-    func insertAndGetGroupInvites() async throws {
+    @Test func `insert and get group invites`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -142,8 +137,7 @@ struct LocalInviteDatasourceTests {
         #expect(invites2.contains(invite4))
     }
 
-    @Test("Upsert group invites")
-    func upsertGroupInvite() async throws {
+    @Test func `upsert group invites`() async throws {
         // Given
         let userId = String.random()
         let invite = GroupInvite.random()
@@ -159,8 +153,7 @@ struct LocalInviteDatasourceTests {
         #expect(finalInvites.contains(updatedInvite))
     }
 
-    @Test("Remove group invite by userID and invites")
-    func removeGroupInviteByUserIdAndInvite() async throws {
+    @Test func `remove group invite by userID and invites`() async throws {
         // Given
         let userId = String.random()
         let invite = GroupInvite.random()
@@ -174,8 +167,7 @@ struct LocalInviteDatasourceTests {
         #expect(finalInvites.isEmpty)
     }
 
-    @Test("Remove group invite by userID")
-    func removeGroupInviteByUserId() async throws {
+    @Test func `remove group invite by userID`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()

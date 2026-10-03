@@ -32,8 +32,7 @@ struct LocalPasswordDatasourceTests {
         sut = LocalPasswordDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get all passwords")
-    func getAllPasswords() async throws {
+    @Test func `get all passwords`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -60,8 +59,7 @@ struct LocalPasswordDatasourceTests {
         #expect(passwords2[1].id == id2)
     }
 
-    @Test("Get encrypted password")
-    func getEncryptedPassword() async throws {
+    @Test func `get encrypted password`() async throws {
         // Given
         let id = String.random()
         let value = String.random()
@@ -79,8 +77,7 @@ struct LocalPasswordDatasourceTests {
         #expect(retrievedValue == value)
     }
 
-    @Test("Delete all passwords")
-    func deleteAllPasswords() async throws {
+    @Test func `delete all passwords`() async throws {
         // Given
         let userId = String.random()
         for _ in 0..<10 {
@@ -95,8 +92,7 @@ struct LocalPasswordDatasourceTests {
         #expect(passwords.isEmpty)
     }
 
-    @Test("Delete a precise password")
-    func deletePrecisePassword() async throws {
+    @Test func `delete a precise password`() async throws {
         // Given
         let userId = String.random()
         let id1 = String.random()
@@ -120,8 +116,7 @@ struct LocalPasswordDatasourceTests {
         #expect(passwords.contains(where: { $0.id == id4 }))
     }
 
-    @Test("Delete passwords with cut-off time")
-    func deletePasswordsWithCutOffTime() async throws {
+    @Test func `delete passwords with cut-off time`() async throws {
         // Given
         let userId = String.random()
         let id1 = String.random()
