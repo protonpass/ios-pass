@@ -828,7 +828,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedImportItemsParametersList = [(userId: String, shareId: String, contents: [ItemContentProtobuf])]()
     public var stubbedImportItemsOnProgressResult: (Int, Void)?
 
-    public func importItems(userId: String, shareId: String, contents: [ItemContentProtobuf], onProgress: (@Sendable (_ importedCount: Int) -> Void)?) async throws {
+    public func importItems(userId: String, shareId: String, contents: [ItemContentProtobuf], onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
         invokedImportItemsfunction = true
         invokedImportItemsCount += 1
         invokedImportItemsParameters = (userId, shareId, contents)

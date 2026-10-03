@@ -25,7 +25,7 @@ import Foundation
 public protocol ImportCxpItemsUseCase: Sendable {
     func callAsFunction(userId: String,
                         result: CxpImportResult,
-                        onProgress: (@Sendable (_ importedCount: Int) -> Void)?) async throws
+                        onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws
 }
 
 public struct ImportCxpItems: ImportCxpItemsUseCase {
@@ -40,7 +40,7 @@ public struct ImportCxpItems: ImportCxpItemsUseCase {
 
     public func callAsFunction(userId: String,
                                result: CxpImportResult,
-                               onProgress: (@Sendable (_ importedCount: Int) -> Void)?) async throws {
+                               onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
         var importedCount = 0
         for importedVault in result.vaults where !importedVault.items.isEmpty {
             let share = try await shareRepository.createVault(userId: userId,
@@ -49,7 +49,7 @@ public struct ImportCxpItems: ImportCxpItemsUseCase {
             try await itemRepository.importItems(userId: userId,
                                                  shareId: share.shareId,
                                                  contents: importedVault.items,
-                                                 onProgress: { onProgress?(offset + $0) })
+                                                 onProgress: { await onProgress?(offset + $0) })
             importedCount += importedVault.items.count
         }
     }
