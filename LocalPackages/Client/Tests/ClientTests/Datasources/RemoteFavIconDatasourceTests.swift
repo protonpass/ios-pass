@@ -21,13 +21,14 @@
 @testable import Client
 import Combine
 import Core
+import Foundation
 import ProtonCoreServices
-import XCTest
+import Testing
 
 final class APIManagerProtocolMock: APIManagerProtocol {
     let apiServiceWereUpdated: PassthroughSubject<any APIService, Never> = .init()
 
-    func getApiService(userId: String) throws -> any APIService {
+    func getApiService(userId: String) -> any APIService {
         PMAPIService.dummyService()
     }
     
@@ -35,31 +36,18 @@ final class APIManagerProtocolMock: APIManagerProtocol {
         PMAPIService.dummyService()
     }
     
-    func reset() {
-        
-    }
-    
-    func removeApiService(for userId: String) {
-        
-    }
+    func reset() {}
+
+    func removeApiService(for userId: String) {}
 }
 
-final class RemoteFavIconDatasourceTests: XCTestCase {
-    var sut: RemoteFavIconDatasource!
-
-    override func setUp() {
-        super.setUp()
-        sut = RemoteFavIconDatasource(apiServicing: APIManagerProtocolMock())
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.remoteDatasource))
+struct RemoteFavIconDatasourceTests {
+    let sut = RemoteFavIconDatasource(apiServicing: APIManagerProtocolMock())
 }
 
 extension RemoteFavIconDatasourceTests {
-    func testReturnPositiveWhenStatusCode200AndDataNotNil() async throws {
+    @Test func `returns the data when status code is 200 and data is present`() throws {
         // Given
         let givenData = try Data.random()
         let givenDataResponse = DataResponse.random(statusCode: 200, protonCode: nil, data: givenData)
@@ -68,65 +56,33 @@ extension RemoteFavIconDatasourceTests {
         let result = try sut.handle(dataResponse: givenDataResponse)
 
         // Then
-        switch result {
-        case let .positive(data):
-            let data = try XCTUnwrap(data)
-            XCTAssertEqual(data, givenData)
-        case .negative:
-            XCTFail("Should have positive result")
+        guard case let .positive(data) = result else {
+            Issue.record("Should have positive result")
+            return
         }
+        #expect(data == givenData)
     }
 
-    func testReturnNegativeWhenStatusCode200AndDataNil() throws {
+    @Test(arguments: [200, 204])
+    func `returns not exist when data is nil for a success status code`(statusCode: Int) throws {
         // Given
-        let expectation = expectation(description: "Should be \"not exist\"")
-        let givenDataResponse = DataResponse.random(statusCode: 200, protonCode: nil, data: nil)
+        let givenDataResponse = DataResponse.random(statusCode: statusCode, protonCode: nil, data: nil)
 
         // When
         let result = try sut.handle(dataResponse: givenDataResponse)
 
         // Then
-        switch result {
-        case .positive:
-            XCTFail("Should have negative result")
-        case let .negative(reason):
-            switch reason {
-            case .notExist:
-                expectation.fulfill()
-            case .error:
-                XCTFail("Should be \"not exist\"")
-            }
+        guard case .negative(.notExist) = result else {
+            Issue.record("Should be \"not exist\"")
+            return
         }
-        wait(for: [expectation], timeout: 1)
     }
 
-    func testReturnNegativeWhenStatusCode204AndDataNil() throws {
+    @Test(arguments: [205, 400, 500], FavIconError.allCases)
+    func `returns the known error for an unsuccessful status code`(statusCode: Int,
+                                                                   givenError: FavIconError) throws {
         // Given
-        let expectation = expectation(description: "Should be \"not exist\"")
-        let givenDataResponse = DataResponse.random(statusCode: 204, protonCode: nil, data: nil)
-
-        // When
-        let result = try sut.handle(dataResponse: givenDataResponse)
-
-        // Then
-        switch result {
-        case .positive:
-            XCTFail("Should have negative result")
-        case let .negative(reason):
-            switch reason {
-            case .notExist:
-                expectation.fulfill()
-            case .error:
-                XCTFail("Should be \"not exist\"")
-            }
-        }
-        wait(for: [expectation], timeout: 1)
-    }
-
-    func testReturnNegativeWhenStatusCodeNot200Or204ButWithKnownError() async throws {
-        // Given
-        let givenError = FavIconError.allCases.randomElement() ?? .invalidAddress
-        let givenDataResponse = DataResponse.random(statusCode: .random(in: 205...Int.max),
+        let givenDataResponse = DataResponse.random(statusCode: statusCode,
                                                     protonCode: givenError.rawValue,
                                                     data: nil)
 
@@ -134,34 +90,23 @@ extension RemoteFavIconDatasourceTests {
         let result = try sut.handle(dataResponse: givenDataResponse)
 
         // Then
-        switch result {
-        case .positive:
-            XCTFail("Should have negative result")
-        case let .negative(reason):
-            switch reason {
-            case .notExist:
-                XCTFail("Should be a known error")
-            case let .error(error):
-                XCTAssertEqual(error, givenError)
-            }
+        guard case let .negative(.error(error)) = result else {
+            Issue.record("Should be a known error")
+            return
         }
+        #expect(error == givenError)
     }
 
-    func testThrowErrorWhenHttpStatusCodeAndErrorsAreNotKnown() throws {
+    @Test func `throws when both status code and proton code are unknown`() {
         // Given
-        let expectation = expectation(description: "Should throw an error")
         let givenDataResponse = DataResponse.random(statusCode: .random(in: 1_000...Int.max),
                                                     protonCode: .random(in: 10_000...Int.max),
                                                     data: nil)
 
-        // When
-        do {
-            _ = try sut.handle(dataResponse: givenDataResponse)
-        } catch {
-            // Then
-            expectation.fulfill()
+        // When / Then
+        #expect(throws: (any Error).self) {
+            try sut.handle(dataResponse: givenDataResponse)
         }
-        wait(for: [expectation], timeout: 1)
     }
 }
 

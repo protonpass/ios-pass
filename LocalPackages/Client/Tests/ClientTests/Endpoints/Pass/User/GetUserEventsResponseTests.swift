@@ -24,8 +24,7 @@ import Testing
 
 @Suite(.tags(.endpoint))
 struct GetUserEventsResponseTests {
-    @Test("Decode")
-    func decode() throws {
+    @Test func `decodes the user events response`() throws {
         let given = """
             {
               "Code": 1000,

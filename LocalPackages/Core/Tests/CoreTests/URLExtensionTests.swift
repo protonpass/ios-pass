@@ -19,13 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Foundation
+import Testing
 
-final class URLExtensionTests: XCTestCase {
-    func testParamSubcript() throws {
-        let url = try XCTUnwrap(URL(string: "https://example.com?param1=123&param2=abc"))
-        XCTAssertEqual(url["param1"], "123")
-        XCTAssertEqual(url["param2"], "abc")
-        XCTAssertNil(url["param3"])
+@Suite(.tags(.utilities))
+struct URLExtensionTests {
+    @Test func `parameter subscript returns query values and nil for missing ones`() throws {
+        let url = try #require(URL(string: "https://example.com?param1=123&param2=abc"))
+        #expect(url["param1"] == "123")
+        #expect(url["param2"] == "abc")
+        #expect(url["param3"] == nil)
     }
 }
