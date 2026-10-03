@@ -25,26 +25,18 @@ import FactoryKit
 import Foundation
 import Macro
 
-struct CxpImportSummaryRow: Identifiable {
-    let title: String
-    let total: Int
-
-    var id: String {
-        title
-    }
-}
-
 @MainActor
 @Observable
 final class CxpImportViewModel {
     let exporterName: String
-    let rows: [CxpImportSummaryRow]
+    let rows: [CxpImportSummaryUiModel]
     let itemCount: Int
     private(set) var importedCount: Int?
     var importSuccessMessage: String?
     var error: (any Error)?
 
     private let result: CxpImportResult
+    private let getCxpImportSummary = dependency(\UseCasesContainer.getCxpImportSummary)
     private let importCxpItems = dependency(\UseCasesContainer.importCxpItems)
     private let userManager = dependency(\ServiceContainer.userManager)
     private let logger = dependency(\ToolingContainer.logger)
@@ -58,7 +50,7 @@ final class CxpImportViewModel {
         exporterName = result.exporterName
         let items = result.vaults.flatMap(\.items)
         itemCount = items.count
-        rows = Self.summaryRows(for: items)
+        rows = getCxpImportSummary(items: items)
     }
 }
 
@@ -82,49 +74,5 @@ extension CxpImportViewModel {
                 logger.error(error)
             }
         }
-    }
-}
-
-private extension CxpImportViewModel {
-    static func summaryRows(for items: [ItemContentProtobuf]) -> [CxpImportSummaryRow] {
-        var logins = 0, totps = 0, notes = 0, passkeys = 0
-        var aliases = 0, customs = 0, identities = 0, creditCards = 0
-        for item in items {
-            totps += item.customFields.count { $0.type == .totp }
-            switch item.contentData {
-            case let .login(data):
-                logins += 1
-                passkeys += data.passkeys.count
-                if !data.totpUri.isEmpty {
-                    totps += 1
-                }
-
-            case .note:
-                notes += 1
-
-            case .alias:
-                aliases += 1
-
-            case .custom, .sshKey, .wifi:
-                customs += 1
-
-            case .identity:
-                identities += 1
-
-            case .creditCard:
-                creditCards += 1
-            }
-        }
-
-        return [
-            .init(title: ItemContentType.login.filterTitle, total: logins),
-            .init(title: #localized("TOTP codes", bundle: .module), total: totps),
-            .init(title: ItemContentType.note.filterTitle, total: notes),
-            .init(title: #localized("Passkeys", bundle: .module), total: passkeys),
-            .init(title: ItemContentType.alias.filterTitle, total: aliases),
-            .init(title: ItemContentType.custom.filterTitle, total: customs),
-            .init(title: ItemContentType.identity.filterTitle, total: identities),
-            .init(title: ItemContentType.creditCard.filterTitle, total: creditCards)
-        ].filter { $0.total > 0 }
     }
 }

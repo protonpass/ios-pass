@@ -95,7 +95,7 @@ private extension CxpImportView {
         VStack(spacing: 0) {
             ForEach(viewModel.rows) { row in
                 HStack {
-                    Text(verbatim: row.title)
+                    Text(verbatim: row.category.title)
                         .foregroundStyle(PassColor.textNorm)
                     Spacer()
                     Text(verbatim: "\(row.total)")
