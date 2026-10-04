@@ -22,6 +22,7 @@ import AuthenticationServices
 import DIComposition
 import Entities
 import FactoryKit
+import Macro
 import Observation
 import Stores
 
@@ -101,6 +102,8 @@ extension CxpExportViewModel {
                 let shares = vaults.map(\.share).filter { selectedShareIds.contains($0.shareId) }
                 try await cxpExport(window: window, shares: shares)
                 exported = true
+            } catch where error.isCxpExportCancellation {
+                exportErrorMessage = #localized("Export cancelled", bundle: .module)
             } catch let error as ASAuthorizationError {
                 let message = error.userInfo[NSLocalizedFailureReasonErrorKey] as? String
                 exportErrorMessage = message ?? error.localizedDescription
@@ -108,6 +111,16 @@ extension CxpExportViewModel {
                 exportErrorMessage = error.localizedDescription
             }
         }
+    }
+}
+
+private extension Error {
+    /// Cancelled export process surfaces an error from the private
+    /// AuthenticationServicesCore framework rather than `ASAuthorizationError.canceled`.
+    /// So we have to catch by comparing domain and error code
+    var isCxpExportCancellation: Bool {
+        let error = self as NSError
+        return error.domain == "com.apple.AuthenticationServicesCore.AuthorizationError" && error.code == 2
     }
 }
 

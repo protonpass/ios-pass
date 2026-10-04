@@ -29520,6 +29520,16 @@
         }
       }
     },
+    "Export cancelled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export cancelled"
+          }
+        }
+      }
+    },
     "Export vaults (%1$lld/%2$lld)" : {
       "localizations" : {
         "en" : {
