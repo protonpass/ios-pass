@@ -833,7 +833,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedImportItemsCount += 1
         invokedImportItemsParameters = (userId, shareId, contents)
         if let resultOfOnProgress = stubbedImportItemsOnProgressResult {
-            onProgress?(resultOfOnProgress.0)
+            await onProgress?(resultOfOnProgress.0)
         }
         if let error = importItemsUserIdShareIdContentsOnProgressThrowableError44 {
             throw error
