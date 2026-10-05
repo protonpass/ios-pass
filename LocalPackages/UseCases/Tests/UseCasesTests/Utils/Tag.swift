@@ -22,4 +22,5 @@ import Testing
 
 extension Tag {
     @Tag static var monitor: Self
+    @Tag static var useCase: Self
 }

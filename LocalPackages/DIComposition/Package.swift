@@ -55,10 +55,6 @@ let package = Package(
                 .product(name: "PassRustCore", package: "PassRustCore"),
             ],
         ),
-        .testTarget(
-            name: "DICompositionTests",
-            dependencies: ["DIComposition"]
-        ),
     ],
     swiftLanguageModes: [.v6]
 )

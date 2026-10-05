@@ -24,6 +24,7 @@ import Testing
 
 // MARK: - ShareContentTests
 
+@Suite(.tags(.entity))
 struct ShareContentTests {
     let shareId = "share-1"
     let share: Share
@@ -34,8 +35,7 @@ struct ShareContentTests {
 
     // MARK: - Initialization Tests
 
-    @Test
-    func `Init with empty elements creates empty content`() {
+    @Test func `init with empty elements creates empty content`() {
         let content = ShareContent(share: share, elements: [])
 
         #expect(content.id == shareId)
@@ -47,8 +47,7 @@ struct ShareContentTests {
         #expect(content.allElements.isEmpty)
     }
 
-    @Test
-    func `Init counts items correctly`() {
+    @Test func `init counts items correctly`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let item2 = ItemUiModel.mock(itemId: "item-2", shareId: shareId)
         let item3 = ItemUiModel.mock(itemId: "item-3", shareId: shareId)
@@ -61,8 +60,7 @@ struct ShareContentTests {
         #expect(content.totpCount == 0)
     }
 
-    @Test
-    func `Init counts aliases correctly`() {
+    @Test func `init counts aliases correctly`() {
         let regularItem = ItemUiModel.mock(itemId: "item-1", shareId: shareId, isAlias: false)
         let aliasItem1 = ItemUiModel.mock(itemId: "alias-1", shareId: shareId, isAlias: true)
         let aliasItem2 = ItemUiModel.mock(itemId: "alias-2", shareId: shareId, isAlias: true)
@@ -74,8 +72,7 @@ struct ShareContentTests {
         #expect(content.aliasCount == 2)
     }
 
-    @Test
-    func `Init counts TOTP correctly`() {
+    @Test func `init counts TOTP correctly`() {
         let itemWithoutTotp = ItemUiModel.mock(itemId: "item-1", shareId: shareId, totpUri: nil)
         let itemWithTotp1 = ItemUiModel.mock(itemId: "item-2", shareId: shareId, totpUri: "otpauth://totp/test1")
         let itemWithTotp2 = ItemUiModel.mock(itemId: "item-3", shareId: shareId, totpUri: "otpauth://totp/test2")
@@ -95,8 +92,7 @@ struct ShareContentTests {
 
     // MARK: - allElements Tests
 
-    @Test
-    func `allElements returns all items and folders`() {
+    @Test func `allElements returns all items and folders`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let item2 = ItemUiModel.mock(itemId: "item-2", shareId: shareId, folderId: "folder-1")
         let folder1 = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
@@ -117,8 +113,7 @@ struct ShareContentTests {
 
     // MARK: - allItems Tests
 
-    @Test
-    func `allItems returns only items`() {
+    @Test func `allItems returns only items`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let item2 = ItemUiModel.mock(itemId: "item-2", shareId: shareId, folderId: "folder-1")
         let folder1 = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
@@ -134,8 +129,7 @@ struct ShareContentTests {
 
     // MARK: - allFolders Tests
 
-    @Test
-    func `allFolders returns only folders`() {
+    @Test func `allFolders returns only folders`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let folder1 = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let folder2 = FolderUiModel.mock(folderId: "folder-2", shareId: shareId, parentFolderId: "folder-1")
@@ -151,8 +145,7 @@ struct ShareContentTests {
 
     // MARK: - element(in:for:) Tests
 
-    @Test
-    func `element(in:for:) returns item when found`() {
+    @Test func `element(in:for:) returns item when found`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
         let content = ShareContent(share: share, elements: elements)
@@ -163,8 +156,7 @@ struct ShareContentTests {
         #expect(result?.isFolder == false)
     }
 
-    @Test
-    func `element(in:for:) returns folder when found`() {
+    @Test func `element(in:for:) returns folder when found`() {
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -175,8 +167,7 @@ struct ShareContentTests {
         #expect(result?.isFolder == true)
     }
 
-    @Test
-    func `element(in:for:) returns nil when not found`() {
+    @Test func `element(in:for:) returns nil when not found`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
         let content = ShareContent(share: share, elements: elements)
@@ -185,8 +176,7 @@ struct ShareContentTests {
         #expect(result == nil)
     }
 
-    @Test
-    func `element(in:for:) returns nil for wrong container`() {
+    @Test func `element(in:for:) returns nil for wrong container`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId, folderId: "folder-1")
         let elements: [ShareContentElement] = [.item(item)]
         let content = ShareContent(share: share, elements: elements)
@@ -197,8 +187,7 @@ struct ShareContentTests {
 
     // MARK: - elements(for:) Tests
 
-    @Test
-    func `elements(for:) returns items and folders in container`() {
+    @Test func `elements(for:) returns items and folders in container`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item), .folder(folder)]
@@ -209,8 +198,7 @@ struct ShareContentTests {
         #expect(result?.count == 2)
     }
 
-    @Test
-    func `elements(for:) returns nil when container not found`() {
+    @Test func `elements(for:) returns nil when container not found`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
         let content = ShareContent(share: share, elements: elements)
@@ -219,8 +207,7 @@ struct ShareContentTests {
         #expect(result == nil)
     }
 
-    @Test
-    func `elements(for:) returns only items when no folders`() {
+    @Test func `elements(for:) returns only items when no folders`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId, folderId: "folder-1")
         let item2 = ItemUiModel.mock(itemId: "item-2", shareId: shareId, folderId: "folder-1")
         let elements: [ShareContentElement] = [.item(item1), .item(item2)]
@@ -234,8 +221,7 @@ struct ShareContentTests {
 
     // MARK: - folder(for:) Tests
 
-    @Test
-    func `folder(for:) returns folder when found`() {
+    @Test func `folder(for:) returns folder when found`() {
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -245,8 +231,7 @@ struct ShareContentTests {
         #expect(result?.folderId == "folder-1")
     }
 
-    @Test
-    func `folder(for:) returns nil when not found`() {
+    @Test func `folder(for:) returns nil when not found`() {
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -257,8 +242,7 @@ struct ShareContentTests {
 
     // MARK: - items(in:) Tests
 
-    @Test
-    func `items(in:) returns items in container`() {
+    @Test func `items(in:) returns items in container`() {
         let item1 = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let item2 = ItemUiModel.mock(itemId: "item-2", shareId: shareId)
         let item3 = ItemUiModel.mock(itemId: "item-3", shareId: shareId, folderId: "folder-1")
@@ -274,8 +258,7 @@ struct ShareContentTests {
         #expect(folderItems?.count == 1)
     }
 
-    @Test
-    func `items(in:) returns nil when no items in container`() {
+    @Test func `items(in:) returns nil when no items in container`() {
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -286,8 +269,7 @@ struct ShareContentTests {
 
     // MARK: - folders(in:) Tests
 
-    @Test
-    func `folders(in:) returns folders in container`() {
+    @Test func `folders(in:) returns folders in container`() {
         let folder1 = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let folder2 = FolderUiModel.mock(folderId: "folder-2", shareId: shareId)
         let folder3 = FolderUiModel.mock(folderId: "folder-3", shareId: shareId, parentFolderId: "folder-1")
@@ -303,8 +285,7 @@ struct ShareContentTests {
         #expect(nestedFolders?.count == 1)
     }
 
-    @Test
-    func `folders(in:) sorts folders alphabetically within each container`() {
+    @Test func `folders(in:) sorts folders alphabetically within each container`() {
         func folder(_ id: String, name: String, parent: String? = nil) -> ShareContentElement {
             .folder(FolderUiModel(shareId: shareId,
                                   folder: Folder.random(vaultId: shareId, folderId: id, parentFolderId: parent),
@@ -324,8 +305,7 @@ struct ShareContentTests {
         #expect(content.folders(in: "1")?.map(\.content.name) == ["Folder 10", "Folder 2", "Folder 3"])
     }
 
-    @Test
-    func `folders(in:) returns nil when no folders in container`() {
+    @Test func `folders(in:) returns nil when no folders in container`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
         let content = ShareContent(share: share, elements: elements)
@@ -336,8 +316,7 @@ struct ShareContentTests {
 
     // MARK: - rootElements Tests
 
-    @Test
-    func `rootElements returns elements at share level`() {
+    @Test func `rootElements returns elements at share level`() {
         let itemAtRoot = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let itemInFolder = ItemUiModel.mock(itemId: "item-2", shareId: shareId, folderId: "folder-1")
         let folderAtRoot = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
@@ -353,8 +332,7 @@ struct ShareContentTests {
         #expect(!rootIds.contains(itemInFolder.id))
     }
 
-    @Test
-    func `rootElements returns empty when no root elements`() {
+    @Test func `rootElements returns empty when no root elements`() {
         let itemInFolder = ItemUiModel.mock(itemId: "item-1", shareId: shareId, folderId: "folder-1")
         let folder = FolderUiModel.mock(folderId: "folder-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(itemInFolder), .folder(folder)]
@@ -367,8 +345,7 @@ struct ShareContentTests {
 
     // MARK: - flattenedItems(from:) Tests
 
-    @Test
-    func `flattenedItems(from:) returns all nested items`() {
+    @Test func `flattenedItems(from:) returns all nested items`() {
         // Structure:
         // root
         // ├─ item-A
@@ -411,8 +388,7 @@ struct ShareContentTests {
         #expect(f2ItemIds.contains("item-D"))
     }
 
-    @Test
-    func `flattenedItems(from:) returns empty for empty container`() {
+    @Test func `flattenedItems(from:) returns empty for empty container`() {
         let folder = FolderUiModel.mock(folderId: "empty-folder", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -423,8 +399,7 @@ struct ShareContentTests {
 
     // MARK: - flattenedFolders(from:) Tests
 
-    @Test
-    func `flattenedFolders(from:) returns all nested folders`() {
+    @Test func `flattenedFolders(from:) returns all nested folders`() {
         // Structure:
         // root
         // └─ folder-F1
@@ -455,8 +430,7 @@ struct ShareContentTests {
         #expect(flattenedFromF2.first?.folderId == "folder-F3")
     }
 
-    @Test
-    func `flattenedFolders(from:) returns empty for leaf folder`() {
+    @Test func `flattenedFolders(from:) returns empty for leaf folder`() {
         let folder = FolderUiModel.mock(folderId: "leaf-folder", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -467,8 +441,7 @@ struct ShareContentTests {
 
     // MARK: - getPathOfElement(containerId:) Tests
 
-    @Test
-    func `getPathOfElement returns path from root to folder`() {
+    @Test func `getPathOfElement returns path from root to folder`() {
         // Structure:
         // root
         // └─ folder-F1
@@ -495,8 +468,7 @@ struct ShareContentTests {
         #expect(pathToF1[0].folderId == "folder-F1")
     }
 
-    @Test
-    func `getPathOfElement returns empty for root`() {
+    @Test func `getPathOfElement returns empty for root`() {
         let folder = FolderUiModel.mock(folderId: "folder-F1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -505,8 +477,7 @@ struct ShareContentTests {
         #expect(pathToRoot.isEmpty)
     }
 
-    @Test
-    func `getPathOfElement returns empty for nonexistent id`() {
+    @Test func `getPathOfElement returns empty for nonexistent id`() {
         let folder = FolderUiModel.mock(folderId: "folder-F1", shareId: shareId)
         let elements: [ShareContentElement] = [.folder(folder)]
         let content = ShareContent(share: share, elements: elements)
@@ -517,14 +488,12 @@ struct ShareContentTests {
 
     // MARK: - Hashable & Identifiable Tests
 
-    @Test
-    func `ShareContent is identifiable by share id`() {
+    @Test func `share content is identifiable by share id`() {
         let content = ShareContent(share: share, elements: [])
         #expect(content.id == share.id)
     }
 
-    @Test
-    func `ShareContent hashable consistency`() {
+    @Test func `share content hashing is consistent with equality`() {
         let item = ItemUiModel.mock(itemId: "item-1", shareId: shareId)
         let elements: [ShareContentElement] = [.item(item)]
 
@@ -536,8 +505,7 @@ struct ShareContentTests {
 
     // MARK: - Complex Hierarchy Tests
 
-    @Test
-    func `Complex hierarchy with mixed content`() {
+    @Test func `complex hierarchy with mixed content`() {
         // Structure:
         // root
         // ├─ item-A (regular)
@@ -601,8 +569,7 @@ struct ShareContentTests {
 
     /// The items list shows direct children only while search spans the subtree, so anything the
     /// list shows must remain findable by search from the same container.
-    @Test
-    func `items(in:) is a strict subset of the searchable subtree`() {
+    @Test func `items(in:) is a strict subset of the searchable subtree`() {
         // root -> item-A, F1
         // F1   -> item-B, F2
         // F2   -> item-C
@@ -631,8 +598,7 @@ struct ShareContentTests {
 
     /// `flattenedFolders(from:)` deliberately excludes the container, so anything scoping by
     /// container id would drop the folder's own items without this.
-    @Test
-    func `subtreeFolderIds includes the folder itself as well as its descendants`() {
+    @Test func `subtreeFolderIds includes the folder itself as well as its descendants`() {
         let f1 = FolderUiModel.mock(folderId: "folder-F1", shareId: shareId)
         let f2 = FolderUiModel.mock(folderId: "folder-F2", shareId: shareId, parentFolderId: "folder-F1")
         let leaf = FolderUiModel.mock(folderId: "folder-leaf", shareId: shareId)
@@ -645,8 +611,7 @@ struct ShareContentTests {
 
     /// Deliberate: the result is a membership filter, so an id that matches nothing narrows a
     /// scope instead of emptying it. Returning `[]` would make a stale tree hide every result.
-    @Test
-    func `subtreeFolderIds degrades to the folder itself when it is absent from the tree`() {
+    @Test func `subtreeFolderIds degrades to the folder itself when it is absent from the tree`() {
         let content = ShareContent(share: share, elements: [])
 
         #expect(content.subtreeFolderIds(from: "unknown-folder") == ["unknown-folder"])

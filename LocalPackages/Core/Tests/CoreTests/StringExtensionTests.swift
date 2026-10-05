@@ -22,7 +22,7 @@
 import Testing
 import Foundation
 
-@Suite("String extensions")
+@Suite(.tags(.utilities))
 struct StringExtensionTests {
 
     @Test(arguments: [
@@ -37,7 +37,7 @@ struct StringExtensionTests {
         ("", ""),
         ("012", "01"),
     ])
-    func `initials`(input: String, expected: String) {
+    func `initials take the first letters of the first two words`(input: String, expected: String) {
         #expect(input.initials() == expected)
     }
 
@@ -46,7 +46,7 @@ struct StringExtensionTests {
         ("test long string", Character(" "), 2),
         ("🤘 string with emoji 😊😊 and special character (◕‿◕)", Character("😊"), 2),
     ])
-    func `characterCount`(input: String, needle: Character, expected: Int) {
+    func `character count counts occurrences of the needle`(input: String, needle: Character, expected: Int) {
         #expect(input.characterCount(needle) == expected)
     }
 
@@ -56,7 +56,7 @@ struct StringExtensionTests {
         ("3712345698658579", "3712 3456 9865 8579"),
         ("671934946329032", "6719 3494 6329 032"),
     ])
-    func `toCreditCardNumber`(input: String, expected: String) {
+    func `credit card numbers are grouped for display`(input: String, expected: String) {
         #expect(input.toCreditCardNumber() == expected)
     }
 
@@ -67,7 +67,7 @@ struct StringExtensionTests {
         ("671934946329032", "6719 •••• •••• 032"),
         ("67193494632903247021", "6719 •••• •••• •••• 7021"),
     ])
-    func `toMaskedCreditCardNumber`(input: String, expected: String) {
+    func `masked credit card numbers only reveal the first and last groups`(input: String, expected: String) {
         #expect(input.toMaskedCreditCardNumber() == expected)
     }
 
@@ -75,7 +75,7 @@ struct StringExtensionTests {
         ("ABBBB", "AzzzB"),
         ("AB", "AB"),
     ])
-    func `replaceAllCharsExceptFirstAndLast`(input: String, expected: String) {
+    func `all characters except the first and last are replaced`(input: String, expected: String) {
         #expect(input.replaceAllCharsExceptFirstAndLast(withChar: "z") == expected)
     }
 }

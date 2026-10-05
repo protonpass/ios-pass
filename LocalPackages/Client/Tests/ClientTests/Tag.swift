@@ -29,4 +29,5 @@ extension Tag {
     @Tag static var endpoint: Self
     @Tag static var models: Self
     @Tag static var synchronizer: Self
+    @Tag static var utilities: Self
 }
