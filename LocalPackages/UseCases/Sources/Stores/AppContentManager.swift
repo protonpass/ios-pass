@@ -94,7 +94,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
     private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
     private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
-    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
 
@@ -122,7 +121,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
                 deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
                 getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
-                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
                 logger: Logger,
@@ -138,7 +136,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.indexItemsForSpotlight = indexItemsForSpotlight
         self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
         self.getAndStoreLastEventId = getAndStoreLastEventId
-        self.getFeatureFlagStatus = getFeatureFlagStatus
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
         self.logger = logger

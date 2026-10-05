@@ -154,7 +154,6 @@ public extension ServiceContainer {
                                      .deleteLocalDataBeforeFullSync(),
                                  getAndStoreLastEventId: UseCasesContainer.shared
                                      .getAndStoreLastEventId(),
-                                 getFeatureFlagStatus: UseCasesContainer.shared.getFeatureFlagStatus(),
                                  dedupShare: UseCasesContainer.shared.dedupShare(),
                                  refreshUserData: UseCasesContainer.shared.refreshUserData(),
                                  logger: ToolingContainer.shared.logger(),
