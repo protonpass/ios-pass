@@ -86,10 +86,6 @@ public extension RepositoryContainer {
         self { LocalShareEventIDDatasource(databaseService: self.databaseService) }
     }
 
-    var remoteShareEventIDDatasource: Factory<any RemoteShareEventIDDatasourceProtocol> {
-        self { RemoteShareEventIDDatasource(apiServicing: self.apiManager) }
-    }
-
     var remoteItemKeyDatasource: Factory<any RemoteItemKeyDatasourceProtocol> {
         self { RemoteItemKeyDatasource(apiServicing: self.apiManager) }
     }
