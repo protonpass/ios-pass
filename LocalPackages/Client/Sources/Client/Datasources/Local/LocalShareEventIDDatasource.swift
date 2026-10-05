@@ -21,13 +21,6 @@
 import CoreData
 
 public protocol LocalShareEventIDDatasourceProtocol: Sendable {
-    /// Get last event ID of a share
-    func getLastEventId(userId: String, shareId: String) async throws -> String?
-
-    /// Upsert last event ID of a share
-    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws
-
-    /// Remove everything
     func removeAllEntries(userId: String) async throws
 }
 
@@ -35,32 +28,6 @@ public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEvent
     @unchecked Sendable {}
 
 public extension LocalShareEventIDDatasource {
-    func getLastEventId(userId: String, shareId: String) async throws -> String? {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = ShareEventIDEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "userID = %@", userId),
-            .init(format: "shareID = %@", shareId)
-        ])
-        let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        assert(entities.count <= 1, "Maximum 1 ShareEventIDEntity per shareID")
-        return entities.first?.lastEventID
-    }
-
-    func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        try await upsert([lastEventId],
-                         entityType: ShareEventIDEntity.self,
-                         fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@",
-                                                     userId,
-                                                     shareId),
-                         isEqual: { _, entity in
-                             entity.shareID == shareId && entity.userID == userId
-                         },
-                         hydrate: { item, entity in
-                             entity.hydrate(userId: userId, shareId: shareId, lastEventId: item)
-                         })
-    }
-
     func removeAllEntries(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ShareEventIDEntity")
