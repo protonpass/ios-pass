@@ -40,7 +40,6 @@ final class FullSyncProgressViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     private var cancellables = Set<AnyCancellable>()
 
-    private var userId: String?
     let mode: Mode
 
     enum Mode {
@@ -66,11 +65,10 @@ final class FullSyncProgressViewModel: ObservableObject {
                         dismissAndNotifySyncCompletion()
                     }
 
-                case let .error(userId, error):
+                case let .error(_, error):
                     if error.isInactiveUserKey {
                         dismissAndDisplayUndecryptableSharesBanner()
                     } else {
-                        self.userId = userId
                         self.error = error
                     }
 
@@ -92,7 +90,6 @@ extension FullSyncProgressViewModel {
             assertionFailure("Failed to full sync. No userID found")
             return
         }
-        self.userId = nil
         error = nil
         progresses.removeAll()
         await appContentManager.fullSync(userId: userId)

@@ -28,6 +28,5 @@ struct ItemCreationInfo {
     }
 
     let userId: String
-    let vaults: [Share]
     let data: Data
 }

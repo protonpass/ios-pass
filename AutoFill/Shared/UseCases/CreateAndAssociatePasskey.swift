@@ -43,10 +43,8 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
     private let createPasskey: any CreatePasskeyUseCase
     private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let completePasskeyRegistration: any CompletePasskeyRegistrationUseCase
-    private let userManager: any UserManagerProtocol
 
     init(itemRepository: any ItemRepositoryProtocol,
-         userManager: any UserManagerProtocol,
          createPasskey: any CreatePasskeyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          completePasskeyRegistration: any CompletePasskeyRegistrationUseCase) {
@@ -54,7 +52,6 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         self.createPasskey = createPasskey
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.completePasskeyRegistration = completePasskeyRegistration
-        self.userManager = userManager
     }
 
     func execute(item: any ItemIdentifiable,

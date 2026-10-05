@@ -150,10 +150,10 @@ struct GetUserEventsResponseTests {
                                                              eventToken: "Token10"))
         
         #expect(events.foldersDeleted.count == 1)
-        #expect(events.foldersDeleted.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID2", eventToken: "Token9"))
+        #expect(events.foldersDeleted.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID2"))
         
         #expect(events.foldersUpdated.count == 1)
-        #expect(events.foldersUpdated.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID1", eventToken: "Token8"))
+        #expect(events.foldersUpdated.first == FolderEvent(shareID: "ShareID7", folderID: "FolderID1"))
                 
         #expect(events.pendingAliasToCreateChanged == ChangeEvent(eventToken: "PendingAliasToCreateChangedToken"))
         #expect(events.groupInvitesChanged == ChangeEvent(eventToken: "GroupInvitesChangedToken"))

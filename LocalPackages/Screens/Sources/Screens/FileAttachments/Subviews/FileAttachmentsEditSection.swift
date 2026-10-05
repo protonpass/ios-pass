@@ -130,8 +130,7 @@ public struct FileAttachmentsEditSection: View {
                                               onDelete: { handler.showDeleteAlert(attachment: file) },
                                               onRetryUpload: { handler.retryUpload(attachment: file) }),
                                   uiModel: file,
-                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
+                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {

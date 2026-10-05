@@ -77,13 +77,10 @@ public actor UserManager: UserManagerProtocol {
     public nonisolated let allUserAccounts: CurrentValueSubject<[UserData], Never> = .init([])
     private var userProfiles = [UserProfile]()
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
-    private let logger: Logger
     private var didSetUp = false
 
-    public init(userDataDatasource: any LocalUserDataDatasourceProtocol,
-                logManager: any LogManagerProtocol) {
+    public init(userDataDatasource: any LocalUserDataDatasourceProtocol) {
         self.userDataDatasource = userDataDatasource
-        logger = .init(manager: logManager)
     }
 }
 

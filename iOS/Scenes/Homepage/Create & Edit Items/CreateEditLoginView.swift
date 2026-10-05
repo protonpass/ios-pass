@@ -78,8 +78,6 @@ struct CreateEditLoginView: View {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
-                                                   itemContentType: viewModel.itemContentType,
-                                                   isEditMode: viewModel.mode.isEditMode,
                                                    onSubmit: {
                                                        if viewModel.emailUsernameExpanded {
                                                            focusedField = .email

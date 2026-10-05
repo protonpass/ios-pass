@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 
 struct GetListOfGroupsResponse: Decodable {
     let groups: [Group]
-    let total: Int
 }
 
 struct GetListOfGroupsEndpoint: Endpoint {

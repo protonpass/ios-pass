@@ -473,10 +473,6 @@ extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
         itemContent.type.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: Color {
-        itemContent.type.normMinor1Color
-    }
-
     var itemContentType: ItemContentType {
         itemContent.type
     }

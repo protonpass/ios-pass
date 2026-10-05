@@ -136,7 +136,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         fatalError("Must be overridden by subclasses")
     }
 
-    func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
+    func generateItemCreationInfo(userId: String) -> ItemCreationInfo {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -232,10 +232,10 @@ extension AutoFillViewModel {
             return
         }
         do {
-            guard let vaults = getVaults(userId: userId) else {
+            guard getVaults(userId: userId) != nil else {
                 throw PassError.vault(.vaultsNotFound(userId: userId))
             }
-            let info = generateItemCreationInfo(userId: userId, vaults: vaults)
+            let info = generateItemCreationInfo(userId: userId)
             delegate?.autoFillViewModelWantsToCreateNewItem(info)
         } catch {
             handle(error)

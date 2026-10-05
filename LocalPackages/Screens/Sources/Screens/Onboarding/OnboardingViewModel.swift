@@ -36,6 +36,7 @@ public enum OnboardFirstLoginSuggestion: Sendable {
     case suggestedShare(shareId: String)
 }
 
+// periphery:ignore - shareId, password and website feed the pending login creation in createFirstLogin
 nonisolated struct OnboardFirstLoginPayload: Equatable {
     let shareId: String
     let service: KnownService

@@ -32,8 +32,7 @@ struct UserManagerTests {
     private let sut: any UserManagerProtocol
 
     init() {
-        sut = UserManager(userDataDatasource: userDataDatasource,
-                          logManager: LogManagerProtocolMock())
+        sut = UserManager(userDataDatasource: userDataDatasource)
     }
 }
 
