@@ -24,9 +24,8 @@ import Testing
 
 @Suite(.tags(.entity))
 struct FolderSupportStateTests {
-    @Test("Folders are unsupported while the flag is off, whatever the plan allows",
-          arguments: [true, false])
-    func flagOff(folderAllowed: Bool) {
+    @Test(arguments: [true, false])
+    func `folders are unsupported while the flag is off, whatever the plan allows`(folderAllowed: Bool) {
         let sut = FolderSupportState(flagEnabled: false,
                                      plan: .mock(type: "plus", folderAllowed: folderAllowed))
 
@@ -35,8 +34,7 @@ struct FolderSupportStateTests {
         #expect(!sut.shouldUpsell)
     }
 
-    @Test("A not yet loaded plan grants nothing")
-    func missingPlan() {
+    @Test func `a not yet loaded plan grants nothing`() {
         let sut = FolderSupportState(flagEnabled: true, plan: nil)
 
         #expect(!sut.isSupported)
@@ -44,15 +42,15 @@ struct FolderSupportStateTests {
         #expect(!sut.shouldUpsell)
     }
 
-    @Test("Plan drives support once the flag is on", arguments: [
+    @Test(arguments: [
         ("plus", true, true, false),
         ("free", false, false, true),
         ("business", false, false, false)
     ])
-    func flagOn(type: String,
-                folderAllowed: Bool,
-                canCreateAndModifyFolders: Bool,
-                shouldUpsell: Bool) {
+    func `plan drives support once the flag is on`(type: String,
+                                                   folderAllowed: Bool,
+                                                   canCreateAndModifyFolders: Bool,
+                                                   shouldUpsell: Bool) {
         let sut = FolderSupportState(flagEnabled: true,
                                      plan: .mock(type: type,
                                                  trialEnd: 0,

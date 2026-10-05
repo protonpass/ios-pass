@@ -29,6 +29,7 @@ import EntitiesMocks
 import Foundation
 import Testing
 
+@Suite(.tags(.useCase))
 struct SecureLinkContainerIdentityTests {
     @Test func `folder secure link creation and recreation round trip`() async throws {
         let keys = PassKeyManagerProtocolMock()

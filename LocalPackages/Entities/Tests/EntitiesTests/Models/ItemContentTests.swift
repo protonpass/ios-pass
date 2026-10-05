@@ -19,34 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Entities
-import XCTest
+import Testing
 
-final class ItemContentTests: XCTestCase {
-    func testLoginData() {
-        let email = "Test@email.com"
-        let username = "username"
-        
-        let onlyEmailLogin = LogInItemData(email: email,
-                                           username: "",
-                                           password: "",
-                                           totpUri: "",
-                                           urls: [],
-                                           autofillUrls: [],
-                                           allowedAndroidApps: [],
-                                           passkeys: [])
+@Suite(.tags(.entity))
+struct ItemContentTests {
+    @Test(arguments: [(username: "", expected: "Test@email.com"),
+                      (username: "username", expected: "username")])
+    func `auth identifier prefers the username over the email`(username: String, expected: String) {
+        let login = LogInItemData(email: "Test@email.com",
+                                  username: username,
+                                  password: "",
+                                  totpUri: "",
+                                  urls: [],
+                                  autofillUrls: [],
+                                  allowedAndroidApps: [],
+                                  passkeys: [])
 
-        XCTAssertEqual(onlyEmailLogin.authIdentifier, email)
-
-
-        let usernameLogin = LogInItemData(email: email,
-                                          username: username,
-                                          password: "",
-                                          totpUri: "",
-                                          urls: [],
-                                          autofillUrls: [],
-                                          allowedAndroidApps: [],
-                                          passkeys: [])
-
-        XCTAssertEqual(usernameLogin.authIdentifier, username)
+        #expect(login.authIdentifier == expected)
     }
 }

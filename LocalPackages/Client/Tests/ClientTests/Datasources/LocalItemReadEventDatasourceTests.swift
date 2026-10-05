@@ -23,24 +23,16 @@
 import Core
 import Entities
 import Foundation
-import XCTest
+import Testing
 
-private final class LocalItemReadEventDatasourceTests: XCTestCase {
-    var sut: (any LocalItemReadEventDatasourceProtocol)!
-
-    override func setUp() {
-        super.setUp()
-        sut = LocalItemReadEventDatasource(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalItemReadEventDatasourceTests {
+    let sut: any LocalItemReadEventDatasourceProtocol =
+        LocalItemReadEventDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalItemReadEventDatasourceTests {
-    func testInsertGetRemoveEvents() async throws {
+    @Test func `events are returned oldest first per user and can be removed`() async throws {
         let userId1 = String.random()
         let event1 = try await givenInsertedEvent(userId: userId1,
                                                   timestamp: 4)
@@ -54,10 +46,10 @@ extension LocalItemReadEventDatasourceTests {
                                                   timestamp: 1)
 
         let batch1 = try await sut.getOldestEvents(count: 3, userId: userId1)
-        XCTAssertEqual(batch1, [event5, event2, event1])
+        #expect(batch1 == [event5, event2, event1])
 
         let batch2 = try await sut.getAllEvents(userId: userId1)
-        XCTAssertEqual(batch2, [event5, event2, event1, event3, event4])
+        #expect(batch2 == [event5, event2, event1, event3, event4])
 
         try await sut.removeEvents(batch1)
 
@@ -70,16 +62,16 @@ extension LocalItemReadEventDatasourceTests {
                                                   timestamp: 9)
 
         let batch3 = try await sut.getOldestEvents(count: 3, userId: userId1)
-        XCTAssertEqual(batch3, [event3, event4])
+        #expect(batch3 == [event3, event4])
 
         let batch4 = try await sut.getOldestEvents(count: 2, userId: userId2)
-        XCTAssertEqual(batch4, [event7, event6])
+        #expect(batch4 == [event7, event6])
 
         let batch5 = try await sut.getAllEvents(userId: userId2)
-        XCTAssertEqual(batch5, [event7, event6, event8])
+        #expect(batch5 == [event7, event6, event8])
 
         try await sut.removeEvents(userId: userId2)
-        try await XCTAssertEmptyAsync(await sut.getAllEvents(userId: userId2))
+        #expect(try await sut.getAllEvents(userId: userId2).isEmpty)
     }
 }
 

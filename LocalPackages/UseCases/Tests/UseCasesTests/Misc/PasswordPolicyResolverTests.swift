@@ -22,6 +22,7 @@
 import Entities
 import Testing
 
+@Suite(.tags(.useCase))
 struct PasswordPolicyResolverTests {
     // MARK: - clamp
 
@@ -29,8 +30,7 @@ struct PasswordPolicyResolverTests {
 
     // MARK: - Type restriction
 
-    @Test
-    func `disallowing random passwords forces the memorable type`() {
+    @Test func `disallowing random passwords forces the memorable type`() {
         let preferences = makePreferences(passwordType: .random)
         let policy = makePolicy(randomAllowed: false)
 
@@ -40,8 +40,7 @@ struct PasswordPolicyResolverTests {
         #expect(!resolution.allowsTypeSelection)
     }
 
-    @Test
-    func `disallowing memorable passwords forces the random type`() {
+    @Test func `disallowing memorable passwords forces the random type`() {
         let preferences = makePreferences(passwordType: .memorable)
         let policy = makePolicy(memorableAllowed: false)
 
@@ -51,8 +50,7 @@ struct PasswordPolicyResolverTests {
         #expect(!resolution.allowsTypeSelection)
     }
 
-    @Test
-    func `allowing both types preserves the chosen type and enables selection`() {
+    @Test func `allowing both types preserves the chosen type and enables selection`() {
         let preferences = makePreferences(passwordType: .memorable)
         let policy = makePolicy(randomAllowed: true, memorableAllowed: true)
 
@@ -64,8 +62,7 @@ struct PasswordPolicyResolverTests {
 
     // MARK: - Count clamping & bounds
 
-    @Test
-    func `character and word counts are clamped into the policy bounds`() {
+    @Test func `character and word counts are clamped into the policy bounds`() {
         let tooLow = makePreferences(characterCount: 2, wordCount: 0)
         let lowResolution = resolver(preferences: tooLow,
                                      policy: makePolicy(randomMinLength: 8,
@@ -81,8 +78,7 @@ struct PasswordPolicyResolverTests {
         #expect(highResolution.preferences.wordCount == 6)
     }
 
-    @Test
-    func `bounds mirror the policy limits`() {
+    @Test func `bounds mirror the policy limits`() {
         let policy = makePolicy(randomMinLength: 6,
                                 randomMaxLength: 40,
                                 memorableMinWords: 2,
@@ -98,8 +94,7 @@ struct PasswordPolicyResolverTests {
 
     // MARK: - Mandatory options
 
-    @Test
-    func `mandatory options override the user's choices`() {
+    @Test func `mandatory options override the user's choices`() {
         let preferences = makePreferences(hasSpecialCharacters: false,
                                           hasCapitalCharacters: false,
                                           hasNumberCharacters: false,
@@ -120,8 +115,7 @@ struct PasswordPolicyResolverTests {
         #expect(resolved.includingNumbers)
     }
 
-    @Test
-    func `unset mandatory options keep the user's choices`() {
+    @Test func `unset mandatory options keep the user's choices`() {
         let preferences = makePreferences(hasSpecialCharacters: false,
                                           hasCapitalCharacters: true,
                                           hasNumberCharacters: false,
@@ -140,8 +134,7 @@ struct PasswordPolicyResolverTests {
 
     // MARK: - Separator coercion
 
-    @Test
-    func `a number-based separator is replaced when numbers are excluded`() {
+    @Test func `a number-based separator is replaced when numbers are excluded`() {
         for separator in [WordSeparator.numbers, .numbersAndSymbols] {
             let preferences = makePreferences(wordSeparator: separator, includingNumbers: true)
             let policy = makePolicy(memorableMustIncludeNumbers: false)
@@ -153,8 +146,7 @@ struct PasswordPolicyResolverTests {
         }
     }
 
-    @Test
-    func `a number-based separator is preserved when numbers remain included`() {
+    @Test func `a number-based separator is preserved when numbers remain included`() {
         let preferences = makePreferences(wordSeparator: .numbers, includingNumbers: true)
         let policy = makePolicy(memorableMustIncludeNumbers: true)
 
@@ -166,8 +158,7 @@ struct PasswordPolicyResolverTests {
 
     // MARK: - Locked options
 
-    @Test
-    func `locked options mirror which policy flags are set, regardless of their value`() {
+    @Test func `locked options mirror which policy flags are set, regardless of their value`() {
         let policy = makePolicy(mustIncludeNumbers: true,
                                 mustIncludeSymbols: false,
                                 mustIncludeUppercase: nil,
@@ -185,8 +176,7 @@ struct PasswordPolicyResolverTests {
         #expect(!locked.includingNumbers)
     }
 
-    @Test
-    func `no options are locked when the policy sets no mandatory flags`() {
+    @Test func `no options are locked when the policy sets no mandatory flags`() {
         let locked = resolver(preferences: makePreferences(),
                               policy: makePolicy()).lockedOptions
         #expect(locked == .unlocked)

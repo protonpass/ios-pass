@@ -24,9 +24,9 @@ import Foundation
 import Testing
 
 // swiftlint:disable function_body_length
+@Suite(.tags(.models))
 struct ItemSortableTests {
-    @Test("Most recent sort")
-    func mostRecentSort() throws {
+    @Test func `most recent sort`() throws {
         struct DummyItem: DateSortable {
             let lastUseTime: Int64
             let modifyTime: Int64
@@ -177,8 +177,7 @@ struct ItemSortableTests {
         #expect(lhs.modifyTime == rhs.modifyTime)
     }
 
-    @Test("Alphabetical sort")
-    func alphabeticalSort() throws {
+    @Test func `alphabetical sort`() throws {
         struct DummyItem: AlphabeticalSortable {
             let alphabeticalSortableString: String
         }
@@ -216,8 +215,7 @@ struct ItemSortableTests {
         #expect(tBucket.items[0].alphabeticalSortableString == "Touti")
     }
 
-    @Test("Alphabetical sort with numbers as prefix")
-    func alphabeticalSortWithNumbersAsPrefix() throws {
+    @Test func `alphabetical sort with numbers as prefix`() throws {
         struct DummyItem: AlphabeticalSortable {
             let alphabeticalSortableString: String
         }
@@ -243,8 +241,7 @@ struct ItemSortableTests {
         #expect(sharpBucket.items[6].alphabeticalSortableString == "3 b")
     }
 
-    @Test("Month year sort")
-    func monthYearSort() throws {
+    @Test func `month year sort`() throws {
         struct DummyItem: DateSortable {
             let lastUseTime: Int64
             let modifyTime: Int64

@@ -27,6 +27,7 @@ import Testing
 import UseCases
 import UseCasesMocks
 
+@Suite(.tags(.useCase))
 struct ClearCacheForLoggedOutUsersTests {
     let datasource: LocalUserDataDatasourceProtocolMock
     let sut: any ClearCacheForLoggedOutUsersUseCase
@@ -37,8 +38,7 @@ struct ClearCacheForLoggedOutUsersTests {
         sut = ClearCacheForLoggedOutUsers(datasource: datasource)
     }
 
-    @Test
-    func `Clear cached files for logged out users`() async throws {
+    @Test func `clear cached files for logged out users`() async throws {
         // Given
         let fileManager = FileManager.default
         let user1 = UserData.random()

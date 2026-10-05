@@ -28,7 +28,7 @@ import Network
 import ProtonCoreFeatureFlags
 import Testing
 
-@Suite(.serialized)
+@Suite(.serialized, .tags(.useCase))
 struct ShouldForceSyncForFoldersTests {
     private let store = PreferencesStore()
     private let hasFolders = HasFoldersStub()
@@ -53,8 +53,7 @@ struct ShouldForceSyncForFoldersTests {
                                   retryDelay: retryDelay)
     }
 
-    @Test
-    func `Already synced users are never checked again`() async throws {
+    @Test func `already synced users are never checked again`() async throws {
         store.setState(done: true)
 
         let result = try await makeSut().execute(userId: userId)
@@ -63,8 +62,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.writtenStates.isEmpty)
     }
 
-    @Test
-    func `Stops permanently once the retry budget is spent`() async throws {
+    @Test func `stops permanently once the retry budget is spent`() async throws {
         store.setState(attempts: 10)
 
         let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
@@ -75,24 +73,21 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.state.done)
     }
 
-    @Test
-    func `Flag off means no network call and no state written, so the user stays eligible`() async throws {
+    @Test func `flag off means no network call and no state written, so the user stays eligible`() async throws {
         let result = try await makeSut(flagOn: false).execute(userId: userId)
         #expect(result == false)
         #expect(hasFolders.callCount == 0)
         #expect(store.writtenStates.isEmpty)
     }
 
-    @Test
-    func `Being offline does not consume an attempt`() async throws {
+    @Test func `being offline does not consume an attempt`() async throws {
         let result = try await makeSut(online: false).execute(userId: userId)
         #expect(result == false)
         #expect(hasFolders.callCount == 0)
         #expect(store.state.attempts == 0)
     }
 
-    @Test
-    func `A recent attempt is not retried before the delay elapses`() async throws {
+    @Test func `a recent attempt is not retried before the delay elapses`() async throws {
         store.setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-5 * 60))
 
         let result = try await makeSut(retryDelay: 30 * 60).execute(userId: userId)
@@ -100,8 +95,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(hasFolders.callCount == 0)
     }
 
-    @Test
-    func `Retries once the delay has elapsed, consuming exactly one attempt`() async throws {
+    @Test func `retries once the delay has elapsed, consuming exactly one attempt`() async throws {
         store.setState(attempts: 1, lastAttempt: Date().addingTimeInterval(-31 * 60))
         hasFolders.result = true
 
@@ -111,8 +105,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.state.attempts == 2)
     }
 
-    @Test
-    func `Folders found: caller is told to sync, and the positive is cached`() async throws {
+    @Test func `folders found: caller is told to sync, and the positive is cached`() async throws {
         hasFolders.result = true
 
         let result = try await makeSut().execute(userId: userId)
@@ -122,8 +115,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(!store.state.done)
     }
 
-    @Test
-    func `No folders: nothing to repair, so the user is marked done and never cached negative`() async throws {
+    @Test func `no folders: nothing to repair, so the user is marked done and never cached negative`() async throws {
         hasFolders.result = false
 
         let result = try await makeSut().execute(userId: userId)
@@ -132,8 +124,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(!store.state.foldersDetected)
     }
 
-    @Test
-    func `A cached positive skips the network but still consumes an attempt`() async throws {
+    @Test func `a cached positive skips the network but still consumes an attempt`() async throws {
         store.setState(foldersDetected: true)
 
         let result = try await makeSut().execute(userId: userId)
@@ -145,8 +136,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.state.lastAttempt != nil)
     }
 
-    @Test
-    func `A cached positive is throttled between attempts`() async throws {
+    @Test func `a cached positive is throttled between attempts`() async throws {
         store.setState(attempts: 1,
                        lastAttempt: Date().addingTimeInterval(-5 * 60),
                        foldersDetected: true)
@@ -156,8 +146,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.writtenStates.isEmpty)
     }
 
-    @Test
-    func `A cached positive stops once the budget is spent`() async throws {
+    @Test func `a cached positive stops once the budget is spent`() async throws {
         store.setState(attempts: 10, foldersDetected: true)
 
         let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
@@ -166,8 +155,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.state.foldersDetected)
     }
 
-    @Test
-    func `A repeatedly failing sync exhausts the budget instead of looping`() async throws {
+    @Test func `a repeatedly failing sync exhausts the budget instead of looping`() async throws {
         store.setState(foldersDetected: true)
         let sut = makeSut(maxAttempts: 3, retryDelay: 0)
 
@@ -181,8 +169,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(result == false)
     }
 
-    @Test
-    func `A thrown lookup still consumes the attempt, so failures cannot loop forever`() async throws {
+    @Test func `a thrown lookup still consumes the attempt, so failures cannot loop forever`() async throws {
         hasFolders.error = FolderSyncTestError.boom
 
         await #expect(throws: FolderSyncTestError.self) {
@@ -193,8 +180,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(!store.state.done)
     }
 
-    @Test
-    func `Ten failures exhaust the budget and the eleventh check makes no call`() async throws {
+    @Test func `ten failures exhaust the budget and the eleventh check makes no call`() async throws {
         hasFolders.error = FolderSyncTestError.boom
 
         for _ in 0..<10 {
@@ -211,8 +197,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(hasFolders.callCount == callsBefore)
     }
 
-    @Test
-    func `Exhausting the budget records the give-up, so the banner stops asking`() async throws {
+    @Test func `exhausting the budget records the give-up, so the banner stops asking`() async throws {
         store.setState(attempts: 10)
 
         let result = try await makeSut(maxAttempts: 10).execute(userId: userId)
@@ -222,8 +207,7 @@ struct ShouldForceSyncForFoldersTests {
         #expect(store.state.attempts == 10)
     }
 
-    @Test
-    func `Users already done never pay for a flag refresh`() async throws {
+    @Test func `users already done never pay for a flag refresh`() async throws {
         store.setState(done: true)
         let refreshFlags = RefreshFeatureFlagsStub()
 

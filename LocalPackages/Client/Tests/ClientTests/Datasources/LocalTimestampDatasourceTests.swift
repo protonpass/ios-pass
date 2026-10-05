@@ -22,7 +22,7 @@ import Foundation
 import Testing
 @testable import Client
 
-@Suite("LocalTimestampDatasource")
+@Suite(.tags(.localDatasource))
 final class LocalTimestampDatasourceTests {
     private let suiteName = "LocalTimestampDatasourceTests.\(UUID().uuidString)"
     private let defaults: UserDefaults

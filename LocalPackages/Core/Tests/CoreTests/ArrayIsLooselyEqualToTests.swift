@@ -19,23 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Foundation
+import Testing
 
-final class ArrayIsLooselyEqualToTests: XCTestCase {
+@Suite(.tags(.utilities))
+struct ArrayIsLooselyEqualToTests {
     private struct Person: Identifiable, Equatable {
         var id = UUID().uuidString
         var name = String.random()
     }
 
-    func testIsLooselyEqualTo() {
+    @Test func `arrays are loosely equal when they hold the same elements in any order`() {
         let alice = Person()
         let bob = Person()
         let charlie = Person()
 
-        XCTAssertTrue([alice, bob, charlie].isLooselyEqual(to: [bob, charlie, alice]))
-        XCTAssertTrue([alice, charlie, bob].isLooselyEqual(to: [charlie, alice, bob]))
-        XCTAssertTrue([alice, bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
-        XCTAssertFalse([alice, bob, charlie].isLooselyEqual(to: [alice, bob]))
-        XCTAssertFalse([bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
+        #expect([alice, bob, charlie].isLooselyEqual(to: [bob, charlie, alice]))
+        #expect([alice, charlie, bob].isLooselyEqual(to: [charlie, alice, bob]))
+        #expect([alice, bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
+        #expect(![alice, bob, charlie].isLooselyEqual(to: [alice, bob]))
+        #expect(![bob, charlie].isLooselyEqual(to: [alice, bob, charlie]))
     }
 }

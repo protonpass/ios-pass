@@ -21,11 +21,12 @@
 @testable import Client
 import CryptoKit
 import Entities
-import XCTest
+import Foundation
+import Testing
 
-final class ItemContentTests: XCTestCase {
-    func testEncryptAndDecrypt() throws {
-        // Given
+@Suite(.tags(.models))
+struct ItemContentTests {
+    @Test func `item content survives an encryption round trip`() throws {
         let givenItemContent = ItemContentProtobuf(name: .random(),
                                                    note: .random(),
                                                    itemUuid: UUID().uuidString,
@@ -35,12 +36,10 @@ final class ItemContentTests: XCTestCase {
                                                                         content: .random())])
         let givenSymmetricKey = SymmetricKey.random()
 
-        // When
         let encryptedItemContent = try givenItemContent.encrypt(symmetricKey: givenSymmetricKey)
 
-        // Then
         let itemContent = try ItemContentProtobuf(base64: encryptedItemContent,
                                                   symmetricKey: givenSymmetricKey)
-        XCTAssertEqual(itemContent, givenItemContent)
+        #expect(itemContent == givenItemContent)
     }
 }

@@ -21,22 +21,15 @@
 @testable import Client
 import Entities
 import EntitiesMocks
-import XCTest
+import Foundation
+import Testing
 
-final class LocalSearchEntryDatasourceTests: XCTestCase {
-    var sut: LocalSearchEntryDatasourceProtocol!
+@Suite(.tags(.localDatasource))
+struct LocalSearchEntryDatasourceTests {
+    let sut: any LocalSearchEntryDatasourceProtocol =
+        LocalSearchEntryDatasource(databaseService: DatabaseService(inMemory: true))
 
-    override func setUp() {
-        super.setUp()
-        sut = LocalSearchEntryDatasource(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
-    func testGetAllEntriesOfAllVaults() async throws {
+    @Test func `all entries of a user are returned across vaults`() async throws {
         // Given
         let userId = String.random()
         let givenEntry1 = try await sut.givenInsertedEntry(userID: userId)
@@ -47,11 +40,11 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
-        XCTAssertEqual(entries.count, 3)
-        XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3]), Set(entries))
+        #expect(entries.count == 3)
+        #expect(Set([givenEntry1, givenEntry2, givenEntry3]) == Set(entries))
     }
 
-    func testGetAllEntriesOfGivenVault() async throws {
+    @Test func `entries can be fetched per user and per vault`() async throws {
         // Given
         let userId = String.random()
         let givenShareId1 = String.random()
@@ -70,18 +63,18 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let entriesOfShare2 = try await sut.getAllEntries(shareId: givenShareId2)
 
         // Then
-        XCTAssertEqual(allEntries.count, 6)
-        XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3, givenEntry4, givenEntry5, givenEntry6]),
-                       Set(allEntries))
+        #expect(allEntries.count == 6)
+        #expect(Set([givenEntry1, givenEntry2, givenEntry3, givenEntry4, givenEntry5, givenEntry6]) ==
+            Set(allEntries))
 
-        XCTAssertEqual(entriesOfShare1.count, 3)
-        XCTAssertEqual(Set([givenEntry1, givenEntry2, givenEntry3]), Set(entriesOfShare1))
+        #expect(entriesOfShare1.count == 3)
+        #expect(Set([givenEntry1, givenEntry2, givenEntry3]) == Set(entriesOfShare1))
 
-        XCTAssertEqual(entriesOfShare2.count, 3)
-        XCTAssertEqual(Set([givenEntry4, givenEntry5, givenEntry6]), Set(entriesOfShare2))
+        #expect(entriesOfShare2.count == 3)
+        #expect(Set([givenEntry4, givenEntry5, givenEntry6]) == Set(entriesOfShare2))
     }
 
-    func testUpsertEntry() async throws {
+    @Test func `upserting an existing entry updates its time`() async throws {
         // Given
         let userId = String.random()
         let givenEntry = try await sut.givenInsertedEntry(userID: userId)
@@ -92,13 +85,13 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
-        XCTAssertEqual(entries.count, 1)
-        XCTAssertEqual(entries[0].itemId, givenEntry.itemId)
-        XCTAssertEqual(entries[0].shareId, givenEntry.shareId)
-        XCTAssertEqual(entries[0].time, Int64(newDate.timeIntervalSince1970))
+        #expect(entries.count == 1)
+        #expect(entries[0].itemId == givenEntry.itemId)
+        #expect(entries[0].shareId == givenEntry.shareId)
+        #expect(entries[0].time == Int64(newDate.timeIntervalSince1970))
     }
 
-    func testRemoveAllEntriesOfAVault() async throws {
+    @Test func `removing entries of a vault keeps other vaults intact`() async throws {
         // Given
         let userId = String.random()
 
@@ -108,20 +101,20 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let entry3 = try await sut.givenInsertedEntry(userID: userId)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry1.shareId).first, entry1)
-        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry2.shareId).first, entry2)
-        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry3.shareId).first, entry3)
+        #expect(try await sut.getAllEntries(shareId: entry1.shareId).first == entry1)
+        #expect(try await sut.getAllEntries(shareId: entry2.shareId).first == entry2)
+        #expect(try await sut.getAllEntries(shareId: entry3.shareId).first == entry3)
 
         // When
         try await sut.removeAllEntries(shareId: entry1.shareId)
 
         // Then
-        try await XCTAssertEmptyAsync(await sut.getAllEntries(shareId: entry1.shareId))
-        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry2.shareId).first, entry2)
-        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry3.shareId).first, entry3)
+        #expect(try await sut.getAllEntries(shareId: entry1.shareId).isEmpty)
+        #expect(try await sut.getAllEntries(shareId: entry2.shareId).first == entry2)
+        #expect(try await sut.getAllEntries(shareId: entry3.shareId).first == entry3)
     }
 
-    func testRemoveAllEntriesOfAUser() async throws {
+    @Test func `removing entries of a user keeps other users intact`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -135,12 +128,11 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         try await sut.removeAllEntries(userId: userId1)
 
         // Then
-        try await XCTAssertEmptyAsync(await sut.getAllEntries(userId: userId1))
-        try await XCTAssertEqualAsync(Set(await sut.getAllEntries(userId: userId2)),
-                                      Set([entry1, entry2]))
+        #expect(try await sut.getAllEntries(userId: userId1).isEmpty)
+        #expect(try await Set(sut.getAllEntries(userId: userId2)) == Set([entry1, entry2]))
     }
 
-    func testRemoveEntry() async throws {
+    @Test func `a single entry can be removed`() async throws {
         // Given
         let userId = String.random()
         let givenEntry1 = try await sut.givenInsertedEntry(userID: userId)
@@ -152,7 +144,7 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
-        XCTAssertEqual(Set([givenEntry1, givenEntry3]), Set(entries))
+        #expect(Set([givenEntry1, givenEntry3]) == Set(entries))
     }
 }
 

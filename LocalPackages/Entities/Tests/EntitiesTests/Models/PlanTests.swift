@@ -19,65 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Entities
-import XCTest
+import Testing
 
-final class PlanTests: XCTestCase {
-    func testPlanType() {
-        // Plus
-        let plusPlan = Plan(type: "plus",
-                            internalName: "test",
-                            displayName: "test",
-                            hideUpgrade: false,
-                            manageAlias: false,
-                            trialEnd: nil,
-                            vaultLimit: nil,
-                            aliasLimit: nil,
-                            totpLimit: nil,
-                            storageAllowed: true,
-                            storageUsed: 1,
-                            storageQuota: 2,
-                            folderAllowed: false,
-                            folderMaxCount: 5,
-                            folderMaxChildren: 5,
-                            folderMaxDepth: 5)
-        XCTAssertEqual(plusPlan.planType, .plus)
+@Suite(.tags(.entity))
+struct PlanTests {
+    @Test func `plan type is derived from the type and trial end`() {
+        #expect(plan(type: "plus", trialEnd: nil).planType == .plus)
+        #expect(plan(type: "free", trialEnd: nil).planType == .free)
+        #expect(plan(type: "plus", trialEnd: .random(in: 1...1_000)).planType == .trial)
+    }
+}
 
-        // Free
-        let freePlan = Plan(type: "free",
-                            internalName: "test",
-                            displayName: "test",
-                            hideUpgrade: false,
-                            manageAlias: false,
-                            trialEnd: nil,
-                            vaultLimit: nil,
-                            aliasLimit: nil,
-                            totpLimit: nil,
-                            storageAllowed: false,
-                            storageUsed: 1,
-                            storageQuota: 2,
-                            folderAllowed: false,
-                            folderMaxCount: 5,
-                            folderMaxChildren: 5,
-                            folderMaxDepth: 5)
-        XCTAssertEqual(freePlan.planType, .free)
-
-        // Trial
-        let trialPlan = Plan(type: "plus",
-                             internalName: "test",
-                             displayName: "test",
-                             hideUpgrade: false,
-                             manageAlias: false,
-                             trialEnd: .random(in: 1...1_000),
-                             vaultLimit: nil,
-                             aliasLimit: nil,
-                             totpLimit: nil,
-                             storageAllowed: false,
-                             storageUsed: 1,
-                             storageQuota: 2,
-                             folderAllowed: false,
-                             folderMaxCount: 5,
-                             folderMaxChildren: 5,
-                             folderMaxDepth: 5)
-        XCTAssertEqual(trialPlan.planType, .trial)
+private extension PlanTests {
+    func plan(type: String, trialEnd: Int?) -> Plan {
+        Plan(type: type,
+             internalName: "test",
+             displayName: "test",
+             hideUpgrade: false,
+             manageAlias: false,
+             trialEnd: trialEnd,
+             vaultLimit: nil,
+             aliasLimit: nil,
+             totpLimit: nil,
+             storageAllowed: false,
+             storageUsed: 1,
+             storageQuota: 2,
+             folderAllowed: false,
+             folderMaxCount: 5,
+             folderMaxChildren: 5,
+             folderMaxDepth: 5)
     }
 }

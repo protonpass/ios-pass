@@ -20,10 +20,13 @@
 //
 
 @testable import Client
-import XCTest
+import Foundation
+import Testing
+import TestingToolkit
 
-final class InviteNewUserToShareRequestTests: XCTestCase {
-    func testEncodable() throws {
+@Suite(.tags(.endpoint))
+struct InviteNewUserToShareRequestTests {
+    @Test func `new user invite request encodes every field`() throws {
         let now = Date.now
         let sut = InviteNewUserToShareRequest(email: "john.doe@example.com",
                                               targetType: .item,
@@ -31,16 +34,15 @@ final class InviteNewUserToShareRequestTests: XCTestCase {
                                               shareRole: .read,
                                               itemId: "item_id_test",
                                               expirationDate: now)
-        try assertEncodeCorrectly(sut,
-"""
-{
-  "TargetType" : 2,
-  "Email" : "john.doe@example.com",
-  "ShareRoleID" : "3",
-  "ExpirationTime" : \(Int(now.timeIntervalSince1970)),
-  "ItemID" : "item_id_test",
-  "Signature" : "signature_test"
-}
-""")
+        #expect(try sortedPrettyJSON(sut) == """
+        {
+          "Email" : "john.doe@example.com",
+          "ExpirationTime" : \(Int(now.timeIntervalSince1970)),
+          "ItemID" : "item_id_test",
+          "ShareRoleID" : "3",
+          "Signature" : "signature_test",
+          "TargetType" : 2
+        }
+        """)
     }
 }

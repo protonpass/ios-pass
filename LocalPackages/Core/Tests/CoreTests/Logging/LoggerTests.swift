@@ -19,102 +19,96 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Core
-import XCTest
+import Foundation
+import Testing
 
-final class LoggerTests: XCTestCase {
+@Suite(.tags(.logging))
+struct LoggerTests {
     private static let fileName = "LoggerTests"
     private static let subsystem = "me.proton.logger"
     private static let category = "logger_tests"
-    var sut: Logger!
+    private let sut: Logger
 
-    override func setUp() {
-        super.setUp()
-        // swiftlint:disable:next force_unwrapping
-        let url = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
-        sut =
-            .init(manager: LogManager(url: url, fileName: "test.log",
-                                      config: LogManagerConfig(maxLogLines: 2_000)),
-                  subsystem: Self.subsystem,
-                  category: Self.category)
+    init() {
+        sut = .init(manager: LogManager(url: FileManager.default.temporaryDirectory,
+                                        fileName: "loggerTest-\(UUID().uuidString).log",
+                                        config: LogManagerConfig(maxLogLines: 2_000)),
+                    subsystem: Self.subsystem,
+                    category: Self.category)
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
-    func testGenerateErrorLogEntry() {
+    @Test func `error captures the call site and metadata`() {
         let message = "Error occurred"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.error(message, timestamp: timestamp)
-        XCTAssertEqual(entry.timestamp, timestamp)
-        XCTAssertEqual(entry.subsystem, Self.subsystem)
-        XCTAssertEqual(entry.category, Self.category)
-        XCTAssertEqual(entry.level, .error)
-        XCTAssertEqual(entry.message, message)
-        XCTAssertEqual(entry.file, Self.fileName)
-        XCTAssertEqual(entry.function, "testGenerateErrorLogEntry()")
-        XCTAssertEqual(entry.line, 49)
-        XCTAssertEqual(entry.column, 30)
+        #expect(entry.timestamp == timestamp)
+        #expect(entry.subsystem == Self.subsystem)
+        #expect(entry.category == Self.category)
+        #expect(entry.level == .error)
+        #expect(entry.message == message)
+        #expect(entry.file == Self.fileName)
+        #expect(entry.function == #function)
+        #expect(entry.line == 43)
+        #expect(entry.column == 30)
     }
 
-    func testGenerateWarningLogEntry() {
+    @Test func `warning captures the call site and metadata`() {
         let message = "Low memory ⚠️"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.warning(message, timestamp: timestamp)
-        XCTAssertEqual(entry.timestamp, timestamp)
-        XCTAssertEqual(entry.subsystem, Self.subsystem)
-        XCTAssertEqual(entry.category, Self.category)
-        XCTAssertEqual(entry.level, .warning)
-        XCTAssertEqual(entry.message, message)
-        XCTAssertEqual(entry.file, Self.fileName)
-        XCTAssertEqual(entry.function, "testGenerateWarningLogEntry()")
-        XCTAssertEqual(entry.line, 64)
-        XCTAssertEqual(entry.column, 32)
+        #expect(entry.timestamp == timestamp)
+        #expect(entry.subsystem == Self.subsystem)
+        #expect(entry.category == Self.category)
+        #expect(entry.level == .warning)
+        #expect(entry.message == message)
+        #expect(entry.file == Self.fileName)
+        #expect(entry.function == #function)
+        #expect(entry.line == 58)
+        #expect(entry.column == 32)
     }
 
-    func testGenerateInfoLogEntry() {
+    @Test func `info captures the call site and metadata`() {
         let message = "ℹ️ Request sent"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.info(message, timestamp: timestamp)
-        XCTAssertEqual(entry.timestamp, timestamp)
-        XCTAssertEqual(entry.subsystem, Self.subsystem)
-        XCTAssertEqual(entry.category, Self.category)
-        XCTAssertEqual(entry.level, .info)
-        XCTAssertEqual(entry.message, message)
-        XCTAssertEqual(entry.file, Self.fileName)
-        XCTAssertEqual(entry.function, "testGenerateInfoLogEntry()")
-        XCTAssertEqual(entry.line, 79)
-        XCTAssertEqual(entry.column, 29)
+        #expect(entry.timestamp == timestamp)
+        #expect(entry.subsystem == Self.subsystem)
+        #expect(entry.category == Self.category)
+        #expect(entry.level == .info)
+        #expect(entry.message == message)
+        #expect(entry.file == Self.fileName)
+        #expect(entry.function == #function)
+        #expect(entry.line == 73)
+        #expect(entry.column == 29)
     }
 
-    func testGenerateDebugLogEntry() {
+    @Test func `debug captures the call site and metadata`() {
         let message = "Some debug message"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.debug(message, timestamp: timestamp)
-        XCTAssertEqual(entry.timestamp, timestamp)
-        XCTAssertEqual(entry.subsystem, Self.subsystem)
-        XCTAssertEqual(entry.category, Self.category)
-        XCTAssertEqual(entry.level, .debug)
-        XCTAssertEqual(entry.message, message)
-        XCTAssertEqual(entry.file, Self.fileName)
-        XCTAssertEqual(entry.function, "testGenerateDebugLogEntry()")
-        XCTAssertEqual(entry.line, 94)
-        XCTAssertEqual(entry.column, 30)
+        #expect(entry.timestamp == timestamp)
+        #expect(entry.subsystem == Self.subsystem)
+        #expect(entry.category == Self.category)
+        #expect(entry.level == .debug)
+        #expect(entry.message == message)
+        #expect(entry.file == Self.fileName)
+        #expect(entry.function == #function)
+        #expect(entry.line == 88)
+        #expect(entry.column == 30)
     }
 
-    func testGenerateTraceLogEntry() {
+    @Test func `trace captures the call site and metadata`() {
         let message = "Some trace message"
         let timestamp = Date().timeIntervalSince1970
         let entry = sut.trace(message, timestamp: timestamp)
-        XCTAssertEqual(entry.timestamp, timestamp)
-        XCTAssertEqual(entry.subsystem, Self.subsystem)
-        XCTAssertEqual(entry.category, Self.category)
-        XCTAssertEqual(entry.level, .trace)
-        XCTAssertEqual(entry.message, message)
-        XCTAssertEqual(entry.file, Self.fileName)
-        XCTAssertEqual(entry.function, "testGenerateTraceLogEntry()")
-        XCTAssertEqual(entry.line, 109)
-        XCTAssertEqual(entry.column, 30)
+        #expect(entry.timestamp == timestamp)
+        #expect(entry.subsystem == Self.subsystem)
+        #expect(entry.category == Self.category)
+        #expect(entry.level == .trace)
+        #expect(entry.message == message)
+        #expect(entry.file == Self.fileName)
+        #expect(entry.function == #function)
+        #expect(entry.line == 103)
+        #expect(entry.column == 30)
     }
 }
