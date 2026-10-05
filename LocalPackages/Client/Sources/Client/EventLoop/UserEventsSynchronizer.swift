@@ -37,7 +37,13 @@ public struct UserEventsSyncResult: OptionSet, Sendable {
 }
 
 public protocol UserEventsSynchronizerProtocol: Sendable {
-    func sync(userId: String) async throws -> UserEventsSyncResult
+    func sync(userId: String, readOnly: Bool) async throws -> UserEventsSyncResult
+}
+
+extension UserEventsSynchronizerProtocol {
+    func sync(userId: String, readOnly: Bool = false) async throws -> UserEventsSyncResult {
+        try await sync(userId: userId, readOnly: readOnly)
+    }
 }
 
 public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
@@ -85,7 +91,7 @@ public final class UserEventsSynchronizer: UserEventsSynchronizerProtocol {
 }
 
 public extension UserEventsSynchronizer {
-    func sync(userId: String) async throws -> UserEventsSyncResult {
+    func sync(userId: String, readOnly: Bool) async throws -> UserEventsSyncResult {
         logger.trace("Syncing user events for user \(userId)")
         guard let lastEventId = try await localUserEventIdDatasource.getLastEventId(userId: userId) else {
             logger.warning("No local user event ID for user \(userId). Force full refresh.")
@@ -93,14 +99,17 @@ public extension UserEventsSynchronizer {
         }
 
         let userSyncResult = try await parseUserEvents(userId: userId,
-                                                       lastEventId: lastEventId)
+                                                       lastEventId: lastEventId,
+                                                       readOnly: readOnly)
         logger.info("Finished syncing with user events for user \(userId)")
         return userSyncResult
     }
 }
 
 private extension UserEventsSynchronizer {
-    func parseUserEvents(userId: String, lastEventId: String) async throws -> UserEventsSyncResult {
+    func parseUserEvents(userId: String,
+                         lastEventId: String,
+                         readOnly: Bool) async throws -> UserEventsSyncResult {
         var result: UserEventsSyncResult = []
         var currentCycle = 0
 
@@ -108,6 +117,12 @@ private extension UserEventsSynchronizer {
         while currentCycle <= maxPerRoundFetchCycle {
             let events = try await remoteUserEventsDatasource.getUserEvents(userId: userId,
                                                                             lastEventId: lastEventId)
+            // This is implemented for autofill to not loose any events as we do not process users events in case
+            // of full sync in autofill
+            if readOnly, events.fullRefresh {
+                result.insert(.fullRefreshNeeded)
+                return result
+            }
 
             try await process(events: events, for: userId)
 

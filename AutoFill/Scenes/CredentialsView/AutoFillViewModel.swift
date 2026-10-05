@@ -69,6 +69,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     weak var delegate: (any AutoFillViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
 
+    private var needFullSync = false
     let sortTypeUpdated = PassthroughSubject<Void, Never>()
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -184,6 +185,9 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     @concurrent
     func refreshFolderSyncBanner() async {
+        guard await !needFullSync else {
+            return
+        }
         let show = await shouldShowFolderSyncBanner()
         await setShowFolderSyncBanner(show)
     }
@@ -203,8 +207,9 @@ extension AutoFillViewModel {
         do {
             var shouldRefreshItems = false
             for user in users {
-                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id)
+                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id, readOnly: true)
                 if hasNewEvents.contains(.fullRefreshNeeded) {
+                    needFullSync = true
                     setShowFolderSyncBanner(true)
                 }
                 shouldRefreshItems = shouldRefreshItems || hasNewEvents.contains(.dataUpdated)
