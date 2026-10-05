@@ -73,11 +73,10 @@ extension TelemetrySchedulerTests {
 
         try await sut.randomNextThreshold()
         let newThreshold = try #require(await sut.getThreshold())
-        let difference = Calendar.current.dateComponents([.hour],
-                                                         from: givenThreshold,
-                                                         to: newThreshold)
+        // Rounded rather than truncated: the threshold is stored as seconds since 1970, and that
+        // round trip can land a few nanoseconds short of a whole hour.
+        let differenceInHours = Int((newThreshold.timeIntervalSince(givenThreshold) / 3600).rounded())
 
-        let differenceInHours = try #require(difference.hour)
         let min = await sut.minIntervalInHours
         let max = await sut.maxIntervalInHours
         #expect(differenceInHours >= min)

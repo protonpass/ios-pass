@@ -553,24 +553,11 @@ public extension AppContentManager {
 
 extension AppContentManager: LimitationCounterProtocol {
     public func getAliasCount() -> Int {
-        switch state {
-        case let .loaded(sharesData):
-            let activeAliases = sharesData.shares.values.reduce(0) {
-                $0 + $1.aliasCount
-            } // flatMap(\.allItems).filter(\.isAlias)
-            let trashedAliases = sharesData.trashedItems.compactMap(\.isAlias)
-            return activeAliases + trashedAliases.count
-
-        default:
-            return 0
-        }
+        state.loadedContent?.aliasCount ?? 0
     }
 
     public func getTOTPCount() -> Int {
-        guard let sharesData = state.loadedContent else { return 0 }
-        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.value.allItems).filter(\.hasTotpUri).count
-        let trashedItemsWithTotpUri = sharesData.trashedItems.compactMap(\.hasTotpUri).count
-        return activeItemsWithTotpUri + trashedItemsWithTotpUri
+        state.loadedContent?.totpCount ?? 0
     }
 
     public func getSharesCount() -> Int {
@@ -800,19 +787,6 @@ private extension AppContentManager {
                 logger.error(message: "Failed indexing content for auto fill and spotlight", error: error)
             }
         }
-    }
-}
-
-public extension [ShareContent] {
-    func sortedByHidden() -> Self {
-        sorted(by: { !$0.share.hidden && $1.share.hidden })
-            .sorted { lhs, rhs in
-                guard let lhsName = lhs.share.vaultName,
-                      let rhsName = rhs.share.vaultName else { return false }
-                return lhsName == rhsName
-                    ? lhs.share.createTime < rhs.share.createTime
-                    : lhsName < rhsName
-            }
     }
 }
 
