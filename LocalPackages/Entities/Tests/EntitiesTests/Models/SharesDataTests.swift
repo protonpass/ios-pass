@@ -489,3 +489,40 @@ struct SharesDataTests {
         #expect(sharesData1.hashValue == sharesData2.hashValue)
     }
 }
+
+// MARK: - Limitation counts
+
+extension SharesDataTests {
+    @Test func `alias count adds active aliases and trashed aliases only`() {
+        let share = Share.random(shareID: "share-1")
+        let content = ShareContent(share: share, elements: [
+            .item(.mock(itemId: "active-alias", shareId: "share-1", isAlias: true)),
+            .item(.mock(itemId: "active-login", shareId: "share-1"))
+        ])
+        let trashedItems: [ItemUiModel] = [
+            .mock(itemId: "trashed-alias", shareId: "share-1", isAlias: true, state: .trashed),
+            .mock(itemId: "trashed-login", shareId: "share-1", state: .trashed)
+        ]
+
+        let sut = SharesData(shares: [content], trashedItems: trashedItems)
+
+        #expect(sut.aliasCount == 2)
+    }
+
+    @Test func `totp count adds active and trashed items that have a totp uri only`() {
+        let totpUri = "otpauth://totp/Example:a@b.c?secret=JBSWY3DPEHPK3PXP"
+        let share = Share.random(shareID: "share-1")
+        let content = ShareContent(share: share, elements: [
+            .item(.mock(itemId: "active-totp", shareId: "share-1", totpUri: totpUri)),
+            .item(.mock(itemId: "active-plain", shareId: "share-1"))
+        ])
+        let trashedItems: [ItemUiModel] = [
+            .mock(itemId: "trashed-totp", shareId: "share-1", totpUri: totpUri, state: .trashed),
+            .mock(itemId: "trashed-plain", shareId: "share-1", state: .trashed)
+        ]
+
+        let sut = SharesData(shares: [content], trashedItems: trashedItems)
+
+        #expect(sut.totpCount == 2)
+    }
+}
