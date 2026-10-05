@@ -207,12 +207,12 @@ extension AutoFillViewModel {
         do {
             var shouldRefreshItems = false
             for user in users {
-                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id, readOnly: true)
-                if hasNewEvents.contains(.fullRefreshNeeded) {
+                let syncResult = try await userEventsSynchronizer.sync(userId: user.id, readOnly: true)
+                if syncResult.contains(.fullRefreshNeeded) {
                     needFullSync = true
                     setShowFolderSyncBanner(true)
                 }
-                shouldRefreshItems = shouldRefreshItems || hasNewEvents.contains(.dataUpdated)
+                shouldRefreshItems = shouldRefreshItems || syncResult.contains(.dataUpdated)
             }
 
             if shouldRefreshItems {
