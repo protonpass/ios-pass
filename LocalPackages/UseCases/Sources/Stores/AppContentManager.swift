@@ -318,6 +318,7 @@ private extension AppContentManager {
                 }
             }
 
+            // 4. Refresh invite and sl notes
             async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
             async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
             do {

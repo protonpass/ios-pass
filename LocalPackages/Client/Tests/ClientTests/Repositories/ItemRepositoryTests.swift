@@ -38,7 +38,6 @@ struct ItemRepositoryTests {
     private let localDatasource: LocalItemDatasourceProtocolMock
     private let remoteDatasource: RemoteItemDatasourceProtocolMock
     private let localShareDatasource: LocalShareDatasourceProtocolMock
-    private let shareEventIDRepository: ShareEventIDRepositoryProtocolMock
     private let passKeyManager: PassKeyManagerProtocolMock
     private let featureFlagsRepository: FeatureFlagsRepositoryMock
     private let logManager: LogManagerProtocolMock
@@ -50,7 +49,6 @@ struct ItemRepositoryTests {
         localDatasource.stubbedGetAllPinnedItemsResult = []
         remoteDatasource = RemoteItemDatasourceProtocolMock()
         localShareDatasource = LocalShareDatasourceProtocolMock()
-        shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         featureFlagsRepository = FeatureFlagsRepositoryMock()
         logManager = LogManagerProtocolMock()
@@ -79,7 +77,6 @@ extension ItemRepositoryTests {
                                  localDatasource: localDatasource,
                                  remoteDatasource: remoteDatasource,
                                  localShareDatasource: localShareDatasource,
-                                 shareEventIDRepository: shareEventIDRepository,
                                  passKeyManager: passKeyManager,
                                  featureFlagsRepository: featureFlagsRepository,
                                  logManager: logManager)
@@ -201,7 +198,6 @@ private extension ItemRepositoryTests {
                        localDatasource: localDatasource,
                        remoteDatasource: remoteDatasource,
                        localShareDatasource: localShareDatasource,
-                       shareEventIDRepository: shareEventIDRepository,
                        passKeyManager: passKeyManager,
                        featureFlagsRepository: featureFlagsRepository,
                        logManager: logManager)
