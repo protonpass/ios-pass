@@ -182,10 +182,6 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         }
     }
 
-    ///
-    /// `@concurrent` so the lookup leaves the main actor, matching `fetchItems()`. It cannot go on
-    /// the use case instead: `@concurrent` on a protocol requirement reached through an existential
-    /// crashes SILGen in swiftlang 6.3.3.
     @concurrent
     func refreshFolderSyncBanner() async {
         let show = await shouldShowFolderSyncBanner()
@@ -193,6 +189,9 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     }
 
     private func setShowFolderSyncBanner(_ show: Bool) {
+        guard show != showFolderSyncBanner else {
+            return
+        }
         showFolderSyncBanner = show
     }
 }
@@ -204,8 +203,11 @@ extension AutoFillViewModel {
         do {
             var shouldRefreshItems = false
             for user in users {
-                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id).contains(.dataUpdated)
-                shouldRefreshItems = shouldRefreshItems || hasNewEvents
+                let hasNewEvents = try await userEventsSynchronizer.sync(userId: user.id)
+                if hasNewEvents.contains(.fullRefreshNeeded) {
+                    setShowFolderSyncBanner(true)
+                }
+                shouldRefreshItems = shouldRefreshItems || hasNewEvents.contains(.dataUpdated)
             }
 
             if shouldRefreshItems {
