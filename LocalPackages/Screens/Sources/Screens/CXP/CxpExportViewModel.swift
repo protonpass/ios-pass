@@ -35,6 +35,7 @@ final class CxpExportViewModel {
 
     let vaults: [ShareContent]
     private(set) var selectedShareIds = Set<String>()
+    private(set) var exporting = false
     private(set) var exported = false
     var exportErrorMessage: String?
 
@@ -97,7 +98,11 @@ extension CxpExportViewModel {
             return
         }
 
+        guard !exporting else { return }
+        exporting = true
         Task {
+            defer { exporting = false }
+
             do {
                 let shares = vaults.map(\.share).filter { selectedShareIds.contains($0.shareId) }
                 try await cxpExport(window: window, shares: shares)

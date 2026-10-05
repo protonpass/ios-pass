@@ -100,6 +100,7 @@ private extension CxpExportView {
         .navigationBarTitleDisplayMode(.inline)
         .fullSheetBackground()
         .navigationStackEmbeded()
+        .showSpinner(viewModel.exporting)
         .onChange(of: viewModel.exported) { _, newValue in
             if newValue {
                 dismiss()
