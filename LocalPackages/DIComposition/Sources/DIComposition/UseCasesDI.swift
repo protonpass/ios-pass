@@ -433,8 +433,7 @@ public extension UseCasesContainer {
 
     var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
         self { CanAddNewAccount(localDatasource: self.localAccessDatasource,
-                                remoteDatasource: RepositoryContainer.shared.remoteAccessDatasource(),
-                                authManager: ToolingContainer.shared.authManager()) }
+                                remoteDatasource: RepositoryContainer.shared.remoteAccessDatasource()) }
     }
 
     @MainActor
@@ -738,7 +737,6 @@ public extension UseCasesContainer {
         self { IndexAllLoginItems(userManager: self.userManager,
                                   itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
-                                  localAccessDatasource: RepositoryContainer.shared.localAccessDatasource(),
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
@@ -802,7 +800,6 @@ public extension UseCasesContainer {
     var shouldForceSyncForFolders: Factory<any ShouldForceSyncForFoldersUseCase> {
         self { ShouldForceSyncForFolders(getUserPreferences: self.getUserPreferences(),
                                          getFeatureFlagStatus: self.getFeatureFlagStatus(),
-                                         refreshFeatureFlags: self.refreshFeatureFlags(),
                                          userHasRemoteFolders: self.userHasRemoteFolders(),
                                          updateUserPreferences: self.updateUserPreferences(),
                                          reachability: ServiceContainer.shared
@@ -1028,7 +1025,6 @@ public extension UseCasesContainer {
         self { SwitchUser(userManager: self.userManager,
                           appContentManager: self.appContentManager,
                           preferencesManager: self.preferencesManager,
-                          apiManager: self.apiManager,
                           syncEventLoop: self.syncEventLoop,
                           refreshFeatureFlags: self.refreshFeatureFlags(),
                           inviteRepository: self.inviteRepository) }
@@ -1038,9 +1034,7 @@ public extension UseCasesContainer {
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
         self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
                                             userManager: self.userManager,
-                                            authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
-                                            apiManager: self.apiManager,
                                             fullContentSync: self.fullContentSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags(),
                                             inviteRepository: self.inviteRepository) }
@@ -1055,7 +1049,6 @@ public extension UseCasesContainer {
                                  featureFlagsRepository: RepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: self.passMonitorRepository,
                                  appContentManager: self.appContentManager,
-                                 apiManager: self.apiManager,
                                  authManager: self.authManager,
                                  credentialManager: ServiceContainer.shared.credentialManager(),
                                  keychain: self.keychain) }
@@ -1128,12 +1121,7 @@ public extension UseCasesContainer {
 
     var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
         self { ApplyAppMigration(dataMigrationManager: ServiceContainer.shared.dataMigrationManager(),
-                                 userManager: self.userManager,
                                  authManager: self.authManager,
-                                 itemDatasource: RepositoryContainer.shared.localItemDatasource(),
-                                 searchEntryDatasource: RepositoryContainer.shared
-                                     .localSearchEntryDatasource(),
-                                 shareKeyDatasource: RepositoryContainer.shared.localShareKeyDatasource(),
                                  logManager: self.logManager) }
     }
 }

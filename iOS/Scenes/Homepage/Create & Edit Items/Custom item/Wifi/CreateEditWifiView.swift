@@ -27,7 +27,6 @@ import SwiftUI
 struct CreateEditWifiView: View {
     @StateObject private var viewModel: CreateEditWifiViewModel
     @FocusState private var focusedField: Field?
-    @State private var lastFocusedField: Field?
 
     enum Field: CustomFieldTypes {
         case title, ssid, password, note
@@ -84,7 +83,7 @@ struct CreateEditWifiView: View {
             }
             .padding()
             .toolbar {
-                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                CreateEditKeyboardToolbar(lastFocusedField: .constant(nil),
                                           focusedField: focusedField,
                                           onOpenCodeScanner: viewModel.openCodeScanner,
                                           onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
@@ -107,8 +106,6 @@ private extension CreateEditWifiView {
         CreateEditItemTitleSection(title: $viewModel.title,
                                    focusedField: $focusedField,
                                    field: .title,
-                                   itemContentType: viewModel.itemContentType,
-                                   isEditMode: viewModel.mode.isEditMode,
                                    onSubmit: { focusedField = .ssid })
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }

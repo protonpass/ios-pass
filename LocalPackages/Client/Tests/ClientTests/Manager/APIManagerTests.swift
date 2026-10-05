@@ -197,7 +197,6 @@ struct APIManagerTests {
 private extension APIManagerTests {
     func makeSUT() -> APIManager {
         APIManager(authManager: authManager,
-                   userManager: userManager,
                    themeProvider: themeProvider,
                    appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                    doh: ProtonPassDoHMock(),

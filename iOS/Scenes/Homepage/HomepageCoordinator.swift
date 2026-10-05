@@ -1089,9 +1089,7 @@ extension HomepageCoordinator {
     }
 
     func presentShareElementView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let viewModel = ShareElementViewModel(share: vault.vault,
-                                              itemContent: itemContent,
-                                              itemCount: vault.itemCount)
+        let viewModel = ShareElementViewModel(share: vault.vault, itemContent: itemContent)
         let view = ShareElementView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 

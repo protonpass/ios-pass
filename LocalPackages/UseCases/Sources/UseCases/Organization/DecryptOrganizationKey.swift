@@ -38,7 +38,6 @@ public extension DecryptOrganizationKeyUseCase {
 
 public struct DecryptedOrgKey {
     let privateKey: DecryptionKey
-    let publicKey: String
 }
 
 public final class DecryptOrganizationKey: DecryptOrganizationKeyUseCase {
@@ -57,9 +56,8 @@ public final class DecryptOrganizationKey: DecryptOrganizationKeyUseCase {
         let armoredPrivateKey = ArmoredKey(value: privateKey)
         let decryptionKey = DecryptionKey(privateKey: armoredPrivateKey,
                                           passphrase: .init(value: orgToken))
-        let publicKey = armoredPrivateKey.value.publicKey
 
-        return DecryptedOrgKey(privateKey: decryptionKey, publicKey: publicKey)
+        return DecryptedOrgKey(privateKey: decryptionKey)
     }
 }
 

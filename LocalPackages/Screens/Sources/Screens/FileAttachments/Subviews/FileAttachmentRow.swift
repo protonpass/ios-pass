@@ -26,12 +26,9 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct FileAttachmentRow: View {
-    @State private var name: String
-
     private let mode: Mode
     private let uiModel: FileAttachmentUiModel
     private let primaryTintColor: Color
-    private let secondaryTintColor: Color
 
     enum Mode {
         case view(onOpen: @MainActor () -> Void,
@@ -45,13 +42,10 @@ struct FileAttachmentRow: View {
 
     init(mode: Mode,
          uiModel: FileAttachmentUiModel,
-         primaryTintColor: Color,
-         secondaryTintColor: Color) {
+         primaryTintColor: Color) {
         self.mode = mode
-        _name = .init(initialValue: uiModel.name)
         self.uiModel = uiModel
         self.primaryTintColor = primaryTintColor
-        self.secondaryTintColor = secondaryTintColor
     }
 
     var body: some View {

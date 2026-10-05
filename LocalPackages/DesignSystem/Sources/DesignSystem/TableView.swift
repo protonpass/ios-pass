@@ -26,6 +26,7 @@ private let kHeaderId = "header"
 private let kCellId = "cell"
 
 private nonisolated struct PassSectionIdentifier: Hashable {
+    // periphery:ignore - read by synthesized Hashable, keeps same-titled sections distinct
     let id: Int
     let title: String
 

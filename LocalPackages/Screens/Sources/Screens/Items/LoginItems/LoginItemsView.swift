@@ -26,6 +26,7 @@ import Entities
 import Macro
 import SwiftUI
 
+// periphery:ignore - properties are read by synthesized Equatable for `.task(id:)`
 private struct SearchTrigger: Equatable {
     let query: String
     let items: [SearchableItem]

@@ -160,8 +160,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         results.first { $0.userId == userId }?.vaults
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
-        .init(userId: userId, vaults: vaults, data: .login(urls.first, nil))
+    override func generateItemCreationInfo(userId: String) -> ItemCreationInfo {
+        .init(userId: userId, data: .login(urls.first, nil))
     }
 
     override func isErrorState() -> Bool {

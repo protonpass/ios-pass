@@ -38,7 +38,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
     private let userManager: any UserManagerProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
-    private let localAccessDatasource: any LocalAccessDatasourceProtocol
     private let credentialManager: any CredentialManagerProtocol
     private let mapLoginItem: any MapLoginItemUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
@@ -47,7 +46,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
     public init(userManager: any UserManagerProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
-                localAccessDatasource: any LocalAccessDatasourceProtocol,
                 credentialManager: any CredentialManagerProtocol,
                 mapLoginItem: any MapLoginItemUseCase,
                 symmetricKeyProvider: any SymmetricKeyProvider,
@@ -55,7 +53,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         self.userManager = userManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.localAccessDatasource = localAccessDatasource
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
         self.symmetricKeyProvider = symmetricKeyProvider

@@ -27,7 +27,6 @@ import SwiftUI
 struct CreateEditCustomItemView: View {
     @StateObject private var viewModel: CreateEditCustomItemViewModel
     @FocusState private var focusedField: Field?
-    @State private var lastFocusedField: Field?
 
     enum Field: CustomFieldTypes {
         case title, note
@@ -83,7 +82,7 @@ struct CreateEditCustomItemView: View {
             }
             .padding()
             .toolbar {
-                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                CreateEditKeyboardToolbar(lastFocusedField: .constant(nil),
                                           focusedField: focusedField,
                                           onOpenCodeScanner: viewModel.openCodeScanner,
                                           onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
@@ -105,8 +104,6 @@ private extension CreateEditCustomItemView {
         CreateEditItemTitleSection(title: $viewModel.title,
                                    focusedField: $focusedField,
                                    field: .title,
-                                   itemContentType: viewModel.itemContentType,
-                                   isEditMode: viewModel.mode.isEditMode,
                                    onSubmit: nil)
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }

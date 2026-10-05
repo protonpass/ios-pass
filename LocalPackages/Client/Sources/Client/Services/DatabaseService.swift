@@ -28,14 +28,8 @@ public protocol DatabaseServiceProtocol: Sendable {
 
 public final class DatabaseService: DatabaseServiceProtocol, @unchecked Sendable {
     private let container: NSPersistentContainer
-    private let logger: Logger?
 
-    public init(logManager: (any LogManagerProtocol)? = nil, inMemory: Bool = false) {
-        if let logManager {
-            logger = .init(manager: logManager)
-        } else {
-            logger = nil
-        }
+    public init(inMemory: Bool = false) {
         container = DatabaseService.build(name: kProtonPassContainerName, inMemory: inMemory)
     }
 

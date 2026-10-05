@@ -97,7 +97,6 @@ public extension ToolingContainer {
 
     var apiManager: Factory<APIManager> {
         self { APIManager(authManager: self.authManager(),
-                          userManager: ServiceContainer.shared.userManager(),
                           themeProvider: self.preferencesManager(),
                           appVersion: self.appVersion(),
                           doh: self.doh(),
