@@ -847,11 +847,14 @@ public extension ItemRepository {
                           itemContent: content,
                           domainMatchingSupported: isDomainMatchingSupported)
             }
-            logger.debug("Bulk importing \(itemsToImport.count) items")
+            let token = UUID().uuidString
+            logger.debug("Bulk importing \(itemsToImport.count) items with token \(token)")
             let items = try await remoteDatasource.importItems(userId: userId,
                                                                shareId: shareId,
                                                                items: itemsToImport)
+            logger.debug("Bulk imported remotely \(itemsToImport.count) items with token \(token)")
             try await upsertItems(userId: userId, items: items, shareId: shareId)
+            logger.debug("Bulk imported locally \(itemsToImport.count) items with token \(token)")
             importedCount += items.count
             await onProgress?(importedCount)
         }
