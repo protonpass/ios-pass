@@ -55,6 +55,10 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let showExcludedWeaknesses: Bool
 
+    override var restoresAllMonitoring: Bool {
+        showExcludedWeaknesses
+    }
+
     private let scorePassword = dependency(\UseCasesContainer.scorePassword)
     private let getLoginSecurityIssues = dependency(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = dependency(\RepositoryContainer.passMonitorRepository)

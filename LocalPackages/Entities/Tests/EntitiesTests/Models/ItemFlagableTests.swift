@@ -183,4 +183,18 @@ struct ItemFlagableTests {
         #expect(item.reusedPasswordCheckDisabled == false)
         #expect(item.twoFACheckDisabled == false)
     }
+
+    // MARK: - flagsToRestoreMonitoring
+
+    @Test func `flagsToRestoreMonitoring only re-enables the health check when nothing is suppressed`() {
+        let item = MockItem(flags: 0)
+        #expect(item.flagsToRestoreMonitoring == [.skipHealthCheck(false)])
+    }
+
+    @Test func `flagsToRestoreMonitoring clears full exclusion and every suppressed check`() {
+        let item = MockItem(flags: (1 << 0) | (1 << 5) | (1 << 8))
+        #expect(item.flagsToRestoreMonitoring == [.skipHealthCheck(false),
+                                                  .skipWeakPasswordCheck(false),
+                                                  .skip2FACheck(false)])
+    }
 }
