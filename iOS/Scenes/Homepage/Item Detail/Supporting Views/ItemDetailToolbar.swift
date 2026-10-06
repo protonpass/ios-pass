@@ -114,10 +114,10 @@ private extension ItemDetailToolbar {
                     }
 
                     if viewModel.itemContent.type == .login {
-                        let title: LocalizedStringKey = viewModel.isMonitored ?
-                            "Exclude from monitoring" : "Include for monitoring"
-                        let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider
-                            .eye
+                        let title: LocalizedStringKey = viewModel.offersIncludeInMonitoring ?
+                            "Include for monitoring" : "Exclude from monitoring"
+                        let icon: UIImage = viewModel.offersIncludeInMonitoring ? IconProvider.eye : IconProvider
+                            .eyeSlash
 
                         Label(title, uiImage: icon)
                             .buttonEmbeded {
