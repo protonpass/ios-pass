@@ -276,8 +276,7 @@ private extension LogInDetailView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Button(action: { showPenalties.toggle() },
                        label: {
-                           Text(strength
-                               .sectionTitle(reuseCount: viewModel.reusedItems.fetchedObject?.count))
+                           Text(strength.sectionTitle)
                                .font(.footnote)
                                .foregroundStyle(strength.sectionTitleColor)
                                .underline(!viewModel.password.isEmpty,

@@ -578,7 +578,7 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Button(action: { showPenalties.toggle() },
                        label: {
-                           Text(strength.sectionTitle(reuseCount: nil))
+                           Text(strength.sectionTitle)
                                .font(.footnote)
                                .foregroundStyle(viewModel.password.isEmpty ?
                                    PassColor.textNorm : strength.sectionTitleColor)
