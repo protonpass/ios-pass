@@ -95,8 +95,8 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
         }
     }
 
-    func dismiss(isSheet: Bool) {
-        router.action(.back(isShownAsSheet: isSheet))
+    func goBack() {
+        router.action(.back(isShownAsSheet: false))
     }
 }
 

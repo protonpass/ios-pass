@@ -103,6 +103,8 @@ public enum SheetDestination: Equatable, Hashable {
     case editSpotlightVaults
     case passkeyDetail(Passkey)
     case securityDetail(MonitorListSection)
+    /// iPad detail pane only, compact layouts push inside the Pass Monitor tab's own navigation stack
+    case darkWebMonitorHome(UserBreaches)
     case securityKeys
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)

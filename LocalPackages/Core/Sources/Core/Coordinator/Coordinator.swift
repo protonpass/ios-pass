@@ -210,10 +210,17 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.preferredSplitBehavior = .tile
             splitViewController.displayModeButtonVisibility = .never
             type = .split(splitViewController)
+            splitViewController.onCollapseStateChange = { [weak self] isCollapsed in
+                guard let self else { return }
+                splitViewDidChangeCollapseState(isCollapsed: isCollapsed)
+            }
         } else {
             type = .navigation(PPNavigationController())
         }
     }
+
+    /// iPad only, called when switching between showing both columns and a single page (Split View, Slide Over)
+    open func splitViewDidChangeCollapseState(isCollapsed: Bool) {}
 
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
@@ -312,8 +319,9 @@ final class PPNavigationController: UINavigationController, UIGestureRecognizerD
     }
 }
 
-final class PPSplitViewController: UISplitViewController {
+final class PPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
+    var onCollapseStateChange: ((Bool) -> Void)?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle
@@ -321,6 +329,7 @@ final class PPSplitViewController: UISplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        delegate = self
         registerForTraitChanges([
             UITraitHorizontalSizeClass.self,
             UITraitVerticalSizeClass.self
@@ -332,5 +341,13 @@ final class PPSplitViewController: UISplitViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         show(.primary)
+    }
+
+    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
+        onCollapseStateChange?(true)
+    }
+
+    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        onCollapseStateChange?(false)
     }
 }

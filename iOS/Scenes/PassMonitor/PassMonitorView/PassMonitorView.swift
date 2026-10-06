@@ -183,8 +183,10 @@ struct PassMonitorView: View {
             }
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .swipeBackEnabled()
             .navigationStackEmbeded($router.path)
             .environment(router)
+            .onReceive(.splitViewCollapseStateDidChange) { router.popToRoot() }
             .task {
                 await viewModel.refresh(fromView: true)
             }
@@ -387,16 +389,22 @@ private extension PassMonitorView {
                 .interactionNormMinor1)
     }
 
+    func showDarkWebMonitor(_ breaches: UserBreaches) {
+        if viewModel.showsDarkWebMonitorInDetailPane {
+            viewModel.showDarkWebMonitorInDetailPane(breaches)
+        } else {
+            router.navigate(to: .darkWebMonitorHome(breaches))
+        }
+        viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
+    }
+
     @ViewBuilder
     func breachedRow(_ breaches: UserBreaches) -> some View {
         if !breaches.breached {
             passMonitorRow(rowType: .success,
                            title: "Dark Web Monitoring",
                            subTitle: "No breaches detected",
-                           action: {
-                               router.navigate(to: .darkWebMonitorHome(breaches))
-                               viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
-                           })
+                           action: { showDarkWebMonitor(breaches) })
         } else {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                 HStack {
@@ -444,10 +452,7 @@ private extension PassMonitorView {
                 CapsuleTextButton(title: #localized("View details"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.passwordInteractionNormMajor2,
-                                  action: {
-                                      router.navigate(to: .darkWebMonitorHome(breaches))
-                                      viewModel.addTelemetryEvent(with: .monitorDisplayDarkWebMonitoring)
-                                  })
+                                  action: { showDarkWebMonitor(breaches) })
             }
             .padding(24)
             .roundedDetailSection(backgroundColor: breaches.breached ? PassColor
