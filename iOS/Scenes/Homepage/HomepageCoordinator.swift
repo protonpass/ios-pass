@@ -43,6 +43,10 @@ import StoreKit
 import Stores
 import SwiftUI
 
+extension Notification.Name {
+    static let splitViewCollapseStateDidChange = Notification.Name(rawValue: "splitViewCollapseStateDidChange")
+}
+
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
@@ -149,6 +153,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
         sendUserMonitoringStatsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
+    }
+
+    override func splitViewDidChangeCollapseState(isCollapsed: Bool) {
+        NotificationCenter.default.post(name: .splitViewCollapseStateDidChange, object: nil)
     }
 }
 
@@ -710,6 +718,9 @@ extension HomepageCoordinator {
 
                 case let .securityDetail(filter):
                     presentSecurity(filter)
+
+                case let .darkWebMonitorHome(breaches):
+                    push(DarkWebMonitorDetailPaneView(userBreaches: breaches))
 
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
@@ -1434,16 +1445,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentSecurity(_ type: MonitorListSection) {
-        let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
-                                                        isSheet: isSheet),
-                       isSheet: isSheet)
-
-        if results.isSheet {
-            present(results.view)
-        } else {
-            push(results.view)
-        }
+        push(SecurityWeaknessDetailView(viewModel: .init(type: type)))
     }
 }
 
