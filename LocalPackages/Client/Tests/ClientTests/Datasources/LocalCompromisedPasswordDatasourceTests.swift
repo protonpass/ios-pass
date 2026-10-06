@@ -120,6 +120,21 @@ struct LocalCompromisedPasswordDatasourceTests {
         #expect(result == [updated])
     }
     
+    @Test func `upsert overwrites existing values with model default values`() async throws {
+        let userId = UUID().uuidString
+        let original = CompromisedPasswordCheck.random(etag: "etag", breachCount: 5)
+        let updated = CompromisedPasswordCheck.random(shareId: original.shareId,
+                                                      itemId: original.itemId,
+                                                      etag: "",
+                                                      breachCount: 0)
+
+        try await sut.upsert([original], userId: userId)
+        try await sut.upsert([updated], userId: userId)
+
+        let result = try await sut.getChecks(userId: userId)
+        #expect(result == [updated])
+    }
+
     @Test func `upsert updates existing rows and inserts new ones in the same call`() async throws {
         let userId = UUID().uuidString
         let existing = CompromisedPasswordCheck.random()
