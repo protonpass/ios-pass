@@ -26,13 +26,9 @@ import SwiftUI
 
 extension PasswordStrength? {
     @MainActor
-    func sectionTitle(reuseCount: Int?) -> String {
+    var sectionTitle: String {
         if let self {
-            if let reuseCount {
-                #localized("Password") + " • " + self.title + " • " + "Reused" + " (\(reuseCount))"
-            } else {
-                #localized("Password") + " • " + self.title
-            }
+            #localized("Password") + " • " + self.title
         } else {
             #localized("Password")
         }

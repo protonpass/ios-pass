@@ -127,6 +127,15 @@ class BaseItemDetailViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passMonitorPerCheckExclusion)
     }
 
+    /// When true, "Include for monitoring" is always offered and clears every exclusion, not just the full one
+    var restoresAllMonitoring: Bool {
+        false
+    }
+
+    var offersIncludeInMonitoring: Bool {
+        !isMonitored || restoresAllMonitoring
+    }
+
     var isAllowedToEdit: Bool {
         guard let vault else {
             return false
@@ -322,17 +331,22 @@ class BaseItemDetailViewModel: ObservableObject {
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                let flag = weakness.flag(isMonitored)
-                logger.trace("Updating monitoring flag \(flag) for \(itemContent.debugDescription)")
+                let including = offersIncludeInMonitoring
+                let flags = if case .fullyExcluded = weakness, restoresAllMonitoring {
+                    itemContent.item.flagsToRestoreMonitoring
+                } else {
+                    [weakness.flag(isMonitored)]
+                }
+                logger.trace("Updating monitoring flags \(flags) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, flag: flag)
-                logger.trace("Updated monitoring flag \(flag) for \(itemContent.debugDescription)")
+                try await toggleItemMonitoring(item: itemContent, flags: flags)
+                logger.trace("Updated monitoring flags \(flags) for \(itemContent.debugDescription)")
                 switch weakness {
                 case .fullyExcluded:
-                    if isMonitored {
-                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
-                    } else {
+                    if including {
                         router.display(element: .successMessage(#localized("Item included for monitoring")))
+                    } else {
+                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
                     }
 
                 case let .weakness(kind, isExcluded):
