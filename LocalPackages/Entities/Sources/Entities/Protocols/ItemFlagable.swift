@@ -75,6 +75,10 @@ public extension ItemFlagable {
     var suppressedChecks: Set<WeaknessKind> {
         Set(WeaknessKind.allCases.filter { itemFlags.contains($0.skipFlag) })
     }
+
+    var flagsToRestoreMonitoring: [ItemFlag] {
+        [.skipHealthCheck(false)] + suppressedChecks.sorted().map { .skip($0, false) }
+    }
 }
 
 public struct ItemFlags: Sendable, OptionSet {
