@@ -31,7 +31,7 @@ import Stores
 final class CxpExportViewModel {
     private(set) var verifyingPassword = false
     private(set) var passwordVerified = false
-    var passwordVerificationError: (any Error)?
+    var passwordVerificationErrorMessage: String?
 
     let vaults: [ShareContent]
     private(set) var selectedShareIds = Set<String>()
@@ -68,7 +68,7 @@ extension CxpExportViewModel {
         let shareId = shareContent.share.shareId
         if selectedShareIds.contains(shareId) {
             selectedShareIds.remove(shareId)
-        } else if shareContent.exportable {
+        } else {
             selectedShareIds.insert(shareId)
         }
     }
@@ -78,10 +78,13 @@ extension CxpExportViewModel {
             defer { verifyingPassword = false }
             verifyingPassword = true
             do {
-                try await verifyPassword(password)
-                passwordVerified = true
+                if try await verifyPassword(password) {
+                    passwordVerified = true
+                } else {
+                    passwordVerificationErrorMessage = #localized("Wrong password", bundle: .module)
+                }
             } catch {
-                passwordVerificationError = error
+                passwordVerificationErrorMessage = error.localizedDescription
             }
         }
     }

@@ -23,7 +23,8 @@ import Client
 import ProtonCorePasswordRequest
 
 public protocol VerifyPasswordUseCase: Sendable {
-    func callAsFunction(_ password: String) async throws
+    /// Returns `false` for a wrong password and throws for any other failure
+    func callAsFunction(_ password: String) async throws -> Bool
 }
 
 public struct VerifyPassword: VerifyPasswordUseCase {
@@ -36,7 +37,7 @@ public struct VerifyPassword: VerifyPasswordUseCase {
         self.apiManager = apiManager
     }
 
-    public func callAsFunction(_ password: String) async throws {
+    public func callAsFunction(_ password: String) async throws -> Bool {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let apiService = try apiManager.getApiService(userId: userData.user.ID)
         let verifier = PasswordVerifier(apiService: apiService,
@@ -44,7 +45,7 @@ public struct VerifyPassword: VerifyPasswordUseCase {
                                         endpoint: UnlockEndpoint(),
                                         missingScopeMode: .default)
 
-        try await withCheckedThrowingContinuation { continuation in
+        return try await withCheckedThrowingContinuation { continuation in
             verifier.fetchAuthInfo { authInfoResult in
                 switch authInfoResult {
                 case let .success(authInfo):
@@ -52,7 +53,10 @@ public struct VerifyPassword: VerifyPasswordUseCase {
                                             authInfo: authInfo) { verificationResult in
                         switch verificationResult {
                         case .success:
-                            continuation.resume()
+                            continuation.resume(returning: true)
+
+                        case .failure(.wrongPassword):
+                            continuation.resume(returning: false)
 
                         case let .failure(error):
                             continuation.resume(throwing: error)

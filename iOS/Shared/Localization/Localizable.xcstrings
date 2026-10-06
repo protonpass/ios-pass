@@ -170829,6 +170829,16 @@
         }
       }
     },
+    "Your organization doesn't allow exporting data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your organization doesn't allow exporting data"
+          }
+        }
+      }
+    },
     "Your plan only allows to use items from your first 2 vaults for autofill purposes." : {
       "comment" : "Message displayed for free user at the launch of autofill extension when displaying items",
       "localizations" : {

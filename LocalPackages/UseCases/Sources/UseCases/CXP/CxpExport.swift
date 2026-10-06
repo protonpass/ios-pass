@@ -56,14 +56,16 @@ public struct CxpExport: CxpExportUseCase {
         guard exportOptions.formatVersion == .v1 else {
             throw PassError.unsupportedCxfVersion(exportOptions.formatVersion.rawValue)
         }
-        let payload = try await exportPayload(shares: shares)
-        let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(payload.utf8))
+        let data = try await exportedCredentialData(shares: shares)
         try await manager.exportCredentials(data)
     }
 }
 
 private extension CxpExport {
-    func exportPayload(shares: [Entities.Share]) async throws -> String {
+    /// Decrypts and serializes every exported item, so keep it off the main actor
+    @available(iOS 26.0, *)
+    @concurrent
+    func exportedCredentialData(shares: [Entities.Share]) async throws -> ASExportedCredentialData {
         let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let itemsByShareId = try await Dictionary(grouping: itemRepository.getItems(userId: userId,
@@ -88,6 +90,7 @@ private extension CxpExport {
                                    exporterRpId: "proton.me",
                                    exporterDisplayName: "Proton Pass",
                                    timestamp: UInt64(Date.now.timeIntervalSince1970))
-        return try cxfSerialization.export(input: input).payload
+        let payload = try cxfSerialization.export(input: input).payload
+        return try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(payload.utf8))
     }
 }

@@ -35,7 +35,6 @@ public struct CxpExportView: View {
     public var body: some View {
         if viewModel.passwordVerified {
             mainContent
-                .animation(.default, value: viewModel.passwordVerified)
         } else {
             PassColor.backgroundNorm
                 .ignoresSafeArea()
@@ -56,7 +55,7 @@ public struct CxpExportView: View {
                                 bundle: .module)
                        })
                 .alert(LocalizedStringResource("Error occurred", bundle: .module),
-                       isPresented: $viewModel.passwordVerificationError.mappedToBool(),
+                       isPresented: $viewModel.passwordVerificationErrorMessage.mappedToBool(),
                        actions: {
                            Button(LocalizedStringResource("Retry", bundle: .module),
                                   action: {
@@ -67,8 +66,8 @@ public struct CxpExportView: View {
                            cancelButton
                        },
                        message: {
-                           if let error = viewModel.passwordVerificationError {
-                               Text(verbatim: error.localizedDescription)
+                           if let message = viewModel.passwordVerificationErrorMessage {
+                               Text(verbatim: message)
                            }
                        })
         }
@@ -138,11 +137,11 @@ private extension CxpExportView {
             }
         }
         .animation(.default, value: isSelected)
-        .disabled(!vault.exportable)
         .opacity(vault.exportable ? 1 : 0.5)
         .buttonEmbeded {
             viewModel.toggleSelection(vault)
         }
+        .disabled(!vault.exportable)
     }
 
     @ToolbarContentBuilder

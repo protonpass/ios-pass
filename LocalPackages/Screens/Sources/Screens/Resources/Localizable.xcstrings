@@ -38410,6 +38410,16 @@
         }
       }
     },
+    "Imported on %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported on %@"
+          }
+        }
+      }
+    },
     "Imported successfully" : {
       "comment" : "Title of the alert after successfully importing items",
       "localizations" : {
@@ -74776,6 +74786,16 @@
         }
       }
     },
+    "Upgrade your plan to get enough vaults for this import." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade your plan to get enough vaults for this import."
+          }
+        }
+      }
+    },
     "Upload failed" : {
       "localizations" : {
         "be" : {
@@ -81188,6 +81208,16 @@
         }
       }
     },
+    "Wrong password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong password"
+          }
+        }
+      }
+    },
     "You are about to permanently delete %lld aliases" : {
       "localizations" : {
         "be" : {
@@ -82214,6 +82244,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您还没有任何保险库"
+          }
+        }
+      }
+    },
+    "Your organization doesn't allow creating the vaults this import needs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your organization doesn't allow creating the vaults this import needs."
           }
         }
       }
