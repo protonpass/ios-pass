@@ -50,7 +50,6 @@ public struct CxpImportView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
         .background(PassColor.backgroundNorm)
-        .interactiveDismissDisabled(viewModel.importing)
         .animation(.default, value: viewModel.importedCount)
         .alert(Text("Imported successfully", bundle: .module),
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
@@ -66,11 +65,17 @@ public struct CxpImportView: View {
                    }
                })
         .alert(Text("Error occurred", bundle: .module),
-               isPresented: $viewModel.error.mappedToBool(),
-               actions: { Button(action: {}, label: { Text("OK", bundle: .module) }) },
+               isPresented: $viewModel.errorMessage.mappedToBool(),
+               actions: {
+                   Button(action: {
+                       // Some vaults may already be imported
+                       onSuccess()
+                       dismiss()
+                   }, label: { Text("OK", bundle: .module) })
+               },
                message: {
-                   if let error = viewModel.error {
-                       Text(verbatim: error.localizedDebugDescription)
+                   if let message = viewModel.errorMessage {
+                       Text(verbatim: message)
                    }
                })
         .idleTimerDisabled(viewModel.importing)

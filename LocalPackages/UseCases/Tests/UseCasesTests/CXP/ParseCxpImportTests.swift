@@ -28,8 +28,7 @@ import Testing
 struct ParseCxpImportTests {
     let sut = ParseCxpImport()
 
-    @Test
-    func `group items by collection`() throws {
+    @Test func `group items by collection`() throws {
         let result = try sut.parse(payload: CxfFixture.multiVault, exporterName: "Exporter")
 
         #expect(result.exporterName == "Exporter")
@@ -39,8 +38,7 @@ struct ParseCxpImportTests {
         #expect(result.vaults.flatMap(\.items).map(\.note) == ["Note one", "Note two"])
     }
 
-    @Test
-    func `map login with passkey and totp`() throws {
+    @Test func `map login with passkey and totp`() throws {
         let result = try sut.parse(payload: CxfFixture.loginPasskeyTotp, exporterName: "Exporter")
 
         let item = try #require(result.vaults.first?.items.first)
@@ -55,16 +53,14 @@ struct ParseCxpImportTests {
         #expect(!login.totpUri.isEmpty)
     }
 
-    @Test
-    func `throw on malformed payload`() {
+    @Test func `throw on malformed payload`() {
         #expect(throws: (any Error).self) {
             try sut.parse(payload: "{}", exporterName: "Exporter")
         }
     }
 
     @available(iOS 26.0, *)
-    @Test
-    func `apple credential data round-trips to a parsable payload`() throws {
+    @Test func `apple credential data round-trips to a parsable payload`() throws {
         let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self,
                                               from: Data(CxfFixture.loginPasskeyTotp.utf8))
         let payload = try #require(try String(bytes: JSONEncoder.cxf.encode(data), encoding: .utf8))
@@ -76,8 +72,7 @@ struct ParseCxpImportTests {
     }
 
     @available(iOS 26.0, *)
-    @Test
-    func `apple credential data with fractional timestamp encodes to a parsable payload`() throws {
+    @Test func `apple credential data with fractional timestamp encodes to a parsable payload`() throws {
         let fixture = CxfFixture.loginPasskeyTotp.replacing("1700000000", with: "1700000000.823753")
         let data = try JSONDecoder.cxf.decode(ASExportedCredentialData.self, from: Data(fixture.utf8))
         let payload = try #require(try String(bytes: JSONEncoder.cxf.encode(data), encoding: .utf8))

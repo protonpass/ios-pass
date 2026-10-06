@@ -1237,8 +1237,12 @@ public extension UseCasesContainer {
     }
 
     var importCxpItems: Factory<any ImportCxpItemsUseCase> {
-        self { ImportCxpItems(shareRepository: self.shareRepository,
-                              itemRepository: self.itemRepository) }
+        self { ImportCxpItems(userManager: self.userManager,
+                              accessRepository: self.accessRepository,
+                              organizationRepository: self.organizationRepository,
+                              shareRepository: self.shareRepository,
+                              itemRepository: self.itemRepository,
+                              checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
     }
 
     var cxpExport: Factory<any CxpExportUseCase> {

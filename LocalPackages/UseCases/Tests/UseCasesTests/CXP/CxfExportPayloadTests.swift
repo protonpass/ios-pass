@@ -28,8 +28,7 @@ import Testing
 @Suite(.tags(.cxp))
 struct CxfExportPayloadTests {
     @available(iOS 26.0, *)
-    @Test
-    func `rust export payload decodes into apple credential data`() throws {
+    @Test func `rust export payload decodes into apple credential data`() throws {
         let passSerialization = ProtonPassSerialization()
         let login = ItemContentProtobuf(name: "Proton",
                                         note: "",

@@ -24,13 +24,13 @@ import Entities
 import Foundation
 
 public protocol CreateVaultAndImportLoginsUseCase: Sendable {
-    func execute(userId: String, logins: [CsvLogin], vaultName: String?) async throws
+    func execute(userId: String, logins: [CsvLogin], vaultName: String) async throws
 }
 
 public extension CreateVaultAndImportLoginsUseCase {
     func callAsFunction(userId: String,
                         logins: [CsvLogin],
-                        vaultName: String? = nil) async throws {
+                        vaultName: String) async throws {
         try await execute(userId: userId, logins: logins, vaultName: vaultName)
     }
 }
@@ -45,10 +45,7 @@ public final class CreateVaultAndImportLogins: CreateVaultAndImportLoginsUseCase
         self.itemRepository = itemRepository
     }
 
-    public func execute(userId: String, logins: [CsvLogin], vaultName: String?) async throws {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd 'at' HH.mm.ss"
-        let vaultName = vaultName ?? "Imported on \(formatter.string(from: .now))"
+    public func execute(userId: String, logins: [CsvLogin], vaultName: String) async throws {
         let share = try await shareRepository.createVault(userId: userId,
                                                           vault: .init(name: vaultName,
                                                                        description: "",

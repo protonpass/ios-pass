@@ -41,6 +41,13 @@ public struct ParseCxpImport: ParseCxpImportUseCase {
     @available(iOS 26.0, *)
     public func callAsFunction(token: UUID) async throws -> CxpImportResult {
         let data = try await ASCredentialImportManager().importCredentials(token: token)
+        return try await parse(data: data)
+    }
+
+    /// Serializes the whole import, so keep it off the main actor
+    @available(iOS 26.0, *)
+    @concurrent
+    private func parse(data: ASExportedCredentialData) async throws -> CxpImportResult {
         guard let payload = try String(bytes: JSONEncoder.cxf.encode(data), encoding: .utf8) else {
             throw PassError.unexpectedError
         }

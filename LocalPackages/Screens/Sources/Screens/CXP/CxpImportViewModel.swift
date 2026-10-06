@@ -33,7 +33,7 @@ final class CxpImportViewModel {
     let itemCount: Int
     private(set) var importedCount: Int?
     var importSuccessMessage: String?
-    var error: (any Error)?
+    var errorMessage: String?
 
     private let result: CxpImportResult
     private let getCxpImportSummary = dependency(\UseCasesContainer.getCxpImportSummary)
@@ -55,20 +55,32 @@ final class CxpImportViewModel {
 }
 
 extension CxpImportViewModel {
+    /// One-shot: a failure can leave some vaults imported, so retrying would duplicate them
     func startImporting() {
+        guard importedCount == nil else { return }
+        importedCount = 0
         Task { [weak self] in
             guard let self else { return }
-            defer { importedCount = nil }
-            importedCount = 0
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await importCxpItems(userId: userId, result: result) { @MainActor [weak self] count in
+                let defaultVaultName = #localized("Imported on %@",
+                                                  bundle: .module,
+                                                  Date.now.formatted(date: .numeric, time: .shortened))
+                try await importCxpItems(userId: userId,
+                                         result: result,
+                                         defaultVaultName: defaultVaultName) { @MainActor [weak self] count in
                     guard let self else { return }
                     importedCount = count
                 }
                 importSuccessMessage = #localized("%lld items imported", bundle: .module, itemCount)
+            } catch PassError.importer(.vaultLimitReached) {
+                errorMessage = #localized("Upgrade your plan to get enough vaults for this import.",
+                                          bundle: .module)
+            } catch PassError.importer(.vaultCreationNotAllowed) {
+                errorMessage = #localized("Your organization doesn't allow creating the vaults this import needs.",
+                                          bundle: .module)
             } catch {
-                self.error = error
+                errorMessage = error.localizedDebugDescription
                 logger.error(error)
             }
         }
