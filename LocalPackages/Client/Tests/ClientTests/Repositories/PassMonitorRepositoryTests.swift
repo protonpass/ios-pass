@@ -79,7 +79,6 @@ struct PassMonitorRepositoryTests {
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
         shareRepository = ShareRepositoryProtocolMock()
-        // The init-time `setup()` refresh can call `getShares` before a test stubs it, and the mock force-unwraps
         shareRepository.stubbedGetSharesResult = []
         // Free plan => compromised-password detection (a paid feature) is skipped, so these tests
         // exercise only the local weakness checks.
@@ -662,6 +661,22 @@ struct PassMonitorRepositoryTests {
 
         #expect(reused.count == 1)
         #expect(reused.first == (try partner.getItemContent(symmetricKey: key)))
+    }
+
+    @Test
+    func `item updates refresh the security checks only once monitoring has started`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords])
+
+        itemRepository.itemsWereUpdated.send()
+        // Longer than the 300 ms debounce, so a subscription made without startMonitoring would have fired
+        try await Task.sleep(for: .milliseconds(500))
+        #expect(itemRepository.invokedGetActiveLogInItemsCount == 0)
+
+        await sut.startMonitoring()
+        itemRepository.itemsWereUpdated.send()
+
+        let stats = await sut.weaknessStats.values.first { $0 != nil }
+        #expect(stats??.count(for: .weakPassword) == 1)
     }
 }
 

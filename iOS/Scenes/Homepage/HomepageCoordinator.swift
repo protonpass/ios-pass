@@ -140,7 +140,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
             await suggestSimpleLoginSyncIfApplicable()
         }
         refreshOrganizationAndOverrideSecuritySettings()
-        refreshAccessAndMonitorStateSync()
+        startPassMonitoring()
         refreshSettings()
         // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
         // for this user before building this coordinator.
@@ -188,6 +188,7 @@ private extension HomepageCoordinator {
                 }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
+                refreshAccessAndMonitorStateSync()
 
                 Task { [weak self] in
                     guard let self else { return }
@@ -398,6 +399,13 @@ private extension HomepageCoordinator {
                                   reason: "folders migration")
         } catch {
             logger.error(message: "Failed folder force sync check", error: error)
+        }
+    }
+
+    func startPassMonitoring() {
+        Task { [weak self] in
+            guard let self else { return }
+            await passMonitorRepository.startMonitoring()
         }
     }
 
