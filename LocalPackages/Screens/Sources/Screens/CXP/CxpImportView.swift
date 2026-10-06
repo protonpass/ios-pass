@@ -73,6 +73,7 @@ public struct CxpImportView: View {
                        Text(verbatim: error.localizedDebugDescription)
                    }
                })
+        .idleTimerDisabled(viewModel.importing)
     }
 }
 
