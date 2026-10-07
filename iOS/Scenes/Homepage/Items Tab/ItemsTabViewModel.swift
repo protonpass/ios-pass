@@ -66,7 +66,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
 
     private let itemRepository = dependency(\RepositoryContainer.itemRepository)
-    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let logger = dependency(\ToolingContainer.logger)
     private let loginMethod = dependency(\DataContainer.loginMethod)
     private let getPendingUserInvitations = dependency(\UseCasesContainer.getPendingUserInvitations)
