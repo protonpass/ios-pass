@@ -50,11 +50,12 @@ public extension LocalCompromisedPasswordDatasource {
         }
         let context = newTaskContext(type: .insert)
         // The (userID, shareID, itemID) uniqueness constraint makes the batch insert overwrite
-        // existing rows, so no fetch-and-match pass is needed
-        let request = newBatchInsertRequest(entity: CompromisedPasswordCheckEntity.entity(context: context),
-                                            sourceItems: checks) { object, check in
-            (object as? CompromisedPasswordCheckEntity)?.hydrate(from: check, userId: userId)
-        }
+        // existing rows, so no fetch-and-match pass is needed.
+        // Dictionaries rather than `newBatchInsertRequest`: when overwriting, the managed-object handler
+        // drops attributes set to their model default (breachCount 0, empty etag), keeping stale values
+        let objects = checks.map { CompromisedPasswordCheckEntity.batchInsertValues(from: $0, userId: userId) }
+        let request = NSBatchInsertRequest(entity: CompromisedPasswordCheckEntity.entity(context: context),
+                                           objects: objects)
         try await execute(batchInsertRequest: request, context: context)
     }
 
