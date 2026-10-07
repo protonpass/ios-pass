@@ -55,7 +55,7 @@ struct ImportCxpItemsTests {
         let progress = OSAllocatedUnfairLock(initialState: [Int]())
         let sut = makeSut()
 
-        try await sut(userId: "user", result: result, defaultVaultName: "Default") { count in
+        try await sut(userId: "user", result: result, defaultVaultContent: .defaultVault) { count in
             progress.withLock { $0.append(count) }
         }
 
@@ -72,7 +72,7 @@ struct ImportCxpItemsTests {
                                      vaults: CxpImportResult.twoVaults.vaults + [.init(vault: nil, items: [])])
         let sut = makeSut(allowance: allowance)
 
-        try await sut(userId: "user", result: result, defaultVaultName: "Default", onProgress: nil)
+        try await sut(userId: "user", result: result, defaultVaultContent: .defaultVault, onProgress: nil)
 
         #expect(allowance.requestedVaultCounts.withLock { $0 } == [2])
     }
@@ -86,7 +86,7 @@ struct ImportCxpItemsTests {
         let sut = makeSut(allowance: VaultCreationAllowanceStub(allowance: allowance))
 
         await #expect(throws: expectedError) {
-            try await sut(userId: "user", result: .twoVaults, defaultVaultName: "Default", onProgress: nil)
+            try await sut(userId: "user", result: .twoVaults, defaultVaultContent: .defaultVault, onProgress: nil)
         }
         #expect(await shareRepository.invokedCreateVaultCount == 0)
     }
@@ -124,5 +124,11 @@ private extension CxpImportResult {
 private extension ItemContentProtobuf {
     static func note(name: String) -> Self {
         .init(name: name, note: "", itemUuid: UUID().uuidString, data: .note, customFields: [])
+    }
+}
+
+private extension VaultContent {
+    static var defaultVault: Self {
+        .init(name: "Default", description: "", color: .color1, icon: .icon1)
     }
 }
