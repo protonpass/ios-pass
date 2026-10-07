@@ -63,6 +63,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresen
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
     @Published private(set) var spotlightVaults: [Share]?
 
+    let isShownAsSheet: Bool
+
     private var cancellables = Set<AnyCancellable>()
 
     var browser: Browser {
@@ -77,7 +79,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresen
         getSharedPreferences().clipboardExpiration
     }
 
-    init() {
+    init(isShownAsSheet: Bool) {
+        self.isShownAsSheet = isShownAsSheet
         let sharedPreferences = getSharedPreferences()
         let userPreferences = getUserPreferences()
 
@@ -101,7 +104,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresen
 
 extension SettingsViewModel {
     func goBack() {
-        router.action(.back(isShownAsSheet: false))
+        router.action(.back(isShownAsSheet: isShownAsSheet))
     }
 
     func update(browser: Browser) {

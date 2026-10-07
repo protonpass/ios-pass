@@ -26,7 +26,7 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var viewModel: SettingsViewModel
     @State private var sheet: Sheet?
 
     private enum Sheet: String, Identifiable {
@@ -37,6 +37,10 @@ struct SettingsView: View {
         var id: String {
             rawValue
         }
+    }
+
+    init(isShownAsSheet: Bool) {
+        _viewModel = .init(wrappedValue: .init(isShownAsSheet: isShownAsSheet))
     }
 
     var body: some View {
@@ -87,10 +91,10 @@ private extension SettingsView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.chevronLeft,
+            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Go back",
+                         accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back",
                          action: { viewModel.goBack() })
         }
     }

@@ -96,7 +96,10 @@ struct ProfileTabView: View {
                     }
 
                 case .bugReport:
-                    BugReportView(onSuccess: viewModel.showReportSuccessMessage)
+                    BugReportView(onSuccess: {
+                        self.sheet = nil
+                        viewModel.showReportSuccessMessage()
+                    })
 
                 case .importFromChrome:
                     ImportFromChromeInstructions()
