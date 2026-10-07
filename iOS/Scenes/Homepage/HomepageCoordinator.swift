@@ -155,7 +155,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
         cleanUpPasswordHistory()
     }
 
-    override func splitViewDidChangeCollapseState(isCollapsed: Bool) {
+    override func splitViewDidChangeCollapseState() {
         NotificationCenter.default.post(name: .splitViewCollapseStateDidChange, object: nil)
     }
 }
