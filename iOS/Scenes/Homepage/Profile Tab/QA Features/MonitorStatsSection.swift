@@ -28,7 +28,7 @@ struct MonitorStatsSection: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(verbatim: "Monitor stats last sent: \(lastSentDescription)")
-            Text(verbatim: "Reset to resend stats on next foreground (business plan only)")
+            Text(verbatim: "Reset to resend stats on next foreground or app launch (business plan only)")
                 .foregroundStyle(.secondary)
                 .font(.footnote)
 
