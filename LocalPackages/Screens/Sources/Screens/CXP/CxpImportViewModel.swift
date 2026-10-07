@@ -63,12 +63,9 @@ extension CxpImportViewModel {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                let defaultVaultName = #localized("Imported on %@",
-                                                  bundle: .module,
-                                                  Date.now.formatted(date: .numeric, time: .shortened))
                 try await importCxpItems(userId: userId,
                                          result: result,
-                                         defaultVaultName: defaultVaultName) { @MainActor [weak self] count in
+                                         defaultVaultContent: .importedVault()) { @MainActor [weak self] count in
                     guard let self else { return }
                     importedCount = count
                 }

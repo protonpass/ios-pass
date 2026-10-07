@@ -23,31 +23,20 @@ import Entities
 import Foundation
 
 public protocol ImportCxpItemsUseCase: Sendable {
-    /// Throws `PassError.importer(.vaultLimitReached)` or `.vaultCreationNotAllowed`
-    /// before importing anything when the needed vaults can't all be created
     func callAsFunction(userId: String,
                         result: CxpImportResult,
-                        defaultVaultName: String,
+                        defaultVaultContent: VaultContent,
                         onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws
 }
 
 public struct ImportCxpItems: ImportCxpItemsUseCase {
-    private let userManager: any UserManagerProtocol
-    private let accessRepository: any AccessRepositoryProtocol
-    private let organizationRepository: any OrganizationRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let checkVaultCreationAllowance: any CheckVaultCreationAllowanceUseCase
 
-    public init(userManager: any UserManagerProtocol,
-                accessRepository: any AccessRepositoryProtocol,
-                organizationRepository: any OrganizationRepositoryProtocol,
-                shareRepository: any ShareRepositoryProtocol,
+    public init(shareRepository: any ShareRepositoryProtocol,
                 itemRepository: any ItemRepositoryProtocol,
                 checkVaultCreationAllowance: any CheckVaultCreationAllowanceUseCase) {
-        self.userManager = userManager
-        self.accessRepository = accessRepository
-        self.organizationRepository = organizationRepository
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.checkVaultCreationAllowance = checkVaultCreationAllowance
@@ -55,47 +44,31 @@ public struct ImportCxpItems: ImportCxpItemsUseCase {
 
     public func callAsFunction(userId: String,
                                result: CxpImportResult,
-                               defaultVaultName: String,
+                               defaultVaultContent: VaultContent,
                                onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
-        let importedVaults = result.vaults.filter { !$0.items.isEmpty }
-        try await checkCanCreate(newVaultCount: importedVaults.count, userId: userId)
+        let importableVaults = result.vaults.filter { !$0.items.isEmpty }
+        switch try await checkVaultCreationAllowance(userId: userId,
+                                                     newVaultCount: importableVaults.count) {
+        case .allowed:
+            break
+
+        case .vaultLimitReached:
+            throw PassError.importer(.vaultLimitReached)
+
+        case .notAllowedByOrganization:
+            throw PassError.importer(.vaultCreationNotAllowed)
+        }
 
         var importedCount = 0
-        for importedVault in importedVaults {
-            let vault = importedVault.vault ?? .init(name: defaultVaultName,
-                                                     description: "",
-                                                     color: .color1,
-                                                     icon: .icon1)
+        for importableVault in importableVaults {
+            let vault = importableVault.vault ?? defaultVaultContent
             let share = try await shareRepository.createVault(userId: userId, vault: vault)
             let offset = importedCount
             try await itemRepository.importItems(userId: userId,
                                                  shareId: share.shareId,
-                                                 contents: importedVault.items,
+                                                 contents: importableVault.items,
                                                  onProgress: { await onProgress?(offset + $0) })
-            importedCount += importedVault.items.count
-        }
-    }
-}
-
-private extension ImportCxpItems {
-    func checkCanCreate(newVaultCount: Int, userId: String) async throws {
-        let vaultCount = try await shareRepository.getShares(userId: userId)
-            .count(where: \.share.isVaultRepresentation)
-        let plan = try await accessRepository.getPlan(userId: userId)
-        if let vaultLimit = plan.vaultLimit, vaultCount + newVaultCount > vaultLimit {
-            throw PassError.importer(.vaultLimitReached)
-        }
-
-        guard plan.isBusinessUser else { return }
-        let userData = try await userManager.getUserData(userId)
-        let organization = try await organizationRepository.getOrganization(userId: userId)
-        let allowed = (0..<newVaultCount).allSatisfy {
-            checkVaultCreationAllowance(userData: userData,
-                                        organization: organization,
-                                        vaultCount: vaultCount + $0)
-        }
-        if !allowed {
-            throw PassError.importer(.vaultCreationNotAllowed)
+            importedCount += importableVault.items.count
         }
     }
 }

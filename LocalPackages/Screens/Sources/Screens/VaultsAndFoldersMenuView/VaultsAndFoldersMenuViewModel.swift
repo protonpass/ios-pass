@@ -73,7 +73,7 @@ private extension VaultsAndFoldersMenuViewModel {
 public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private(set) var loading = false
     private(set) var state = AppContentState.loading
-    private(set) var organization: Entities.Organization?
+    private(set) var vaultCreationAllowed = true
     private(set) var hiddenShareIds = Set<String>()
     private(set) var mode: Mode = .view
     private(set) var folderLimits = FolderLimits.default
@@ -95,18 +95,18 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
     private let appContentManager = dependency(\ServiceContainer.appContentManager)
     private let userManager = dependency(\ServiceContainer.userManager)
     private let accessRepository = dependency(\RepositoryContainer.accessRepository)
-    private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
     private let getFeatureFlagStatus = dependency(\UseCasesContainer.getFeatureFlagStatus)
     private let reorganizeVaults = dependency(\UseCasesContainer.reorganizeVaults)
     private let itemRepository = dependency(\RepositoryContainer.itemRepository)
     private let checkVaultCreationAllowance = dependency(\UseCasesContainer.checkVaultCreationAllowance)
 
-    private var userData: UserData?
     private var plan: Plan?
     private var count: Count
     @ObservationIgnored
     private var cancellables = Set<AnyCancellable>()
     private var orderedVaults: [ShareContent] = []
+    @ObservationIgnored
+    private var vaultCreationAllowanceTask: Task<Void, Never>?
 
     var expandedContainerIds = Set<String>() {
         didSet {
@@ -119,12 +119,6 @@ public final class VaultsAndFoldersMenuViewModel: DeinitPrintable {
             guard let shareSelection, shareSelection != oldValue else { return }
             select(.precise(shareSelection))
         }
-    }
-
-    var vaultCreationAllowed: Bool {
-        checkVaultCreationAllowance(userData: userData,
-                                    organization: organization,
-                                    vaultCount: appContentManager.getVaultsCount())
     }
 
     var hasTrashItems: Bool {
@@ -522,21 +516,9 @@ private extension VaultsAndFoldersMenuViewModel {
                 count = .init(appContentManager: appContentManager)
                 refreshHiddenShareIds()
                 recomputeVaults()
+                refreshVaultCreationAllowance()
             }
             .store(in: &cancellables)
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userData = try await userManager.getUnwrappedActiveUserData()
-                if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
-                }
-                self.userData = userData
-            } catch {
-                handle(error)
-            }
-        }
 
         // Seeded synchronously: `access` already holds a value but `receive(on:)` only delivers it
         // on the next main loop turn, which would pop the folder UI in after the first render
@@ -576,6 +558,21 @@ private extension VaultsAndFoldersMenuViewModel {
             visibleVaults = ordered.filter { !hiddenShareIds.contains($0.id) }
         }
         hiddenVaults = ordered.filter { hiddenShareIds.contains($0.id) }
+    }
+
+    func refreshVaultCreationAllowance() {
+        vaultCreationAllowanceTask?.cancel()
+        vaultCreationAllowanceTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let allowance = try await checkVaultCreationAllowance(userId: userId, newVaultCount: 1)
+                guard !Task.isCancelled else { return }
+                vaultCreationAllowed = allowance != .notAllowedByOrganization
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func handle(_ error: any Error,
