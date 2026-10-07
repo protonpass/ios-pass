@@ -56,14 +56,16 @@ extension CompromisedPasswordCheckEntity {
 }
 
 extension CompromisedPasswordCheckEntity {
-    func hydrate(from check: CompromisedPasswordCheck, userId: String) {
-        userID = userId
-        shareID = check.shareId
-        itemID = check.itemId
-        passwordHash = check.passwordHash
-        prefix = check.prefix
-        etag = check.etag
-        breachCount = Int64(check.breachCount)
-        checkedAt = Int64(check.checkedAt)
+    static func batchInsertValues(from check: CompromisedPasswordCheck, userId: String) -> [String: Any] {
+        [
+            #keyPath(userID): userId,
+            #keyPath(shareID): check.shareId,
+            #keyPath(itemID): check.itemId,
+            #keyPath(passwordHash): check.passwordHash,
+            #keyPath(prefix): check.prefix,
+            #keyPath(etag): check.etag,
+            #keyPath(breachCount): Int64(check.breachCount),
+            #keyPath(checkedAt): Int64(check.checkedAt)
+        ]
     }
 }
