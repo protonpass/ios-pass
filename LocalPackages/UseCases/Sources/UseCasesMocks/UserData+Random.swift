@@ -22,7 +22,7 @@
 import ProtonCoreLogin
 
 public extension UserData {
-    static func random() -> UserData {
+    static func random(role: Int = .random(in: 0...100)) -> UserData {
         UserData(credential: .init(sessionID: .random(),
                                 accessToken: .random(),
                                 refreshToken: .random(),
@@ -41,7 +41,7 @@ public extension UserData {
                           maxBaseSpace: .random(in: 0...100),
                           maxDriveSpace: .random(in: 0...100),
                           maxUpload: .random(in: 0...100),
-                          role: .random(in: 0...100),
+                          role: role,
                           private: .random(in: 0...100),
                           subscribed: .vpn,
                           services: .random(in: 0...100),

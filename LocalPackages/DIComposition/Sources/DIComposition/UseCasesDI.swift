@@ -341,7 +341,10 @@ public extension UseCasesContainer {
     }
 
     var checkVaultCreationAllowance: Factory<any CheckVaultCreationAllowanceUseCase> {
-        self { CheckVaultCreationAllowance() }
+        self { CheckVaultCreationAllowance(userManager: self.userManager,
+                                           accessRepository: self.accessRepository,
+                                           organizationRepository: self.organizationRepository,
+                                           shareRepository: self.shareRepository) }
     }
 }
 
@@ -1237,10 +1240,7 @@ public extension UseCasesContainer {
     }
 
     var importCxpItems: Factory<any ImportCxpItemsUseCase> {
-        self { ImportCxpItems(userManager: self.userManager,
-                              accessRepository: self.accessRepository,
-                              organizationRepository: self.organizationRepository,
-                              shareRepository: self.shareRepository,
+        self { ImportCxpItems(shareRepository: self.shareRepository,
                               itemRepository: self.itemRepository,
                               checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
     }

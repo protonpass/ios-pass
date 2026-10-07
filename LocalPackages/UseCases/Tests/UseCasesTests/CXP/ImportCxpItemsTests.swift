@@ -24,23 +24,15 @@ import Entities
 import EntitiesMocks
 import Foundation
 import os
-import ProtonCoreLogin
 import Testing
 import UseCases
 
 @Suite(.tags(.cxp))
 struct ImportCxpItemsTests {
-    let userManager = UserManagerProtocolMock()
-    let accessRepository = AccessRepositoryProtocolMock()
-    let organizationRepository = OrganizationRepositoryProtocolMock()
     let shareRepository = ShareRepositoryProtocolMock()
     let itemRepository = ItemRepositoryProtocolMock()
 
     init() {
-        userManager.stubbedGetAllUsersResult = []
-        accessRepository.stubbedGetAccessResult = .mock(access: .mock(plan: .mock(vaultLimit: nil)))
-        organizationRepository.stubbedGetOrganizationResult = .init(canUpdate: false, settings: nil)
-        shareRepository.stubbedGetSharesResult = []
         shareRepository.stubbedCreateVaultResult = .random(shareID: "share")
         itemRepository.stubbedImportItemsOnProgressResult = (1, ())
     }
@@ -74,54 +66,48 @@ struct ImportCxpItemsTests {
         #expect(progress.withLock { $0 } == [1, 3])
     }
 
-    @Test func `import nothing when the plan vault limit would be exceeded`() async {
-        accessRepository.stubbedGetAccessResult = .mock(access: .mock(plan: .mock(vaultLimit: 2)))
-        shareRepository.stubbedGetSharesResult = [.vault()]
-        let sut = makeSut()
+    @Test func `check allowance only for the vaults that will be created`() async throws {
+        let allowance = VaultCreationAllowanceStub()
+        let result = CxpImportResult(exporterName: "Exporter",
+                                     vaults: CxpImportResult.twoVaults.vaults + [.init(vault: nil, items: [])])
+        let sut = makeSut(allowance: allowance)
 
-        await #expect(throws: PassError.importer(.vaultLimitReached)) {
+        try await sut(userId: "user", result: result, defaultVaultName: "Default", onProgress: nil)
+
+        #expect(allowance.requestedVaultCounts.withLock { $0 } == [2])
+    }
+
+    @Test(arguments: [
+        (VaultCreationAllowance.vaultLimitReached, PassError.importer(.vaultLimitReached)),
+        (.notAllowedByOrganization, PassError.importer(.vaultCreationNotAllowed))
+    ])
+    func `import nothing when the vaults can not all be created`(allowance: VaultCreationAllowance,
+                                                                 expectedError: PassError) async {
+        let sut = makeSut(allowance: VaultCreationAllowanceStub(allowance: allowance))
+
+        await #expect(throws: expectedError) {
             try await sut(userId: "user", result: .twoVaults, defaultVaultName: "Default", onProgress: nil)
         }
         #expect(await shareRepository.invokedCreateVaultCount == 0)
-    }
-
-    @Test func `import nothing when the organization disallows any of the needed vaults`() async {
-        accessRepository.stubbedGetAccessResult = .mock(access: .mock(plan: .mockBusinessPlan))
-        shareRepository.stubbedGetSharesResult = [.vault()]
-        let sut = makeSut(allowance: VaultCountAllowance(maxVaultCount: 2))
-
-        await #expect(throws: PassError.importer(.vaultCreationNotAllowed)) {
-            try await sut(userId: "user", result: .twoVaults, defaultVaultName: "Default", onProgress: nil)
-        }
-        #expect(await shareRepository.invokedCreateVaultCount == 0)
-    }
-
-    @Test func `organization policy is ignored for non business plans`() async throws {
-        let sut = makeSut(allowance: VaultCountAllowance(maxVaultCount: 0))
-
-        try await sut(userId: "user", result: .twoVaults, defaultVaultName: "Default", onProgress: nil)
-
-        #expect(await shareRepository.invokedCreateVaultCount == 2)
     }
 }
 
 private extension ImportCxpItemsTests {
-    func makeSut(allowance: any CheckVaultCreationAllowanceUseCase = VaultCountAllowance(maxVaultCount: .max))
+    func makeSut(allowance: any CheckVaultCreationAllowanceUseCase = VaultCreationAllowanceStub())
         -> any ImportCxpItemsUseCase {
-        ImportCxpItems(userManager: userManager,
-                       accessRepository: accessRepository,
-                       organizationRepository: organizationRepository,
-                       shareRepository: shareRepository,
+        ImportCxpItems(shareRepository: shareRepository,
                        itemRepository: itemRepository,
                        checkVaultCreationAllowance: allowance)
     }
 }
 
-private struct VaultCountAllowance: CheckVaultCreationAllowanceUseCase {
-    let maxVaultCount: Int
+private struct VaultCreationAllowanceStub: CheckVaultCreationAllowanceUseCase {
+    var allowance = VaultCreationAllowance.allowed
+    let requestedVaultCounts = OSAllocatedUnfairLock(initialState: [Int]())
 
-    func execute(userData: UserData?, organization: Entities.Organization?, vaultCount: Int) -> Bool {
-        vaultCount < maxVaultCount
+    func callAsFunction(userId: String, newVaultCount: Int) -> VaultCreationAllowance {
+        requestedVaultCounts.withLock { $0.append(newVaultCount) }
+        return allowance
     }
 }
 
@@ -132,12 +118,6 @@ private extension CxpImportResult {
                   .init(vault: nil, items: [.note(name: "Note 1")]),
                   .init(vault: nil, items: [.note(name: "Note 2")])
               ])
-    }
-}
-
-private extension SymmetricallyEncryptedShare {
-    static func vault() -> Self {
-        .init(encryptedContent: nil, share: .random(targetType: Int64(TargetType.vault.rawValue)))
     }
 }
 

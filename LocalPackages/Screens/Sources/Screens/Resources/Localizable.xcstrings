@@ -38410,16 +38410,6 @@
         }
       }
     },
-    "Imported on %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imported on %@"
-          }
-        }
-      }
-    },
     "Imported successfully" : {
       "comment" : "Title of the alert after successfully importing items",
       "localizations" : {

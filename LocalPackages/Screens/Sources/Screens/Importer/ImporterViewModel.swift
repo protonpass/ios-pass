@@ -124,9 +124,8 @@ private extension ImporterViewModel {
         } else {
             try await userManager.getActiveUserId()
         }
-        let vaultName = #localized("Imported on %@",
-                                   bundle: .module,
-                                   Date.now.formatted(date: .numeric, time: .shortened))
-        try await createVaultAndImportLogins(userId: userId, logins: logins, vaultName: vaultName)
+        try await createVaultAndImportLogins(userId: userId,
+                                             logins: logins,
+                                             vaultContent: .importedVault())
     }
 }
