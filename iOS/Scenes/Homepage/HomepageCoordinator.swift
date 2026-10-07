@@ -670,7 +670,7 @@ extension HomepageCoordinator {
                     presentSecurityKeys()
 
                 case let .settings(asSheet):
-                    showView(view: SettingsView(), asSheet: asSheet)
+                    showView(view: SettingsView(isShownAsSheet: asSheet), asSheet: asSheet)
 
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
