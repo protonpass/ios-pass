@@ -148,6 +148,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
         // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
         // for this user before building this coordinator.
         sendAllEventsIfApplicable()
+        sendUserMonitoringStatsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
     }
@@ -303,6 +304,7 @@ private extension HomepageCoordinator {
                         }
                         refresh(exitEditMode: false)
                         sendAllEventsIfApplicable()
+                        sendUserMonitoringStatsIfApplicable()
                         eventLoop.start()
                         eventLoop.forceSync()
                         refreshOrganizationAndOverrideSecuritySettings()
@@ -312,8 +314,6 @@ private extension HomepageCoordinator {
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
                         forceSyncForFoldersIfNeededForActiveUser()
-
-                        try await sendUserMonitoringStats()
                     } catch {
                         logger.error(message: "Failed to set up after entering foreground", error: error)
                     }
@@ -483,6 +483,17 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 try await telemetryEventRepository.sendAllEventsIfApplicable()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func sendUserMonitoringStatsIfApplicable() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await sendUserMonitoringStats()
             } catch {
                 logger.error(error)
             }
