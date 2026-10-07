@@ -210,9 +210,9 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.preferredSplitBehavior = .tile
             splitViewController.displayModeButtonVisibility = .never
             type = .split(splitViewController)
-            splitViewController.onCollapseStateChange = { [weak self] isCollapsed in
+            splitViewController.onCollapseStateChange = { [weak self] in
                 guard let self else { return }
-                splitViewDidChangeCollapseState(isCollapsed: isCollapsed)
+                splitViewDidChangeCollapseState()
             }
         } else {
             type = .navigation(PPNavigationController())
@@ -220,7 +220,7 @@ open class Coordinator: CoordinatorProtocol {
     }
 
     /// iPad only, called when switching between showing both columns and a single page (Split View, Slide Over)
-    open func splitViewDidChangeCollapseState(isCollapsed: Bool) {}
+    open func splitViewDidChangeCollapseState() {}
 
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
@@ -321,7 +321,7 @@ final class PPNavigationController: UINavigationController, UIGestureRecognizerD
 
 final class PPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
-    var onCollapseStateChange: ((Bool) -> Void)?
+    var onCollapseStateChange: (() -> Void)?
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle
@@ -344,10 +344,10 @@ final class PPSplitViewController: UISplitViewController, UISplitViewControllerD
     }
 
     func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
-        onCollapseStateChange?(true)
+        onCollapseStateChange?()
     }
 
     func splitViewControllerDidExpand(_ svc: UISplitViewController) {
-        onCollapseStateChange?(false)
+        onCollapseStateChange?()
     }
 }
