@@ -21,11 +21,11 @@
 
 @testable import Client
 import Entities
-import XCTest
+import Testing
 
-final class GetPendingInvitesforShareResponseTests: XCTestCase {
-    func testDecode() throws {
-        // Given
+@Suite(.tags(.endpoint))
+struct GetPendingInvitesforShareResponseTests {
+    @Test func `pending invites response decodes existing and new user invites`() throws {
         let string = """
 {
    "Invites":[
@@ -59,14 +59,14 @@ final class GetPendingInvitesforShareResponseTests: XCTestCase {
 }
 """
         let existingUserInvite = ShareExistingUserInvite(inviteID: "a1b2c3==",
-                                                        invitedEmail: "invited@user.tld",
-                                                        inviterEmail: "inviter@user.tld",
-                                                        shareRoleID: "a2b2c3==",
-                                                        targetType: 1,
-                                                        targetID: "a1b2c3==",
-                                                        remindersSent: 1,
-                                                        createTime: 1674816424,
-                                                        modifyTime: 1674816424)
+                                                         invitedEmail: "invited@user.tld",
+                                                         inviterEmail: "inviter@user.tld",
+                                                         shareRoleID: "a2b2c3==",
+                                                         targetType: 1,
+                                                         targetID: "a1b2c3==",
+                                                         remindersSent: 1,
+                                                         createTime: 1_674_816_424,
+                                                         modifyTime: 1_674_816_424)
 
         let newUserInvite = ShareNewUserInvite(newUserInviteID: "ASDOL983124lsdF==",
                                                state: 1,
@@ -76,17 +76,14 @@ final class GetPendingInvitesforShareResponseTests: XCTestCase {
                                                invitedEmail: "invited@someemail.tld",
                                                inviterEmail: "inviter@someemail.tld",
                                                signature: "Aada9o83rqaw==",
-                                               createTime: 1674813070,
-                                               modifyTime: 1674813070)
+                                               createTime: 1_674_813_070,
+                                               modifyTime: 1_674_813_070)
 
         let expectedResult = GetPendingInvitesForShareResponse(invites: [existingUserInvite],
                                                                newUserInvites: [newUserInvite])
 
-        // When
         let sut = try GetPendingInvitesForShareResponse.decode(from: string)
 
-        // Then
-        XCTAssertEqual(sut, expectedResult)
+        #expect(sut == expectedResult)
     }
 }
-

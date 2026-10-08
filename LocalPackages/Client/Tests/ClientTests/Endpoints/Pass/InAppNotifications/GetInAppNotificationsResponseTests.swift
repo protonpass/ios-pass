@@ -25,8 +25,7 @@ import Foundation
 
 @Suite(.tags(.endpoint))
 struct GetInAppNotificationsResponseTests {
-    @Test("Paginated in app notification decoding")
-    func decodeInAppNotification() throws {
+    @Test func `paginated in app notification decoding`() throws {
         // Given
         let string = """
 {

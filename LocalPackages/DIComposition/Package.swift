@@ -25,8 +25,8 @@ let package = Package(
         .package(name: "Entities", path: "../Entities"),
         .package(name: "UseCases", path: "../UseCases"),
         .package(name: "Client", path: "../Client"),
-        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "37.6.1"),
-        .package(url: "https://github.com/hmlongco/Factory", exact: "3.4.0"),
+        .package(url: "https://github.com/ProtonMail/protoncore_ios", from: "38.0.0"),
+        .package(url: "https://github.com/hmlongco/Factory", exact: "3.4.1"),
         .package(name: "PassRustCore", path: "../PassRustCore"),
     ],
     targets: [
@@ -54,10 +54,6 @@ let package = Package(
                 .product(name: "Stores", package: "UseCases"),
                 .product(name: "PassRustCore", package: "PassRustCore"),
             ],
-        ),
-        .testTarget(
-            name: "DICompositionTests",
-            dependencies: ["DIComposition"]
         ),
     ],
     swiftLanguageModes: [.v6]

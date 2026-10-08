@@ -41,7 +41,7 @@ extension SecuritySectionedData {
 final class SecurityWeaknessDetailViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
-    let type: SecurityWeakness
+    let type: MonitorListSection
 
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
@@ -51,25 +51,10 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var nothingWrongMessage: String {
-        switch type {
-        case .weakPasswords:
-            #localized("No weak passwords were found in your login items")
-
-        case .reusedPasswords:
-            #localized("You have no reused passwords in your login items")
-
-        case .missing2FA:
-            #localized("All your login items have two-factor authentication enabled")
-
-        case .excludedItems:
-            #localized("You don't have any excluded login items from monitoring")
-
-        default:
-            ""
-        }
+        type.nothingWrongMessage
     }
 
-    init(type: SecurityWeakness) {
+    init(type: MonitorListSection) {
         self.type = type
         setUp()
     }
@@ -82,18 +67,23 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                                                                                 itemId: item.itemId) else {
                     return
                 }
-                router.present(for: .itemDetail(itemContent, automaticDisplay: false, showSecurityIssues: true))
+                router.present(for: .itemDetail(itemContent,
+                                                automaticDisplay: false,
+                                                showExcludedWeaknesses: type == .excludedItems))
                 let eventType: TelemetryEventType? = switch type {
-                case .weakPasswords:
+                case .weakness(.weakPassword):
                     .monitorItemDetailFromWeakPassword
 
-                case .missing2FA:
+                case .weakness(.missing2FA):
                     .monitorItemDetailFromMissing2FA
 
-                case .reusedPasswords:
+                case .weakness(.reusedPassword):
                     .monitorItemDetailFromReusedPassword
 
-                default:
+                case .weakness(.compromisedPassword):
+                    .monitorItemDetailFromCompromisedPassword
+
+                case .excludedItems:
                     nil
                 }
                 if let eventType {
@@ -115,14 +105,7 @@ private extension SecurityWeaknessDetailViewModel {
         getAllSecurityAffectedLogins(for: type)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                guard let self else {
-                    return
-                }
-                if case let .failure(error) = completion {
-                    state = .error(error)
-                }
-            } receiveValue: { [weak self] logins in
+            .sink { [weak self] logins in
                 guard let self else {
                     return
                 }
@@ -145,7 +128,7 @@ private extension SecuritySection {
         case let .reusedPasswords(numberOfTime):
             SecuritySectionHeaderKey(title: #localized("Reused %lld times", numberOfTime.numberOfTimeReused))
 
-        case .excludedItems, .missing2fa, .weakPasswords:
+        case .compromisedPasswords, .excludedItems, .missing2fa, .weakPasswords:
             SecuritySectionHeaderKey(title: "")
         }
     }

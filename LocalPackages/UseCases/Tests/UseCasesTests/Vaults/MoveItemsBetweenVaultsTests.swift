@@ -26,6 +26,7 @@ import EntitiesMocks
 import Foundation
 import Testing
 
+@Suite(.tags(.useCase))
 @MainActor
 struct MoveItemsBetweenVaultsTests {
     private let repository: ItemRepositoryProtocolMock
@@ -43,8 +44,7 @@ struct MoveItemsBetweenVaultsTests {
 
     // MARK: - .allItemsInFolder
 
-    @Test
-    func `allItemsInFolder calls repository.move with the folder's direct items`() async throws {
+    @Test func `allItemsInFolder calls repository.move with the folder's direct items`() async throws {
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         let item1 = ItemUiModel.mock(itemId: "I1", shareId: sourceShareId, folderId: "F1")
         let item2 = ItemUiModel.mock(itemId: "I2", shareId: sourceShareId, folderId: "F1")
@@ -66,8 +66,7 @@ struct MoveItemsBetweenVaultsTests {
         #expect(args.destinationFolderId == "F-dest")
     }
 
-    @Test
-    func `allItemsInFolder leaves items of subfolders in place`() async throws {
+    @Test func `allItemsInFolder leaves items of subfolders in place`() async throws {
         // Hierarchy: F-root (direct item I-direct)
         //   |__ F-child (item I-nested)
         //         |__ F-grandchild (item I-deep)
@@ -97,8 +96,7 @@ struct MoveItemsBetweenVaultsTests {
         #expect(args.toShareId == destinationShareId)
     }
 
-    @Test
-    func `allItemsInFolder with an empty folder does not call the repository`() async throws {
+    @Test func `allItemsInFolder with an empty folder does not call the repository`() async throws {
         let folder = FolderUiModel.mock(folderId: "F-empty", shareId: sourceShareId)
         appContentManager.stubbedGetShareContentResult = ShareContent(share: .random(shareID: sourceShareId),
                                                                       elements: [.folder(folder)])
@@ -110,8 +108,7 @@ struct MoveItemsBetweenVaultsTests {
         #expect(repository.invokedMoveCount == 0)
     }
 
-    @Test
-    func `allItemsInFolder with no share content does not call the repository and throws an error`() async throws {
+    @Test func `allItemsInFolder with no share content throws without calling the repository`() async throws {
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         appContentManager.stubbedGetShareContentResult = nil
 
@@ -124,8 +121,7 @@ struct MoveItemsBetweenVaultsTests {
 
     // MARK: - .allItems
 
-    @Test
-    func `allItems leaves items of folders in place`() async throws {
+    @Test func `allItems leaves items of folders in place`() async throws {
         let vault = Share.random(shareID: sourceShareId)
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         let root = ItemUiModel.mock(itemId: "I-root", shareId: sourceShareId, folderId: nil)
@@ -147,8 +143,7 @@ struct MoveItemsBetweenVaultsTests {
         #expect(args.destinationFolderId == "F-dest")
     }
 
-    @Test
-    func `allItems with items only in folders does not call the repository`() async throws {
+    @Test func `allItems with items only in folders does not call the repository`() async throws {
         let vault = Share.random(shareID: sourceShareId)
         let folder = FolderUiModel.mock(folderId: "F1", shareId: sourceShareId)
         let inFolder = ItemUiModel.mock(itemId: "I-in-folder", shareId: sourceShareId, folderId: "F1")
@@ -165,8 +160,7 @@ struct MoveItemsBetweenVaultsTests {
         #expect(repository.invokedMoveCount == 0)
     }
 
-    @Test
-    func `allItems with no share content does not call the repository and throws and error`() async throws {
+    @Test func `allItems with no share content throws without calling the repository`() async throws {
         appContentManager.stubbedGetShareContentResult = nil
 
         await #expect(throws: PassError.self) {

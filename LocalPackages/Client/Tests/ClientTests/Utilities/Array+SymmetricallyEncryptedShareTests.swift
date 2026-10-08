@@ -19,13 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import XCTest
 import Entities
+import Testing
 
-// swiftlint:disable:next type_name
-final class ArrayPlusSymmetricallyEncryptedShareTests: XCTestCase {
-    func testGetLatestKey() throws {
-        // Given
+@Suite(.tags(.utilities))
+struct ArrayPlusSymmetricallyEncryptedShareTests {
+    @Test func `the latest key is the one with the highest key rotation`() throws {
         let key1 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
                                                   shareId: .random(),
                                                   userId: .random(),
@@ -34,24 +33,22 @@ final class ArrayPlusSymmetricallyEncryptedShareTests: XCTestCase {
                                                                   keyRotation: 13,
                                                                   userKeyID: .random()))
         let key2 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
-                                                  shareId: .random(), 
+                                                  shareId: .random(),
                                                   userId: .random(),
                                                   shareKey: .init(createTime: .random(in: 1_000_000...10_000_000),
                                                                   key: .random(),
                                                                   keyRotation: 578,
                                                                   userKeyID: .random()))
         let key3 = SymmetricallyEncryptedShareKey(encryptedKey: .random(),
-                                                  shareId: .random(), 
+                                                  shareId: .random(),
                                                   userId: .random(),
                                                   shareKey: .init(createTime: .random(in: 1_000_000...10_000_000),
                                                                   key: .random(),
                                                                   keyRotation: 182,
                                                                   userKeyID: .random()))
 
-        // When
         let latestKey = try [key1, key2, key3].latestKey()
 
-        // Then
-        XCTAssertEqual(latestKey, key2)
+        #expect(latestKey == key2)
     }
 }

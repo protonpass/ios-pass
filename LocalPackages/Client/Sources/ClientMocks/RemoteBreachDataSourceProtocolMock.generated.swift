@@ -280,18 +280,18 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         return stubbedToggleMonitoringForUserIdEmailShouldMonitorAsyncResult14
     }
     // MARK: - sendUserMonitorStats
-    public var sendUserMonitorStatsUserIdStatsThrowableError15: Error?
+    public var sendUserMonitorStatsUserIdStatsExcludedItemsCompromisedPasswordsThrowableError15: Error?
     public var closureSendUserMonitorStats: () -> () = {}
     public var invokedSendUserMonitorStatsfunction = false
     public var invokedSendUserMonitorStatsCount = 0
-    public var invokedSendUserMonitorStatsParameters: (userId: String, stats: WeaknessStats)?
-    public var invokedSendUserMonitorStatsParametersList = [(userId: String, stats: WeaknessStats)]()
+    public var invokedSendUserMonitorStatsParameters: (userId: String, stats: WeaknessStats, excludedItems: Int, compromisedPasswords: Int?)?
+    public var invokedSendUserMonitorStatsParametersList = [(userId: String, stats: WeaknessStats, excludedItems: Int, compromisedPasswords: Int?)]()
 
-    public func sendUserMonitorStats(userId: String, stats: WeaknessStats) async throws {
+    public func sendUserMonitorStats(userId: String, stats: WeaknessStats, excludedItems: Int, compromisedPasswords: Int?) async throws {
         invokedSendUserMonitorStatsfunction = true
         invokedSendUserMonitorStatsCount += 1
-        invokedSendUserMonitorStatsParameters = (userId, stats)
-        if let error = sendUserMonitorStatsUserIdStatsThrowableError15 {
+        invokedSendUserMonitorStatsParameters = (userId, stats, excludedItems, compromisedPasswords)
+        if let error = sendUserMonitorStatsUserIdStatsExcludedItemsCompromisedPasswordsThrowableError15 {
             throw error
         }
         closureSendUserMonitorStats()

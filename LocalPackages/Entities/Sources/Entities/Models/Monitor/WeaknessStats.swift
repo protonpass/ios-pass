@@ -21,29 +21,22 @@
 import Foundation
 
 public struct WeaknessStats: Equatable, Sendable {
-    public let weakPasswords: Int
-    public let reusedPasswords: Int
-    public let missing2FA: Int
+    private let counts: [WeaknessKind: Int]
+
+    /// Items in the "Excluded items" bucket. This is a monitoring-status count, not a weakness,
+    /// so it stays separate from `counts`.
     public let excludedItems: Int
 
-    public init(weakPasswords: Int,
-                reusedPasswords: Int,
-                missing2FA: Int,
-                excludedItems: Int) {
-        self.weakPasswords = weakPasswords
-        self.reusedPasswords = reusedPasswords
-        self.missing2FA = missing2FA
+    public init(counts: [WeaknessKind: Int], excludedItems: Int) {
+        self.counts = counts
         self.excludedItems = excludedItems
     }
 
-    public var hasWeakOrReusedPasswords: Bool {
-        (weakPasswords + reusedPasswords) > 0
+    public func count(for kind: WeaknessKind) -> Int {
+        counts[kind] ?? 0
     }
 
-    public static var `default`: WeaknessStats {
-        WeaknessStats(weakPasswords: -1,
-                      reusedPasswords: -1,
-                      missing2FA: -1,
-                      excludedItems: -1)
+    public var hasPasswordsWithWeaknesses: Bool {
+        (count(for: .weakPassword) + count(for: .reusedPassword) + count(for: .compromisedPassword)) > 0
     }
 }

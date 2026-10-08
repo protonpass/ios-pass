@@ -21,12 +21,11 @@
 @testable import Client
 import Entities
 import EntitiesMocks
-import XCTest
+import Testing
 
-// swiftlint:disable type_name
-final class ArrayPlusSymmetricallyEncryptedItemSortTests: XCTestCase {
-    func testSort() {
-        // Given
+@Suite(.tags(.utilities))
+struct ArrayPlusSymmetricallyEncryptedItemSortTests {
+    @Test func `items sort by last use time then modify time descending`() {
         let item1 = SymmetricallyEncryptedItem.random(item: .random(itemId: .random(),
                                                                     lastUseTime: 777,
                                                                     modifyTime: 444))
@@ -47,21 +46,17 @@ final class ArrayPlusSymmetricallyEncryptedItemSortTests: XCTestCase {
                                                                     modifyTime: 666))
         let unsortedArray = [item1, item2, item3, item4, item5, item6]
 
-        // When
         let sortedArray = unsortedArray.sorted()
 
-        // Then
-        XCTAssertEqual(sortedArray[0].item.itemID, item1.item.itemID)
-        XCTAssertEqual(sortedArray[1].item.itemID, item3.item.itemID)
-        XCTAssertEqual(sortedArray[2].item.itemID, item2.item.itemID)
-        XCTAssertEqual(sortedArray[3].item.itemID, item6.item.itemID)
-        XCTAssertEqual(sortedArray[4].item.itemID, item5.item.itemID)
-        XCTAssertEqual(sortedArray[5].item.itemID, item4.item.itemID)
+        #expect(sortedArray[0].item.itemID == item1.item.itemID)
+        #expect(sortedArray[1].item.itemID == item3.item.itemID)
+        #expect(sortedArray[2].item.itemID == item2.item.itemID)
+        #expect(sortedArray[3].item.itemID == item6.item.itemID)
+        #expect(sortedArray[4].item.itemID == item5.item.itemID)
+        #expect(sortedArray[5].item.itemID == item4.item.itemID)
     }
 
-    func testSortScoredItem() {
-        // Given
-
+    @Test func `scored items sort by match score then modify time descending`() {
         let item1 = ScoredSymmetricallyEncryptedItem(item: .random(item: .random(itemId: .random(),
                                                                                  lastUseTime: 777,
                                                                                  modifyTime: 444)),
@@ -76,12 +71,10 @@ final class ArrayPlusSymmetricallyEncryptedItemSortTests: XCTestCase {
                                                      matchScore: 1_000)
         let unsortedArray = [item1, item2, item3]
 
-        // When
         let sortedArray = unsortedArray.sorted()
 
-        // Then
-        XCTAssertEqual(sortedArray[0].item.item.itemID, item3.item.item.itemID)
-        XCTAssertEqual(sortedArray[1].item.item.itemID, item1.item.item.itemID)
-        XCTAssertEqual(sortedArray[2].item.item.itemID, item2.item.item.itemID)
+        #expect(sortedArray[0].item.item.itemID == item3.item.item.itemID)
+        #expect(sortedArray[1].item.item.itemID == item1.item.item.itemID)
+        #expect(sortedArray[2].item.item.itemID == item2.item.item.itemID)
     }
 }

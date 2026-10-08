@@ -20,35 +20,24 @@
 
 import CoreMocks
 import Foundation
+import Testing
 import UseCases
-import XCTest
 
-class ExtractLogsToFileTests: XCTestCase {
-    var sut: ExtractLogsToFileUseCase!
-    var path: String?
-    let testFileName = "TestFileLogs.log"
+@Suite(.tags(.useCase))
+final class ExtractLogsToFileTests {
+    private let sut: any ExtractLogsToFileUseCase = ExtractLogsToFile(logFormatter: LogFormatterProtocolMock())
+    private let fileName = "ExtractLogsToFileTests-\(UUID().uuidString).log"
 
-    override func setUp() {
-        super.setUp()
-        sut = ExtractLogsToFile(logFormatter: LogFormatterProtocolMock())
+    deinit {
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory
+            .appendingPathComponent(fileName))
     }
 
-    override func tearDown() {
-        super.setUp()
-        let file = FileManager.default.temporaryDirectory.appendingPathComponent(testFileName)
-        if FileManager.default.fileExists(atPath: file.path) {
-            try? FileManager.default.removeItem(at: file)
-        }
-    }
+    @Test func `log entries are written to the named file in the temporary directory`() async throws {
+        let url = try #require(try await sut(for: [LogEntryFactory.createMock()], in: fileName))
 
-    func testWrittingLogsToFile() async throws {
-        let entry = LogEntryFactory.createMock()
-        let url = try await sut(for: [entry], in: testFileName)
-        guard let url, FileManager.default.fileExists(atPath: url.path) else {
-            XCTFail("Should have created a file with the log entry")
-            return
-        }
-
-        XCTAssertEqual(url.lastPathComponent, "TestFileLogs.log")
+        #expect(FileManager.default.fileExists(atPath: url.path))
+        #expect(url.lastPathComponent == fileName)
+        #expect(url.pathExtension == "log")
     }
 }

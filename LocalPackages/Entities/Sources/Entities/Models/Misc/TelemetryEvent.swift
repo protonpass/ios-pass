@@ -59,6 +59,7 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case monitorItemDetailFromWeakPassword
     case monitorItemDetailFromMissing2FA
     case monitorItemDetailFromReusedPassword
+    case monitorItemDetailFromCompromisedPassword
     case multiAccountAddAccount
     case multiAccountRemoveAccount
     case notificationDisplay(key: String)
@@ -142,6 +143,9 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
 
         case "monitor.item.detail.from.reused.password", "pass_monitor.item_detail_from_reused_password":
             self = .monitorItemDetailFromReusedPassword
+
+        case "monitor.item.detail.from.compromised.password", "pass_monitor.item_detail_from_compromised_password":
+            self = .monitorItemDetailFromCompromisedPassword
 
         case "multi.account.add.account", "pass_multi_account.add_account":
             self = .multiAccountAddAccount
@@ -260,6 +264,9 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
 
         case .monitorItemDetailFromReusedPassword:
             "pass_monitor.item_detail_from_reused_password"
+
+        case .monitorItemDetailFromCompromisedPassword:
+            "pass_monitor.item_detail_from_compromised_password"
 
         case .multiAccountAddAccount:
             "pass_multi_account.add_account"

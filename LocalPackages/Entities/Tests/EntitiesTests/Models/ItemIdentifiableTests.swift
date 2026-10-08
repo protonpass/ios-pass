@@ -22,6 +22,7 @@
 import EntitiesMocks
 import Testing
 
+@Suite(.tags(.entity))
 struct ItemIdentifiableTests {
     let shareId = "share-1"
     let otherShareId = "share-2"
@@ -39,42 +40,36 @@ struct ItemIdentifiableTests {
         ]
     }
 
-    @Test
-    func `scoped with nil containerIds keeps the whole share at any depth`() {
+    @Test func `scoped with nil containerIds keeps the whole share at any depth`() {
         let result = items.scoped(toShare: shareId, containerIds: nil)
 
         #expect(result.map(\.itemId) == ["item-A", "item-B", "item-C"])
     }
 
-    @Test
-    func `scoped never leaks items from another share`() {
+    @Test func `scoped never leaks items from another share`() {
         #expect(items.scoped(toShare: shareId, containerIds: nil).allSatisfy { $0.shareId == shareId })
         #expect(items.scoped(toShare: otherShareId, containerIds: nil).map(\.itemId) == ["item-X"])
     }
 
-    @Test
-    func `scoped to a folder subtree includes descendants but not the root`() {
+    @Test func `scoped to a folder subtree includes descendants but not the root`() {
         let result = items.scoped(toShare: shareId, containerIds: ["folder-F1", "folder-F2"])
 
         #expect(result.map(\.itemId) == ["item-B", "item-C"])
     }
 
-    @Test
-    func `scoped to a single folder excludes its descendants`() {
+    @Test func `scoped to a single folder excludes its descendants`() {
         let result = items.scoped(toShare: shareId, containerIds: ["folder-F1"])
 
         #expect(result.map(\.itemId) == ["item-B"])
     }
 
-    @Test
-    func `scoped to the share id matches only root items`() {
+    @Test func `scoped to the share id matches only root items`() {
         let result = items.scoped(toShare: shareId, containerIds: [shareId])
 
         #expect(result.map(\.itemId) == ["item-A"])
     }
 
-    @Test
-    func `scoped to an empty container set matches nothing`() {
+    @Test func `scoped to an empty container set matches nothing`() {
         #expect(items.scoped(toShare: shareId, containerIds: []).isEmpty)
     }
 }

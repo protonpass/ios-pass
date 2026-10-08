@@ -22,6 +22,7 @@ import Client
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SearchRecentResultsView: View {

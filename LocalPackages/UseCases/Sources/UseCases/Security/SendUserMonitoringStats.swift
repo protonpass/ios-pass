@@ -35,11 +35,12 @@ public extension SendUserMonitoringStatsUseCase {
 }
 
 public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
+    public static let lastSentTimestampKey = "lastSentStatsTimestamp"
+
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let storage: UserDefaults
-    private let lastSentTimestampKey = "lastSentStatsTimestamp"
     private let waitingPeriodInHours: Int
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
@@ -69,11 +70,11 @@ public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
 private extension SendUserMonitoringStats {
     func storeCurrentTimestamp() {
         let currentTime = Date()
-        storage.set(currentTime, forKey: lastSentTimestampKey)
+        storage.set(currentTime, forKey: Self.lastSentTimestampKey)
     }
 
     var thresholdReached: Bool {
-        guard let lastSavedTime = storage.object(forKey: lastSentTimestampKey) as? Date else {
+        guard let lastSavedTime = storage.object(forKey: Self.lastSentTimestampKey) as? Date else {
             return true // No timestamp found means stats never sent.
         }
 

@@ -27,6 +27,7 @@ import CryptoKit
 import Entities
 import EntitiesMocks
 import Foundation
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import Testing
 
@@ -39,6 +40,7 @@ struct ItemRepositoryTests {
     private let localShareDatasource: LocalShareDatasourceProtocolMock
     private let shareEventIDRepository: ShareEventIDRepositoryProtocolMock
     private let passKeyManager: PassKeyManagerProtocolMock
+    private let featureFlagsRepository: FeatureFlagsRepositoryMock
     private let logManager: LogManagerProtocolMock
 
     init() {
@@ -50,6 +52,7 @@ struct ItemRepositoryTests {
         localShareDatasource = LocalShareDatasourceProtocolMock()
         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
+        featureFlagsRepository = FeatureFlagsRepositoryMock()
         logManager = LogManagerProtocolMock()
     }
 }
@@ -78,6 +81,7 @@ extension ItemRepositoryTests {
                                  localShareDatasource: localShareDatasource,
                                  shareEventIDRepository: shareEventIDRepository,
                                  passKeyManager: passKeyManager,
+                                 featureFlagsRepository: featureFlagsRepository,
                                  logManager: logManager)
 
         let pinnedItems = try await sut.getAllPinnedItems()
@@ -199,6 +203,7 @@ private extension ItemRepositoryTests {
                        localShareDatasource: localShareDatasource,
                        shareEventIDRepository: shareEventIDRepository,
                        passKeyManager: passKeyManager,
+                       featureFlagsRepository: featureFlagsRepository,
                        logManager: logManager)
     }
 

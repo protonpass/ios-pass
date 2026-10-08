@@ -20,18 +20,18 @@
 //
 
 import Entities
-import XCTest
+import Foundation
+import Testing
 
-final class UpdateMonitorStateRequestTests: XCTestCase {
-    func testEncode() throws {
-        try XCTAssertEqual("{\"ProtonAddress\":true}", encoded(.protonAddress(true)))
-        try XCTAssertEqual("{\"ProtonAddress\":false}", encoded(.protonAddress(false)))
-        try XCTAssertEqual("{\"Aliases\":true}", encoded(.aliases(true)))
-        try XCTAssertEqual("{\"Aliases\":false}", encoded(.aliases(false)))
-    }
-
-    func encoded(_ request: UpdateMonitorStateRequest) throws -> String {
+@Suite(.tags(.entity))
+struct UpdateMonitorStateRequestTests {
+    @Test(arguments: [(UpdateMonitorStateRequest.protonAddress(true), "{\"ProtonAddress\":true}"),
+                      (UpdateMonitorStateRequest.protonAddress(false), "{\"ProtonAddress\":false}"),
+                      (UpdateMonitorStateRequest.aliases(true), "{\"Aliases\":true}"),
+                      (UpdateMonitorStateRequest.aliases(false), "{\"Aliases\":false}")])
+    func `request encodes to its monitor state key`(request: UpdateMonitorStateRequest,
+                                                    expected: String) throws {
         let data = try JSONEncoder().encode(request)
-        return String(data: data, encoding: .utf8) ?? ""
+        #expect(String(data: data, encoding: .utf8) == expected)
     }
 }

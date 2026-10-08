@@ -25,8 +25,7 @@ import Foundation
 
 @Suite(.tags(.models))
 struct DimensionsTests {
-    @Test("Test generic telemetry dimension encoding conversion")
-    func testDimensionConversions() throws {
+    @Test func `generic telemetry dimensions encode to the expected JSON`() throws {
         let dimensions = Dimensions(properties: [
             "userId": "A string value",
             "notificationKey": "notification_Key",
@@ -47,8 +46,7 @@ struct DimensionsTests {
         #expect(jsonString.contains("boolValue"))
     }
     
-    @Test("Test event info telemetry with generic dimension encoding conversion")
-    func testEvenInfoConversions() throws {
+    @Test func `event info with generic dimensions encodes to the expected JSON`() throws {
         let telemetrie = TelemetryEvent(uuid: "idTest",
                                         time: 0,
                                         type: .notificationChangeStatus(key: "notificationKey",

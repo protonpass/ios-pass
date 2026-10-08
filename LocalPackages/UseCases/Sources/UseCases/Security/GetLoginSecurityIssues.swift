@@ -25,26 +25,24 @@ import Combine
 import Entities
 
 public protocol GetLoginSecurityIssuesUseCase: Sendable {
-    func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never>
+    /// Emits the item's security state on every Pass Monitor refresh, or `nil` when the item has no
+    /// detected weakness and no exclusion (full or per check).
+    /// - Parameter itemId: `ItemContent.id` (item ID + share ID), not the bare item ID.
+    func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never>
 }
 
-public extension GetLoginSecurityIssuesUseCase {
-    func callAsFunction(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
-        execute(itemId: itemId)
-    }
-}
-
-public final class GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
+public struct GetLoginSecurityIssues: GetLoginSecurityIssuesUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol) {
         self.passMonitorRepository = passMonitorRepository
     }
 
-    public func execute(itemId: String) -> AnyPublisher<[SecurityWeakness]?, Never> {
+    public func callAsFunction(itemId: String) -> AnyPublisher<SecurityAffectedItem?, Never> {
         passMonitorRepository.itemsWithSecurityIssues
-            .map { items -> [SecurityWeakness]? in
-                items.first { $0.item.itemId == itemId }?.weaknesses
-            }.eraseToAnyPublisher()
+            .map { items -> SecurityAffectedItem? in
+                items.first { $0.display.id == itemId }
+            }
+            .eraseToAnyPublisher()
     }
 }

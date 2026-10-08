@@ -19,24 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import XCTest
+import Testing
 
-final class LocalShareEventIDDatasourceTests: XCTestCase {
-    var sut: LocalShareEventIDDatasource!
-
-    override func setUp() {
-        super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalShareEventIDDatasourceTests {
+    let sut = LocalShareEventIDDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalShareEventIDDatasourceTests {
-    func testUpsertLastEventId() async throws {
+    @Test func `last event id is nil until upserted and then reflects the latest value`() async throws {
         // Given
         let userId = String.random()
         let shareId = String.random()
@@ -45,7 +36,7 @@ extension LocalShareEventIDDatasourceTests {
         let eventId0 = try await sut.getLastEventId(userId: userId, shareId: shareId)
 
         // Then
-        XCTAssertNil(eventId0)
+        #expect(eventId0 == nil)
 
         // Given
         let givenEventId1 = String.random()
@@ -56,9 +47,8 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId1)
 
         // Then
-        let eventId1 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
-                                                                         shareId: shareId))
-        XCTAssertEqual(eventId1, givenEventId1)
+        let eventId1 = try #require(await sut.getLastEventId(userId: userId, shareId: shareId))
+        #expect(eventId1 == givenEventId1)
 
         // Given
         let givenEventId2 = String.random()
@@ -69,12 +59,11 @@ extension LocalShareEventIDDatasourceTests {
                                         lastEventId: givenEventId2)
 
         // Then
-        let eventId2 = try await XCTUnwrapAsync(await sut.getLastEventId(userId: userId,
-                                                                         shareId: shareId))
-        XCTAssertEqual(eventId2, givenEventId2)
+        let eventId2 = try #require(await sut.getLastEventId(userId: userId, shareId: shareId))
+        #expect(eventId2 == givenEventId2)
     }
 
-    func testRemoveAllEntries() async throws {
+    @Test func `removing all entries of a user keeps other users intact`() async throws {
         // Given
         let userId1 = String.random()
         let shareId1 = String.random()
@@ -102,15 +91,15 @@ extension LocalShareEventIDDatasourceTests {
 
         // Then
         let eventId1 = try await sut.getLastEventId(userId: userId1, shareId: shareId1)
-        XCTAssertNil(eventId1)
+        #expect(eventId1 == nil)
 
         let eventId2 = try await sut.getLastEventId(userId: userId1, shareId: shareId2)
-        XCTAssertNil(eventId2)
+        #expect(eventId2 == nil)
 
         let eventId3 = try await sut.getLastEventId(userId: userId2, shareId: shareId3)
-        XCTAssertNotNil(eventId3)
+        #expect(eventId3 != nil)
 
         let eventId4 = try await sut.getLastEventId(userId: userId2, shareId: shareId4)
-        XCTAssertNotNil(eventId4)
+        #expect(eventId4 != nil)
     }
 }

@@ -18,32 +18,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable force_try
 @testable import Core
-import XCTest
+import Testing
 
-final class URLUtilsPlusSanitizerTests: XCTestCase {
-    func testSanitization() {
-        // Invalid URLs
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("a b c"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ftp/example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ftp//example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ssh:/example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("https:/example"))
+@Suite(.tags(.utilities))
+struct URLUtilsPlusSanitizerTests {
+    @Test(arguments: ["a b c", "ftp/example", "ftp//example", "ssh:/example", "https:/example"])
+    func `invalid urls are not sanitized`(input: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == nil)
+    }
 
-        // Valid URLs
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("https://example/a?param=1"),
-                       "https://example/a?param=1")
-
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com/path?param=true"),
-                       "https://example.com/path?param=true")
-
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("http://example.com/path?param=true"),
-                       "http://example.com/path?param=true")
-
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("ssh://example.com/test?abc="),
-                       "ssh://example.com/test?abc=")
-
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com"), "https://example.com")
+    @Test(arguments: zip(["https://example/a?param=1",
+                          "example.com/path?param=true",
+                          "http://example.com/path?param=true",
+                          "ssh://example.com/test?abc=",
+                          "example.com"],
+                         ["https://example/a?param=1",
+                          "https://example.com/path?param=true",
+                          "http://example.com/path?param=true",
+                          "ssh://example.com/test?abc=",
+                          "https://example.com"]))
+    func `valid urls keep their scheme or default to https`(input: String, expected: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == expected)
     }
 }

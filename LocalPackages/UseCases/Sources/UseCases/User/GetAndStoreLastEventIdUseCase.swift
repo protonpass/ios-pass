@@ -1,5 +1,5 @@
 //
-// GetLastEventIdIfNotExist.swift
+// GetAndStoreLastEventIdUseCase.swift
 // Proton Pass - Created on 21/05/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -22,17 +22,11 @@
 import Client
 import Foundation
 
-public protocol GetLastEventIdIfNotExistUseCase: Sendable {
-    func execute(userId: String) async throws
+public protocol GetAndStoreLastEventIdUseCase: Sendable {
+    func callAsFunction(userId: String) async throws
 }
 
-public extension GetLastEventIdIfNotExistUseCase {
-    func callAsFunction(userId: String) async throws {
-        try await execute(userId: userId)
-    }
-}
-
-public final class GetLastEventIdIfNotExist: GetLastEventIdIfNotExistUseCase {
+public struct GetAndStoreLastEventId: GetAndStoreLastEventIdUseCase {
     private let localDatasource: any LocalUserEventIdDatasourceProtocol
     private let remoteDatasource: any RemoteUserEventsDatasourceProtocol
 
@@ -42,11 +36,7 @@ public final class GetLastEventIdIfNotExist: GetLastEventIdIfNotExistUseCase {
         self.remoteDatasource = remoteDatasource
     }
 
-    public func execute(userId: String) async throws {
-        guard try await localDatasource.getLastEventId(userId: userId) == nil else {
-            return
-        }
-
+    public func callAsFunction(userId: String) async throws {
         let lastEventId = try await remoteDatasource.getLastEventId(userId: userId)
         try await localDatasource.upsertLastEventId(userId: userId,
                                                     lastEventId: lastEventId)

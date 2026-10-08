@@ -24,6 +24,7 @@ import Foundation
 import Testing
 import UseCases
 
+@Suite(.tags(.useCase))
 struct FormatFileAttachmentSizeTests {
     let sut: any FormatFileAttachmentSizeUseCase
 
@@ -31,8 +32,7 @@ struct FormatFileAttachmentSizeTests {
         sut = FormatFileAttachmentSize()
     }
 
-    @Test
-    func `Get the correct size of file`() {
+    @Test func `get the correct size of file`() {
         let size = sut(1_048_576)
         #expect(size == "1 MB")
     }

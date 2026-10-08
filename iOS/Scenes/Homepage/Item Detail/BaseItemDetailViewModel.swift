@@ -117,10 +117,23 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\ToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\RepositoryContainer.organizationRepository) private var organizationRepository
     @LazyInjected(\UseCasesContainer.getFeatureFlagStatus)
-    private var getFeatureFlagStatus
+    var getFeatureFlagStatus
 
     var folderSupported: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFolder)
+    }
+
+    var isPerCheckExclusionEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passMonitorPerCheckExclusion)
+    }
+
+    /// When true, "Include for monitoring" is always offered and clears every exclusion, not just the full one
+    var restoresAllMonitoring: Bool {
+        false
+    }
+
+    var offersIncludeInMonitoring: Bool {
+        !isMonitored || restoresAllMonitoring
     }
 
     var isAllowedToEdit: Bool {
@@ -207,10 +220,6 @@ class BaseItemDetailViewModel: ObservableObject {
         superBindValuesCalled = true
     }
 
-    /// Copy to clipboard and trigger a toast message
-    /// - Parameters:
-    ///    - text: The text to be copied to clipboard.
-    ///    - message: The message of the toast (e.g. "Note copied", "Alias copied")
     func copyToClipboard(text: String, message: String) {
         donateToItemForceTouchTip()
         router.action(.copyToClipboard(text: text, message: message))
@@ -311,23 +320,41 @@ class BaseItemDetailViewModel: ObservableObject {
         }
     }
 
-    func toggleMonitoring() {
+    func toggleFullItemMonitoring() {
+        toggleMonitoring(weakness: .fullyExcluded)
+    }
+
+    func toggleMonitoring(weakness: ItemWeaknessDisplay) {
         Task { [weak self] in
             guard let self else {
                 return
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                logger.trace("Toggling monitor from \(isMonitored) for \(itemContent.debugDescription)")
-                router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, shouldNotMonitor: isMonitored)
-                logger.trace("Toggled monitor to \(!isMonitored) for \(itemContent.debugDescription)")
-                if isMonitored {
-                    let message = #localized("Item excluded from monitoring")
-                    router.display(element: .infosMessage(message))
+                let including = offersIncludeInMonitoring
+                let flags = if case .fullyExcluded = weakness, restoresAllMonitoring {
+                    itemContent.item.flagsToRestoreMonitoring
                 } else {
-                    let message = #localized("Item included for monitoring")
-                    router.display(element: .successMessage(message))
+                    [weakness.flag(isMonitored)]
+                }
+                logger.trace("Updating monitoring flags \(flags) for \(itemContent.debugDescription)")
+                router.display(element: .globalLoading(shouldShow: true))
+                try await toggleItemMonitoring(item: itemContent, flags: flags)
+                logger.trace("Updated monitoring flags \(flags) for \(itemContent.debugDescription)")
+                switch weakness {
+                case .fullyExcluded:
+                    if including {
+                        router.display(element: .successMessage(#localized("Item included for monitoring")))
+                    } else {
+                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
+                    }
+
+                case let .weakness(kind, isExcluded):
+                    if isExcluded {
+                        router.display(element: .successMessage(kind.alertRestoredMessage))
+                    } else {
+                        router.display(element: .infosMessage(kind.alertIgnoredMessage))
+                    }
                 }
                 refresh()
             } catch {
@@ -491,7 +518,6 @@ private extension BaseItemDetailViewModel {
                                                   item: itemContent,
                                                   file: file)
                 if FileManager.default.fileExists(atPath: url.path()) {
-                    // File already downloaded => open directly
                     switch postAction {
                     case .save:
                         urlToSave = url
@@ -503,7 +529,7 @@ private extension BaseItemDetailViewModel {
                         filePreviewMode = .item(file, self, postAction)
                     }
                 } else {
-                    // File not downloaded => open preview page to download
+                    // The preview page downloads the file
                     filePreviewMode = .item(file, self, postAction)
                 }
             } catch {

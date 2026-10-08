@@ -27,6 +27,7 @@ public extension LogInItemData {
                      password: String = "password123",
                      totpUri: String = "otpauth://totp/Example:email@example.com?secret=JBSWY3DPEHPK3PXP&issuer=Example",
                      urls: [String] = ["https://example.com"],
+                     autofillUrls: [AutofillUrl] = [],
                      allowedAndroidApps: [AllowedAndroidApp] = [],
                      passkeys: [Passkey] = []) -> LogInItemData {
         LogInItemData(email: email,
@@ -34,6 +35,7 @@ public extension LogInItemData {
                       password: password,
                       totpUri: totpUri,
                       urls: urls,
+                      autofillUrls: autofillUrls,
                       allowedAndroidApps: allowedAndroidApps,
                       passkeys: passkeys)
     }

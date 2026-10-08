@@ -82,6 +82,12 @@ public extension PassIcon {
     static let envelope = Image(.envelope)
     static let halfButtons = Image(.halfButtons)
 
+    static let reusedKey = Image(.reusedKey)
+    static let shieldBad = Image(.shieldBad)
+    static let shieldExclamationFilled = Image(.shieldExclamationFilled)
+    static let shieldLock = Image(.shieldLock)
+    static let shieldWarning = Image(.shieldWarning)
+
     static let netShield = Image(.netshield)
     static let sentinelLogo = Image(.sentinelLogo)
 
@@ -109,7 +115,7 @@ public extension PassIcon {
     static let protonStamp = Image(.protonStamp)
     static let scanner = Image(.scanner)
     static let shieldCheck = Image(.shieldCheck)
-    static let shieldLock = Image(.shieldLock)
+    static let shieldLockPurple = Image(.shieldLockPurple)
     static let aliasSlash = Image(.aliasSlash)
     static let bank = Image(.bank)
     static let brandBitcoin = Image(.brandBitcoin)

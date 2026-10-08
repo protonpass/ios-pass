@@ -22,32 +22,24 @@
 @testable import Client
 import ClientMocks
 import Core
-import CryptoKit
 import Entities
-import XCTest
+import Foundation
+import Testing
 
-final class LocalUserPreferencesDatasourceTests: XCTestCase {
-    let symmetricKey = SymmetricKey.random()
-    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
-    var sut: LocalUserPreferencesDatasource!
+@Suite(.tags(.localDatasource))
+struct LocalUserPreferencesDatasourceTests {
+    let sut: LocalUserPreferencesDatasource
 
-    override func setUp() {
-        super.setUp()
-        symmetricKeyProviderMockFactory = .init()
+    init() {
+        let symmetricKeyProviderMockFactory = SymmetricKeyProviderMockFactory()
         symmetricKeyProviderMockFactory.setUp()
         sut = LocalUserPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                              databaseService: DatabaseService(inMemory: true))
     }
-
-    override func tearDown() {
-        symmetricKeyProviderMockFactory = nil
-        sut = nil
-        super.tearDown()
-    }
 }
 
 extension LocalUserPreferencesDatasourceTests {
-    func testGetUpsertRemoveUserPreferences() async throws {
+    @Test func `preferences are upserted and removed per user`() async throws {
         let userId1 = String.random()
         let pref1a = UserPreferences.random()
         let pref1b = UserPreferences.random()
@@ -91,12 +83,12 @@ extension LocalUserPreferencesDatasourceTests {
 
     func assertCount(_ expectedCount: Int, userId: String? = nil) async throws {
         let count = try await sut.preferencesCount(userId: userId)
-        XCTAssertEqual(count, expectedCount)
+        #expect(count == expectedCount)
     }
 
     func assertPreferences(_ expectedPreferences: UserPreferences, userId: String) async throws {
-        let preferences = try await XCTUnwrapAsync(await sut.getPreferences(for: userId))
-        XCTAssertEqual(preferences, expectedPreferences)
+        let preferences = try #require(await sut.getPreferences(for: userId))
+        #expect(preferences == expectedPreferences)
     }
 }
 

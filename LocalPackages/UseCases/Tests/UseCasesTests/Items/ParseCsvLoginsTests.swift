@@ -22,6 +22,7 @@ import Entities
 import Testing
 import UseCases
 
+@Suite(.tags(.useCase))
 struct ParseCsvLoginsTests {
     let sut: any ParseCsvLoginsUseCase
 
@@ -29,8 +30,7 @@ struct ParseCsvLoginsTests {
         sut = ParseCsvLogins()
     }
 
-    @Test
-    func `Invalid number of column`() async throws {
+    @Test func `invalid number of column`() async throws {
         // Given
         let csv = """
         name,url,username,password,other,column
@@ -45,8 +45,7 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test
-    func `Unexpected column name`() async throws {
+    @Test func `unexpected column name`() async throws {
         // Given
         let csv = """
         name,url,email,password
@@ -63,8 +62,7 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test
-    func `Invalid row`() async throws {
+    @Test func `invalid row`() async throws {
         // Given
         let csv = """
         name,url,username,password
@@ -79,8 +77,7 @@ struct ParseCsvLoginsTests {
         }
     }
 
-    @Test
-    func `Success without note column`() async throws {
+    @Test func `success without note column`() async throws {
         // Given
         let csv = """
         name,url,username,password
@@ -125,8 +122,7 @@ struct ParseCsvLoginsTests {
         #expect(logins[3].note.isEmpty)
     }
 
-    @Test
-    func `Success with note column`() async throws {
+    @Test func `success with note column`() async throws {
         // Given
         let csv = """
         name,url,username,password,note

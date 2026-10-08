@@ -56,6 +56,7 @@ struct QAFeaturesView: View {
                     FeatureDiscoverySection()
                     DismissibleUIElementsSection()
                     FolderForceSyncSection()
+                    MonitorStatsSection()
 
                     InAppNotificationSection(onDismiss: dismiss.callAsFunction)
                     Toggle(isOn: $displayUpgradeAppBanner) {

@@ -53,8 +53,11 @@ struct InviteSuggestionsSection: View {
     @ViewBuilder
     var suggestionPicker: some View {
         if let organizationTitle = viewModel.organizationTitle {
-            EnumSegmentedPicker(selection: $viewModel.displayType,
-                                options: [#localized("Suggestions"), organizationTitle])
+            SegmentedPicker(selection: $viewModel.displayType,
+                            options: [
+                                .init(value: .suggestion, title: #localized("Suggestions")),
+                                .init(value: .organisation, title: organizationTitle)
+                            ])
         }
     }
 }
@@ -93,59 +96,5 @@ private extension InviteSuggestionsSection {
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
         .shimmering()
-    }
-}
-
-struct EnumSegmentedPicker<Selection: RawRepresentable & Hashable>: View where Selection.RawValue == Int {
-    @Binding private var selection: Selection
-    private let options: [String]
-    private let highlightTextColor: Color
-    private let mainColor: Color
-    private let backgroundColor: Color
-
-    init(selection: Binding<Selection>,
-         options: [String],
-         highlightTextColor: Color = PassColor.textNorm,
-         mainColor: Color = PassColor.interactionNormMajor1,
-         backgroundColor: Color = PassColor.interactionNormMinor1) {
-        _selection = selection
-        self.options = options
-        self.mainColor = mainColor
-        self.backgroundColor = backgroundColor
-        self.highlightTextColor = highlightTextColor
-    }
-
-    var body: some View {
-        ZStack {
-            GeometryReader { proxy in
-                let thumbWidth = proxy.size.width / CGFloat(options.count)
-                mainColor
-                    .clipShape(Capsule())
-                    .frame(width: thumbWidth)
-                    .offset(x: thumbWidth * CGFloat(selection.rawValue))
-                    .animation(.default, value: selection.rawValue)
-            }
-
-            HStack {
-                ForEach(Array(options.enumerated()), id: \.element) { index, option in
-                    Button(action: {
-                        if let currentSelection = Selection(rawValue: index) {
-                            selection = currentSelection
-                        }
-                    }, label: {
-                        Text(option)
-                            .font(.body.weight(.medium))
-                            .foregroundStyle(index == selection.rawValue ?
-                                highlightTextColor : PassColor.textNorm)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                    })
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-        .padding(5)
-        .background(backgroundColor)
-        .clipShape(Capsule())
-        .frame(height: DesignConstant.defaultPickerHeight)
     }
 }

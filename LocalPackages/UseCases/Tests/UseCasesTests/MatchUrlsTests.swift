@@ -19,75 +19,51 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-@testable import UseCases
-import XCTest
+import Entities
+import Foundation
+import Testing
+import UseCases
 
-final class MatchUrlsTests: XCTestCase {
-    var getRootDomain: (any GetRootDomainUseCase)!
-    var sut: (any MatchUrlsUseCase)!
+@Suite(.tags(.useCase))
+struct MatchUrlsTests {
+    private let sut: any MatchUrlsUseCase = MatchUrls(getRootDomain: GetRootDomain())
 
-    override func setUp() {
-        super.setUp()
-        getRootDomain = GetRootDomain()
-        sut = MatchUrls(getRootDomain: getRootDomain)
+    @Test(arguments: [
+        (left: "example.com", right: "https:/example.com"),
+        (left: "ssh://example.com", right: "https:/example.com")
+    ])
+    func `urls without a scheme or host do not match a different url`(left: String, right: String) throws {
+        #expect(try match(left, right) == .notMatched)
     }
 
-    override func tearDown() {
-        getRootDomain = nil
-        sut = nil
-        super.tearDown()
+    @Test(arguments: [
+        (left: "https://example.com", right: "http://example.com", expected: UrlMatchResult.notMatched),
+        (left: "example.com", right: "example.com", expected: .matched(1_000)),
+        (left: "https://example.co.uk/dsjdh?sajjs", right: "https://example.co.uk", expected: .matched(1_000)),
+        (left: "http://a.b.c.example.com", right: "http://a.b.c.example.com", expected: .matched(1_000)),
+        (left: "http://a.b.c.example.com", right: "http://b.c.example.com", expected: .matched(999)),
+        (left: "http://a.b.c.example.com", right: "https://c.example.com", expected: .matched(998)),
+        (left: "https://a.b.c.example.com", right: "https://example.com", expected: .matched(997))
+    ])
+    func `http urls score lower per differing subdomain and https never matches http`(left: String,
+                                                                                      right: String,
+                                                                                      expected: UrlMatchResult) throws {
+        #expect(try match(left, right) == expected)
+    }
+
+    @Test(arguments: [
+        (left: "ssh://example.com", right: "ftp://example.com", expected: UrlMatchResult.notMatched),
+        (left: "ssh://example.com", right: "ssh://example.com/path?query=", expected: .matched(1_000))
+    ])
+    func `custom scheme urls match only on the same scheme and host`(left: String,
+                                                                     right: String,
+                                                                     expected: UrlMatchResult) throws {
+        #expect(try match(left, right) == expected)
     }
 }
 
-extension MatchUrlsTests {
-    func testNoSchemesShouldNotMatched() throws {
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "example.com")),
-                               with: XCTUnwrap(URL(string: "https:/example.com"))),
-                       .notMatched)
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "ssh://example.com")),
-                               with: XCTUnwrap(URL(string: "https:/example.com"))),
-                       .notMatched)
-    }
-
-    func testSchemeHttpOrHttps() throws {
-        // `https` against `http` always not match
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "https://example.com")),
-                               with: XCTUnwrap(URL(string: "http://example.com"))),
-                       .notMatched)
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "example.com")),
-                               with: XCTUnwrap(URL(string: "example.com"))),
-                       .matched(1_000))
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "https://example.co.uk/dsjdh?sajjs")),
-                               with: XCTUnwrap(URL(string: "https://example.co.uk"))),
-                       .matched(1_000))
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                               with: XCTUnwrap(URL(string: "http://a.b.c.example.com"))),
-                       .matched(1_000))
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                               with: XCTUnwrap(URL(string: "http://b.c.example.com"))),
-                       .matched(999))
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "http://a.b.c.example.com")),
-                               with: XCTUnwrap(URL(string: "https://c.example.com"))),
-                       .matched(998))
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "https://a.b.c.example.com")),
-                               with: XCTUnwrap(URL(string: "https://example.com"))),
-                       .matched(997))
-    }
-
-    func testCustomSchemes() throws {
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "ssh://example.com")),
-                               with: XCTUnwrap(URL(string: "ftp://example.com"))),
-                       .notMatched)
-
-        XCTAssertEqual(try sut(XCTUnwrap(URL(string: "ssh://example.com")),
-                               with: XCTUnwrap(URL(string: "ssh://example.com/path?query="))),
-                       .matched(1_000))
+private extension MatchUrlsTests {
+    func match(_ left: String, _ right: String) throws -> UrlMatchResult {
+        try sut(#require(URL(string: left)), with: #require(URL(string: right)))
     }
 }

@@ -30,8 +30,7 @@ struct LocalUserEventIdDatasourceTests {
         sut = LocalUserEventIdDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get, upsert and remove")
-    func getUpsertAndRemove() async throws {
+    @Test func `get, upsert and remove`() async throws {
         let alice = String.random()
         let bob = String.random()
 

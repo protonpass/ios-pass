@@ -44,6 +44,7 @@ struct ContactRow: View {
                         IconProvider.paperPlane
                             .foregroundStyle(PassColor.textWeak)
                     }
+                    .buttonStyle(.plain)
                     .padding(.trailing, DesignConstant.sectionPadding)
                 }
 
@@ -99,6 +100,7 @@ struct ContactRow: View {
                         .overlay(Capsule()
                             .stroke(PassColor.aliasInteractionNormMinor1, lineWidth: 1))
                 }
+                .buttonStyle(.plain)
             }
         }
         .frame(maxWidth: .infinity)

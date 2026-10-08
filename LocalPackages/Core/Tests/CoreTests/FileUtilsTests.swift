@@ -22,11 +22,11 @@ import Core
 import Foundation
 import Testing
 
+@Suite(.tags(.utilities))
 struct FileUtilsTests {
     let containerUrl = FileUtils.getDocumentsDirectory()
 
-    @Test("Create new file with data")
-    func createNewFileWithData() throws {
+    @Test func `create new file with data`() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -41,8 +41,7 @@ struct FileUtilsTests {
         #expect(data == givenData)
     }
 
-    @Test("Create new file with null data")
-    func createNewFileWithNullData() throws {
+    @Test func `create new file with null data`() throws {
         // Given
         let givenFileName = String.random()
 
@@ -56,8 +55,7 @@ struct FileUtilsTests {
         #expect(data.isEmpty)
     }
 
-    @Test("Overwrite data")
-    func overwriteData() throws {
+    @Test func `overwrite data`() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -75,8 +73,7 @@ struct FileUtilsTests {
         #expect(data == givenData)
     }
 
-    @Test("Get creation date")
-    func getCreationDate() throws {
+    @Test func `get creation date`() throws {
         // Given
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
@@ -91,8 +88,7 @@ struct FileUtilsTests {
         #expect(creationDate == givenDate)
     }
 
-    @Test("Get modification date")
-    func getModificationDate() throws {
+    @Test func `get modification date`() throws {
         // Given
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
@@ -107,8 +103,7 @@ struct FileUtilsTests {
         #expect(modificationDate == givenDate)
     }
 
-    @Test("Check obsolescences")
-    func checkObsolescences() throws {
+    @Test func `check obsolescences`() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -131,8 +126,7 @@ struct FileUtilsTests {
                                      thresholdInDays: 3))
     }
 
-    @Test("Get valid data")
-    func getValidData() throws {
+    @Test func `get valid data`() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -148,8 +142,7 @@ struct FileUtilsTests {
         #expect(FileManager.default.fileExists(atPath: fileUrl.path), "File still exists")
     }
 
-    @Test("Get obsolete data")
-    func testGetObsoleteData() throws {
+    @Test func `get obsolete data`() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -165,8 +158,7 @@ struct FileUtilsTests {
         #expect(!FileManager.default.fileExists(atPath: fileUrl.path), "File is removed")
     }
 
-    @Test("Get data of non existing file")
-    func getDataOfNonExistingFile() throws {
+    @Test func `get data of non existing file`() throws {
         // Given
         let givenUrl = containerUrl.appendingPathComponent(.random())
 
@@ -177,8 +169,7 @@ struct FileUtilsTests {
         #expect(data == nil)
     }
 
-    @Test("Process file block by block")
-    func processBlockByBlock() async throws {
+    @Test func `process file block by block`() async throws {
         // Given
         let url = FileManager.default.temporaryDirectory.appending(component: "test")
         FileManager.default.createFile(atPath: url.path(),
