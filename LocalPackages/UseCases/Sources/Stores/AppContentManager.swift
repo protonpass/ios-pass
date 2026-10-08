@@ -379,8 +379,8 @@ private extension AppContentManager {
 
             // 5. Get the lastEventID as a starting point for user events sync loop
             try startStep(operation)
-            // try await getLastEventIdIfNotExist(userId: userId)
             try await getAndStoreLastEventId(userId: userId)
+
             try startStep(operation)
             if isActiveUser {
                 // Preferences are only loaded for the active user, an inactive account repeats
