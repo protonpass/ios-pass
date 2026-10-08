@@ -77,7 +77,7 @@ struct AppContentManagerFullSyncTests {
                                 indexAllLoginItems: SyncWorkStub(),
                                 indexItemsForSpotlight: SyncWorkStub(),
                                 deleteLocalDataBeforeFullSync: deleteLocalData,
-                                getLastEventIdIfNotExist: SyncWorkStub(),
+                                getAndStoreLastEventId: SyncWorkStub(),
                                 getFeatureFlagStatus: featureFlags,
                                 dedupShare: SyncWorkStub(),
                                 refreshUserData: refresh,
@@ -415,9 +415,9 @@ private final class DeleteLocalDataSpy: DeleteLocalDataBeforeFullSyncUseCase {
     }
 }
 
-private struct SyncWorkStub: GetLastEventIdIfNotExistUseCase, IndexAllLoginItemsUseCase,
+private struct SyncWorkStub: GetAndStoreLastEventIdUseCase, IndexAllLoginItemsUseCase,
     IndexItemsForSpotlightUseCase, DedupShareUseCase {
-    func execute(userId: String) async throws {}
+    func callAsFunction(userId: String) async throws {}
 
     func execute() async throws {}
 
