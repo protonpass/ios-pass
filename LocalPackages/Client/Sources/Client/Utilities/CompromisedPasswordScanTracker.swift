@@ -24,9 +24,7 @@ import Foundation
 // sourcery: AutoMockable
 public protocol CompromisedPasswordScanTrackerProtocol: Sendable {
     func isFullScanDue(userId: String) -> Bool
-    func isCorpusUnchanged(userId: String, currentLastChange: Int) -> Bool
     func recordFullScan(userId: String)
-    func recordCorpusLastChange(_ lastChange: Int, userId: String)
 }
 
 public final class CompromisedPasswordScanTracker: CompromisedPasswordScanTrackerProtocol {
@@ -51,22 +49,9 @@ public extension CompromisedPasswordScanTracker {
         return elapsed >= Constants.CompromisedPasswords.minimumCheckInterval
     }
 
-    func isCorpusUnchanged(userId: String, currentLastChange: Int) -> Bool {
-        let key = Constants.CompromisedPasswords.lastCorpusChangeKey(userId)
-        guard let stored = localTimestampDatasource.getTimestamp(key: key) else {
-            return false
-        }
-        return currentLastChange <= stored
-    }
-
     func recordFullScan(userId: String) {
         let key = Constants.CompromisedPasswords.lastRunKey(userId)
         localTimestampDatasource.setTimestamp(now, key: key)
-    }
-
-    func recordCorpusLastChange(_ lastChange: Int, userId: String) {
-        let key = Constants.CompromisedPasswords.lastCorpusChangeKey(userId)
-        localTimestampDatasource.setTimestamp(lastChange, key: key)
     }
 }
 

@@ -79,67 +79,11 @@ struct CompromisedPasswordScanTrackerTests {
     }
 
     @Test
-    func `The corpus is considered changed when no change was recorded`() {
-        #expect(!makeSUT().isCorpusUnchanged(userId: "user", currentLastChange: 1))
-    }
-
-    @Test
-    func `The corpus is unchanged until a newer last change is seen`() {
-        let sut = makeSUT()
-
-        sut.recordCorpusLastChange(1_000, userId: "user")
-
-        #expect(sut.isCorpusUnchanged(userId: "user", currentLastChange: 999))
-        #expect(sut.isCorpusUnchanged(userId: "user", currentLastChange: 1_000))
-        #expect(!sut.isCorpusUnchanged(userId: "user", currentLastChange: 1_001))
-    }
-
-    @Test
     func `Recording a full scan persists the current time under the last run key`() {
         let datasource = MockLocalTimestampDatasource()
 
         makeSUT(datasource: datasource).recordFullScan(userId: "user")
 
         #expect(datasource.getTimestamp(key: Constants.CompromisedPasswords.lastRunKey("user")) == now)
-    }
-
-    @Test
-    func `Recording a corpus last change persists the value under the corpus key`() {
-        let datasource = MockLocalTimestampDatasource()
-
-        makeSUT(datasource: datasource).recordCorpusLastChange(1_000, userId: "user")
-
-        #expect(datasource.getTimestamp(key: Constants.CompromisedPasswords.lastCorpusChangeKey("user")) == 1_000)
-    }
-
-    @Test
-    func `Recording a corpus last change overwrites a newer stored value`() {
-        let sut = makeSUT()
-
-        sut.recordCorpusLastChange(1_000, userId: "user")
-        sut.recordCorpusLastChange(500, userId: "user")
-
-        #expect(!sut.isCorpusUnchanged(userId: "user", currentLastChange: 501))
-    }
-
-    @Test
-    func `Recording a corpus last change affects that user only`() {
-        let sut = makeSUT()
-
-        sut.recordCorpusLastChange(1_000, userId: "user")
-
-        #expect(sut.isCorpusUnchanged(userId: "user", currentLastChange: 1_000))
-        #expect(!sut.isCorpusUnchanged(userId: "other", currentLastChange: 1_000))
-    }
-
-    @Test
-    func `The full scan and corpus markers do not alias each other`() {
-        let sut = makeSUT()
-
-        sut.recordFullScan(userId: "user")
-        #expect(!sut.isCorpusUnchanged(userId: "user", currentLastChange: 0))
-
-        sut.recordCorpusLastChange(now, userId: "other")
-        #expect(sut.isFullScanDue(userId: "other"))
     }
 }

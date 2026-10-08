@@ -78,50 +78,38 @@ public extension CompromisedPasswordChecker {
         let derivedCandidates = candidatesWithPasswords.map { DerivedCompromisedPasswordCandidate(candidate: $0,
                                                                                                   key: key) }
 
-        let cached = try await loadCachedChecks(userId: userId, derived: derivedCandidates)
+        let cached = try await loadCachedChecks(userId: userId)
 
         var currentLastChange: Int?
-        let corpusUnchanged: Bool
-        var allSucceeded = true
         if scanTracker.isFullScanDue(userId: userId) {
             do {
-                let lastChange = try await remoteDatasource.getLastChangeTimestamp()
-                currentLastChange = lastChange
-                corpusUnchanged = scanTracker.isCorpusUnchanged(userId: userId,
-                                                                currentLastChange: lastChange)
+                currentLastChange = try await remoteDatasource.getLastChangeTimestamp()
             } catch {
                 logger.warning("Failed to fetch last timestamp for compromised password")
                 // Same policy as a failed prefix query: serve cached results rather than dropping
-                // known breaches, and leave the markers alone so the next refresh retries
-                corpusUnchanged = true
-                allSucceeded = false
+                // known breaches, and leave the window open so the next refresh retries
             }
-        } else {
-            // Inside the daily window the corpus is assumed unchanged; edited logins still miss the cache
-            corpusUnchanged = true
         }
 
+        // Without a fresh corpus timestamp (inside the daily window, or after a failed fetch) the corpus
+        // is assumed unchanged; edited logins still miss the cache
         let (cachedBreachCounts, candidatesToQuery) = splitByCacheHit(derivedCandidates,
                                                                       cachedChecks: cached,
-                                                                      corpusUnchanged: corpusUnchanged)
+                                                                      corpusLastChange: currentLastChange)
 
         var results = cachedBreachCounts
         if !candidatesToQuery.isEmpty {
-            let remote = await checkRemotely(candidatesToQuery,
-                                             cachedChecks: cached,
-                                             userId: userId)
-            results.merge(remote.breachCounts) { _, new in new }
-            allSucceeded = allSucceeded && remote.allSucceeded
+            let remoteBreachCounts = await checkRemotely(candidatesToQuery,
+                                                         cachedChecks: cached,
+                                                         userId: userId)
+            results.merge(remoteBreachCounts) { _, new in new }
         }
 
-        // Restarting the window even after a failure stops one bad prefix from forcing a rescan every refresh.
-        // The corpus marker waits for full success, so the next daily scan re-queries what failed.
-        // A cancelled scan aborted its own requests, so it restarts nothing and the next refresh rescans.
-        if let currentLastChange, !Task.isCancelled {
+        // A failed prefix keeps its old `checkedAt`, so the next daily scan re-queries only that prefix, and
+        // restarting the window stops it from forcing a rescan every refresh. A cancelled scan restarts
+        // nothing: the next refresh rescans and skips the prefixes it already saved.
+        if currentLastChange != nil, !Task.isCancelled {
             scanTracker.recordFullScan(userId: userId)
-            if allSucceeded {
-                scanTracker.recordCorpusLastChange(currentLastChange, userId: userId)
-            }
         }
 
         logger.info("Finished fetching and checking compromised passwords for \(candidates.count) logins")
@@ -130,9 +118,7 @@ public extension CompromisedPasswordChecker {
 }
 
 private extension CompromisedPasswordChecker {
-    func loadCachedChecks(userId: String,
-                          derived: [DerivedCompromisedPasswordCandidate]) async throws
-        -> [String: CompromisedPasswordCheck] {
+    func loadCachedChecks(userId: String) async throws -> [String: CompromisedPasswordCheck] {
         let stored: [CompromisedPasswordCheck]
         do {
             stored = try await localDatasource.getChecks(userId: userId)
@@ -140,36 +126,21 @@ private extension CompromisedPasswordChecker {
             logger.warning("Failed to fetch locally stored items password checks")
             throw error
         }
-
-        // Rows of deleted, moved or no-longer-checked items would otherwise pile up until logout
-        let candidateIds = Set(derived.map(\.id))
-        var cached = [String: CompromisedPasswordCheck]()
-        var stale = [IDs]()
-        for check in stored {
-            if candidateIds.contains(check.id) {
-                cached[check.id] = check
-            } else {
-                stale.append(IDs(shareId: check.shareId, itemId: check.itemId))
-            }
-        }
-        do {
-            try await localDatasource.remove(userId: userId, staleItemIds: stale)
-        } catch {
-            logger.warning("Failed to remove \(stale.count) stale CompromisedPasswordCheck")
-        }
-        return cached
+        // Rows of logins that aren't candidates right now (mid full sync, hidden vault, excluded item)
+        // are kept, so those logins aren't queried again when they come back. Logout removes them.
+        return Dictionary(stored.map { ($0.id, $0) }, uniquingKeysWith: { _, last in last })
     }
 
     func splitByCacheHit(_ candidates: [DerivedCompromisedPasswordCandidate],
                          cachedChecks: [String: CompromisedPasswordCheck],
-                         corpusUnchanged: Bool)
+                         corpusLastChange: Int?)
         -> (cachedBreachCounts: [String: Int], candidatesToQuery: [DerivedCompromisedPasswordCandidate]) {
         var cachedBreachCounts = [String: Int]()
         var candidatesToQuery = [DerivedCompromisedPasswordCandidate]()
         for candidate in candidates {
-            if corpusUnchanged,
-               let cachedCheck = cachedChecks[candidate.id],
-               cachedCheck.passwordHash == candidate.passwordHash {
+            if let cachedCheck = cachedChecks[candidate.id],
+               cachedCheck.passwordHash == candidate.passwordHash,
+               cachedCheck.checkedAt >= corpusLastChange ?? 0 {
                 cachedBreachCounts[candidate.id] = cachedCheck.breachCount
             } else {
                 candidatesToQuery.append(candidate)
@@ -180,43 +151,48 @@ private extension CompromisedPasswordChecker {
 
     func checkRemotely(_ candidates: [DerivedCompromisedPasswordCandidate],
                        cachedChecks: [String: CompromisedPasswordCheck],
-                       userId: String)
-        async -> (breachCounts: [String: Int], allSucceeded: Bool) {
+                       userId: String) async -> [String: Int] {
         let checkedAt = Int(dateProvider.getCurrentDate().timeIntervalSince1970)
-        let outcomes: [PrefixOutcome]
-        do {
-            outcomes = try await batchProcess(groups: candidates.groupedByPrefix,
-                                              cachedChecks: cachedChecks,
-                                              checkedAt: checkedAt)
-        } catch {
-            // Only cancellation gets here, as process(prefix:) turns every request failure into an outcome
-            return ([:], false)
-        }
+        let outcomes = await batchProcess(groups: candidates.groupedByPrefix,
+                                          cachedChecks: cachedChecks,
+                                          checkedAt: checkedAt)
 
         var breachCounts = [String: Int]()
         var checksToSave = [CompromisedPasswordCheck]()
-        var allSucceeded = true
         for outcome in outcomes {
             breachCounts.merge(outcome.breachCounts) { _, new in new }
             checksToSave.append(contentsOf: outcome.checks)
-            allSucceeded = allSucceeded && outcome.succeeded
         }
         do {
             try await localDatasource.upsert(checksToSave, userId: userId)
         } catch {
             logger.warning("Failed to upsert \(checksToSave.count) CompromisedPasswordCheck")
         }
-        return (breachCounts, allSucceeded)
+        return breachCounts
     }
 
+    /// Unlike `parallelMap`, cancellation stops scheduling new prefixes but keeps the outcomes already
+    /// received, so a cancelled scan still saves what it downloaded instead of starting over.
     func batchProcess(groups: [String: [DerivedCompromisedPasswordCandidate]],
                       cachedChecks: [String: CompromisedPasswordCheck],
-                      checkedAt: Int) async throws -> [PrefixOutcome] {
-        try await Array(groups).parallelMap(parallelism: maxConcurrentRequests) { prefix, candidates in
-            await self.process(prefix: prefix,
-                               candidates: candidates,
-                               cachedChecks: cachedChecks,
-                               checkedAt: checkedAt)
+                      checkedAt: Int) async -> [PrefixOutcome] {
+        let processGroup: @Sendable (String, [DerivedCompromisedPasswordCandidate]) async -> PrefixOutcome = {
+            await self.process(prefix: $0, candidates: $1, cachedChecks: cachedChecks, checkedAt: checkedAt)
+        }
+        return await withTaskGroup(of: PrefixOutcome.self) { group in
+            var pendingGroups = groups.makeIterator()
+            for _ in 0..<maxConcurrentRequests {
+                guard !Task.isCancelled, let (prefix, candidates) = pendingGroups.next() else { break }
+                group.addTask { await processGroup(prefix, candidates) }
+            }
+            var outcomes = [PrefixOutcome]()
+            while let outcome = await group.next() {
+                outcomes.append(outcome)
+                if !Task.isCancelled, let (prefix, candidates) = pendingGroups.next() {
+                    group.addTask { await processGroup(prefix, candidates) }
+                }
+            }
+            return outcomes
         }
     }
 
@@ -256,7 +232,7 @@ private extension CompromisedPasswordChecker {
                                         breachCount: cachedCheck.breachCount,
                                         checkedAt: checkedAt))
                 }
-                return .init(breachCounts: breachCounts, checks: checks, succeeded: true)
+                return .init(breachCounts: breachCounts, checks: checks)
 
             case let .modified(newEtag, body):
                 let breachCountsBySuffix = body.parseBreachRange().countsBySuffix
@@ -271,17 +247,20 @@ private extension CompromisedPasswordChecker {
                                         breachCount: breachCount,
                                         checkedAt: checkedAt))
                 }
-                return .init(breachCounts: breachCounts, checks: checks, succeeded: true)
+                return .init(breachCounts: breachCounts, checks: checks)
             }
         } catch {
             logger.error(error)
             // Keep cached results on error; never invalidate or mark unbreached.
-            let cachedBreachCounts = candidates.compactMap { candidate in
-                cachedChecks[candidate.id].map { (candidate.id, $0.breachCount) }
+            let cachedBreachCounts = candidates.compactMap { candidate -> (String, Int)? in
+                guard let cachedCheck = cachedChecks[candidate.id],
+                      cachedCheck.passwordHash == candidate.passwordHash else {
+                    return nil
+                }
+                return (candidate.id, cachedCheck.breachCount)
             }
             return .init(breachCounts: Dictionary(cachedBreachCounts, uniquingKeysWith: { _, new in new }),
-                         checks: [],
-                         succeeded: false)
+                         checks: [])
         }
     }
 }
@@ -331,6 +310,5 @@ private extension CompromisedPasswordChecker {
         /// Breach count keyed by itemId + shareId.
         let breachCounts: [String: Int]
         let checks: [CompromisedPasswordCheck]
-        let succeeded: Bool
     }
 }

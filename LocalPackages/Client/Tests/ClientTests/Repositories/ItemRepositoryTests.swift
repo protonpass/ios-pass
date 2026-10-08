@@ -39,7 +39,6 @@ struct ItemRepositoryTests {
     private let remoteDatasource: RemoteItemDatasourceProtocolMock
     private let localShareDatasource: LocalShareDatasourceProtocolMock
     private let passKeyManager: PassKeyManagerProtocolMock
-    private let featureFlagsRepository: FeatureFlagsRepositoryMock
     private let logManager: LogManagerProtocolMock
 
     init() {
@@ -50,7 +49,6 @@ struct ItemRepositoryTests {
         remoteDatasource = RemoteItemDatasourceProtocolMock()
         localShareDatasource = LocalShareDatasourceProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
-        featureFlagsRepository = FeatureFlagsRepositoryMock()
         logManager = LogManagerProtocolMock()
     }
 }
@@ -78,7 +76,7 @@ extension ItemRepositoryTests {
                                  remoteDatasource: remoteDatasource,
                                  localShareDatasource: localShareDatasource,
                                  passKeyManager: passKeyManager,
-                                 featureFlagsRepository: featureFlagsRepository,
+                                 isFeatureEnabled: { _ in false },
                                  logManager: logManager)
 
         let pinnedItems = try await sut.getAllPinnedItems()
@@ -103,8 +101,7 @@ extension ItemRepositoryTests {
 // MARK: - Get shared item tests
 
 extension ItemRepositoryTests {
-    @Test
-    func `get shared item throws when share is not an item share`() async throws {
+    @Test func `get shared item throws when share is not an item share`() async throws {
         let share = Share.random(shareId: .random(), targetType: .vault)
         let sut = makeSut()
 
@@ -115,8 +112,7 @@ extension ItemRepositoryTests {
         #expect(!localDatasource.invokedUpsertItemsItemsAsync12)
     }
 
-    @Test
-    func `get shared item throws when there is no remote revision`() async throws {
+    @Test func `get shared item throws when there is no remote revision`() async throws {
         let share = Share.random(shareId: .random(), targetType: .item)
         remoteDatasource.stubbedGetItemRevisionsResult = .init(lastToken: nil, data: [], total: 0)
         let sut = makeSut()
@@ -127,8 +123,7 @@ extension ItemRepositoryTests {
         #expect(!localDatasource.invokedUpsertItemsItemsAsync12)
     }
 
-    @Test
-    func `get shared item caches and returns the latest revision`() async throws {
+    @Test func `get shared item caches and returns the latest revision`() async throws {
         let userId = String.random()
         let share = Share.random(shareId: .random(), targetType: .item)
         let containerKey = try DecryptedShareKey(shareId: share.shareID, keyRotation: 1, keyData: .random())
@@ -170,8 +165,7 @@ extension ItemRepositoryTests {
         #expect(localDatasource.invokedGetItemParameters?.itemId == share.targetID)
     }
 
-    @Test
-    func `get shared item throws when cached item cannot be read back`() async throws {
+    @Test func `get shared item throws when cached item cannot be read back`() async throws {
         let userId = String.random()
         let share = Share.random(shareId: .random(), targetType: .item)
         let containerKey = try DecryptedShareKey(shareId: share.shareID, keyRotation: 1, keyData: .random())
@@ -199,7 +193,7 @@ private extension ItemRepositoryTests {
                        remoteDatasource: remoteDatasource,
                        localShareDatasource: localShareDatasource,
                        passKeyManager: passKeyManager,
-                       featureFlagsRepository: featureFlagsRepository,
+                       isFeatureEnabled: { _ in false },
                        logManager: logManager)
     }
 
