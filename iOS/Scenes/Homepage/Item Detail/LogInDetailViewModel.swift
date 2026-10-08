@@ -54,9 +54,26 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     let showExcludedWeaknesses: Bool
+    private var monitorStatus: SecurityAffectedItem?
 
-    override var restoresAllMonitoring: Bool {
-        showExcludedWeaknesses
+    override var offersIncludeInMonitoring: Bool {
+        if showExcludedWeaknesses {
+            return !isMonitored || !itemContent.item.suppressedChecks.isEmpty
+        }
+        guard isPerCheckExclusionEnabled, let monitorStatus else {
+            return super.offersIncludeInMonitoring
+        }
+        return monitorStatus.hasNothingMonitored
+    }
+
+    override var flagsToToggleFullMonitoring: [ItemFlag] {
+        if offersIncludeInMonitoring, showExcludedWeaknesses || isPerCheckExclusionEnabled {
+            return itemContent.item.flagsToRestoreMonitoring
+        }
+        guard isPerCheckExclusionEnabled else {
+            return super.flagsToToggleFullMonitoring
+        }
+        return monitorStatus?.flagsToExcludeFromMonitoring ?? [.skipHealthCheck(true)]
     }
 
     private let scorePassword = dependency(\UseCasesContainer.scorePassword)
@@ -70,11 +87,15 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
          upgradeChecker: any UpgradeCheckerProtocol,
+         fromPassMonitor: Bool,
          showExcludedWeaknesses: Bool) {
         self.showExcludedWeaknesses = showExcludedWeaknesses
         super.init(isShownAsSheet: isShownAsSheet,
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
+        guard fromPassMonitor || isPerCheckExclusionEnabled else {
+            return
+        }
         getLoginSecurityIssues(itemId: itemContent.id)
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
@@ -82,6 +103,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                 guard let self else {
                     return
                 }
+                monitorStatus = affected
                 guard let affected else {
                     securityIssues = nil
                     return

@@ -97,7 +97,10 @@ public enum SheetDestination: Equatable, Hashable {
     case updateItem(type: ItemContentType, updated: Bool)
     /// `automaticDisplay` differs by entry point: search and the security centre share one presentation,
     /// the main list tab uses another.
-    case itemDetail(ItemContent, automaticDisplay: Bool = true, showExcludedWeaknesses: Bool = false)
+    case itemDetail(ItemContent,
+                    automaticDisplay: Bool = true,
+                    fromPassMonitor: Bool = false,
+                    showExcludedWeaknesses: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults
     case editSpotlightVaults
