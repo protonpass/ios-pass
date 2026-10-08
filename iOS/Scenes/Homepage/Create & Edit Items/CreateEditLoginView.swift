@@ -753,6 +753,8 @@ private struct WebsiteSection<Field: Hashable>: View {
         .contentShape(.rect)
         .sheet(item: $selectedAutofillUrl) { autofillUrl in
             EditDomainMatchingView(url: autofillUrl,
+                                   parentDomainExamples: viewModel
+                                       .parentDomainMatchingExamples(for: autofillUrl.value.url),
                                    onSave: { newMode in
                                        viewModel.update(mode: newMode, for: autofillUrl)
                                    })
