@@ -321,14 +321,15 @@ public extension RepositoryContainer {
 
     var itemRepository: Factory<any ItemRepositoryProtocol> {
         self {
-            ItemRepository(symmetricKeyProvider: self.symmetricKeyProvider,
-                           userManager: self.userManager,
-                           localDatasource: self.localItemDatasource(),
-                           remoteDatasource: self.remoteItemDatasource(),
-                           localShareDatasource: self.localShareDatasource(),
-                           passKeyManager: self.passKeyManager(),
-                           featureFlagsRepository: self.featureFlagsRepository(),
-                           logManager: self.logManager)
+            let getFeatureFlagStatus = UseCasesContainer.shared.getFeatureFlagStatus()
+            return ItemRepository(symmetricKeyProvider: self.symmetricKeyProvider,
+                                  userManager: self.userManager,
+                                  localDatasource: self.localItemDatasource(),
+                                  remoteDatasource: self.remoteItemDatasource(),
+                                  localShareDatasource: self.localShareDatasource(),
+                                  passKeyManager: self.passKeyManager(),
+                                  isFeatureEnabled: { getFeatureFlagStatus(for: $0) },
+                                  logManager: self.logManager)
         }
     }
 

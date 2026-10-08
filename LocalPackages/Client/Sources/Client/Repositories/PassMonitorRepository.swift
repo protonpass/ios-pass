@@ -33,8 +33,14 @@ private struct InternalPassMonitorItem {
     let isOwned: Bool
 }
 
+private struct EvaluatedLoginItem {
+    let item: InternalPassMonitorItem
+    let reuseGroup: Int?
+    let localWeaknesses: Set<WeaknessKind>
+}
+
 private struct WeaknessComputation {
-    let loginItems: [InternalPassMonitorItem]
+    let loginItems: [EvaluatedLoginItem]
     let reusedPasswords: [String: Int]
 }
 
@@ -160,9 +166,12 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         pushWeaknessState(buildStats(inputs, breachedItemIds: knownBreachedItemIds))
 
         guard compromisedCheckEnabled else { return }
-        // A failed compromised check must not hide the local weak/reused/2FA results
-        let breachedItemIds = await (try? compromisedItemIds(userId: userId, loginItems: loginItems)) ?? []
-        guard refreshNumber == lastPublishedRefresh else { return }
+        // A failed compromised check must neither hide the local weak/reused/2FA results nor mark
+        // known breaches as fixed
+        let breachedItemIds = await (try? compromisedItemIds(userId: userId, loginItems: loginItems))
+            ?? knownBreachedItemIds
+        // A cancelled check only returns cache hits, which would hide breaches found by earlier scans
+        guard !Task.isCancelled, refreshNumber == lastPublishedRefresh else { return }
         pushWeaknessState(buildStats(inputs, breachedItemIds: breachedItemIds))
     }
 
@@ -301,8 +310,7 @@ public extension PassMonitorRepository {
         let compromisedCheckEnabled = await isCompromisedCheckEnabled(userId: userId)
         let visibleItems = try await getLoginItems(userId: userId,
                                                    compromisedCheckEnabled: compromisedCheckEnabled)
-        // Checked here rather than read from the last published refresh, which may not have finished
-        // yet. All visible items are passed because the checker prunes cached rows of non-candidates.
+        // Checked here rather than read from the last published refresh, which may not have finished yet
         var breachedItemIds: Set<String>?
         if compromisedCheckEnabled {
             breachedItemIds = try? await compromisedItemIds(userId: userId, loginItems: visibleItems)
@@ -368,14 +376,21 @@ private extension PassMonitorRepository {
             .keys
             .enumerated()
             .map { ($1, $0) })
-        return WeaknessComputation(loginItems: loginItems, reusedPasswords: reuseGroups)
+        let evaluatedItems = loginItems.map { item in
+            let reuseGroup = reuseGroups[item.loginData.password]
+            return EvaluatedLoginItem(item: item,
+                                      reuseGroup: reuseGroup,
+                                      localWeaknesses: weaknessEvaluator.evaluate(item.loginData,
+                                                                                  isReused: reuseGroup != nil))
+        }
+        return WeaknessComputation(loginItems: evaluatedItems, reusedPasswords: reuseGroups)
     }
 
     func buildStats(_ inputs: WeaknessComputation,
                     breachedItemIds: Set<String>) -> (WeaknessStats, [SecurityAffectedItem]) {
-        let securityAffectedItems = inputs.loginItems.compactMap { item -> SecurityAffectedItem? in
-            let reuseGroup = inputs.reusedPasswords[item.loginData.password]
-            var detected = weaknessEvaluator.evaluate(item.loginData, isReused: reuseGroup != nil)
+        let securityAffectedItems = inputs.loginItems.compactMap { evaluated -> SecurityAffectedItem? in
+            let item = evaluated.item
+            var detected = evaluated.localWeaknesses
             if breachedItemIds.contains(item.content.id) {
                 detected.insert(.compromisedPassword)
             }
@@ -383,7 +398,7 @@ private extension PassMonitorRepository {
                                                     detected: detected,
                                                     display: item.content.toItemUiModel,
                                                     suppressedChecks: item.suppressedChecks,
-                                                    reuseGroup: reuseGroup)
+                                                    reuseGroup: evaluated.reuseGroup)
             return affectedItem.shouldBeIncluded ? affectedItem : nil
         }
 
