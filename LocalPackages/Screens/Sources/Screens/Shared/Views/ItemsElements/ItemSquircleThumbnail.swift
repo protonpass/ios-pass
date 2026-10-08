@@ -1,7 +1,7 @@
 //
 // ItemSquircleThumbnail.swift
-// Proton Pass - Created on 14/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 24/09/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -25,7 +25,7 @@ import Entities
 import FactoryKit
 import SwiftUI
 
-enum ItemSquircleThumbnailSize {
+public enum ItemSquircleThumbnailSize {
     case small, regular, large
 
     var height: CGFloat {
@@ -59,8 +59,7 @@ enum ItemSquircleThumbnailSize {
     }
 }
 
-@MainActor
-struct ItemSquircleThumbnail: View {
+public struct ItemSquircleThumbnail: View {
     @State private var image: UIImage?
 
     private let repository = dependency(\RepositoryContainer.favIconRepository)
@@ -72,11 +71,11 @@ struct ItemSquircleThumbnail: View {
     private let size: ItemSquircleThumbnailSize
     private let alternativeBackground: Bool
 
-    init(data: ItemThumbnailData,
-         isEnabled: Bool = true,
-         pinned: Bool = false,
-         size: ItemSquircleThumbnailSize = .regular,
-         alternativeBackground: Bool = false) {
+    public init(data: ItemThumbnailData,
+                isEnabled: Bool = true,
+                pinned: Bool = false,
+                size: ItemSquircleThumbnailSize = .regular,
+                alternativeBackground: Bool = false) {
         self.data = data
         self.pinned = pinned
         self.isEnabled = isEnabled
@@ -87,7 +86,7 @@ struct ItemSquircleThumbnail: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         thumbnail
             .overlay(pinned ? pin : nil)
             .animation(.default, value: pinned)

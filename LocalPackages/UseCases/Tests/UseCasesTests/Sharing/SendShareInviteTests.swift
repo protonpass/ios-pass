@@ -20,46 +20,29 @@
 
 import Client
 import ClientMocks
-import Combine
 import Entities
 import EntitiesMocks
+import Foundation
 import ProtonCoreLogin
+import Testing
 import UseCases
 import UseCasesMocks
-import XCTest
 
-final class SendShareInviteTests: XCTestCase {
-    var sut: SendShareInviteUseCase!
-    var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
-    var makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase!
-    var publicKeyRepository: PublicKeyRepositoryProtocolMock!
-    var passKeyManager: PassKeyManagerProtocolMock!
-    var shareInviteRepository: ShareInviteRepositoryProtocolMock!
-    var userManager: UserManagerProtocolMock!
-    var syncEventLoop: SyncEventLoopProtocolMock!
-
-    override func setUp() {
-        super.setUp()
-        createAndMoveItemToNewVault = CreateAndMoveItemToNewVaultUseCaseMock()
-        makeUnsignedSignatureForVaultSharing = MakeUnsignedSignatureForVaultSharing()
-        publicKeyRepository = PublicKeyRepositoryProtocolMock()
-        passKeyManager = PassKeyManagerProtocolMock()
-        shareInviteRepository = ShareInviteRepositoryProtocolMock()
-        userManager = UserManagerProtocolMock()
-        syncEventLoop = SyncEventLoopProtocolMock()
-    }
-
+@Suite(.tags(.useCase))
+struct SendShareInviteTests {
     @MainActor
-    func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
-        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
-                              makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
-                              shareInviteService: ShareInviteService(),
-                              passKeyManager: passKeyManager,
-                              shareInviteRepository: shareInviteRepository,
-                              userManager: userManager,
-                              syncEventLoop: syncEventLoop)
-        publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
-        passKeyManager.stubbedGetLatestShareKeyResult = try DecryptedShareKey(shareId: "test", keyRotation: 1,
+    @Test func `sending an invite fails when the vault address cannot be found`() async throws {
+        let passKeyManager = PassKeyManagerProtocolMock()
+        let userManager = UserManagerProtocolMock()
+        let sut = SendShareInvite(createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock(),
+                                  makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharing(),
+                                  shareInviteService: ShareInviteService(),
+                                  passKeyManager: passKeyManager,
+                                  shareInviteRepository: ShareInviteRepositoryProtocolMock(),
+                                  userManager: userManager,
+                                  syncEventLoop: SyncEventLoopProtocolMock())
+        passKeyManager.stubbedGetLatestShareKeyResult = try DecryptedShareKey(shareId: "test",
+                                                                              keyRotation: 1,
                                                                               keyData: Data.random())
         userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(shareElement: .vault(.random()),
@@ -69,11 +52,9 @@ final class SendShareInviteTests: XCTestCase {
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],
                                  itemsNum: 100)
-        do {
+
+        await #expect(throws: PassError.self) {
             _ = try await sut(with: [infos])
-            XCTFail("Error needs to be thrown")
-        } catch {
-            XCTAssertTrue(error is PassError)
         }
     }
 }

@@ -189,6 +189,7 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword:
@@ -243,6 +244,7 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
@@ -296,6 +298,7 @@ private extension TelemetryEventType {
              .monitorDisplayMonitoringProtonAddresses,
              .monitorDisplayReusedPasswords,
              .monitorDisplayWeakPasswords,
+             .monitorItemDetailFromCompromisedPassword,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
@@ -400,6 +403,9 @@ private extension TelemetryEventType {
 
         case .monitorItemDetailFromReusedPassword:
             "View item detail from reused password list"
+
+        case .monitorItemDetailFromCompromisedPassword:
+            "View item detail from compromised password list"
 
         case .multiAccountAddAccount:
             "Add new account"

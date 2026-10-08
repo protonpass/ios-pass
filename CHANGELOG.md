@@ -1,3 +1,17 @@
+# Version 1.22.0
+- Added support for ignoring specific password issues, such as compromised, weak, or reused passwords (behind feature flag)
+- Added support for checking whether your passwords have been compromised (behind feature flag)
+
+Others:
+- Rust library upgraded from 2.0.0 to 2.2.0
+
+# Version 1.21.2
+- Fixed crashes when entering an incorrect password while logging in
+
+Others:
+- Core libraries upgraded from 37.6.1 to 38.0.0
+- Bump Sentry from 9.29.1 to 9.30.0
+
 # Version 1.21.1
 - Fixed the invitation sheet staying stuck after accepting an invite
 

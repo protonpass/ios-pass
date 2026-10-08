@@ -23,6 +23,7 @@ import Core
 import CoreData
 @preconcurrency import CryptoKit
 import Entities
+import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 
 // swiftlint:disable function_parameter_count
@@ -39,29 +40,22 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get all items (both active & trashed)
     func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all item contents
     func getAllItemContents(userId: String) async throws -> [ItemContent]
 
-    /// Get all local items of all shares by state
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get all local items of a share by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get a specific Item
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
-    /// Get items by IDs
     func getItems(_ ids: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get alias item by alias email
     func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws
 
     func getUnsyncedSimpleLoginNoteAliases(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
     func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
@@ -140,25 +134,20 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func move(items: [any ItemIdentifiable], toShareId: String, destinationFolderId: String?) async throws
 
     // periphery:ignore
-    /// Delete all local items
     func deleteAllItemsLocally() async throws
 
     /// Delete all local items for current active user
     /// This should only be used for a complete nuke of local data for all users
     func deleteAllUserItemsLocally(userId: String) async throws
 
-    /// Delete items locally after sync events
     func deleteAllItemsLocally(shareId: String) async throws
 
-    /// Delete items locally after sync events
     func deleteItemsLocally(itemIds: [String], shareId: String) async throws
 
-    /// Delete items locally after user sync events
     func deleteItemsLocally(items: [any ItemIdentifiable]) async throws
 
     // MARK: - AutoFill operations
 
-    /// Get active log in items of all shares
     func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     func pinItems(_ items: [any ItemIdentifiable]) async throws
@@ -218,6 +207,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let localShareDatasource: any LocalShareDatasourceProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
 
     public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
@@ -231,6 +221,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 localShareDatasource: any LocalShareDatasourceProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
+                featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
@@ -238,6 +229,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.localShareDatasource = localShareDatasource
         self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
+        self.featureFlagsRepository = featureFlagsRepository
         self.userManager = userManager
         logger = .init(manager: logManager)
         // swiftlint:disable:next todo
@@ -410,6 +402,7 @@ public extension ItemRepository {
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
+        itemsWereUpdated.send()
 
         return encryptedItem
     }
@@ -438,6 +431,7 @@ public extension ItemRepository {
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
+        itemsWereUpdated.send()
         return encryptedItem
     }
 
@@ -471,6 +465,7 @@ public extension ItemRepository {
         }
         try await localDatasource.upsertItems(encryptedItem)
         logger.trace("Saved aliased to local database")
+        itemsWereUpdated.send()
         return encryptedItem
     }
 
@@ -509,6 +504,7 @@ public extension ItemRepository {
                                                                 symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedAlias, encryptedOtherItem])
         logger.trace("Saved alias & other item to local database")
+        itemsWereUpdated.send()
         return (encryptedAlias, encryptedOtherItem)
     }
 
@@ -696,7 +692,8 @@ public extension ItemRepository {
         let request = try UpdateItemRequest(oldRevision: oldItem,
                                             key: latestItemKey.keyData,
                                             keyRotation: latestItemKey.keyRotation,
-                                            itemContent: newItemContent)
+                                            itemContent: newItemContent,
+                                            domainMatchingSupported: domainMatchingSupported)
 
         let updatedItemRevision = try await remoteDatasource.updateItem(userId: userId,
                                                                         shareId: shareId,
@@ -763,9 +760,7 @@ public extension ItemRepository {
                 return SymmetricallyEncryptedAlias(email: alias.email,
                                                    encryptedNote: encryptedNote)
             }
-            // We store a placeholder instead of a null or empty string
-            // in order to mark an alias as synced
-            // So then we could query out only unsynced aliases
+            // A placeholder rather than nil marks the alias as synced, so unsynced ones can be queried
             return SymmetricallyEncryptedAlias(email: alias.email,
                                                encryptedNote: Constants.Database.encryptedSlNotePlaceholder)
         }
@@ -834,6 +829,7 @@ public extension ItemRepository {
         logger.trace("Importing \(logins.count) logins for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let chunks = logins.chunked(into: 100)
+        let isDomainMatchingSupported = domainMatchingSupported
         for chunk in chunks {
             let itemsToImport: [ItemToImport] = try chunk.map { login in
                 let loginData = ItemContentData.login(.init(email: login.email,
@@ -841,6 +837,8 @@ public extension ItemRepository {
                                                             password: login.password,
                                                             totpUri: "",
                                                             urls: [login.url],
+                                                            autofillUrls: [AutofillUrl(url: login.url,
+                                                                                       mode: .default)],
                                                             allowedAndroidApps: [],
                                                             passkeys: []))
                 let content = ItemContentProtobuf(name: login.name,
@@ -848,7 +846,9 @@ public extension ItemRepository {
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])
-                return try .init(containerKey: vaultKey, itemContent: content)
+                return try .init(containerKey: vaultKey,
+                                 itemContent: content,
+                                 domainMatchingSupported: isDomainMatchingSupported)
             }
             logger.debug("Bulk importing \(itemsToImport.count) logins")
             let items = try await remoteDatasource.importItems(userId: userId,
@@ -936,6 +936,17 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
+    /// Mirrors `GetFeatureFlagStatus`, which lives in `UseCases` and so is not reachable from
+    /// `Client`. Duplicated rather than threaded down as a parameter through four call layers.
+    var domainMatchingSupported: Bool {
+        let flag = FeatureFlagType.passAutofillUrlAdvancedModes
+        if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
+            return true
+        }
+
+        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
+    }
+
     func getSymmetricKey() async throws -> SymmetricKey {
         try await symmetricKeyProvider.getSymmetricKey()
     }
@@ -990,7 +1001,8 @@ private extension ItemRepository {
                                                                           keyRotation: nil)
         return try CreateItemRequest(containerKey: latestContainerKey,
                                      itemContent: itemContent,
-                                     folderId: folderId)
+                                     folderId: folderId,
+                                     domainMatchingSupported: domainMatchingSupported)
     }
 }
 
@@ -1017,7 +1029,6 @@ public extension ItemRepository {
                 }
                 .sorted(by: { $0.createTime < $1.createTime })
 
-        // Number of TOTP is not reached
         if loginItemsWithTotp.count < numberOfTotp {
             return nil
         }
@@ -1091,7 +1102,6 @@ private extension ItemRepository {
 
         var itemsToBeMoved = [ItemToBeMoved]()
         for item in items {
-            // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
                                                                          folderId: item.folderId,
@@ -1139,7 +1149,6 @@ private extension ItemRepository {
 
         var itemsToBeMoved = [InternalItemToBeMoved]()
         for item in items {
-            // Get all decrypted item keys
             let decryptedItemKeys = try await passKeyManager.getItemKeys(userId: userId,
                                                                          shareId: item.shareId,
                                                                          folderId: item.folderId,
@@ -1166,7 +1175,6 @@ private extension ItemRepository {
                                               modifiedItems: modifiedItems)
     }
 
-    /// Group items by share and bulk actionning on those grouped items
     func bulkAction(userId: String,
                     items: [any ItemIdentifiable],
                     action: @Sendable ([SymmetricallyEncryptedItem], ShareID) async throws -> Void) async throws {

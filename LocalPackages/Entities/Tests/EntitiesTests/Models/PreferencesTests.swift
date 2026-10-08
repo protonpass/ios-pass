@@ -25,13 +25,11 @@ import Testing
 
 @Suite(.tags(.entity))
 struct PreferencesTests {
-    @Test("Decode AppPreferences from empty JSON")
-    func decodeAppPreferencesFromEmptyJson() throws {
+    @Test func `decode AppPreferences from empty JSON`() throws {
         try decodeAndAssert(AppPreferences.self, json: "{}", expectation: .default)
     }
 
-    @Test("Decode AppPreferences from legacy JSON")
-    func decodeAppPrerencesFromLegacyJson() throws {
+    @Test func `decode AppPreferences from legacy JSON`() throws {
         let json = """
 {
     "createdItemsCount": 100
@@ -48,13 +46,11 @@ struct PreferencesTests {
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
-    @Test("Decode SharedPreferences from empty JSON")
-    func testDecodeSharedPreferencesFromEmptyJson() throws {
+    @Test func `decode SharedPreferences from empty JSON`() throws {
         try decodeAndAssert(SharedPreferences.self, json: "{}", expectation: .default)
     }
 
-    @Test("Decode SharedPreferences from legacy JSON")
-    func decodeSharedPrerencesFromLegacyJson() throws {
+    @Test func `decode SharedPreferences from legacy JSON`() throws {
         let json = """
 {
     "shareClipboard": true,
@@ -85,13 +81,11 @@ struct PreferencesTests {
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)
     }
 
-    @Test("Decode UserPreferences from empty JSON")
-    func decodeUserPreferencesFromEmptyJson() throws {
+    @Test func `decode UserPreferences from empty JSON`() throws {
         try decodeAndAssert(UserPreferences.self, json: "{}", expectation: .default)
     }
 
-    @Test("Decode UserPreferences from legacy JSON")
-    func decodeUserPrerencesFromLegacyJson() throws {
+    @Test func `decode UserPreferences from legacy JSON`() throws {
         let json = """
 {
     "spotlightSearchableContent": 2
@@ -111,8 +105,7 @@ struct PreferencesTests {
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)
     }
 
-    @Test
-    func `Decode UserPreferences from JSON predating folder force sync`() throws {
+    @Test func `decode UserPreferences from JSON predating folder force sync`() throws {
         let json = """
 {
     "spotlightEnabled": true,

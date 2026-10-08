@@ -29,8 +29,7 @@ struct LocalItemDatasourceTests {
 }
 
 extension LocalItemDatasourceTests {
-    @Test("Get all items by user")
-    func getAllItems() async throws {
+    @Test func `get all items by user`() async throws {
         let currentUserId = "test"
         // Given
         var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
@@ -45,8 +44,7 @@ extension LocalItemDatasourceTests {
         #expect(Set(items.map(\.itemId)) != Set(givenItems.map(\.itemId)))
     }
 
-    @Test("Get all itesm by state by user")
-    func getAllItemsByState() async throws {
+    @Test func `get all items by state by user`() async throws {
         let currentUserId = "test"
 
         // Given
@@ -63,8 +61,7 @@ extension LocalItemDatasourceTests {
         #expect(Set(allItems.map(\.itemId)) == Set(givenItems.map(\.itemId)))
     }
 
-    @Test("Get all pinned items by user")
-    func getAllPinnedItems() async throws {
+    @Test func `get all pinned items by user`() async throws {
         let currentUserId = "test"
 
         // Given
@@ -100,8 +97,7 @@ extension LocalItemDatasourceTests {
         #expect(pinnedItems3.isEmpty)
     }
 
-    @Test("Get specific item")
-    func getItem() async throws {
+    @Test func `get specific item`() async throws {
         // Given
         let givenShareId = String.random()
         let givenItemId = String.random()
@@ -119,8 +115,7 @@ extension LocalItemDatasourceTests {
         #expect(item == givenInsertedItem)
     }
 
-    @Test("Get alias item")
-    func getAliasItem() async throws {
+    @Test func `get alias item`() async throws {
         // Given
         let givenShareId = String.random()
         let givenItemId = String.random()
@@ -140,8 +135,7 @@ extension LocalItemDatasourceTests {
         #expect(item == givenInsertedItem)
     }
 
-    @Test("Insert items")
-    func insertItems() async throws {
+    @Test func `insert items`() async throws {
         // Given
         let givenShareId = String.random()
         
@@ -178,8 +172,7 @@ extension LocalItemDatasourceTests {
         #expect(Set(activeItemIds + trashedItemIds) == givenItemIds)
     }
 
-    @Test("Update items")
-    func updateItems() async throws {
+    @Test func `update items`() async throws {
         // Given
         let givenItemId = String.random()
         let givenShareId = String.random()
@@ -203,8 +196,7 @@ extension LocalItemDatasourceTests {
         #expect(item == updatedItem)
     }
 
-    @Test("Trash items")
-    func trashItems() async throws {
+    @Test func `trash items`() async throws {
         // Given
         let givenItemId = String.random()
         let givenShareId = String.random()
@@ -229,8 +221,7 @@ extension LocalItemDatasourceTests {
         #expect(item.item.flags == modifiedItem.flags)
     }
 
-    @Test("Untrash items")
-    func untrashItems() async throws {
+    @Test func `untrash items`() async throws {
         // Given
         let givenItemId = String.random()
         let givenShareId = String.random()
@@ -254,8 +245,7 @@ extension LocalItemDatasourceTests {
         #expect(item.item.flags == modifiedItem.flags)
     }
 
-    @Test("Delete items")
-    func deleteItems() async throws {
+    @Test func `delete items`() async throws {
         // Given
         let shareId = String.random()
         let firstItem = try await sut.givenInsertedItem(shareId: shareId)
@@ -276,8 +266,7 @@ extension LocalItemDatasourceTests {
         #expect(thirdCount == 0)
     }
 
-    @Test("Remove all items by user")
-    func removeAllItems() async throws {
+    @Test func `remove all items by user`() async throws {
         let currentUserId = "test"
         // Given
         let givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
@@ -291,8 +280,7 @@ extension LocalItemDatasourceTests {
         #expect(items.isEmpty)
     }
 
-    @Test("Remove all items by shares")
-    func removeAllItemsOfGivenShares() async throws {
+    @Test func `remove all items by shares`() async throws {
         // Given
         let givenFirstShareId = String.random()
         let givenFirstShareItems =
@@ -324,8 +312,7 @@ extension LocalItemDatasourceTests {
         #expect(secondShareItemsSecondGetCount == givenSecondShareItems.count)
     }
 
-    @Test("Get active login items by user")
-    func getActiveLogInItems() async throws {
+    @Test func `get active login items by user`() async throws {
         let currentUserId = "test"
 
         // Given
@@ -401,8 +388,7 @@ extension LocalItemDatasourceTests {
         #expect(activeLogInItems.count == 4)
     }
 
-    @Test("Update last use items")
-    func updateLastUseItems() async throws {
+    @Test func `update last use items`() async throws {
         // Given
         let givenShareId = String.random()
         let item1 = try await sut.givenInsertedItem(shareId: givenShareId)
@@ -427,8 +413,7 @@ extension LocalItemDatasourceTests {
         #expect(retrievedItem3?.item.lastUseTime == 345)
     }
 
-    @Test("Get alias count")
-    func getAliasCount() async throws {
+    @Test func `get alias count`() async throws {
         // Given
         let user1 = String.random()
         try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
@@ -449,8 +434,7 @@ extension LocalItemDatasourceTests {
         #expect(aliasCount2 == 0)
     }
 
-    @Test("Get aliases with no SimpleLogin note")
-    func getAliasesWithNoSlNote() async throws {
+    @Test func `get aliases with no SimpleLogin note`() async throws {
         // Given
         let userId = String.random()
         let alias1 = try await sut.givenInsertedItem(userId: userId,
@@ -478,8 +462,7 @@ extension LocalItemDatasourceTests {
         #expect(!unsyncedSlNoteAliases.contains(alias5))
     }
 
-    @Test("Update cached alias info")
-    func updateCachedAliasInfo() async throws {
+    @Test func `update cached alias info`() async throws {
         // Given
         let userId = String.random()
         let givenAlias1 = try await sut.givenInsertedItem(userId: userId, aliasEmail: .random())
@@ -506,8 +489,7 @@ extension LocalItemDatasourceTests {
         #expect(alias2.encryptedSimpleLoginNote == alias2Info.encryptedNote)
     }
 
-    @Test("Get items by IDs")
-    func getItemsByIds() async throws {
+    @Test func `get items by IDs`() async throws {
         // Given
         let givenItem1 = try await sut.givenInsertedItem()
         _ = try await sut.givenInsertedItem()
