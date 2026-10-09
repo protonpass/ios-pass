@@ -66374,6 +66374,16 @@
         }
       }
     },
+    "Suggested" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested"
+          }
+        }
+      }
+    },
     "Switch to" : {
       "comment" : "Section title of the list of other logged in accounts to switch to",
       "localizations" : {
@@ -73252,6 +73262,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "大写字母"
+          }
+        }
+      }
+    },
+    "URL" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
           }
         }
       }

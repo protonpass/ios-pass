@@ -43,14 +43,17 @@ public struct EditDomainMatchingView: View {
     @State private var selectedType: DomainMatchingType
     @State private var selectedMode: AutofillUrlMode
     private let url: IdentifiableObject<AutofillUrl>
+    private let parentDomainExamples: [DomainMatchingExample]
     private let itemContentType: ItemContentType = .login
     private let onSave: (AutofillUrlMode) -> Void
 
     public init(url: IdentifiableObject<AutofillUrl>,
+                parentDomainExamples: [DomainMatchingExample],
                 onSave: @escaping (AutofillUrlMode) -> Void) {
         self.url = url
         _selectedType = .init(initialValue: url.value.mode.isBasic ? .basic : .advanced)
         _selectedMode = .init(initialValue: url.value.mode)
+        self.parentDomainExamples = parentDomainExamples
         self.onSave = onSave
     }
 
@@ -145,6 +148,10 @@ private extension EditDomainMatchingView {
             row(for: .exact)
             // swiftlint:disable:next line_length
             unavailableText("Exact subdomain rule is not available on iOS due to limitations in the operating system APIs.")
+
+            if selectedMode == .default, !parentDomainExamples.isEmpty {
+                suggestionExamples
+            }
         }
     }
 
@@ -205,6 +212,37 @@ private extension EditDomainMatchingView {
                 .background(itemContentType.normMinor1Color)
                 .clipShape(RoundedRectangle(cornerRadius: 6))
         }
+    }
+
+    var suggestionExamples: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            HStack {
+                Text("URL", bundle: .module)
+                Spacer()
+                Text("Suggested", bundle: .module)
+            }
+            .font(.caption)
+            .foregroundStyle(PassColor.textWeak)
+
+            ForEach(parentDomainExamples, id: \.url) { example in
+                HStack {
+                    Text(verbatim: example.url)
+                        .font(.body.monospaced())
+                        .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Image(uiImage: example.suggested ?
+                        IconProvider.checkmarkCircleFilled : IconProvider.crossCircleFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20)
+                        .foregroundStyle(example.suggested ? PassColor.signalSuccess : PassColor.signalDanger)
+                }
+            }
+        }
+        .padding()
+        .background(PassColor.inputBackgroundNorm)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     func unavailableText(_ text: LocalizedStringKey) -> some View {
