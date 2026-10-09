@@ -89,20 +89,26 @@ private extension EditDomainMatchingView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 descriptionText
 
-                SegmentedPicker(selection: $selectedType,
-                                options: [
-                                    .init(value: .basic, title: DomainMatchingType.basic.title),
-                                    .init(value: .advanced, title: DomainMatchingType.advanced.title)
-                                ],
-                                mainColor: itemContentType.normMajor1Color,
-                                backgroundColor: itemContentType.normMinor1Color)
-
-                switch selectedType {
-                case .basic:
+                if url.value.mode.isBasic {
                     basicContent
+                } else {
+                    SegmentedPicker(selection: $selectedType,
+                                    options: [
+                                        .init(value: .basic, title: DomainMatchingType.basic.title),
+                                        .init(value: .advanced, title: DomainMatchingType.advanced.title)
+                                    ],
+                                    textColor: itemContentType.normMajor2Color,
+                                    highlightTextColor: PassColor.textInvert,
+                                    mainColor: itemContentType.normMajor1Color,
+                                    backgroundColor: itemContentType.normMinor1Color)
 
-                case .advanced:
-                    advancedContent
+                    switch selectedType {
+                    case .basic:
+                        basicContent
+
+                    case .advanced:
+                        advancedContent
+                    }
                 }
 
                 Spacer()
