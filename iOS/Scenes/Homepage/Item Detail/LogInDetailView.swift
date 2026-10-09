@@ -403,6 +403,10 @@ private extension LogInDetailView {
                     Text(verbatim: title)
                         .foregroundStyle(PassColor.textWeak)
                 }
+
+                if let warning = url.mode.autofillWarning {
+                    AutofillUrlWarning(warning)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DesignConstant.sectionPadding / 2)
