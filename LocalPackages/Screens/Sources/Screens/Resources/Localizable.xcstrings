@@ -553,10 +553,28 @@
             "value" : "%1$@ souhaite partager un élément avec le groupe %2$@."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vuole condividere un elemento con il gruppo %2$@."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@님이 %2$@ 그룹과 항목을 공유하고자 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ ønsker å dele et element med gruppen %2$@."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ deseja compartilhar um item com o grupo %2$@."
           }
         },
         "ro" : {
@@ -7925,20 +7943,176 @@
     "Adjust autofill behaviors to change where logins are suggested and filled for %@." : {
       "comment" : "Placeholder is an URL",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрэгулюйце паводзіны аўтазапаўнення для змянення таго, дзе прапаноўваць і запаўняць запісы ўваходу для %@."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajusteu els comportaments d'emplenament automàtic per canviar on se suggereixen i s'omplen les dades dels inicis de sessió per a %@."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Juster autofyld for at ændre hvor logins foreslås og udfyldes for %@."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passe das Verhalten der automatischen Ausfüllfunktion an, um festzulegen, wo Anmeldungen für %@ vorgeschlagen und automatisch ausgefüllt werden sollen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσαρμόστε τις συμπεριφορές αυτόματης συμπλήρωσης για να αλλάξετε πού προτείνονται και συμπληρώνονται οι συνδέσεις για το %@."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adjust autofill behaviors to change where logins are suggested and filled for %@."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajuste el comportamiento del completado automático para cambiar dónde se sugieren y completan los inicios de sesión para %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustez les paramètres de remplissage automatique pour changer où les identifiants de connexion sont suggérés et renseignés pour %@."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica il comportamento di compilazione automatica per cambiare dove vengono suggeriti e compilati i login per %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pas het gedrag van automatisch aanvullen aan om te wijzigen waar aanmeldingen worden voorgesteld en ingevuld voor %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustați modul de completare automată pentru a schimba unde sunt sugerate și completate datele de conectare pentru %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravte správanie automatického vypĺňania, aby ste zmenili, kde sa pre %@ navrhujú a vypĺňajú prihlasovacie údaje."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ için oturum açma bilgilerinin önerileceği ve doldurulacağı yerleri değiştirmek için otomatik doldurma davranışlarını ayarlayın."
           }
         }
       }
     },
     "Advanced" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковыя"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanceret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitert"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προχωρημένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanzado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edistyneet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanzato"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerd"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avançado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avansat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokročilé"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş"
           }
         }
       }
@@ -8533,10 +8707,82 @@
     },
     "Advanced rules are not available on iOS due to limitations in the operating system APIs." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковыя правілы недаступны на iOS з прычыны абмежаванняў API аперацыйнай сістэмы."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les regles avançades no estan disponibles a iOS a causa de limitacions en les API del sistema operatiu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancerede regler er ikke tilgængelige på iOS på grund af begrænsninger i operativsystemets API'er."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweiterte Regeln sind unter iOS aufgrund von Einschränkungen in den APIs des Betriebssystems nicht verfügbar."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι προηγμένοι κανόνες δεν είναι διαθέσιμοι στο iOS λόγω περιορισμών στα API του λειτουργικού συστήματος."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced rules are not available on iOS due to limitations in the operating system APIs."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las reglas avanzadas no están disponibles en iOS debido a limitaciones en las API del sistema operativo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les règles avancées ne sont pas disponibles sur iOS en raison des limitations des API du système d'exploitation."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le regole avanzate non sono disponibili su iOS a causa delle limitazioni delle API del sistema operativo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerde regels zijn niet beschikbaar op iOS vanwege beperkingen in de API's van het besturingssysteem."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulile avansate nu sunt disponibile pe iOS din cauza limitărilor API-urilor sistemului de operare."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokročilé pravidlá nie sú v systéme iOS k dispozícii kvôli obmedzeniam v rozhraniach API operačného systému."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşletim sistemi API kısıtlamaları nedeniyle gelişmiş kurallar iOS üzerinde kullanılamaz."
           }
         }
       }
@@ -11998,10 +12244,22 @@
             "value" : "Al menos 13 caracteres"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vähintään 13 merkkiä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Au moins 13 caractères"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almeno 13 caratteri"
           }
         },
         "ka" : {
@@ -12014,6 +12272,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "최소 13자"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minst 13 tegn"
           }
         },
         "pt-BR" : {
@@ -13572,10 +13836,88 @@
     },
     "Basic" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Базавыя"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bàsic"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basal"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Βασικά"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Basic"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Básico"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basique"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basico"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Básico"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De bază"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Základné"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temel"
           }
         }
       }
@@ -16125,30 +16467,252 @@
     },
     "Compromised password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скампраметаваныя паролі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrasenya compromesa"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kompromitteret adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kompromittiertes Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παραβιασμένος κωδικός πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compromised password"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña comprometida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe compromis"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password compromessa"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gecompromitteerd wachtwoord"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha comprometida"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă compromisă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kompromitované heslo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinen parola"
           }
         }
       }
     },
     "Compromised password detection" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выяўлены скампраметаваныя паролі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detecció de contrasenyes compromeses"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registering af kompromitterede adgangskoder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erkennung kompromittierter Passwörter"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παραβιασμένος ανίχνευση κωδικών πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compromised password detection"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detección de contraseña comprometida"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Détection de mots de passe compromis"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rilevamento di password compromesse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gecompromitteerde wachtwoorddetectie"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detectare parole compromise"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detekcia kompromitovaných hesiel"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilinen parola algılandı"
           }
         }
       }
     },
     "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Функцыя выяўлення скампраметаваных пароляў даступна на платным тарыфным плане. Палепшыце, каб знаходзіць уразлівыя паролі ў вядомых крыніцах парушэння даных."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La detecció de contrasenyes compromeses està disponible amb un pla de pagament. Milloreu de pla per trobar contrasenyes exposades en filtracions de dades conegudes."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrering af kompromitterede adgangskoder er tilgængeligt med et betalt abonnement. Opgrader for at finde adgangskoder afsløret i kendte datalæk."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Erkennen kompromittierter Passwörter ist im kostenpflichtigen Tarif verfügbar. Steige um, um Passwörter zu finden, die bei bekannten Datenlecks offengelegt wurden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η παραβιασμένη ανίχνευση κωδικών πρόσβασης είναι διαθέσιμη με πλάνο επί πληρωμή. Κάντε αναβάθμιση για να εντοπίσετε κωδικούς πρόσβασης που έχουν εκτεθεί σε γνωστές παραβιάσεις δεδομένων."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compromised password detection is available with a paid plan. Upgrade to find passwords exposed in known data breaches."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La detección de contraseña comprometida está disponible con un plan de pago. Actualice para buscar contraseñas expuestas en vulneraciones de datos conocidas."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La détection de mots de passe compromis est disponible avec un abonnement payant. Changer d'abonnement pour identifier les mots de passe exposés dans des fuites de données connues."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il rilevamento delle password compromesse è disponibile con un piano a pagamento. Effettua l'upgrade per individuare le password esposte in violazioni di dati note."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gecompromitteerde wachtwoorddetectie is beschikbaar met een betaald abonnement. Upgrade om wachtwoorden te vinden die zijn blootgesteld aan bekende datalekken."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detectarea parolelor compromise este disponibilă în cadrul unui abonament plătit. Treceți la o versiune superioară pentru a identifica parolele expuse în breșe de date cunoscute."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detekcia kompromitovaných hesiel je k dispozícii v rámci plateného plánu. Navýšte plán, aby ste zistili, ktoré vaše heslá boli odhalené v rámci známych únikov údajov."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilenen parola algılama ücretli bir tarife ile kullanılabilir. Bilinen verilerin ele geçirilmesi olaylarında açığa çıkan parolaları bulmak için tarifenizi yükseltin."
           }
         }
       }
@@ -23121,10 +23685,94 @@
     },
     "DEFAULT" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ПРАДВЫЗНАЧАНА"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PER DEFECTE"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "STANDARD"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ΠΡΟΕΠΙΛΟΓΗ"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "DEFAULT"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PREDETERMINADO"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OLETUS"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PAR DÉFAUT"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PREDEFINITO"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "STANDAARD"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PADRÃO"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IMPLICIT"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PREDVOLENÉ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VARSAYILAN"
           }
         }
       }
@@ -28078,50 +28726,548 @@
     },
     "Exact (sub) domain" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дакладны (пад)дамен"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domini (subdomini) exacte"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nøjagtigt (under)domæne"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genaue (Sub-)Domain"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ακριβής (υπο) τομέας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exact (sub) domain"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio o subdominio exacto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domaine (sous-domaine) exact"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(sotto)dominio esatto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exact (sub) domein"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Sub)domínio exato"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Sub)domeniu exact"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presná (sub)doména"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam (alt) etki alanı"
           }
         }
       }
     },
     "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дакладнае правіла паддамена недаступна на iOS з прычыны абмежаванняў API аперацыйнай сістэмы."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La regla de subdomini exacte no està disponible a iOS a causa de limitacions en les API del sistema operatiu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Matching med nøjagtigt underdomæne er ikke tilgængeligt på iOS på grund af begrænsninger i operativsystemets API'er."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Regel für genaue Subdomains ist unter iOS aufgrund von Einschränkungen in den APIs des Betriebssystems nicht verfügbar."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο κανόνας για ακριβή υποτομέα δεν είναι διαθέσιμος στο iOS λόγω περιορισμών στα API του λειτουργικού συστήματος."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exact subdomain rule is not available on iOS due to limitations in the operating system APIs."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La regla de subdominio exacto no está disponible en iOS debibo a limitaciones en las API del sistema operativo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La règle de sous-domaine exact n'est pas disponible sur iOS en raison des limitations des API du système d'exploitation."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La regola per il sottodominio esatto non è disponibile su iOS a causa di limitazioni delle API del sistema operativo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De exacte subdomeinregel is niet beschikbaar op iOS vanwege beperkingen in de API's van het besturingssysteem."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regula pentru subdomenii exacte nu este disponibilă pe iOS din cauza unor limitări ale API-urilor sistemului de operare."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pravidlo presnej subdomény nie je v systéme iOS k dispozícii kvôli obmedzeniam v rozhraniach API operačného systému."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İşletim sistemi API uygulamalarındaki sınırlamalar nedeniyle tam alt etki alanı kuralı iOS üzerinde kullanılamaz."
           }
         }
       }
     },
     "Exact URL matching" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дакладнае супадзенне URL-адраса"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coincidència exacta d'URL"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nøjagtigt URL-matching"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exakte URL-Übereinstimmung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ακριβής αντιστοίχιση URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exact URL matching"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coincidencia exacta de URL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance exacte de l'URL"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrispondenza URL esatta"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exacte URL-vergelijking"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondência exata de URL"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potrivire exactă URL"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presná zhoda URL"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tam adres eşleşmesi"
           }
         }
       }
     },
     "Excluded from monitoring" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключаныя з назірання"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exclòs del monitoratge"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyloučeno ze sledování"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undtaget fra monitorering"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von der Überwachung ausgeschlossen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εξαιρούνται από την παρακολούθηση"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Excluded from monitoring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluido del monitoreo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluido del monitoreo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poissuljettu valvonnasta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exclus de la surveillance"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kizárva a megfigyelésből"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dikecualikan dari pemantauan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escluso dal monitoraggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "監視対象外"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამოღებულია მონიტორინგიდან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모니터링에서 제외된 항목"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekskludert fra overvåking"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgesloten van monitoring"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykluczone z monitoringu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluído da monitorização"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluído do monitoramento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exclus de la monitorizare"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исключено из мониторинга"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vylúčené z monitorovania"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izključeno iz spremljanja"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exkluderat från övervakning"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İzlemeye katılmayan"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виключено з моніторингу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã bỏ qua theo dõi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从监视中移除"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "排除於監控之外"
           }
         }
       }
     },
     "Excluded Item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключаныя элемент"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element exclòs"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekskluderet element"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgeschlossener Eintrag"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εξαιρούμενα Στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Excluded Item"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento excluido"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poissuljettu kohde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément exclu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento escluso"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uitgesloten item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item excluído"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol exclus"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vylúčená položka"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katılmayacak öge"
           }
         }
       }
@@ -36532,10 +37678,94 @@
     },
     "Ignore" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ігнараваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorar-ho"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αγνόηση"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ignore"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohita"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorer"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignora"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negeren"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ignorovať"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yok say"
           }
         }
       }
@@ -42459,10 +43689,94 @@
     },
     "Missing 2FA" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адсутнічае 2ФА"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta el 2FA"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mangler 2FA"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA fehlt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λείπει το 2FA"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Missing 2FA"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falta el 2FA"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puuttuva 2FA"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A2F manquante"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA mancante"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA ontbreekt"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A2F faltando"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lipsește A2F"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chýbajúca 2FA"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İki adımlı doğrulama eksik"
           }
         }
       }
@@ -42729,10 +44043,94 @@
     },
     "Never fill on this website" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ніколі не запаўняць на гэтым вэб-сайце"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No introduiu mai res en aquest lloc web"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udfyld aldrig på dette websted"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Website niemals ausfüllen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ποτέ μην συμπληρώνετε αυτόν τον ιστότοπο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Never fill on this website"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No completar nunca en este sitio web"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Älä koskaan täytä tällä verkkosivustolla"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne jamais remplir sur ce site internet"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non compilare mai questo sito web"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nooit invullen op deze website"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nunca preencher neste site"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niciodată nu completa pe acest site"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nikdy nevypĺňať formuláre na tejto webovej stránke"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu sitede asla doldurulmasın"
           }
         }
       }
@@ -50121,10 +51519,88 @@
     },
     "Parent domain and subdomains" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бацькоўскі дамен і паддамены"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domini principal i subdominis"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overordnet domæne og underdomæner"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übergeordnete Domain und deren Subdomains"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Γονικός τομέας και υποτομείς"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Parent domain and subdomains"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio principal y subdominios"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domaine parent et sous-domaines"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio principale e sottodomini"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bovenliggend domein en subdomeinen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínio principal e subdomínios"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domeniu părinte și subdomenii"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadradená doména a subdomény"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üst etki alanı ve alt etki alanları"
           }
         }
       }
@@ -50719,10 +52195,82 @@
     },
     "Password exposed on the dark web." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароль знойдзены ў даркнэце."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrasenya exposada a la web fosca."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adgangskoden er afsløret på det mørke net."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort wurde im Dark Web veröffentlicht."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κωδικός πρόσβασης εκτεθειμένος στο dark web."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password exposed on the dark web."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña expuesta en la dark web."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe exposé sur le dark web."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password esposta sul dark web."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachtwoord zichtbaar op het dark web."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă expusă pe internetul ascuns."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heslo bolo zverejnené na dark webe."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parola karanlık ağda açığa çıkmış."
           }
         }
       }
@@ -54696,10 +56244,88 @@
     },
     "Regular expression" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рэгулярны выраз"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expressió regular"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulært udtryk"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulärer Ausdruck"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κανονική έκφραση"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Regular expression"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expresión regular"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expression rationnelle"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espressione regolare"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reguliere expressie"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expressão regular"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expresie regulată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regulárny výraz"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurallı ifade"
           }
         }
       }
@@ -55870,10 +57496,88 @@
     },
     "Restore alert" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аднавіць папярэджанне"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablir l'alerta"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gendan advarsel"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warnmeldung wiederherstellen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επαναφορά ειδοποίησης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore alert"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar alerta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rétablir l'alerte"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristina avviso"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herstel waarschuwing"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar alerta"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurare alertă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnoviť upozornenie"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uyarıyı geri yükle"
           }
         }
       }
@@ -56272,10 +57976,88 @@
     },
     "Reused password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паўторна выкарыстаны пароль"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrasenya reutilitzada"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genbrugt adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereits verwendetes Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επαναχρησιμοποιημένος κωδικός πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reused password"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña reusada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe réutilisé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password già utilizzata"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hergebruikt Wachtwoord"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha reutilizada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă refolosită"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opakovane použité heslo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yeniden kullanılmış parola"
           }
         }
       }
@@ -65208,10 +66990,88 @@
     },
     "Starts with" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пачаць з"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comença per"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begynder med"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beginnt mit"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ξεκινά με"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Starts with"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comienza con"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commence par"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia con"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begint met"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar com"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Începe cu"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začína s"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şununla başlayan"
           }
         }
       }
@@ -66376,10 +68236,34 @@
     },
     "Suggested" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggerit"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Suggested"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestion"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Recomendado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sugerat"
           }
         }
       }
@@ -73278,30 +75162,210 @@
     },
     "URL" : {
       "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa URL"
           }
         }
       }
     },
     "URL matching" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адпаведнасць URL-адраса"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coincidència d'URL"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL-matching"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL-Übereinstimmung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιστοίχιση URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL matching"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coincidencia de URL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondance de l'URL"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corrispondenza URL"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL vergelijking"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correspondência de URL"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potrivire URL"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porovnávanie URL"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres eşleşmesi"
           }
         }
       }
     },
     "URL wildcard pattern" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шаблон URL-адраса з падстановачнымі знакамі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patró de comodí d'URL"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL wildcard"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL-Platzhaltermuster"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πατέντα μπαλαντέρ URL"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "URL wildcard pattern"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patrón comodín de URL"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Motif d'URL générique"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modello wildcard per URL"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL jokertekenpatroon"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Padrão curinga de URL"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Model generic URL"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzor URL so zástupnými znakmi"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres genel arama modeli"
           }
         }
       }
@@ -76376,10 +78440,94 @@
     },
     "Weak password" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ненадзейны пароль"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contrasenya feble"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Svag adgangskode"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schwaches Passwort"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αδύναμος κωδικός πρόσβασης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weak password"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contraseña débil"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heikko salasana"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mot de passe peu sécurisé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password debole"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwak wachtwoord"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha fraca"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parolă slabă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slabé heslo"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zayıf parola"
           }
         }
       }

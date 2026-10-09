@@ -5182,6 +5182,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ohjaus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ohjausta"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -5661,6 +5679,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld reenvíos"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ohjaus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ohjausta"
                 }
               }
             }
@@ -112231,7 +112267,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass luo välitysosoitteen (kutsutaan myös käänteisaliakseksi)."
+            "value" : "Proton Pass luo ohjausosoitteen (jota kutsutaan myös käänteisaliakseksi)."
           }
         },
         "fr" : {
