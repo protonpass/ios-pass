@@ -30,6 +30,7 @@ private struct InternalPassMonitorItem {
     let content: Entities.ItemContent
     let loginData: LogInItemData
     let suppressedChecks: Set<WeaknessKind>
+    let isFullyExcluded: Bool
     let isOwned: Bool
 }
 
@@ -318,11 +319,12 @@ public extension PassMonitorRepository {
         let (stats, affectedItems) = buildStats(weaknessInputs(visibleItems.filter(\.isOwned)),
                                                 breachedItemIds: breachedItemIds ?? [])
         let compromisedPasswords = breachedItemIds == nil ? nil : stats.count(for: .compromisedPassword)
-        // The backend metric predates per-check exclusion and only counts items excluded from monitoring
+        // The backend metric counts items with nothing left monitored, which without per-check
+        // exclusion means fully excluded ones
         try await remoteDataSource.sendUserMonitorStats(userId: userId,
                                                         stats: stats,
                                                         excludedItems: affectedItems
-                                                            .count(where: \.isFullyExcluded),
+                                                            .count(where: \.hasNothingMonitored),
                                                         compromisedPasswords: compromisedPasswords)
     }
 }
@@ -341,6 +343,7 @@ private extension PassMonitorRepository {
     func getLoginItems(userId: String,
                        compromisedCheckEnabled: Bool) async throws -> [InternalPassMonitorItem] {
         let excludableChecks = excludableChecks(compromisedCheckEnabled: compromisedCheckEnabled)
+        let honoursFullExclusion = !isFeatureEnabled(FeatureFlagType.passMonitorPerCheckExclusion)
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let shares = try await shareRepository.getShares(userId: userId)
         let isOwnedByVisibleShareId = Dictionary(shares
@@ -360,13 +363,15 @@ private extension PassMonitorRepository {
                                                loginData: loginItem,
                                                suppressedChecks: encryptedItem.item.suppressedChecks
                                                    .intersection(excludableChecks),
+                                               isFullyExcluded: honoursFullExclusion
+                                                   && encryptedItem.item.monitoringDisabled,
                                                isOwned: isOwned)
             }
     }
 
     func weaknessInputs(_ loginItems: [InternalPassMonitorItem]) -> WeaknessComputation {
         var passwordCounts = [String: Int]()
-        for item in loginItems where !item.encrypted.item.monitoringDisabled &&
+        for item in loginItems where !item.isFullyExcluded &&
             !item.suppressedChecks.contains(.reusedPassword) &&
             !item.loginData.password.isEmpty {
             passwordCounts[item.loginData.password, default: 0] += 1
@@ -398,6 +403,7 @@ private extension PassMonitorRepository {
                                                     detected: detected,
                                                     display: item.content.toItemUiModel,
                                                     suppressedChecks: item.suppressedChecks,
+                                                    isFullyExcluded: item.isFullyExcluded,
                                                     reuseGroup: evaluated.reuseGroup)
             return affectedItem.shouldBeIncluded ? affectedItem : nil
         }
@@ -463,7 +469,7 @@ private extension PassMonitorRepository {
     /// check-suppressed logins are never sent.
     func compromisedItemIds(userId: String, loginItems: [InternalPassMonitorItem]) async throws -> Set<String> {
         let candidates = loginItems.compactMap { item -> CompromisedPasswordCandidate? in
-            guard !item.encrypted.item.monitoringDisabled,
+            guard !item.isFullyExcluded,
                   !item.suppressedChecks.contains(.compromisedPassword),
                   !item.loginData.password.isEmpty else {
                 return nil

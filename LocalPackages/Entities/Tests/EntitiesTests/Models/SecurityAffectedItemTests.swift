@@ -44,6 +44,13 @@ struct SecurityAffectedItemTests {
         #expect(item.hasNothingMonitored)
     }
 
+    @Test func `an ignored full exclusion keeps the detected weaknesses active`() {
+        let item = makeItem(fullyExcluded: true, fullExclusionHonoured: false, detected: [.weakPassword])
+        #expect(item.activeWeaknesses == [.weakPassword])
+        #expect(!item.isExcludedItem)
+        #expect(!item.hasNothingMonitored)
+    }
+
     @Test func `no weakness and no exclusion keeps the item monitored`() {
         #expect(!makeItem().hasNothingMonitored)
     }
@@ -71,6 +78,7 @@ struct SecurityAffectedItemTests {
 }
 
 private func makeItem(fullyExcluded: Bool = false,
+                      fullExclusionHonoured: Bool = true,
                       detected: Set<WeaknessKind> = [],
                       suppressed: Set<WeaknessKind> = []) -> SecurityAffectedItem {
     let flags = fullyExcluded ? ItemFlags.monitoringDisabled.rawValue : 0
@@ -79,5 +87,6 @@ private func makeItem(fullyExcluded: Bool = false,
                                 detected: detected,
                                 display: .mock(itemId: encrypted.itemId, shareId: encrypted.shareId),
                                 suppressedChecks: suppressed,
+                                isFullyExcluded: fullyExcluded && fullExclusionHonoured,
                                 reuseGroup: nil)
 }
