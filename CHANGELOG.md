@@ -1,5 +1,5 @@
 # Version 1.22.0
-- Added support for ignoring specific password issues, such as compromised, weak, or reused passwords (behind feature flag)
+- Added support for URL matching (behind feature flag)
 - Added support for checking whether your passwords have been compromised (behind feature flag)
 
 Others:
