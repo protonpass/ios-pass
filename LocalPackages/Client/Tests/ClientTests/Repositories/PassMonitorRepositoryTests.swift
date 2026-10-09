@@ -205,12 +205,12 @@ struct PassMonitorRepositoryTests {
         try await sut.refreshSecurityChecks()
 
         let state = try #require(sut.weaknessStats.value)
-        // The fully excluded item is also weak and missing 2FA, but exclusion wins (IDTEAM-5965),
-        // so it only counts as excluded
+        // Per-check exclusion is on, so the fully-excluded flag is ignored: that item's weak password and
+        // missing 2FA count
         #expect(state.count(for: .reusedPassword) == 1)
-        #expect(state.count(for: .weakPassword) == 1)
-        #expect(state.excludedItems == 1)
-        #expect(state.count(for: .missing2FA) == 1)
+        #expect(state.count(for: .weakPassword) == 2)
+        #expect(state.excludedItems == 0)
+        #expect(state.count(for: .missing2FA) == 2)
 
 
         let itemsWithSecurityIssues = sut.itemsWithSecurityIssues.value
@@ -276,8 +276,11 @@ struct PassMonitorRepositoryTests {
     }
 
     /// IDTEAM-5965: the weakness stays detected, so it reappears if monitoring is re-enabled.
-    @Test func `Fully-excluded item is excluded only, never an active weakness`() async throws {
+    @Test func `Without per-check exclusion a fully-excluded item is excluded only`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeFullyExcludedWeakItems()
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = []
+        let sut = makePaidSut(checker: checker, isFeatureEnabled: { $0 != .passMonitorPerCheckExclusion })
 
         try await sut.refreshSecurityChecks()
 
@@ -292,6 +295,56 @@ struct PassMonitorRepositoryTests {
         #expect(item.isExcludedItem)
         #expect(item.detected.contains(.weakPassword))   // still detected...
         #expect(item.activeWeaknesses.isEmpty)            // ...but not surfaced as active
+        #expect(!checker.invokedCheckfunction)
+    }
+
+    @Test func `With per-check exclusion the fully-excluded flag is ignored`() async throws {
+        let items = makeFullyExcludedWeakItems()
+        itemRepository.stubbedGetActiveLogInItemsResult = items
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        let legacyExcluded = try #require(items.first)
+        checker.stubbedCheckResult = [legacyExcluded.itemId + legacyExcluded.shareId]
+        let sut = makePaidSut(checker: checker)
+
+        try await sut.refreshSecurityChecks()
+        try await waitUntil { sut.weaknessStats.value?.count(for: .compromisedPassword) == 1 }
+
+        let stats = try #require(sut.weaknessStats.value)
+        #expect(stats.excludedItems == 0)
+        #expect(stats.count(for: .weakPassword) == 1)
+        let item = try #require(sut.itemsWithSecurityIssues.value.first)
+        #expect(!item.isFullyExcluded)
+        #expect(!item.isExcludedItem)
+        #expect(item.activeWeaknesses == [.weakPassword, .compromisedPassword])
+    }
+
+    @Test func `With per-check exclusion a fully-excluded login still counts as reused`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed(firstItemFlags: 1)
+
+        try await sut.refreshSecurityChecks()
+
+        #expect(sut.weaknessStats.value?.count(for: .reusedPassword) == 1)
+        #expect(sut.itemsWithSecurityIssues.value.count(where: { $0.activeWeaknesses.contains(.reusedPassword) })
+            == 2)
+    }
+
+    /// Distinct weak passwords, so none of them is also reused
+    func makeWeakLogins(flags: [Int]) -> [SymmetricallyEncryptedItem] {
+        let shareID = UUID().uuidString
+        let key = symmetricKeyProviderMockFactory.key
+        shareRepository.stubbedGetSharesResult =
+            [SymmetricallyEncryptedShare(encryptedContent: nil, share: .random(shareId: shareID))]
+        return flags.enumerated().map { index, flags in
+            let loginData = LogInItemData.mock(username: "test", password: "weak\(index)")
+            let content = ItemContentProtobufFactory.createItemContentProtobuf(name: "Login",
+                                                                               note: "n",
+                                                                               itemUuid: UUID().uuidString,
+                                                                               data: .login(loginData),
+                                                                               customFields: [])
+            return SymmetricallyEncryptedItem.random(shareId: shareID,
+                                                     item: .random(flags: flags),
+                                                     encryptedContent: try! content.encrypt(symmetricKey: key))
+        }
     }
 
     func makeFullyExcludedWeakItems() -> [SymmetricallyEncryptedItem] {
@@ -324,7 +377,7 @@ struct PassMonitorRepositoryTests {
         #expect(suppressed.isExcludedItem)
     }
 
-    func makeReusePairOneSuppressed() -> [SymmetricallyEncryptedItem] {
+    func makeReusePairOneSuppressed(firstItemFlags: Int = 128) -> [SymmetricallyEncryptedItem] {
         let shareID = UUID().uuidString
         let key = symmetricKeyProviderMockFactory.key
         shareRepository.stubbedGetSharesResult =
@@ -343,7 +396,7 @@ struct PassMonitorRepositoryTests {
                                                      encryptedContent: try! content.encrypt(symmetricKey: key))
         }
         // 128 = skipReusedPasswordCheck (1 << 7); 0 = fully monitored.
-        return [make(flags: 128), make(flags: 0)]
+        return [make(flags: firstItemFlags), make(flags: 0)]
     }
 
     @Test func `Reuse suppression is ignored when per-check exclusion is disabled`() async throws {
@@ -579,7 +632,7 @@ struct PassMonitorRepositoryTests {
         #expect(await checker.maxConcurrentChecks == 1)
     }
 
-    @Test func `Monitor stats report only counts items excluded from monitoring`() async throws {
+    @Test func `Without per-check exclusion monitor stats count fully excluded items`() async throws {
         let items = createEncryptedLoginItems(weakness: [.fullyExcluded])
         let shareId = try #require(items.first).shareId
         let loginData = LogInItemData.mock(username: "test", password: "aaaaa")
@@ -597,14 +650,32 @@ struct PassMonitorRepositoryTests {
         let checker = CompromisedPasswordCheckerProtocolMock()
         checker.stubbedCheckResult = []
         let remote = RemoteBreachDataSourceProtocolMock()
+        let sut = makePaidSut(checker: checker,
+                              remoteDataSource: remote,
+                              isFeatureEnabled: { $0 != .passMonitorPerCheckExclusion })
+
+        try await sut.refreshSecurityChecks()
+        try await sut.sendUserMonitorStats()
+
+        #expect(try #require(sut.weaknessStats.value).excludedItems == 1)
+        let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
+        #expect(sent.excludedItems == 1)
+    }
+
+    @Test func `With per-check exclusion monitor stats count items with nothing left monitored`() async throws {
+        // 1 = legacy full exclusion, 32 = skipWeakPasswordCheck, 128 = skipReusedPasswordCheck
+        itemRepository.stubbedGetActiveLogInItemsResult = makeWeakLogins(flags: [1, 32, 32, 128])
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = []
+        let remote = RemoteBreachDataSourceProtocolMock()
         let sut = makePaidSut(checker: checker, remoteDataSource: remote)
 
         try await sut.refreshSecurityChecks()
         try await sut.sendUserMonitorStats()
 
-        #expect(try #require(sut.weaknessStats.value).excludedItems == 2)
+        #expect(try #require(sut.weaknessStats.value).excludedItems == 3)
         let sent = try #require(remote.invokedSendUserMonitorStatsParameters)
-        #expect(sent.excludedItems == 1)
+        #expect(sent.excludedItems == 2)
     }
 
     func waitUntil(_ condition: () async -> Bool) async throws {
