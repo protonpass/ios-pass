@@ -34,12 +34,14 @@ public struct SegmentedPickerOption<Value: Hashable>: Hashable {
 public struct SegmentedPicker<Selection: Hashable>: View {
     @Binding private var selection: Selection
     private let options: [SegmentedPickerOption<Selection>]
+    private let textColor: Color
     private let highlightTextColor: Color
     private let mainColor: Color
     private let backgroundColor: Color
 
     public init(selection: Binding<Selection>,
                 options: [SegmentedPickerOption<Selection>],
+                textColor: Color = PassColor.textNorm,
                 highlightTextColor: Color = PassColor.textNorm,
                 mainColor: Color = PassColor.interactionNormMajor1,
                 backgroundColor: Color = PassColor.interactionNormMinor1) {
@@ -47,6 +49,7 @@ public struct SegmentedPicker<Selection: Hashable>: View {
         self.options = options
         self.mainColor = mainColor
         self.backgroundColor = backgroundColor
+        self.textColor = textColor
         self.highlightTextColor = highlightTextColor
     }
 
@@ -70,7 +73,7 @@ public struct SegmentedPicker<Selection: Hashable>: View {
                         Text(verbatim: option.title)
                             .font(.body.weight(.medium))
                             .foregroundStyle(option.value == selection ?
-                                highlightTextColor : PassColor.textNorm)
+                                highlightTextColor : textColor)
                             .frame(maxWidth: .infinity, alignment: .center)
                     })
                     .buttonStyle(.plain)
