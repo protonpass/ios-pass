@@ -967,6 +967,10 @@ public extension UseCasesContainer {
     var matchUrls: Factory<any MatchUrlsUseCase> {
         self { MatchUrls(getRootDomain: self.getRootDomain()) }
     }
+
+    var getParentDomainMatchingExamples: Factory<any GetParentDomainMatchingExamplesUseCase> {
+        self { GetParentDomainMatchingExamples(getRootDomain: self.getRootDomain()) }
+    }
 }
 
 // MARK: - User
