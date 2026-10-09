@@ -69040,6 +69040,16 @@
         }
       }
     },
+    "This URL will be skipped for autofill" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This URL will be skipped for autofill"
+          }
+        }
+      }
+    },
     "This will permanently delete the folder « %@ » and all its contents. Enter the folder name to confirm deletion." : {
       "localizations" : {
         "be" : {
