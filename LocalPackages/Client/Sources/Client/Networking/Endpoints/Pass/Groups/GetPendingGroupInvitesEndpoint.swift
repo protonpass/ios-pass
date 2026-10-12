@@ -23,7 +23,6 @@ import ProtonCoreNetworking
 
 public struct PaginatedGroupInvites: Decodable, Sendable {
     public let invites: [GroupInvite]
-    public let total: Int
     public let lastID: String?
 }
 

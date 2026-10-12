@@ -43,7 +43,6 @@ public extension ServiceContainer {
                             authManager: ToolingContainer.shared.authManager(),
                             mainKeyProvider: ToolingContainer.shared.mainKeyProvider(),
                             logger: ToolingContainer.shared.logger(),
-                            storage: kSharedUserDefaults,
                             transactionsObserver: ToolingContainer.shared.transactionsObserver())
         }
     }
@@ -168,7 +167,7 @@ public extension ServiceContainer {
     }
 
     var databaseService: Factory<any DatabaseServiceProtocol> {
-        self { DatabaseService(logManager: self.logManager) }
+        self { DatabaseService() }
     }
 
     var reachabilityService: Factory<any ReachabilityServicing> {
@@ -225,7 +224,6 @@ public extension ServiceContainer {
                           groupRepository: RepositoryContainer.shared.groupRepository(),
                           logManager: self.logManager,
                           publicKeyRepository: RepositoryContainer.shared.publicKeyRepository(),
-                          symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
                           userManager: self.userManager())
         }
     }
@@ -236,8 +234,7 @@ public extension ServiceContainer {
 public extension ServiceContainer {
     var userManager: Factory<any UserManagerProtocol> {
         self {
-            UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource(),
-                        logManager: self.logManager)
+            UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource())
         }
     }
 }

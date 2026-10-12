@@ -27,7 +27,6 @@ import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreAuthentication
-import ProtonCoreCryptoGoImplementation
 @preconcurrency import ProtonCoreNetworking
 import Testing
 
@@ -67,13 +66,6 @@ final class AuthHelperDelegateMock: @unchecked Sendable, AuthHelperDelegate {
 
 @Suite(.tags(.manager))
 struct AuthManagerTests {
-    /// `static` so the global crypto implementation is installed exactly once: unlike XCTest,
-    /// Swift Testing runs the tests in this suite in parallel.
-    private static let cryptoIsInstalled: Bool = {
-        injectDefaultCryptoImplementation()
-        return true
-    }()
-
     private let symmetricKeyProvider: NonSendableSymmetricKeyProviderMock
     /// Every `AuthManager` persists under the same `AuthManager.storageKey`, so each suite instance
     /// gets its own keychain — sharing one would let the parallel tests overwrite each other's
@@ -92,7 +84,7 @@ struct AuthManagerTests {
                                              mailboxPassword: "")
 
     init() {
-        _ = Self.cryptoIsInstalled
+        _ = CryptoSetup.installed
 
         let symmetricKeyProvider = NonSendableSymmetricKeyProviderMock()
         symmetricKeyProvider.stubbedGetSymmetricKeyResult = SymmetricKey.random()

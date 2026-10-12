@@ -40,7 +40,6 @@ public final class PaymentsManager: Sendable {
     private nonisolated let inMemoryTokenStorage: InMemoryTokenStorage
     private let paymentsV2: PaymentsV2
     private let transactionsObserver: any TransactionsObserverProviding
-    private let storage: UserDefaults
 
     private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
     private nonisolated(unsafe) var transactionTask: Task<Void, Never>?
@@ -50,7 +49,6 @@ public final class PaymentsManager: Sendable {
                 authManager: any AuthManagerProtocol,
                 mainKeyProvider: any MainKeyProvider,
                 logger: Logger,
-                storage: UserDefaults,
                 transactionsObserver: any TransactionsObserverProviding,
                 paymentsV2: PaymentsV2 = PaymentsV2(),
                 inMemoryTokenStorage: InMemoryTokenStorage = InMemoryTokenStorage()) {
@@ -62,7 +60,6 @@ public final class PaymentsManager: Sendable {
         self.logger = logger
         self.paymentsV2 = paymentsV2
         self.inMemoryTokenStorage = inMemoryTokenStorage
-        self.storage = storage
         setup()
     }
 

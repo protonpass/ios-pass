@@ -71,7 +71,7 @@ public extension Collection where Element: Sendable {
     // periphery:ignore
     func parallelEach(parallelism requestedParallelism: Int? = nil,
                       _ work: @escaping @Sendable (Element) async throws -> Void) async throws {
-        _ = try await parallelMap {
+        _ = try await parallelMap(parallelism: requestedParallelism ?? 2) {
             try await work($0)
         }
     }

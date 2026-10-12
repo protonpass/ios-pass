@@ -42,6 +42,7 @@ struct FullScreenView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var mode: Mode = .text
     @State private var originalBrightness: CGFloat = 0.5
+    // periphery:ignore - read through its binding
     @State private var percentage: Double = 0.5
     let data: FullScreenData
 

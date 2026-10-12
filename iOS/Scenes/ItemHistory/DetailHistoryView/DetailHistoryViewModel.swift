@@ -252,10 +252,6 @@ extension DetailHistoryViewModel: FileAttachmentsViewHandler {
         itemContentType.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: Color {
-        itemContentType.normMinor1Color
-    }
-
     var itemContentType: ItemContentType {
         currentRevision.type
     }

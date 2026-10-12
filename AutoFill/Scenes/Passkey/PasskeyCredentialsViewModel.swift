@@ -84,8 +84,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         results.first(where: { $0.userId == userId })?.vaults
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
-        .init(userId: userId, vaults: vaults, data: .login(nil, request))
+    override func generateItemCreationInfo(userId: String) -> ItemCreationInfo {
+        .init(userId: userId, data: .login(nil, request))
     }
 
     override func isErrorState() -> Bool {

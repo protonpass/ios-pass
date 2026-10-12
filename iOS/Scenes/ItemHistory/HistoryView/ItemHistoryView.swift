@@ -30,6 +30,7 @@ struct ItemHistoryView: View {
     // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ItemHistoryViewModel
     @Environment(\.dismiss) private var dismiss
+    // periphery:ignore - read through its binding
     @State private var path = NavigationPath()
     @State private var showResetHistoryAlert = false
 

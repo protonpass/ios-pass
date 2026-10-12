@@ -40,7 +40,6 @@ public extension ShouldForceSyncForFoldersUseCase {
 public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
     private let getUserPreferences: any GetUserPreferencesUseCase
     private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
-    private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
     private let userHasRemoteFolders: any UserHasRemoteFoldersUseCase
     private let updateUserPreferences: any UpdateUserPreferencesUseCase
     private let reachability: any ReachabilityServicing
@@ -49,7 +48,6 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
 
     public init(getUserPreferences: any GetUserPreferencesUseCase,
                 getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
-                refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
                 userHasRemoteFolders: any UserHasRemoteFoldersUseCase,
                 updateUserPreferences: any UpdateUserPreferencesUseCase,
                 reachability: any ReachabilityServicing,
@@ -57,7 +55,6 @@ public struct ShouldForceSyncForFolders: ShouldForceSyncForFoldersUseCase {
                 retryDelay: TimeInterval = 30 * 60) {
         self.getUserPreferences = getUserPreferences
         self.getFeatureFlagStatus = getFeatureFlagStatus
-        self.refreshFeatureFlags = refreshFeatureFlags
         self.userHasRemoteFolders = userHasRemoteFolders
         self.updateUserPreferences = updateUserPreferences
         self.reachability = reachability

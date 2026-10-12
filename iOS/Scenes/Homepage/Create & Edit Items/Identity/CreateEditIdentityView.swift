@@ -74,7 +74,6 @@ struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
     @State private var sheetState: SectionsSheetState?
     @FocusState private var focusedField: Field?
-    @State private var lastFocusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -160,8 +159,6 @@ private extension CreateEditIdentityView {
             CreateEditItemTitleSection(title: $viewModel.title,
                                        focusedField: $focusedField,
                                        field: .title,
-                                       itemContentType: viewModel.itemContentType,
-                                       isEditMode: viewModel.mode.isEditMode,
                                        onSubmit: {})
                 .padding(.vertical, DesignConstant.sectionPadding / 2)
 
@@ -214,7 +211,7 @@ private extension CreateEditIdentityView {
         .toolbarBackground(PassColor.backgroundNorm, for: .navigationBar)
         .itemCreateEditSetUp(viewModel)
         .toolbar {
-            CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+            CreateEditKeyboardToolbar(lastFocusedField: .constant(nil),
                                       focusedField: focusedField,
                                       onOpenCodeScanner: viewModel.openCodeScanner,
                                       onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })

@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import Entities
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -29,8 +28,6 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
     @Binding var title: String
     let focusedField: FocusState<Field?>.Binding
     let field: Field
-    let itemContentType: ItemContentType
-    let isEditMode: Bool
     var onSubmit: (() -> Void)?
 
     var body: some View {
