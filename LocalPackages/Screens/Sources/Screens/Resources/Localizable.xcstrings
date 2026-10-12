@@ -53112,6 +53112,16 @@
         }
       }
     },
+    "Please confirm your backup password in order to export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please confirm your backup password in order to export data to another app"
+          }
+        }
+      }
+    },
     "Please confirm your password in order to export data to another app" : {
       "localizations" : {
         "en" : {
