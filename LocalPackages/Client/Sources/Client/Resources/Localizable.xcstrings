@@ -780,6 +780,17 @@
         }
       }
     },
+    "Imported on %@" : {
+      "comment" : "Placeholder is a date",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported on %@"
+          }
+        }
+      }
+    },
     "Light" : {
       "localizations" : {
         "be" : {

@@ -25,7 +25,6 @@ import Core
 import CoreMocks
 import Entities
 import Foundation
-import ProtonCoreLogin
 import Testing
 
 /// `@unchecked Sendable`: `currentDate` is only mutated by the owning test between awaited calls.
@@ -54,7 +53,7 @@ struct ItemReadEventRepositoryTests {
 
 extension ItemReadEventRepositoryTests {
     @Test func `sending all events sends the oldest first in batches per share`() async throws {
-        let userId = UserData.test.user.ID
+        let userId = String.random()
 
         let shareId1 = String.random()
         let event1 = try await givenAddedEvent(shareId: shareId1, userId: userId, timestamp: 5)

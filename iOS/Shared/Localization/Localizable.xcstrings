@@ -61773,6 +61773,16 @@
         }
       }
     },
+    "Export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export data to another app"
+          }
+        }
+      }
+    },
     "Extra password" : {
       "localizations" : {
         "be" : {
@@ -170815,6 +170825,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的信息在一次数据泄露中被发现，并在 **%@** 上被发现"
+          }
+        }
+      }
+    },
+    "Your organization doesn't allow exporting data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your organization doesn't allow exporting data"
           }
         }
       }

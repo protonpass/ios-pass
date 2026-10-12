@@ -24,36 +24,40 @@ import Entities
 import Foundation
 
 public protocol CreateVaultAndImportLoginsUseCase: Sendable {
-    func execute(userId: String, logins: [CsvLogin], vaultName: String?) async throws
-}
-
-public extension CreateVaultAndImportLoginsUseCase {
     func callAsFunction(userId: String,
                         logins: [CsvLogin],
-                        vaultName: String? = nil) async throws {
-        try await execute(userId: userId, logins: logins, vaultName: vaultName)
-    }
+                        vaultContent: VaultContent) async throws
 }
 
-public final class CreateVaultAndImportLogins: CreateVaultAndImportLoginsUseCase {
+public struct CreateVaultAndImportLogins: CreateVaultAndImportLoginsUseCase {
     private let shareRepository: any ShareRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
+    private let checkVaultCreationAllowance: any CheckVaultCreationAllowanceUseCase
 
     public init(shareRepository: any ShareRepositoryProtocol,
-                itemRepository: any ItemRepositoryProtocol) {
+                itemRepository: any ItemRepositoryProtocol,
+                checkVaultCreationAllowance: any CheckVaultCreationAllowanceUseCase) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
+        self.checkVaultCreationAllowance = checkVaultCreationAllowance
     }
 
-    public func execute(userId: String, logins: [CsvLogin], vaultName: String?) async throws {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd 'at' HH.mm.ss"
-        let vaultName = vaultName ?? "Imported on \(formatter.string(from: .now))"
+    public func callAsFunction(userId: String,
+                               logins: [CsvLogin],
+                               vaultContent: VaultContent) async throws {
+        switch try await checkVaultCreationAllowance(userId: userId, newVaultCount: 1) {
+        case .allowed:
+            break
+
+        case .vaultLimitReached:
+            throw PassError.importer(.vaultLimitReached)
+
+        case .notAllowedByOrganization:
+            throw PassError.importer(.vaultCreationNotAllowed)
+        }
+
         let share = try await shareRepository.createVault(userId: userId,
-                                                          vault: .init(name: vaultName,
-                                                                       description: "",
-                                                                       color: .color1,
-                                                                       icon: .icon1))
+                                                          vault: vaultContent)
         try await itemRepository.importLogins(userId: userId,
                                               shareId: share.shareId,
                                               logins: logins)

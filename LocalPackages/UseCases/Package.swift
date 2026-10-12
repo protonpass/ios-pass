@@ -50,6 +50,7 @@ let package = Package(name: "UseCases",
                                       .product(name: "PassRustCore", package: "PassRustCore"),
                                       .product(name: "Sentry", package: "sentry-cocoa"),
                                       .product(name: "ProtonCoreFeatureFlags", package: "protoncore_ios"),
+                                      .product(name: "ProtonCorePasswordRequest", package: "protoncore_ios"),
                                       .product(name: "ProtonCoreTelemetry", package: "protoncore_ios")
                                   ],
                                   resources: [],
@@ -74,6 +75,8 @@ let package = Package(name: "UseCases",
                                                      .product(name: "ClientMocks", package: "Client"),
                                                      .product(name: "CoreMocks", package: "Core"),
                                                      .product(name: "EntitiesMocks", package: "Entities"),
+                                                     .product(name: "ProtonCoreCryptoGoImplementation",
+                                                              package: "protoncore_ios")
                                                     ],
                                       path: "Tests")
                       ],

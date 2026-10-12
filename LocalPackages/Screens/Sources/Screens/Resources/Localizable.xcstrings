@@ -3225,6 +3225,28 @@
         }
       }
     },
+    "%lld items imported" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item imported"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items imported"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld logins imported" : {
       "comment" : "Message of the alert after successfully importing items",
       "localizations" : {
@@ -4226,6 +4248,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld of %lld items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld of %2$lld items"
           }
         }
       }
@@ -17110,6 +17142,16 @@
         }
       }
     },
+    "Continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        }
+      }
+    },
     "Control what lands in your inbox" : {
       "localizations" : {
         "be" : {
@@ -28528,6 +28570,16 @@
         }
       }
     },
+    "Enter your password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter your password"
+          }
+        }
+      }
+    },
     "Error occurred" : {
       "localizations" : {
         "be" : {
@@ -29464,6 +29516,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "到期日已複製"
+          }
+        }
+      }
+    },
+    "Export cancelled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export cancelled"
+          }
+        }
+      }
+    },
+    "Export vaults (%1$lld/%2$lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export vaults (%1$lld/%2$lld)"
           }
         }
       }
@@ -38163,6 +38235,26 @@
         }
       }
     },
+    "Import items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import items"
+          }
+        }
+      }
+    },
+    "Import items\nfrom %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import items\nfrom %@"
+          }
+        }
+      }
+    },
     "Import logins (%1$lld/%2$lld)" : {
       "comment" : "Title of the importer, first placeholder is the number of selected logins to import, second placeholder is the total number of logins.",
       "localizations" : {
@@ -45839,6 +45931,16 @@
         }
       }
     },
+    "Not all item types are supported by other password managers." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not all item types are supported by other password managers."
+          }
+        }
+      }
+    },
     "Not now" : {
       "localizations" : {
         "be" : {
@@ -51801,6 +51903,16 @@
         }
       }
     },
+    "Passkeys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passkeys"
+          }
+        }
+      }
+    },
     "Password" : {
       "localizations" : {
         "be" : {
@@ -52996,6 +53108,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請進行身分驗證"
+          }
+        }
+      }
+    },
+    "Please confirm your backup password in order to export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please confirm your backup password in order to export data to another app"
+          }
+        }
+      }
+    },
+    "Please confirm your password in order to export data to another app" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please confirm your password in order to export data to another app"
           }
         }
       }
@@ -71592,6 +71724,16 @@
         }
       }
     },
+    "TOTP codes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTP codes"
+          }
+        }
+      }
+    },
     "Trash" : {
       "localizations" : {
         "be" : {
@@ -74640,6 +74782,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移动端暂不可用升级"
+          }
+        }
+      }
+    },
+    "Upgrade your plan to get enough vaults for this import." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade your plan to get enough vaults for this import."
           }
         }
       }
@@ -81056,6 +81208,16 @@
         }
       }
     },
+    "Wrong password" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrong password"
+          }
+        }
+      }
+    },
     "You are about to permanently delete %lld aliases" : {
       "localizations" : {
         "be" : {
@@ -82082,6 +82244,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您还没有任何保险库"
+          }
+        }
+      }
+    },
+    "Your organization doesn't allow creating the vaults this import needs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your organization doesn't allow creating the vaults this import needs."
           }
         }
       }
