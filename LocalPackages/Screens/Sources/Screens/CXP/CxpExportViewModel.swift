@@ -43,6 +43,11 @@ final class CxpExportViewModel {
     private let cxpExport = dependency(\UseCasesContainer.cxpExport)
     private let window = dependency(\UIComponentsContainer.window)
     private let verifyPassword = dependency(\UseCasesContainer.verifyPassword)
+    private let userManager = dependency(\ServiceContainer.userManager)
+
+    var isSSOUser: Bool {
+        userManager.currentActiveUser.value?.user.isSSOAccount ?? false
+    }
 
     var selectedCount: Int {
         selectedShareIds.count

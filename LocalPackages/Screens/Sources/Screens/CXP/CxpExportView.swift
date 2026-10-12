@@ -51,8 +51,13 @@ public struct CxpExportView: View {
                            cancelButton
                        },
                        message: {
-                           Text("Please confirm your password in order to export data to another app",
-                                bundle: .module)
+                           if viewModel.isSSOUser {
+                               Text("Please confirm your backup password in order to export data to another app",
+                                    bundle: .module)
+                           } else {
+                               Text("Please confirm your password in order to export data to another app",
+                                    bundle: .module)
+                           }
                        })
                 .alert(LocalizedStringResource("Error occurred", bundle: .module),
                        isPresented: $viewModel.passwordVerificationErrorMessage.mappedToBool(),

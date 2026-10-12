@@ -20,10 +20,14 @@
 //
 
 import Client
+import ProtonCoreLogin
 import ProtonCorePasswordRequest
 
 public protocol VerifyPasswordUseCase: Sendable {
-    /// Returns `false` for a wrong password and throws for any other failure
+    /// Returns `false` for a wrong password and throws for any other failure.
+    /// SSO accounts have no Proton password, so their backup password is checked against the user keys.
+    /// Runs off the caller's actor because deriving the key passphrase is deliberately slow (bcrypt).
+    @concurrent
     func callAsFunction(_ password: String) async throws -> Bool
 }
 
@@ -37,8 +41,16 @@ public struct VerifyPassword: VerifyPasswordUseCase {
         self.apiManager = apiManager
     }
 
+    @concurrent
     public func callAsFunction(_ password: String) async throws -> Bool {
         let userData = try await userManager.getUnwrappedActiveUserData()
+        if userData.user.isSSOAccount {
+            return try BuildAndValidatePassphrases()
+                .buildAndValidatePassphrases(mailboxPassword: password,
+                                             salts: userData.salts,
+                                             userKeys: userData.user.keys) != nil
+        }
+
         let apiService = try apiManager.getApiService(userId: userData.user.ID)
         let verifier = PasswordVerifier(apiService: apiService,
                                         username: userData.credential.userName,

@@ -562,6 +562,8 @@ private extension VaultsAndFoldersMenuViewModel {
 
     func refreshVaultCreationAllowance() {
         vaultCreationAllowanceTask?.cancel()
+        // `.loading` also covers logout's `reset()`, when the user being removed must not be queried
+        guard case .loaded = state else { return }
         vaultCreationAllowanceTask = Task { [weak self] in
             guard let self else { return }
             do {
@@ -570,6 +572,7 @@ private extension VaultsAndFoldersMenuViewModel {
                 guard !Task.isCancelled else { return }
                 vaultCreationAllowed = allowance != .notAllowedByOrganization
             } catch {
+                guard !Task.isCancelled else { return }
                 handle(error)
             }
         }
