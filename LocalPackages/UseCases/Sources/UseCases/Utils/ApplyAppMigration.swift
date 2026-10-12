@@ -35,26 +35,14 @@ public extension ApplyAppMigrationUseCase {
 
 public final class ApplyAppMigration: ApplyAppMigrationUseCase {
     private let dataMigrationManager: any DataMigrationManagerProtocol
-    private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
-    private let itemDatasource: any LocalItemDatasourceProtocol
-    private let searchEntryDatasource: any LocalSearchEntryDatasourceProtocol
-    private let shareKeyDatasource: any LocalShareKeyDatasourceProtocol
     private let logger: Logger
 
     public init(dataMigrationManager: any DataMigrationManagerProtocol,
-                userManager: any UserManagerProtocol,
                 authManager: any AuthManagerProtocol,
-                itemDatasource: any LocalItemDatasourceProtocol,
-                searchEntryDatasource: any LocalSearchEntryDatasourceProtocol,
-                shareKeyDatasource: any LocalShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol) {
         self.dataMigrationManager = dataMigrationManager
-        self.userManager = userManager
         self.authManager = authManager
-        self.itemDatasource = itemDatasource
-        self.searchEntryDatasource = searchEntryDatasource
-        self.shareKeyDatasource = shareKeyDatasource
         logger = .init(manager: logManager)
     }
 

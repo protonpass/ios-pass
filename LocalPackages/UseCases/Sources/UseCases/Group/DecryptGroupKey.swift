@@ -38,8 +38,6 @@ public extension DecryptGroupKeyUseCase {
 
 public struct DecryptedGroupAddressKey {
     let privateKey: DecryptionKey
-    let publicKey: String
-    let groupAddressKey: GroupAddressKey
 }
 
 public final class DecryptGroupKey: DecryptGroupKeyUseCase {
@@ -67,9 +65,8 @@ public final class DecryptGroupKey: DecryptGroupKeyUseCase {
         let armoredPrivateKey = ArmoredKey(value: primaryKey.privateKey)
         let privateKey = DecryptionKey(privateKey: armoredPrivateKey,
                                        passphrase: .init(value: content))
-        let publicKey = armoredPrivateKey.value.publicKey
 
-        return DecryptedGroupAddressKey(privateKey: privateKey, publicKey: publicKey, groupAddressKey: primaryKey)
+        return DecryptedGroupAddressKey(privateKey: privateKey)
     }
 }
 

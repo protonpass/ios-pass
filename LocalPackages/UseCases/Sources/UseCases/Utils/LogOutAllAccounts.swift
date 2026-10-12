@@ -44,7 +44,6 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let appContentManager: any AppContentManagerProtocol
-    private let apiManager: any APIManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let credentialManager: any CredentialManagerProtocol
     private let keychain: any KeychainProtocol
@@ -56,7 +55,6 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
                 featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 appContentManager: any AppContentManagerProtocol,
-                apiManager: any APIManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 credentialManager: any CredentialManagerProtocol,
                 keychain: any KeychainProtocol) {
@@ -67,7 +65,6 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         self.featureFlagsRepository = featureFlagsRepository
         self.passMonitorRepository = passMonitorRepository
         self.appContentManager = appContentManager
-        self.apiManager = apiManager
         self.authManager = authManager
         self.credentialManager = credentialManager
         self.keychain = keychain

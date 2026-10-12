@@ -91,4 +91,9 @@ extension ShareSelection: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.preferenceKey == rhs.preferenceKey
     }
+
+    /// Must hash exactly what `==` compares, or equal selections land in different `Set` buckets.
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(preferenceKey)
+    }
 }

@@ -95,6 +95,14 @@ public struct SharesData: Hashable, Sendable {
         shares.values.count(where: \.share.isVaultRepresentation)
     }
 
+    public var aliasCount: Int {
+        shares.values.reduce(0) { $0 + $1.aliasCount } + trashedItems.count(where: \.isAlias)
+    }
+
+    public var totpCount: Int {
+        shares.values.reduce(0) { $0 + $1.totpCount } + trashedItems.count(where: \.hasTotpUri)
+    }
+
     /// Items directly contained by `selection`, without recursing into sub folders.
     /// Both the displayed item list and the item type filter counts must derive from here,
     /// or the counts stop describing the list.

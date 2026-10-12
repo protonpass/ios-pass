@@ -128,27 +128,6 @@ final class HasFoldersStub: UserHasRemoteFoldersUseCase, @unchecked Sendable {
     }
 }
 
-final class RefreshFeatureFlagsStub: RefreshFeatureFlagsUseCase, @unchecked Sendable {
-    /// Applied when the refresh runs, so a test can model the kill switch flipping server side
-    /// between the cached read and the live one.
-    var onRefresh: (@Sendable () -> Void)?
-    private var _callCount = 0
-    private let lock = NSLock()
-
-    var callCount: Int {
-        lock.withLock { _callCount }
-    }
-
-    func execute() {
-        Task { await execute() }
-    }
-
-    func execute() async {
-        lock.withLock { _callCount += 1 }
-        onRefresh?()
-    }
-}
-
 final class ReachabilityStub: ReachabilityServicing {
     let reachabilityInfos = CurrentValueSubject<NWPath?, Never>(nil)
     let isNetworkAvailable: CurrentValueSubject<Bool, Never>

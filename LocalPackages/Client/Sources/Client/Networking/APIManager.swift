@@ -57,7 +57,6 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
     private let logger: Logger
     private let doh: any DoHInterface
     private let themeProvider: any ThemeProvider
-    private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
     private let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
@@ -82,13 +81,11 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
     public let apiServiceWereUpdated: PassthroughSubject<any APIService, Never> = .init()
 
     public init(authManager: any AuthManagerProtocol,
-                userManager: any UserManagerProtocol,
                 themeProvider: any ThemeProvider,
                 appVersion: String,
                 doh: any DoHInterface,
                 logManager: any LogManagerProtocol) {
         self.authManager = authManager
-        self.userManager = userManager
         self.themeProvider = themeProvider
         appVer = appVersion
         self.doh = doh

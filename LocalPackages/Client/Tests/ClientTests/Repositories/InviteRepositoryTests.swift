@@ -34,7 +34,7 @@ struct InviteRepositoryTests {
 
     init() {
         remoteDatasource = .init()
-        remoteDatasource.stubbedGetPendingGroupInvitesForUserResult = .init(invites: [], total: 0, lastID: nil)
+        remoteDatasource.stubbedGetPendingGroupInvitesForUserResult = .init(invites: [], lastID: nil)
         localDatasource = LocalInviteDatasourceProtocolMock()
         localDatasource.stubbedGetUserInvitesResult = []
         localDatasource.stubbedGetGroupInvitesResult = []

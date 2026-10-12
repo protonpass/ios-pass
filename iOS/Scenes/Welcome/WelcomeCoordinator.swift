@@ -45,7 +45,6 @@ final class WelcomeCoordinator: DeinitPrintable {
     private lazy var logInAndSignUp = makeLoginAndSignUp()
 
     private let apiService: any APIService
-    private let theme: Theme
 
     weak var delegate: (any WelcomeCoordinatorDelegate)?
     var rootViewController: UIViewController {
@@ -57,9 +56,8 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
 
-    init(apiService: any APIService, theme: Theme) {
+    init(apiService: any APIService) {
         self.apiService = apiService
-        self.theme = theme
         featureFlagsRepository.clearUserId()
     }
 }
