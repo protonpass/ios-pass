@@ -371,10 +371,14 @@ private extension PassMonitorRepository {
 
     func weaknessInputs(_ loginItems: [InternalPassMonitorItem]) -> WeaknessComputation {
         var passwordCounts = [String: Int]()
-        for item in loginItems where !item.isFullyExcluded &&
-            !item.suppressedChecks.contains(.reusedPassword) &&
-            !item.loginData.password.isEmpty {
-            passwordCounts[item.loginData.password, default: 0] += 1
+        // Includes reuse-suppressed logins, which leave the reuse groups but still need to know whether
+        // their password is shared
+        var sharedPasswordCounts = [String: Int]()
+        for item in loginItems where !item.isFullyExcluded && !item.loginData.password.isEmpty {
+            sharedPasswordCounts[item.loginData.password, default: 0] += 1
+            if !item.suppressedChecks.contains(.reusedPassword) {
+                passwordCounts[item.loginData.password, default: 0] += 1
+            }
         }
         let reuseGroups = Dictionary(uniqueKeysWithValues: passwordCounts
             .filter { $0.value > 1 }
@@ -383,10 +387,15 @@ private extension PassMonitorRepository {
             .map { ($1, $0) })
         let evaluatedItems = loginItems.map { item in
             let reuseGroup = reuseGroups[item.loginData.password]
+            let isReused = if item.suppressedChecks.contains(.reusedPassword) {
+                sharedPasswordCounts[item.loginData.password, default: 0] > 1
+            } else {
+                reuseGroup != nil
+            }
             return EvaluatedLoginItem(item: item,
                                       reuseGroup: reuseGroup,
                                       localWeaknesses: weaknessEvaluator.evaluate(item.loginData,
-                                                                                  isReused: reuseGroup != nil))
+                                                                                  isReused: isReused))
         }
         return WeaknessComputation(loginItems: evaluatedItems, reusedPasswords: reuseGroups)
     }
@@ -465,13 +474,12 @@ private extension PassMonitorRepository {
         return checks
     }
 
-    /// Ids (itemId + shareId) of logins whose password is in the breach corpus. Fully excluded and
-    /// check-suppressed logins are never sent.
+    /// Ids (itemId + shareId) of logins whose password is in the breach corpus. Fully excluded logins are
+    /// never sent. Check-suppressed ones are, so the excluded-items detail can tell whether the breach is
+    /// still there.
     func compromisedItemIds(userId: String, loginItems: [InternalPassMonitorItem]) async throws -> Set<String> {
         let candidates = loginItems.compactMap { item -> CompromisedPasswordCandidate? in
-            guard !item.isFullyExcluded,
-                  !item.suppressedChecks.contains(.compromisedPassword),
-                  !item.loginData.password.isEmpty else {
+            guard !item.isFullyExcluded, !item.loginData.password.isEmpty else {
                 return nil
             }
             return CompromisedPasswordCandidate(shareId: item.encrypted.shareId,

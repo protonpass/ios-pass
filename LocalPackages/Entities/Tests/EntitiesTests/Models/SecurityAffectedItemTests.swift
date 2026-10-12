@@ -64,6 +64,11 @@ struct SecurityAffectedItemTests {
         #expect(!makeItem(detected: [.weakPassword]).isExcludedItem)
     }
 
+    @Test func `suppressed weaknesses only keep the suppressed checks still detected`() {
+        let item = makeItem(detected: [.weakPassword, .missing2FA], suppressed: [.weakPassword, .compromisedPassword])
+        #expect(item.suppressedWeaknesses == [.weakPassword])
+    }
+
     @Test func `excluding sets full exclusion and suppresses only still active weaknesses`() {
         let item = makeItem(detected: [.missing2FA, .weakPassword, .reusedPassword],
                             suppressed: [.reusedPassword])

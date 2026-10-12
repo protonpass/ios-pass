@@ -109,7 +109,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     return
                 }
                 if showExcludedWeaknesses {
-                    var rows = affected.suppressedChecks.sorted().map {
+                    var rows = affected.suppressedWeaknesses.sorted().map {
                         ItemWeaknessDisplay.weakness($0, isExcluded: true)
                     }
                     if affected.isFullyExcluded {
