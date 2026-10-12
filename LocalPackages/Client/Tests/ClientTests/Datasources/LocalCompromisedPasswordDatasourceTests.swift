@@ -23,6 +23,24 @@ import Entities
 @testable import Client
 import Testing
 
+// MARK: - Test helpers
+
+private struct TestItem: ItemIdentifiable {
+    let shareId: String
+    let itemId: String
+    let folderId: String? = nil
+}
+
+private extension ItemIdentifiable {
+    var asTestItem: TestItem { TestItem(shareId: shareId, itemId: itemId) }
+}
+
+extension CompromisedPasswordCheck: @retroactive ItemIdentifiable {
+    public var folderId: String? {
+        nil
+    }
+}
+
 @Suite(.tags(.localDatasource))
 struct LocalCompromisedPasswordDatasourceTests {
     let sut: any LocalCompromisedPasswordDatasourceProtocol
@@ -184,6 +202,72 @@ struct LocalCompromisedPasswordDatasourceTests {
         
         let result = try await sut.getChecks(userId: userId)
         #expect(result.count == 1)
+    }
+    
+    // MARK: remove(userId:staleItemIds:)
+    
+    @Test func `remove staleItemIds deletes only the listed items`() async throws {
+        let userId = UUID().uuidString
+        let stale = CompromisedPasswordCheck.random()
+        let kept = CompromisedPasswordCheck.random()
+        try await sut.upsert([stale, kept], userId: userId)
+        
+        try await sut.remove(userId: userId, staleItemIds: [stale.asTestItem])
+        
+        let result = try await sut.getChecks(userId: userId)
+        #expect(result == [kept])
+    }
+    
+    @Test func `remove staleItemIds matches the exact share and item pair`() async throws {
+        let userId = UUID().uuidString
+        let staleA = CompromisedPasswordCheck.random(shareId: "shareA", itemId: "item1")
+        let staleB = CompromisedPasswordCheck.random(shareId: "shareB", itemId: "item2")
+        // Crosses the stale pairs: an IN/IN predicate would wrongly delete both
+        let keptA = CompromisedPasswordCheck.random(shareId: "shareB", itemId: "item1")
+        let keptB = CompromisedPasswordCheck.random(shareId: "shareA", itemId: "item2")
+        try await sut.upsert([staleA, staleB, keptA, keptB], userId: userId)
+
+        try await sut.remove(userId: userId, staleItemIds: [staleA.asTestItem, staleB.asTestItem])
+
+        let result = try await sut.getChecks(userId: userId)
+        #expect(Set(result.map(\.id)) == [keptA.id, keptB.id])
+    }
+
+    @Test func `remove staleItemIds does not touch another user's identical item`() async throws {
+        let userA = UUID().uuidString
+        let userB = UUID().uuidString
+        let check = CompromisedPasswordCheck.random()
+        try await sut.upsert([check], userId: userA)
+        try await sut.upsert([check], userId: userB)
+        
+        try await sut.remove(userId: userA, staleItemIds: [check.asTestItem])
+        
+        let resultsA = try await sut.getChecks(userId: userA)
+        let resultsB = try await sut.getChecks(userId: userB)
+        #expect(resultsA.isEmpty)
+        #expect(resultsB == [check])
+    }
+    
+    @Test func `remove with empty staleItemIds is a no-op`() async throws {
+        let userId = UUID().uuidString
+        let check = CompromisedPasswordCheck.random()
+        try await sut.upsert([check], userId: userId)
+        
+        try await sut.remove(userId: userId, staleItemIds: [])
+        
+        let result = try await sut.getChecks(userId: userId)
+        #expect(result == [check])
+    }
+    
+    @Test func `remove of a non-existent item does not throw and leaves data intact`() async throws {
+        let userId = UUID().uuidString
+        let check = CompromisedPasswordCheck.random()
+        try await sut.upsert([check], userId: userId)
+        
+        try await sut.remove(userId: userId, staleItemIds: [TestItem(shareId: "x", itemId: "y")])
+        
+        let result = try await sut.getChecks(userId: userId)
+        #expect(result == [check])
     }
     
     // MARK: removeAll(userId:)

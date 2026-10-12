@@ -28,6 +28,7 @@ import Foundation
 public protocol LocalCompromisedPasswordDatasourceProtocol: Sendable {
     func getChecks(userId: String) async throws -> [CompromisedPasswordCheck]
     func upsert(_ checks: [CompromisedPasswordCheck], userId: String) async throws
+    func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws
     func removeAll(userId: String) async throws
 }
 
@@ -56,6 +57,28 @@ public extension LocalCompromisedPasswordDatasource {
         let request = NSBatchInsertRequest(entity: CompromisedPasswordCheckEntity.entity(context: context),
                                            objects: objects)
         try await execute(batchInsertRequest: request, context: context)
+    }
+
+    func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws {
+        guard !staleItemIds.isEmpty else {
+            return
+        }
+        let staleIds = Set(staleItemIds.map(\.ids))
+        let itemIds = staleItemIds.map(\.itemId)
+        let context = newTaskContext(type: .delete)
+        let objectIds = try await context.perform {
+            let request = CompromisedPasswordCheckEntity.fetchRequest()
+            // `itemID IN` alone over-matches when an item id exists in several shares, so the exact
+            // (share, item) pair is checked on the fetched rows
+            request.predicate = NSPredicate(format: "userID == %@ AND itemID IN %@", userId, itemIds)
+            return try context.fetch(request)
+                .filter { staleIds.contains(IDs(shareId: $0.shareID, itemId: $0.itemID)) }
+                .map(\.objectID)
+        }
+        guard !objectIds.isEmpty else {
+            return
+        }
+        try await execute(batchDeleteRequest: .init(objectIDs: objectIds), context: context)
     }
 
     func removeAll(userId: String) async throws {
