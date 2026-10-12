@@ -1,3 +1,12 @@
+# Version 1.23.0
+- Implemented the Credential Exchange Protocol (CXP) for importing credentials from and exporting them to other password managers
+- Introduced the ability to ignore specific password issues, such as compromised, weak, or reused passwords (behind a feature flag)
+- Enabled PRF for passkeys
+
+Others:
+- Removed the legacy sync mechanism
+- Rust library upgraded from 2.2.0 to 2.2.2
+
 # Version 1.22.0
 - Added support for URL matching (behind feature flag)
 - Added support for checking whether your passwords have been compromised (behind feature flag)
