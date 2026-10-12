@@ -68,18 +68,6 @@ struct SecurityAffectedItemTests {
         let item = makeItem(detected: [.weakPassword, .missing2FA], suppressed: [.weakPassword, .compromisedPassword])
         #expect(item.suppressedWeaknesses == [.weakPassword])
     }
-
-    @Test func `excluding sets full exclusion and suppresses only still active weaknesses`() {
-        let item = makeItem(detected: [.missing2FA, .weakPassword, .reusedPassword],
-                            suppressed: [.reusedPassword])
-        #expect(item.flagsToExcludeFromMonitoring == [.skipHealthCheck(true),
-                                                      .skipWeakPasswordCheck(true),
-                                                      .skip2FACheck(true)])
-    }
-
-    @Test func `excluding an item without weaknesses only sets full exclusion`() {
-        #expect(makeItem().flagsToExcludeFromMonitoring == [.skipHealthCheck(true)])
-    }
 }
 
 private func makeItem(fullyExcluded: Bool = false,

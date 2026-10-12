@@ -78,10 +78,6 @@ public extension SecurityAffectedItem {
         isFullyExcluded || (!suppressedChecks.isEmpty && activeWeaknesses.isEmpty)
     }
 
-    var flagsToExcludeFromMonitoring: [ItemFlag] {
-        [.skipHealthCheck(true)] + activeWeaknesses.sorted().map { .skip($0, true) }
-    }
-
     var shouldBeIncluded: Bool {
         !detected.isEmpty || isExcludedItem
     }
