@@ -22,46 +22,65 @@ import Client
 import Entities
 import ProtonCoreLogin
 
-public protocol CheckVaultCreationAllowanceUseCase: Sendable {
-    func execute(userData: UserData?,
-                 organization: Entities.Organization?,
-                 vaultCount: Int) -> Bool
+public enum VaultCreationAllowance: Sendable, Equatable {
+    case allowed
+    case vaultLimitReached
+    case notAllowedByOrganization
 }
 
-public extension CheckVaultCreationAllowanceUseCase {
-    func callAsFunction(userData: UserData?,
-                        organization: Entities.Organization?,
-                        vaultCount: Int) -> Bool {
-        execute(userData: userData, organization: organization, vaultCount: vaultCount)
+public protocol CheckVaultCreationAllowanceUseCase: Sendable {
+    func callAsFunction(userId: String, newVaultCount: Int) async throws -> VaultCreationAllowance
+}
+
+public struct CheckVaultCreationAllowance: CheckVaultCreationAllowanceUseCase {
+    private let userManager: any UserManagerProtocol
+    private let accessRepository: any AccessRepositoryProtocol
+    private let organizationRepository: any OrganizationRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
+
+    public init(userManager: any UserManagerProtocol,
+                accessRepository: any AccessRepositoryProtocol,
+                organizationRepository: any OrganizationRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol) {
+        self.userManager = userManager
+        self.accessRepository = accessRepository
+        self.organizationRepository = organizationRepository
+        self.shareRepository = shareRepository
+    }
+
+    public func callAsFunction(userId: String, newVaultCount: Int) async throws -> VaultCreationAllowance {
+        guard newVaultCount > 0 else { return .allowed }
+
+        let vaultCount = try await shareRepository.getShares(userId: userId)
+            .count(where: \.share.isVaultRepresentation)
+        let plan = try await accessRepository.getPlan(userId: userId)
+        if plan.isBusinessUser,
+           try await !organizationAllows(newVaultCount: newVaultCount, vaultCount: vaultCount, userId: userId) {
+            return .notAllowedByOrganization
+        }
+        if let vaultLimit = plan.vaultLimit, vaultCount + newVaultCount > vaultLimit {
+            return .vaultLimitReached
+        }
+        return .allowed
     }
 }
 
-public final class CheckVaultCreationAllowance: CheckVaultCreationAllowanceUseCase {
-    public init() {}
-
-    public func execute(userData: UserData?,
-                        organization: Entities.Organization?,
-                        vaultCount: Int) -> Bool {
-        // If user is admin => we ignore vault policy => user can always create vaults
-        guard let organization, let userData, userData.user.safeRole != .admin else {
+private extension CheckVaultCreationAllowance {
+    func organizationAllows(newVaultCount: Int, vaultCount: Int, userId: String) async throws -> Bool {
+        guard let userData = try await userManager.getUserData(userId),
+              userData.user.safeRole != .admin,
+              let organization = try await organizationRepository.getOrganization(userId: userId) else {
             return true
         }
 
         return switch organization.settings?.vaultCreateMode {
-        case .allowed:
-            // Explicitly allowed
-            true
-
         case .onlyOrgAdmins:
-            // Explicitly disallowed
             false
 
         case .onlyOrgAdminsAndPersonalVault:
-            // Only possible when no vaults
-            vaultCount == 0
+            vaultCount + newVaultCount <= 1
 
         default:
-            // Implicitly allowed
             true
         }
     }

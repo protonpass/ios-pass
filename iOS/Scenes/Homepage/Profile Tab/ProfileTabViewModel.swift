@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
+import Macro
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
@@ -77,6 +78,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.switchUser) private var switchUser
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
+    @LazyInjected(\RepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -128,6 +131,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private var currentUserTask: Task<Void, Never>?
     private var accessesTask: Task<Void, Never>?
+    private var exportFlowTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -330,6 +334,27 @@ extension ProfileTabViewModel {
 
     func showImportInstructions() {
         router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
+    }
+
+    func beginExportFlow() {
+        guard exportFlowTask == nil else { return }
+        exportFlowTask = Task { [weak self] in
+            guard let self else { return }
+            defer { exportFlowTask = nil }
+            do {
+                let access = try await accessRepository.getAccess(userId: nil)
+                if access.access.plan.isBusinessUser,
+                   let organization = try await organizationRepository.getOrganization(userId: access.userId),
+                   !organization.exportAllowed {
+                    let message = #localized("Your organization doesn't allow exporting data")
+                    router.display(element: .errorMessage(message))
+                    return
+                }
+                router.present(for: .cxpExport)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func showTutorial() {

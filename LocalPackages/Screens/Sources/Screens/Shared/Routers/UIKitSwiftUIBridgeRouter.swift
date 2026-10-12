@@ -116,6 +116,8 @@ public enum SheetDestination: Equatable, Hashable {
     case loginsWith2fa
     case breachDetail(Breach)
     case breach(BreachDetailsInfo)
+    case cxpImport(CxpImportResult)
+    case cxpExport
     case addMailbox
     case passwordHistory
     case signInToAnotherDevice
@@ -158,6 +160,7 @@ public enum ActionDestination {
 public enum DeeplinkDestination {
     case totp(String)
     case spotlightItemDetail(ItemContent)
+    case credentialsImport(UUID)
     case error(any Error)
 }
 

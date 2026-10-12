@@ -32,6 +32,16 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
+    @available(iOS 26.0, *)
+    func importCredentials(token: UUID) async {
+        do {
+            let result = try await parseCxpImport(token: token)
+            router.present(for: .cxpImport(result))
+        } catch {
+            handle(error: error)
+        }
+    }
+
     func presentCreateEditLoginView(mode: ItemMode) {
         do {
             let viewModel = try CreateEditLoginViewModel(mode: mode,

@@ -819,8 +819,29 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         }
         closureImportLogins()
     }
+    // MARK: - importItems
+    public var importItemsUserIdShareIdContentsOnProgressThrowableError44: Error?
+    public var closureImportItems: () -> () = {}
+    public var invokedImportItemsfunction = false
+    public var invokedImportItemsCount = 0
+    public var invokedImportItemsParameters: (userId: String, shareId: String, contents: [ItemContentProtobuf])?
+    public var invokedImportItemsParametersList = [(userId: String, shareId: String, contents: [ItemContentProtobuf])]()
+    public var stubbedImportItemsOnProgressResult: (Int, Void)?
+
+    public func importItems(userId: String, shareId: String, contents: [ItemContentProtobuf], onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
+        invokedImportItemsfunction = true
+        invokedImportItemsCount += 1
+        invokedImportItemsParameters = (userId, shareId, contents)
+        if let resultOfOnProgress = stubbedImportItemsOnProgressResult {
+            await onProgress?(resultOfOnProgress.0)
+        }
+        if let error = importItemsUserIdShareIdContentsOnProgressThrowableError44 {
+            throw error
+        }
+        closureImportItems()
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError44: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError45: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -832,7 +853,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdfunction = true
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError44 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError45 {
             throw error
         }
         closureTotpCreationDateThreshold()

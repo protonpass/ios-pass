@@ -341,7 +341,10 @@ public extension UseCasesContainer {
     }
 
     var checkVaultCreationAllowance: Factory<any CheckVaultCreationAllowanceUseCase> {
-        self { CheckVaultCreationAllowance() }
+        self { CheckVaultCreationAllowance(userManager: self.userManager,
+                                           accessRepository: self.accessRepository,
+                                           organizationRepository: self.organizationRepository,
+                                           shareRepository: self.shareRepository) }
     }
 }
 
@@ -443,6 +446,11 @@ public extension UseCasesContainer {
     // periphery:ignore
     var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
         self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
+    }
+
+    var verifyPassword: Factory<any VerifyPasswordUseCase> {
+        self { VerifyPassword(userManager: self.userManager,
+                              apiManager: self.apiManager) }
     }
 }
 
@@ -942,7 +950,8 @@ public extension UseCasesContainer {
 
     var createVaultAndImportLogins: Factory<any CreateVaultAndImportLoginsUseCase> {
         self { CreateVaultAndImportLogins(shareRepository: self.shareRepository,
-                                          itemRepository: self.itemRepository) }
+                                          itemRepository: self.itemRepository,
+                                          checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
     }
 }
 
@@ -1217,5 +1226,29 @@ public extension UseCasesContainer {
 
     var sanitizeFileName: Factory<any SanitizeFileNameUseCase> {
         self { SanitizeFileName() }
+    }
+}
+
+// MARK: - CXP
+
+public extension UseCasesContainer {
+    var parseCxpImport: Factory<any ParseCxpImportUseCase> {
+        self { ParseCxpImport() }
+    }
+
+    var getCxpImportSummary: Factory<any GetCxpImportSummaryUseCase> {
+        self { GetCxpImportSummary() }
+    }
+
+    var importCxpItems: Factory<any ImportCxpItemsUseCase> {
+        self { ImportCxpItems(shareRepository: self.shareRepository,
+                              itemRepository: self.itemRepository,
+                              checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
+    }
+
+    var cxpExport: Factory<any CxpExportUseCase> {
+        self { CxpExport(userManager: self.userManager,
+                         symmetricKeyProvider: self.symmetricKeyProvider,
+                         itemRepository: self.itemRepository) }
     }
 }

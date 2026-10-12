@@ -92,6 +92,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
     @LazyInjected(\UseCasesContainer.switchUser) var switchUser
+    @LazyInjected(\UseCasesContainer.parseCxpImport) var parseCxpImport
     @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\UseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
     @LazyInjected(\UseCasesContainer.addAndSwitchToNewUserAccount)
@@ -207,6 +208,8 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 guard await authenticated,
                       let destination = await router.getDeeplink() else { return }
+                // Resolve before handling because handling can outlive the next timer tick
+                await router.resolveDeeplink()
                 switch destination {
                 case let .totp(uri):
                     await totpDeepLink(totpUri: uri)
@@ -214,10 +217,14 @@ private extension HomepageCoordinator {
                 case let .spotlightItemDetail(itemContent):
                     await router.present(for: .itemDetail(itemContent))
 
+                case let .credentialsImport(token):
+                    if #available(iOS 26.0, *) {
+                        await importCredentials(token: token)
+                    }
+
                 case let .error(error):
                     await router.display(element: .displayErrorBanner(error))
                 }
-                await router.resolveDeeplink()
             }
         }
 
@@ -747,6 +754,17 @@ extension HomepageCoordinator {
 
                 case let .breach(breach):
                     presentBreach(breach: breach)
+
+                case let .cxpImport(result):
+                    present(CxpImportView(result: result,
+                                          onSuccess: { [weak self] in
+                                              guard let self else { return }
+                                              refresh()
+                                          }),
+                            dismissible: false)
+
+                case .cxpExport:
+                    present(CxpExportView())
 
                 case .addMailbox:
                     dismissTopMostViewController { [weak self] in

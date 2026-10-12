@@ -397,17 +397,25 @@ struct ProfileTabView: View {
     }
 
     private var importSection: some View {
-        TextOptionRow(title: #localized("Import to Proton Pass"),
-                      action: {
-                          if viewModel.isChromeInstalled {
-                              showImportOptions.toggle()
-                          } else {
-                              viewModel.showImportInstructions()
-                          }
-                      })
-                      .frame(height: 75)
-                      .roundedEditableSection()
-                      .padding(.horizontal)
+        VStack(spacing: 0) {
+            TextOptionRow(title: #localized("Import to Proton Pass"),
+                          action: {
+                              if viewModel.isChromeInstalled {
+                                  showImportOptions.toggle()
+                              } else {
+                                  viewModel.showImportInstructions()
+                              }
+                          })
+
+            if #available(iOS 26.0, *) {
+                PassSectionDivider()
+
+                TextOptionRow(title: #localized("Export data to another app"),
+                              action: { viewModel.beginExportFlow() })
+            }
+        }
+        .roundedEditableSection()
+        .padding(.horizontal)
     }
 
     private var aboutSection: some View {
