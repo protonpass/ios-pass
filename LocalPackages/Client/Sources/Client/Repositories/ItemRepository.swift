@@ -123,8 +123,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws
-
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
     func updateCachedAliasInfo(userId: String,
@@ -205,7 +203,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let localShareDatasource: any LocalShareDatasourceProtocol
-    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
@@ -219,7 +216,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 localShareDatasource: any LocalShareDatasourceProtocol,
-                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
@@ -227,7 +223,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.localShareDatasource = localShareDatasource
-        self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         self.featureFlagsRepository = featureFlagsRepository
         self.userManager = userManager
@@ -357,11 +352,6 @@ public extension ItemRepository {
         logger.trace("Saving \(encryptedItems.count) remote item revisions to local database")
         try await localDatasource.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
-
-        logger.trace("Refreshing last event ID for share \(shareId)")
-        try await shareEventIDRepository.getLastEventId(forceRefresh: true,
-                                                        userId: userId,
-                                                        shareId: shareId)
 
         try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
@@ -726,13 +716,6 @@ public extension ItemRepository {
         try await localDatasource.upsertItems(encryptedItems)
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
-    }
-
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
-        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
-        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
-        itemsWereUpdated.send()
-        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
     func updateLastUseTime(userId: String,

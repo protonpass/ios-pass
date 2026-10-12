@@ -62,9 +62,6 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Trash or untrash items
     func upsertItems(_ items: [SymmetricallyEncryptedItem], modifiedItems: [ModifiedItem]) async throws
 
-    /// Bulk update `LastUseItem`
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws
-
     /// Permanently delete items
     func deleteItems(_ items: [any ItemIdentifiable]) async throws
 
@@ -295,29 +292,6 @@ public extension LocalItemDatasource {
 
         if !itemsToUpsert.isEmpty {
             try await upsertItems(itemsToUpsert)
-        }
-    }
-
-    func update(lastUseItems: [LastUseItem], shareId: String) throws {
-        let taskContext = newTaskContext(type: .fetch)
-        try taskContext.performAndWait {
-            let fetchRequest: NSFetchRequest<ItemEntity> = ItemEntity.fetchRequest()
-            fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                NSPredicate(format: "shareID = %@", shareId),
-                NSPredicate(format: "itemID IN %@", lastUseItems.map(\.itemID))
-            ])
-            let results = try taskContext.fetch(fetchRequest)
-
-            let itemMap = Dictionary(uniqueKeysWithValues: lastUseItems.map { ($0.itemID, $0.lastUseTime) })
-            for entity in results {
-                if let lastUseTime = itemMap[entity.itemID] {
-                    entity.lastUseTime = Int64(lastUseTime)
-                }
-            }
-
-            if taskContext.hasChanges {
-                try taskContext.save()
-            }
         }
     }
 

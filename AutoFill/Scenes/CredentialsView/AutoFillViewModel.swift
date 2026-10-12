@@ -59,7 +59,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     let users: [UserUiModel]
 
-    @LazyInjected(\ServiceContainer.eventSynchronizer) private var eventSynchronizer
+    @LazyInjected(\ServiceContainer.userEventsSynchronizer) private var userEventsSynchronizer
     @LazyInjected(\ToolingContainer.logger) var logger
     @LazyInjected(\RouterContainer.mainUIKitSwiftUIRouter) var router
     @LazyInjected(\UseCasesContainer.canEditItem) var canEditItem
@@ -69,6 +69,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     weak var delegate: (any AutoFillViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
 
+    private var needFullSync = false
     let sortTypeUpdated = PassthroughSubject<Void, Never>()
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -182,17 +183,19 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         }
     }
 
-    ///
-    /// `@concurrent` so the lookup leaves the main actor, matching `fetchItems()`. It cannot go on
-    /// the use case instead: `@concurrent` on a protocol requirement reached through an existential
-    /// crashes SILGen in swiftlang 6.3.3.
     @concurrent
     func refreshFolderSyncBanner() async {
+        guard await !needFullSync else {
+            return
+        }
         let show = await shouldShowFolderSyncBanner()
         await setShowFolderSyncBanner(show)
     }
 
     private func setShowFolderSyncBanner(_ show: Bool) {
+        guard show != showFolderSyncBanner else {
+            return
+        }
         showFolderSyncBanner = show
     }
 }
@@ -204,8 +207,12 @@ extension AutoFillViewModel {
         do {
             var shouldRefreshItems = false
             for user in users {
-                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
-                shouldRefreshItems = shouldRefreshItems || hasNewEvents
+                let syncResult = try await userEventsSynchronizer.sync(userId: user.id, readOnly: true)
+                if syncResult.contains(.fullRefreshNeeded) {
+                    needFullSync = true
+                    setShowFolderSyncBanner(true)
+                }
+                shouldRefreshItems = shouldRefreshItems || syncResult.contains(.dataUpdated)
             }
 
             if shouldRefreshItems {

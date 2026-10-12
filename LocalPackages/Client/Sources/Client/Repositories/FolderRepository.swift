@@ -50,7 +50,6 @@ public final class FolderRepository: FolderRepositoryProtocol, Sendable {
     private let remoteDatasource: any RemoteFolderDatasourceProtocol
     private let localDatasource: any LocalFolderDatasourceProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
-    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
 
@@ -63,13 +62,11 @@ public final class FolderRepository: FolderRepositoryProtocol, Sendable {
     public init(remoteDatasource: any RemoteFolderDatasourceProtocol,
                 localDatasource: any LocalFolderDatasourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
-                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.remoteDatasource = remoteDatasource
         self.localDatasource = localDatasource
         self.symmetricKeyProvider = symmetricKeyProvider
-        self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
     }

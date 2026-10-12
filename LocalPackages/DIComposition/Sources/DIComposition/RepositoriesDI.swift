@@ -86,10 +86,6 @@ public extension RepositoryContainer {
         self { LocalShareEventIDDatasource(databaseService: self.databaseService) }
     }
 
-    var remoteShareEventIDDatasource: Factory<any RemoteShareEventIDDatasourceProtocol> {
-        self { RemoteShareEventIDDatasource(apiServicing: self.apiManager) }
-    }
-
     var remoteItemKeyDatasource: Factory<any RemoteItemKeyDatasourceProtocol> {
         self { RemoteItemKeyDatasource(apiServicing: self.apiManager) }
     }
@@ -270,10 +266,6 @@ public extension RepositoryContainer {
         self { LocalSearchEntryDatasource(databaseService: self.databaseService) }
     }
 
-    var remoteSyncEventsDatasource: Factory<any RemoteSyncEventsDatasourceProtocol> {
-        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager) }
-    }
-
     var remoteFolderDatasource: Factory<any RemoteFolderDatasourceProtocol> {
         self { RemoteFolderDatasource(apiServicing: self.apiManager) }
     }
@@ -317,14 +309,6 @@ public extension RepositoryContainer {
         }
     }
 
-    var shareEventIDRepository: Factory<any ShareEventIDRepositoryProtocol> {
-        self {
-            ShareEventIDRepository(localDatasource: self.localShareEventIDDatasource(),
-                                   remoteDatasource: self.remoteShareEventIDDatasource(),
-                                   logManager: self.logManager)
-        }
-    }
-
     var passKeyManager: Factory<any PassKeyManagerProtocol> {
         self {
             PassKeyManager(shareKeyRepository: self.shareKeyRepository(),
@@ -342,7 +326,6 @@ public extension RepositoryContainer {
                            localDatasource: self.localItemDatasource(),
                            remoteDatasource: self.remoteItemDatasource(),
                            localShareDatasource: self.localShareDatasource(),
-                           shareEventIDRepository: self.shareEventIDRepository(),
                            passKeyManager: self.passKeyManager(),
                            featureFlagsRepository: self.featureFlagsRepository(),
                            logManager: self.logManager)
@@ -473,7 +456,6 @@ public extension RepositoryContainer {
             FolderRepository(remoteDatasource: self.remoteFolderDatasource(),
                              localDatasource: self.localFolderDatasource(),
                              symmetricKeyProvider: self.symmetricKeyProvider,
-                             shareEventIDRepository: self.shareEventIDRepository(),
                              passKeyManager: self.passKeyManager(),
                              logManager: self.logManager)
         }
