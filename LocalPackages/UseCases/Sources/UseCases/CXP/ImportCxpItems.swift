@@ -60,8 +60,15 @@ public struct ImportCxpItems: ImportCxpItemsUseCase {
         }
 
         var importedCount = 0
+        var unnamedVaultCount = 0
         for importableVault in importableVaults {
-            let vault = importableVault.vault ?? defaultVaultContent
+            var vault = importableVault.vault ?? defaultVaultContent
+            if importableVault.vault == nil {
+                unnamedVaultCount += 1
+                if unnamedVaultCount > 1 {
+                    vault.name += " (\(unnamedVaultCount))"
+                }
+            }
             let share = try await shareRepository.createVault(userId: userId, vault: vault)
             let offset = importedCount
             try await itemRepository.importItems(userId: userId,

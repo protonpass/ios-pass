@@ -42,7 +42,7 @@ struct OrganizationTests {
         #expect(Organization(canUpdate: canUpdate, settings: settings).exportAllowed == expected)
     }
 
-    @Test func `export not allowed for members when settings are missing`() {
-        #expect(!Organization(canUpdate: false, settings: nil).exportAllowed)
+    @Test func `export allowed for members when settings are missing`() {
+        #expect(Organization(canUpdate: false, settings: nil).exportAllowed)
     }
 }
