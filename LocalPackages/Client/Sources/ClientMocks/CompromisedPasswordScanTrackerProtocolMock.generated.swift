@@ -41,6 +41,21 @@ public final class CompromisedPasswordScanTrackerProtocolMock: @unchecked Sendab
         closureIsFullScanDue()
         return stubbedIsFullScanDueResult
     }
+    // MARK: - isCorpusUnchanged
+    public var closureIsCorpusUnchanged: () -> () = {}
+    public var invokedIsCorpusUnchangedfunction = false
+    public var invokedIsCorpusUnchangedCount = 0
+    public var invokedIsCorpusUnchangedParameters: (userId: String, currentLastChange: Int)?
+    public var invokedIsCorpusUnchangedParametersList = [(userId: String, currentLastChange: Int)]()
+    public nonisolated(unsafe) var stubbedIsCorpusUnchangedResult: Bool!
+
+    public func isCorpusUnchanged(userId: String, currentLastChange: Int) -> Bool {
+        invokedIsCorpusUnchangedfunction = true
+        invokedIsCorpusUnchangedCount += 1
+        invokedIsCorpusUnchangedParameters = (userId, currentLastChange)
+        closureIsCorpusUnchanged()
+        return stubbedIsCorpusUnchangedResult
+    }
     // MARK: - recordFullScan
     public var closureRecordFullScan: () -> () = {}
     public var invokedRecordFullScanfunction = false
@@ -53,5 +68,18 @@ public final class CompromisedPasswordScanTrackerProtocolMock: @unchecked Sendab
         invokedRecordFullScanCount += 1
         invokedRecordFullScanParameters = (userId, ())
         closureRecordFullScan()
+    }
+    // MARK: - recordCorpusLastChange
+    public var closureRecordCorpusLastChange: () -> () = {}
+    public var invokedRecordCorpusLastChangefunction = false
+    public var invokedRecordCorpusLastChangeCount = 0
+    public var invokedRecordCorpusLastChangeParameters: (lastChange: Int, userId: String)?
+    public var invokedRecordCorpusLastChangeParametersList = [(lastChange: Int, userId: String)]()
+
+    public func recordCorpusLastChange(_ lastChange: Int, userId: String) {
+        invokedRecordCorpusLastChangefunction = true
+        invokedRecordCorpusLastChangeCount += 1
+        invokedRecordCorpusLastChangeParameters = (lastChange, userId)
+        closureRecordCorpusLastChange()
     }
 }

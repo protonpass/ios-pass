@@ -111,6 +111,10 @@ public enum Constants {
         /// is still checked immediately regardless, because it is a cache-miss in the checker.
         public static let minimumCheckInterval = 24 * 60 * 60
 
+        public static func lastCorpusChangeKey(_ userId: String) -> String {
+            "compromisedPasswordsLastChange.\(userId)"
+        }
+
         /// Wall-clock time of the last full scan, as opposed to the corpus's own `last_change`.
         public static func lastRunKey(_ userId: String) -> String {
             "compromisedPasswordsLastRun.\(userId)"

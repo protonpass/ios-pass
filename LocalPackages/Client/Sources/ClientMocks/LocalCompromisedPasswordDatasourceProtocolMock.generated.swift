@@ -64,8 +64,25 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         }
         closureUpsert()
     }
+    // MARK: - remove
+    public var removeUserIdStaleItemIdsThrowableError3: Error?
+    public var closureRemove: () -> () = {}
+    public var invokedRemovefunction = false
+    public var invokedRemoveCount = 0
+    public var invokedRemoveParameters: (userId: String, staleItemIds: [any ItemIdentifiable])?
+    public var invokedRemoveParametersList = [(userId: String, staleItemIds: [any ItemIdentifiable])]()
+
+    public func remove(userId: String, staleItemIds: [any ItemIdentifiable]) async throws {
+        invokedRemovefunction = true
+        invokedRemoveCount += 1
+        invokedRemoveParameters = (userId, staleItemIds)
+        if let error = removeUserIdStaleItemIdsThrowableError3 {
+            throw error
+        }
+        closureRemove()
+    }
     // MARK: - removeAll
-    public var removeAllUserIdThrowableError3: Error?
+    public var removeAllUserIdThrowableError4: Error?
     public var closureRemoveAll: () -> () = {}
     public var invokedRemoveAllfunction = false
     public var invokedRemoveAllCount = 0
@@ -76,7 +93,7 @@ public final class LocalCompromisedPasswordDatasourceProtocolMock: @unchecked Se
         invokedRemoveAllfunction = true
         invokedRemoveAllCount += 1
         invokedRemoveAllParameters = (userId, ())
-        if let error = removeAllUserIdThrowableError3 {
+        if let error = removeAllUserIdThrowableError4 {
             throw error
         }
         closureRemoveAll()

@@ -311,7 +311,8 @@ public extension PassMonitorRepository {
         let compromisedCheckEnabled = await isCompromisedCheckEnabled(userId: userId)
         let visibleItems = try await getLoginItems(userId: userId,
                                                    compromisedCheckEnabled: compromisedCheckEnabled)
-        // Checked here rather than read from the last published refresh, which may not have finished yet
+        // Checked here rather than read from the last published refresh, which may not have finished
+        // yet. All visible items are passed because the checker prunes cached rows of non-candidates.
         var breachedItemIds: Set<String>?
         if compromisedCheckEnabled {
             breachedItemIds = try? await compromisedItemIds(userId: userId, loginItems: visibleItems)
