@@ -129,7 +129,7 @@ public extension UserManager {
     }
 
     /// Remove user profile from database and memory. If the user being removed if the current active user it sets
-    /// a new active user
+    /// a new active user, or clears it when no user is left
     /// - Parameter userId: The id of the user to remove
     func remove(userId: String) async throws {
         assertDidSetUp()
@@ -140,6 +140,8 @@ public extension UserManager {
 
         if userProfiles.activeUser == nil, let newActiveUser = userProfiles.first {
             try await switchActiveUser(with: newActiveUser.userdata.user.ID, onMemory: false)
+        } else if userProfiles.isEmpty {
+            await publishNewActiveUser(nil)
         }
     }
 
