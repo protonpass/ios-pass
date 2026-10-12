@@ -489,16 +489,7 @@ private extension ProfileTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 guard let self else { return }
-                currentActiveUser = user
-                currentUserTask?.cancel()
-                currentUserTask = nil
-                currentUserTask = Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await refreshPlan()
-                    await fetchSecureLinks()
-                }
+                activeUserDidChange(user)
             }
             .store(in: &cancellables)
 
@@ -529,6 +520,20 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
+    }
+
+    func activeUserDidChange(_ user: UserData?) {
+        currentActiveUser = user
+        currentUserTask?.cancel()
+        currentUserTask = nil
+        guard user != nil else { return }
+        currentUserTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await refreshPlan()
+            await fetchSecureLinks()
+        }
     }
 
     func refreshLocalAuthenticationMethod() {
