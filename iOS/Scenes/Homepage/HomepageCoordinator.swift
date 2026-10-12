@@ -43,8 +43,6 @@ import StoreKit
 import Stores
 import SwiftUI
 
-private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
-
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
@@ -61,7 +59,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
     let appContentManager = dependency(\ServiceContainer.appContentManager)
-    private let refreshInvitations = dependency(\UseCasesContainer.refreshInvitations)
     private let loginMethod = dependency(\DataContainer.loginMethod)
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
@@ -143,7 +140,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
             await suggestSimpleLoginSyncIfApplicable()
         }
         refreshOrganizationAndOverrideSecuritySettings()
-        refreshAccessAndMonitorStateSync()
+        startPassMonitoring()
         refreshSettings()
         // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
         // for this user before building this coordinator.
@@ -162,12 +159,6 @@ private extension HomepageCoordinator {
     func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity function_body_length
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
-
-        // User event caches invites locally so no need to fetch invites as part of event loop
-        if !getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-            eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
-                                              task: refreshInvitations.callAsFunction))
-        }
 
         authenticated = getSharedPreferences().localAuthenticationMethod == .none
 
@@ -198,6 +189,7 @@ private extension HomepageCoordinator {
                 }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
+                refreshAccessAndMonitorStateSync()
 
                 Task { [weak self] in
                     guard let self else { return }
@@ -407,6 +399,13 @@ private extension HomepageCoordinator {
                                   reason: "folders migration")
         } catch {
             logger.error(message: "Failed folder force sync check", error: error)
+        }
+    }
+
+    func startPassMonitoring() {
+        Task { [weak self] in
+            guard let self else { return }
+            await passMonitorRepository.startMonitoring()
         }
     }
 
@@ -1914,10 +1913,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Began new sync loop for userId \(userId)")
     }
 
-    func syncEventLoopShouldUseUserEvents() async -> Bool {
-        await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
-    }
-
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         logger.info("Skipped sync loop \(reason)")
     }
@@ -1946,18 +1941,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
         logger.error(message: "User \(userId)", error: error)
-    }
-
-    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {
-        logger.trace("Began executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFinishAdditionalTask(userId: String, label: String) {
-        logger.info("Finished executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
-        logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
 }
 

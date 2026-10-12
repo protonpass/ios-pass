@@ -45,6 +45,9 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     var weaknessStats: CurrentValueSubject<WeaknessStats?, Never> { get }
     var itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> { get }
 
+    /// Re-runs the security checks whenever items change. Only the main app calls this, so extensions
+    /// resolving the repository don't pay for scans they never display.
+    func startMonitoring() async
     func refreshSecurityChecks() async throws
     func getItemsWithSamePassword(item: Entities.ItemContent) async throws -> [Entities.ItemContent]
 
@@ -117,13 +120,27 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         self.accessRepository = accessRepository
         self.compromisedPasswordChecker = compromisedPasswordChecker
         self.isFeatureEnabled = isFeatureEnabled
+    }
 
-        Task { [weak self] in
-            guard let self else {
-                return
+    public func startMonitoring() {
+        guard cancellable.isEmpty else { return }
+        // A sync can update many items at once and each refresh decrypts every login, so
+        // coalesce bursts into one refresh
+        itemRepository.itemsWereUpdated
+            .dropFirst()
+            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await refresh()
+                }
             }
-            await setup()
-        }
+            .store(in: &cancellable)
     }
 
     public func refreshSecurityChecks() async throws {
@@ -311,27 +328,6 @@ private extension PassMonitorRepository {
             }
             try? await refreshSecurityChecks()
         }
-    }
-
-    func setup() {
-        // A sync can update many items at once and each refresh decrypts every login, so
-        // coalesce bursts into one refresh
-        itemRepository.itemsWereUpdated
-            .dropFirst()
-            .debounce(for: .milliseconds(300), scheduler: DispatchQueue.global())
-            .sink { [weak self] in
-                guard let self else {
-                    return
-                }
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await refresh()
-                }
-            }
-            .store(in: &cancellable)
-        refresh()
     }
 
     func getLoginItems(userId: String,

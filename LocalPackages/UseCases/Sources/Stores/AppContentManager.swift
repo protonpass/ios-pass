@@ -94,7 +94,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
     private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
     private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
-    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
 
@@ -122,7 +121,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
                 deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
                 getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
-                getFeatureFlagStatus: any GetFeatureFlagStatusUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
                 logger: Logger,
@@ -138,7 +136,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.indexItemsForSpotlight = indexItemsForSpotlight
         self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
         self.getAndStoreLastEventId = getAndStoreLastEventId
-        self.getFeatureFlagStatus = getFeatureFlagStatus
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
         self.logger = logger
@@ -319,16 +316,14 @@ private extension AppContentManager {
             }
 
             // 4. Refresh invite and sl notes
-            if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-                async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
-                async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
-                do {
-                    _ = try await (syncAliases, refreshInvites)
-                } catch {
-                    // We logs the errors silently to let the full content refresh continue offering a better
-                    // experience to the user.
-                    logger.error(error)
-                }
+            async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+            async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+            do {
+                _ = try await (syncAliases, refreshInvites)
+            } catch {
+                // We logs the errors silently to let the full content refresh continue offering a better
+                // experience to the user.
+                logger.error(error)
             }
 
             try await loadContents(userId: userId, for: remoteShares.shares)
@@ -719,9 +714,7 @@ private extension AppContentManager {
             shareSelection = .all
         }
 
-        if getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-            try await inviteRepository.loadLocalInvites(userId: userId)
-        }
+        try await inviteRepository.loadLocalInvites(userId: userId)
 
         indexContent(userPreferences: userPreferences)
     }

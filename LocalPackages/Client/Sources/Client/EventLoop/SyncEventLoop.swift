@@ -39,9 +39,6 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// Called at the beginning of every sync loop.
     func syncEventLoopDidBeginNewLoop(userId: String)
 
-    /// Return `true` if user events is enabled
-    func syncEventLoopShouldUseUserEvents() async -> Bool
-
     /// Called when a loop is skipped
     /// - Parameters:
     ///    - reason: E.g no internet connection, previous loop not yet finished.
@@ -60,21 +57,6 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// - Parameters:
     ///   - error: Occured error
     func syncEventLoopDidFailLoop(userId: String, error: any Error)
-
-    /// Called when an additional task is started to be executed
-    /// - Parameters:
-    ///  - label: the uniquely identifiable label of the failed task
-    func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String)
-
-    /// Called when an additional task is executed successfully
-    /// - Parameters:
-    func syncEventLoopDidFinishAdditionalTask(userId: String, label: String)
-
-    /// Called when an additional task is failed
-    /// - Parameters:
-    ///  - label: the uniquely identifiable label of the failed task.
-    ///  - error: the underlying error
-    func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error)
 }
 
 public enum SyncEventLoopSkipReason {
@@ -91,27 +73,6 @@ public protocol SyncEventLoopProtocol: Sendable {
     func reset()
     func start()
     func stop()
-    // periphery:ignore
-    func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
-}
-
-public extension SyncEventLoop {
-    struct AdditionalTask: Sendable {
-        /// Uniquely identiable label between tasks, each task should have a unique label
-        /// This is to help the event loop adding/removing tasks
-        let label: String
-        /// The execution block of the task
-        let task: @Sendable () async throws -> Void
-
-        public init(label: String, task: @Sendable @escaping () async throws -> Void) {
-            self.label = label
-            self.task = task
-        }
-
-        public func callAsFunction() async throws {
-            try await task()
-        }
-    }
 }
 
 public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unchecked Sendable {
@@ -126,12 +87,9 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
-    private var additionalTasks: [AdditionalTask] = []
-
     private var activeTasks = [String: Task<Void, any Error>]()
 
     // Injected params
-    private let synchronizer: any EventSynchronizerProtocol
     private let userEventsSynchronizer: any UserEventsSynchronizerProtocol
     private let coreEventsSynchronizer: any CoreEventsSynchronizerProtocol
     private let logger: Logger
@@ -142,14 +100,12 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     private let queue = DispatchQueue(label: "me.proton.pass.synceventloop")
 
     public init(currentDateProvider: any CurrentDateProviderProtocol,
-                synchronizer: any EventSynchronizerProtocol,
                 userEventsSynchronizer: any UserEventsSynchronizerProtocol,
                 coreEventsSynchronizer: any CoreEventsSynchronizerProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 reachability: any ReachabilityServicing) {
         backOffManager = BackOffManager(currentDateProvider: currentDateProvider)
-        self.synchronizer = synchronizer
         self.userEventsSynchronizer = userEventsSynchronizer
         self.coreEventsSynchronizer = coreEventsSynchronizer
         logger = .init(manager: logManager)
@@ -159,7 +115,6 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 
     public func reset() {
         stop()
-        additionalTasks.removeAll()
     }
 }
 
@@ -203,14 +158,6 @@ public extension SyncEventLoop {
             secondCount = 0
             delegate?.syncEventLoopDidStopLooping()
         }
-    }
-
-    func addAdditionalTask(_ task: AdditionalTask) {
-        guard !additionalTasks.contains(where: { $0.label == task.label }) else {
-            assertionFailure("Existing task with label \(task.label)")
-            return
-        }
-        additionalTasks.append(task)
     }
 }
 
@@ -285,7 +232,6 @@ private extension SyncEventLoop {
     func executeEventSync(userId: String) async {
         do {
             delegate?.syncEventLoopDidBeginNewLoop(userId: userId)
-            let userEventsEnabled = await delegate?.syncEventLoopShouldUseUserEvents()
             if Task.isCancelled {
                 return
             }
@@ -293,36 +239,14 @@ private extension SyncEventLoop {
             try await coreEventsSynchronizer.sync(userId: userId)
 
             let hasNewEvents: Bool
-            if userEventsEnabled == true {
-                let result = try await userEventsSynchronizer.sync(userId: userId)
+            let result = try await userEventsSynchronizer.sync(userId: userId)
 
-                if result.contains(.fullRefreshNeeded) {
-                    try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
-                    return
-                }
-
-                hasNewEvents = result.contains(.dataUpdated)
-            } else {
-                hasNewEvents = try await synchronizer.sync(userId: userId)
+            if result.contains(.fullRefreshNeeded) {
+                try await delegate?.syncEventLoopRequiresFullSync(userId: userId)
+                return
             }
 
-            // We only execute the additionalTasks for the main active account
-            if userManager.activeUserId == userId {
-                for task in additionalTasks {
-                    do {
-                        delegate?.syncEventLoopDidBeginExecutingAdditionalTask(userId: userId, label: task.label)
-                        if Task.isCancelled {
-                            return
-                        }
-                        try await task()
-                        delegate?.syncEventLoopDidFinishAdditionalTask(userId: userId, label: task.label)
-                    } catch {
-                        delegate?.syncEventLoopDidFailedAdditionalTask(userId: userId,
-                                                                       label: task.label,
-                                                                       error: error)
-                    }
-                }
-            }
+            hasNewEvents = result.contains(.dataUpdated)
 
             delegate?.syncEventLoopDidFinishLoop(userId: userId, hasNewEvents: hasNewEvents)
             await backOffManager.recordSuccess()
