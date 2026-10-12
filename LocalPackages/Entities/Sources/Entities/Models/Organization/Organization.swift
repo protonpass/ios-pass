@@ -34,7 +34,8 @@ public struct Organization: Sendable, Decodable, Equatable {
 
 public extension Organization {
     var exportAllowed: Bool {
-        canUpdate || settings?.exportMode == .anyone
+        guard let settings else { return true }
+        return canUpdate || settings.exportMode == .anyone
     }
 }
 

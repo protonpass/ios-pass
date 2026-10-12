@@ -77,6 +77,15 @@ struct ImportCxpItemsTests {
         #expect(allowance.requestedVaultCounts.withLock { $0 } == [2])
     }
 
+    @Test func `number the vaults created for items outside any collection`() async throws {
+        let sut = makeSut()
+
+        try await sut(userId: "user", result: .twoVaults, defaultVaultContent: .defaultVault, onProgress: nil)
+
+        #expect(await shareRepository.invokedCreateVaultCount == 2)
+        #expect(await shareRepository.invokedCreateVaultParameters?.vault.name == "Default (2)")
+    }
+
     @Test(arguments: [
         (VaultCreationAllowance.vaultLimitReached, PassError.importer(.vaultLimitReached)),
         (.notAllowedByOrganization, PassError.importer(.vaultCreationNotAllowed))
@@ -101,7 +110,7 @@ private extension ImportCxpItemsTests {
     }
 }
 
-private struct VaultCreationAllowanceStub: CheckVaultCreationAllowanceUseCase {
+struct VaultCreationAllowanceStub: CheckVaultCreationAllowanceUseCase {
     var allowance = VaultCreationAllowance.allowed
     let requestedVaultCounts = OSAllocatedUnfairLock(initialState: [Int]())
 

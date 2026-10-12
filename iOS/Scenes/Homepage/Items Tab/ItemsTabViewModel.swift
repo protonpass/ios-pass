@@ -26,7 +26,6 @@ import DIComposition
 import Entities
 import FactoryKit
 import Macro
-import ProtonCoreLogin
 import Screens
 import Stores
 import SwiftUI
@@ -404,8 +403,10 @@ extension ItemsTabViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let allowance = try await checkVaultCreationAllowance(userId: userId, newVaultCount: 1)
+                guard !Task.isCancelled else { return }
                 vaultCreationAllowed = allowance != .notAllowedByOrganization
             } catch {
+                guard !Task.isCancelled else { return }
                 handle(error: error)
             }
         }

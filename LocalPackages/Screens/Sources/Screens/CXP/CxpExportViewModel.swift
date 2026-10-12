@@ -73,7 +73,7 @@ extension CxpExportViewModel {
         let shareId = shareContent.share.shareId
         if selectedShareIds.contains(shareId) {
             selectedShareIds.remove(shareId)
-        } else {
+        } else if shareContent.exportable {
             selectedShareIds.insert(shareId)
         }
     }

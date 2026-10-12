@@ -131,6 +131,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private var currentUserTask: Task<Void, Never>?
     private var accessesTask: Task<Void, Never>?
+    private var exportFlowTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -336,8 +337,10 @@ extension ProfileTabViewModel {
     }
 
     func beginExportFlow() {
-        Task { [weak self] in
+        guard exportFlowTask == nil else { return }
+        exportFlowTask = Task { [weak self] in
             guard let self else { return }
+            defer { exportFlowTask = nil }
             do {
                 let access = try await accessRepository.getAccess(userId: nil)
                 if access.access.plan.isBusinessUser,

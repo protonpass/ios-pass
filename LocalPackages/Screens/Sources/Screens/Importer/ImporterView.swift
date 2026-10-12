@@ -68,12 +68,12 @@ public struct ImporterView: View {
                    }
                })
         .alert(Text("Error occurred", bundle: .module),
-               isPresented: $viewModel.error.mappedToBool(),
+               isPresented: $viewModel.errorMessage.mappedToBool(),
                actions: { Button(action: onClose,
                                  label: { Text("OK", bundle: .module) }) },
                message: {
-                   if let error = viewModel.error {
-                       Text(verbatim: error.localizedDebugDescription)
+                   if let message = viewModel.errorMessage {
+                       Text(verbatim: message)
                    }
                })
     }

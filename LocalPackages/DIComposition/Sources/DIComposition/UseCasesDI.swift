@@ -950,7 +950,8 @@ public extension UseCasesContainer {
 
     var createVaultAndImportLogins: Factory<any CreateVaultAndImportLoginsUseCase> {
         self { CreateVaultAndImportLogins(shareRepository: self.shareRepository,
-                                          itemRepository: self.itemRepository) }
+                                          itemRepository: self.itemRepository,
+                                          checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
     }
 }
 

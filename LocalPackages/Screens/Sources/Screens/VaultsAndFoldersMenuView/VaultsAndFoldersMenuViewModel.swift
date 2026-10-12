@@ -29,7 +29,6 @@ import FactoryKit
 import Foundation
 import Macro
 import Observation
-import ProtonCoreLogin
 import Stores
 
 private extension VaultsAndFoldersMenuViewModel {
@@ -528,7 +527,12 @@ private extension VaultsAndFoldersMenuViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedAccess in
                 guard let self else { return }
-                apply(plan: updatedAccess?.access.plan)
+                let updatedPlan = updatedAccess?.access.plan
+                let planChanged = updatedPlan != plan
+                apply(plan: updatedPlan)
+                if planChanged {
+                    refreshVaultCreationAllowance()
+                }
             }
             .store(in: &cancellables)
     }
