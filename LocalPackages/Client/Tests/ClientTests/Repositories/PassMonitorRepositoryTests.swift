@@ -363,18 +363,64 @@ struct PassMonitorRepositoryTests {
                                                   encryptedContent: try! login.encrypt(symmetricKey: key))]
     }
 
-    @Test func `Reuse-suppressed item wont counts; its partner is removed from flagged`() async throws {
+    @Test func `A reuse-suppressed login still detects its shared password but its partner is not flagged`() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = makeReusePairOneSuppressed()
 
         try await sut.refreshSecurityChecks()
         let affected = sut.itemsWithSecurityIssues.value
-    
+
         let suppressed = try #require(affected.first { $0.suppressedChecks.contains(.reusedPassword) })
         #expect(affected.count == 1)
-
-        #expect(suppressed.detected.isEmpty)
+        #expect(suppressed.suppressedWeaknesses == [.reusedPassword])
         #expect(!suppressed.activeWeaknesses.contains(.reusedPassword))
         #expect(suppressed.isExcludedItem)
+        #expect(sut.weaknessStats.value?.count(for: .reusedPassword) == 0)
+    }
+
+    @Test func `A reuse-suppressed login no longer detects reuse once its password is unique`() async throws {
+        itemRepository.stubbedGetActiveLogInItemsResult = Array(makeReusePairOneSuppressed().prefix(1))
+
+        try await sut.refreshSecurityChecks()
+
+        let suppressed = try #require(sut.itemsWithSecurityIssues.value.first)
+        #expect(suppressed.suppressedWeaknesses.isEmpty)
+        #expect(suppressed.isExcludedItem)
+    }
+
+    @Test func `A compromise-suppressed login is still checked without counting as compromised`() async throws {
+        // 64 = skipCompromisedPasswordCheck (1 << 6)
+        let login = try #require(makeWeakLogins(flags: [64]).first)
+        itemRepository.stubbedGetActiveLogInItemsResult = [login]
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = [login.itemId + login.shareId]
+        let sut = makePaidSut(checker: checker)
+
+        try await sut.refreshSecurityChecks()
+        try await waitUntil {
+            sut.itemsWithSecurityIssues.value.first?.detected.contains(.compromisedPassword) == true
+        }
+
+        #expect(checker.invokedCheckParameters?.candidates.map(\.id) == [login.itemId + login.shareId])
+        let item = try #require(sut.itemsWithSecurityIssues.value.first)
+        #expect(item.suppressedWeaknesses == [.compromisedPassword])
+        #expect(item.activeWeaknesses == [.weakPassword])
+        let stats = try #require(sut.weaknessStats.value)
+        #expect(stats.count(for: .compromisedPassword) == 0)
+        #expect(stats.excludedItems == 1)
+    }
+
+    @Test func `A compromise-suppressed login no longer detects the breach once its password is safe`() async throws {
+        let login = try #require(makeWeakLogins(flags: [64]).first)
+        itemRepository.stubbedGetActiveLogInItemsResult = [login]
+        let checker = CompromisedPasswordCheckerProtocolMock()
+        checker.stubbedCheckResult = []
+        let sut = makePaidSut(checker: checker)
+
+        try await sut.refreshSecurityChecks()
+
+        let item = try #require(sut.itemsWithSecurityIssues.value.first)
+        #expect(item.suppressedWeaknesses.isEmpty)
+        #expect(item.isExcludedItem)
     }
 
     func makeReusePairOneSuppressed(firstItemFlags: Int = 128) -> [SymmetricallyEncryptedItem] {

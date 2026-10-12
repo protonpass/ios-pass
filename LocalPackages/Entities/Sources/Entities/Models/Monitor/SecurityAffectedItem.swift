@@ -64,6 +64,11 @@ public extension SecurityAffectedItem {
         isFullyExcluded ? [] : detected.subtracting(suppressedChecks)
     }
 
+    /// Suppressed checks whose weakness is still detected on the item
+    var suppressedWeaknesses: Set<WeaknessKind> {
+        detected.intersection(suppressedChecks)
+    }
+
     var isExcludedItem: Bool {
         isFullyExcluded || !suppressedChecks.isEmpty
     }
