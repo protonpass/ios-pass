@@ -73,7 +73,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         guard isPerCheckExclusionEnabled else {
             return super.flagsToToggleFullMonitoring
         }
-        return monitorStatus?.flagsToExcludeFromMonitoring ?? [.skipHealthCheck(true)]
+        return itemContent.item.flagsToExcludeFromMonitoring
     }
 
     private let scorePassword = dependency(\UseCasesContainer.scorePassword)

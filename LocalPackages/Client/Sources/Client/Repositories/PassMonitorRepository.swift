@@ -343,8 +343,9 @@ private extension PassMonitorRepository {
 
     func getLoginItems(userId: String,
                        compromisedCheckEnabled: Bool) async throws -> [InternalPassMonitorItem] {
-        let excludableChecks = excludableChecks(compromisedCheckEnabled: compromisedCheckEnabled)
-        let honoursFullExclusion = !isFeatureEnabled(FeatureFlagType.passMonitorPerCheckExclusion)
+        let perCheckExclusionEnabled = isFeatureEnabled(FeatureFlagType.passMonitorPerCheckExclusion)
+        let excludableChecks = excludableChecks(perCheckExclusionEnabled: perCheckExclusionEnabled,
+                                                compromisedCheckEnabled: compromisedCheckEnabled)
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let shares = try await shareRepository.getShares(userId: userId)
         let isOwnedByVisibleShareId = Dictionary(shares
@@ -364,7 +365,7 @@ private extension PassMonitorRepository {
                                                loginData: loginItem,
                                                suppressedChecks: encryptedItem.item.suppressedChecks
                                                    .intersection(excludableChecks),
-                                               isFullyExcluded: honoursFullExclusion
+                                               isFullyExcluded: !perCheckExclusionEnabled
                                                    && encryptedItem.item.monitoringDisabled,
                                                isOwned: isOwned)
             }
@@ -464,8 +465,8 @@ private extension PassMonitorRepository {
         return !plan.isFreeUser
     }
 
-    func excludableChecks(compromisedCheckEnabled: Bool) -> Set<WeaknessKind> {
-        guard isFeatureEnabled(FeatureFlagType.passMonitorPerCheckExclusion) else {
+    func excludableChecks(perCheckExclusionEnabled: Bool, compromisedCheckEnabled: Bool) -> Set<WeaknessKind> {
+        guard perCheckExclusionEnabled else {
             return []
         }
         var checks = Set(WeaknessKind.allCases)
