@@ -103,8 +103,21 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureStartFullSync()
         return stubbedStartFullSyncResult
     }
+    // MARK: - cancelFullSync
+    public var closureCancelFullSync: () -> () = {}
+    public var invokedCancelFullSyncfunction = false
+    public var invokedCancelFullSyncCount = 0
+    public var invokedCancelFullSyncParameters: (userId: String, Void)?
+    public var invokedCancelFullSyncParametersList = [(userId: String, Void)]()
+
+    public func cancelFullSync(userId: String) async {
+        invokedCancelFullSyncfunction = true
+        invokedCancelFullSyncCount += 1
+        invokedCancelFullSyncParameters = (userId, ())
+        closureCancelFullSync()
+    }
     // MARK: - localFullSync
-    public var localFullSyncUserIdThrowableError4: Error?
+    public var localFullSyncUserIdThrowableError5: Error?
     public var closureLocalFullSync: () -> () = {}
     public var invokedLocalFullSyncfunction = false
     public var invokedLocalFullSyncCount = 0
@@ -115,7 +128,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        if let error = localFullSyncUserIdThrowableError4 {
+        if let error = localFullSyncUserIdThrowableError5 {
             throw error
         }
         closureLocalFullSync()
@@ -151,7 +164,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError7: Error?
+    public var deleteUserIdShareIdThrowableError8: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -162,7 +175,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError7 {
+        if let error = deleteUserIdShareIdThrowableError8 {
             throw error
         }
         closureDelete()

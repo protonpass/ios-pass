@@ -24,4 +24,5 @@ extension Tag {
     @Tag static var monitor: Self
     @Tag static var useCase: Self
     @Tag static var cxp: Self
+    @Tag static var store: Self
 }

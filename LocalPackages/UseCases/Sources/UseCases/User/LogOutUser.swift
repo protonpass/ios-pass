@@ -153,6 +153,7 @@ private extension LogOutUser {
     }
 
     func commonDeletionActions(userId: String) async throws {
+        await appContentManager.cancelFullSync(userId: userId)
         async let removeUser: Void = userManager.remove(userId: userId)
         async let removeUserData: Void = removeUserLocalData(userId: userId)
         _ = try await (removeUser, removeUserData)

@@ -31,6 +31,7 @@ public protocol AppContentManagerProtocol: Sendable {
     func refresh(userId: String) async
     @discardableResult
     func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation
+    func cancelFullSync(userId: String) async
     func localFullSync(userId: String) async throws
     func getShareContent(for shareId: String) -> ShareContent?
     func getItems(shareId: String, containerId: String?) -> [ItemUiModel]

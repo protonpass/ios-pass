@@ -599,7 +599,10 @@ private extension HomepageCoordinator {
     /// and queues behind another account's background sync instead of skipping.
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
         guard appContentManager.incompleteFullSyncUserIds.contains(userId) else { return }
-        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
+        // Joining a sync in flight publishes no operation, so the sheet is presented here
+        presentFullSyncProgressIfNeeded(for: fullContentSync.start(userId: userId,
+                                                                   presentation: .sheet,
+                                                                   shouldStopEventLoop: true))
     }
 
     /// Only one progress sheet exists at a time, and only for the active user: the event loop
@@ -618,7 +621,13 @@ private extension HomepageCoordinator {
             guard let self else { return }
             fullSyncDidFinish(operation, outcome: outcome)
         }
-        let controller = UIHostingController(rootView: FullSyncProgressView(viewModel: viewModel))
+        let view = FullSyncProgressView(viewModel: viewModel)
+            // Other flows dismiss the top most controller, e.g. after saving an item, which can be this sheet
+            .onDisappear { [weak self] in
+                guard let self, let controller = fullSyncProgress?.controller else { return }
+                present(fullSyncProgress: controller)
+            }
+        let controller = UIHostingController(rootView: view)
         controller.sheetPresentationController?.preferredCornerRadius = 16
         controller.isModalInPresentation = true
         fullSyncProgress = (viewModel, controller)
@@ -671,9 +680,8 @@ private extension HomepageCoordinator {
             }
             presenter.dismiss(animated: true, completion: completion)
         }
-        if let transitionCoordinator = controller.transitionCoordinator {
-            transitionCoordinator.animate(alongsideTransition: nil) { _ in dismiss() }
-        } else {
+        if controller.transitionCoordinator?.animate(alongsideTransition: nil,
+                                                     completion: { _ in dismiss() }) != true {
             dismiss()
         }
     }
