@@ -210,17 +210,10 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.preferredSplitBehavior = .tile
             splitViewController.displayModeButtonVisibility = .never
             type = .split(splitViewController)
-            splitViewController.onCollapseStateChange = { [weak self] in
-                guard let self else { return }
-                splitViewDidChangeCollapseState()
-            }
         } else {
             type = .navigation(PPNavigationController())
         }
     }
-
-    /// iPad only, called when switching between showing both columns and a single page (Split View, Slide Over)
-    open func splitViewDidChangeCollapseState() {}
 
     public func start(with viewController: UIViewController, secondaryViewController: UIViewController?) {
         switch type {
@@ -228,7 +221,7 @@ open class Coordinator: CoordinatorProtocol {
             navigationController.setViewControllers([viewController], animated: true)
 
         case let .split(splitViewController):
-            let primaryNavController = UINavigationController(rootViewController: viewController)
+            let primaryNavController = PPNavigationController(rootViewController: viewController)
             primaryNavController.isNavigationBarHidden = true
             splitViewController.setViewController(primaryNavController, for: .primary)
             if let secondaryViewController {
@@ -247,6 +240,14 @@ open class Coordinator: CoordinatorProtocol {
                 navigationController.pushViewController(viewController, animated: animated)
 
             case let .split(splitViewController):
+                // A collapsed split nests the secondary column inside the sidebar stack, where swipe back doesn't
+                // work for our pages, so push like on iPhone. `PPSplitViewController` moves the page into the
+                // secondary column once the split expands.
+                if splitViewController.isCollapsed, let primary = splitViewController.primaryNavigationController {
+                    primary.pushViewController(viewController, animated: animated)
+                    return
+                }
+
                 // Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
                 // instead of pushing it into the navigation stack of the current secondary view controller.
                 // This is to reduce memory footprint.
@@ -268,6 +269,13 @@ open class Coordinator: CoordinatorProtocol {
                 navigationController.popViewController(animated: animated)
 
             case let .split(splitViewController):
+                if splitViewController.isCollapsed,
+                   let primary = splitViewController.primaryNavigationController,
+                   primary.viewControllers.count > 1 {
+                    primary.popViewController(animated: animated)
+                    return
+                }
+
                 // Show primary view controller if it's hidden
                 // Hide primary view controller if it's visible
                 switch splitViewController.displayMode {
@@ -299,6 +307,18 @@ open class Coordinator: CoordinatorProtocol {
             splitViewController.isCollapsed
         }
     }
+
+    /// `true` when a page is pushed over the tab bar, which only happens while a single column is shown
+    public func isShowingPushedPage() -> Bool {
+        let navigationController: UINavigationController? = switch type {
+        case let .navigation(navigationController):
+            navigationController
+
+        case let .split(splitViewController):
+            splitViewController.isCollapsed ? splitViewController.primaryNavigationController : nil
+        }
+        return (navigationController?.viewControllers.count ?? 0) > 1
+    }
 }
 
 final class PPNavigationController: UINavigationController, UIGestureRecognizerDelegate {
@@ -315,13 +335,22 @@ final class PPNavigationController: UINavigationController, UIGestureRecognizerD
     }
 
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        viewControllers.count > 1
+        // Swiping while a push is still animating leaves the stack frozen
+        viewControllers.count > 1 && transitionCoordinator == nil
     }
+}
+
+public extension Notification.Name {
+    /// Posted when an iPad split view goes from a single column to showing both columns side by side
+    static let splitViewDidExpand = Notification.Name(rawValue: "splitViewDidExpand")
 }
 
 final class PPSplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     private var statusBarStyle = UIStatusBarStyle.default
-    var onCollapseStateChange: (() -> Void)?
+
+    var primaryNavigationController: UINavigationController? {
+        viewController(for: .primary) as? UINavigationController
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         statusBarStyle
@@ -343,11 +372,20 @@ final class PPSplitViewController: UISplitViewController, UISplitViewControllerD
         show(.primary)
     }
 
-    func splitViewControllerDidCollapse(_ svc: UISplitViewController) {
-        onCollapseStateChange?()
+    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
+        moveTopPushedPageToSecondaryColumn()
+        NotificationCenter.default.post(name: .splitViewDidExpand, object: self)
     }
 
-    func splitViewControllerDidExpand(_ svc: UISplitViewController) {
-        onCollapseStateChange?()
+    /// Pages pushed onto the sidebar while collapsed belong in the detail column once it shows
+    private func moveTopPushedPageToSecondaryColumn() {
+        guard let primaryNavigationController,
+              let root = primaryNavigationController.viewControllers.first,
+              let page = primaryNavigationController.viewControllers.last,
+              page !== root else { return }
+        primaryNavigationController.setViewControllers([root], animated: false)
+        let navigationController = UINavigationController(rootViewController: page)
+        navigationController.isNavigationBarHidden = true
+        setViewController(navigationController, for: .secondary)
     }
 }

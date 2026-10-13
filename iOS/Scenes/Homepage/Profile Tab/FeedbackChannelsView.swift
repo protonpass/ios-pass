@@ -32,7 +32,6 @@ enum FeedbackChannel: Int, CaseIterable, Identifiable {
 }
 
 struct FeedbackChannelsView: View {
-    @Environment(\.dismiss) private var dismiss
     let onSelectChannel: (FeedbackChannel) -> Void
 
     var body: some View {
@@ -40,10 +39,7 @@ struct FeedbackChannelsView: View {
             Text("Feedback")
                 .navigationTitleText()
             ForEach(FeedbackChannel.allCases) { channel in
-                OptionRow(action: {
-                              dismiss()
-                              onSelectChannel(channel)
-                          },
+                OptionRow(action: { onSelectChannel(channel) },
                           height: .compact,
                           horizontalPadding: 0,
                           content: {
@@ -64,7 +60,8 @@ struct FeedbackChannelsView: View {
             }
         }
         .padding()
-        .background(PassColor.backgroundWeak)
+        .presentationBackground(PassColor.backgroundWeak)
+        .presentationDragIndicator(.visible)
         .fittedPresentationDetent(onHeightChanged: nil)
     }
 }

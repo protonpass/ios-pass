@@ -43,10 +43,6 @@ import StoreKit
 import Stores
 import SwiftUI
 
-extension Notification.Name {
-    static let splitViewCollapseStateDidChange = Notification.Name(rawValue: "splitViewCollapseStateDidChange")
-}
-
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
@@ -153,10 +149,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
         sendUserMonitoringStatsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
-    }
-
-    override func splitViewDidChangeCollapseState() {
-        NotificationCenter.default.post(name: .splitViewCollapseStateDidChange, object: nil)
     }
 }
 
@@ -669,8 +661,8 @@ extension HomepageCoordinator {
                 case .securityKeys:
                     presentSecurityKeys()
 
-                case let .settings(asSheet):
-                    showView(view: SettingsView(isShownAsSheet: asSheet), asSheet: asSheet)
+                case .settings:
+                    push(SettingsView())
 
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
@@ -1269,10 +1261,18 @@ extension HomepageCoordinator {
     func presentPasswordHistoryView(asSheet: Bool) {
         let createLogin: (String) -> Void = { [weak self] clearPassword in
             guard let self else { return }
+            let mode = ItemMode.create(.login(password: clearPassword, autofill: false))
+            guard asSheet else {
+                // Expanded iPad shows the page alone in the detail column, popping would only hide the sidebar
+                if isCollapsed() {
+                    popTopViewController(animated: false)
+                }
+                presentCreateEditLoginView(mode: mode)
+                return
+            }
             dismissTopMostViewController(animated: true) { [weak self] in
                 guard let self else { return }
-                presentCreateEditLoginView(mode: .create(.login(password: clearPassword,
-                                                                autofill: false)))
+                presentCreateEditLoginView(mode: mode)
             }
         }
         let view = PasswordHistoryView(isShownAsSheet: asSheet) { [weak self] action in
@@ -1287,11 +1287,7 @@ extension HomepageCoordinator {
                 createLogin(password)
 
             case .close:
-                if asSheet {
-                    dismissTopMostViewController(animated: true)
-                } else {
-                    popTopViewController(animated: true)
-                }
+                itemDetailViewModelWantsToGoBack(isShownAsSheet: asSheet)
             }
         }
         showView(view: view, asSheet: asSheet)
