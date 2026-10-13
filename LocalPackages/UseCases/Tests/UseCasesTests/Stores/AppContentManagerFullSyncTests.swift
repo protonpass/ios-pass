@@ -45,8 +45,10 @@ struct AppContentManagerFullSyncTests {
     private let folderRepository = FolderRepositoryProtocolMock()
     private let symmetricKeyProvider = GatedSymmetricKeyProvider()
     private let syncEventLoop = SyncEventLoopProtocolMock()
+    private let loginMethod = LoginMethodFlow()
     private let activeUser = UserData.random()
     private let currentActiveUser: CurrentValueSubject<UserData?, Never>
+    private let preferences: PreferencesManager
     private let sut: AppContentManager
 
     init() {
@@ -60,12 +62,13 @@ struct AppContentManagerFullSyncTests {
         folderRepository.stubbedGetAllLocalFoldersResult = []
         let userManager = UserManagerProtocolMock()
         userManager.stubbedCurrentActiveUser = currentActiveUser
+        userManager.stubbedGetActiveUserDataResult = activeUser
         let logManager = LogManagerProtocolMock()
-        let preferences = PreferencesManager(userManager: userManager,
-                                             appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock(),
-                                             sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocolMock(),
-                                             userPreferencesDatasource: LocalUserPreferencesDatasourceProtocolMock(),
-                                             logManager: logManager)
+        preferences = PreferencesManager(userManager: userManager,
+                                         appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock(),
+                                         sharedPreferencesDatasource: LocalSharedPreferencesDatasourceProtocolMock(),
+                                         userPreferencesDatasource: LocalUserPreferencesDatasourceProtocolMock(),
+                                         logManager: logManager)
         sut = AppContentManager(itemRepository: itemRepository,
                                 shareRepository: shareRepository,
                                 inviteRepository: FullInviteRepositoryProtocolMock(),
@@ -82,7 +85,7 @@ struct AppContentManagerFullSyncTests {
                                 refreshUserData: refresh,
                                 processVaultSyncEvent: ProcessVaultSyncEvent(),
                                 logger: Logger(manager: logManager),
-                                loginMethod: LoginMethodFlow(),
+                                loginMethod: loginMethod,
                                 fullSyncStallTimeout: .seconds(1))
     }
 
@@ -92,13 +95,48 @@ struct AppContentManagerFullSyncTests {
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
         _ = await operation.result()
 
-        guard case .failed = await operation.result() else {
-            Issue.record("Late observer must still see the failure")
-            return
-        }
+        #expect(await operation.result().error != nil, "Late observer must still see the failure")
         #expect(sut.fullSyncOperation === operation)
         #expect(!sut.isFullSyncing)
         #expect(sut.incompleteFullSyncUserIds == ["user-a"])
+    }
+
+    @Test func `A completed sync shows the active account's vaults and progress`() async {
+        let vault = Share.random(targetType: 1)
+        shareRepository.stubbedGetDecryptedRemoteSharesResult = .init(shares: [vault],
+                                                                      hasUndecryptableShares: true)
+        symmetricKeyProvider.release.open()
+
+        let operation = sut.startFullSync(userId: activeUser.user.ID, presentation: .sheet)
+        let outcome = await operation.result()
+
+        #expect(outcome.hasUndecryptableShares == true)
+        #expect(operation.progresses.map(\.shareId) == [vault.shareID])
+        #expect(sut.currentShares.value.map(\.shareID) == [vault.shareID])
+        #expect(sut.state.loadedContent?.shares.count == 1)
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
+    }
+
+    @Test func `Logging in runs the full sync with the inline progress`() async {
+        symmetricKeyProvider.release.open()
+        await loginMethod.setLogInFlow(newState: true)
+
+        await sut.refresh(userId: activeUser.user.ID)
+
+        #expect(sut.fullSyncOperation?.presentation == .inline)
+        #expect(sut.fullSyncOperation?.outcome?.succeeded == true)
+        #expect(await loginMethod.isManualLogIn() == false)
+    }
+
+    @Test(arguments: [true, false])
+    func `Only the active account's sync marks its folder repair done`(syncsActiveAccount: Bool) async throws {
+        try await preferences.setUp()
+        symmetricKeyProvider.release.open()
+
+        let userId = syncsActiveAccount ? activeUser.user.ID : "inactive-user"
+        _ = await sut.startFullSync(userId: userId, presentation: .sheet).result()
+
+        #expect(preferences.userPreferences.value?.folderForceSync.done == syncsActiveAccount)
     }
 
     @Test func `Concurrent requests for the same user share one sync`() async {
@@ -175,10 +213,8 @@ struct AppContentManagerFullSyncTests {
         gate.release.open()
         await resetting.value
 
-        guard case .cancelled = await running.result(), case .cancelled = await queued.result() else {
-            Issue.record("Reset must cancel every sync in flight")
-            return
-        }
+        #expect(await running.result().isCancelled)
+        #expect(await queued.result().isCancelled)
         #expect(refresh.calls == ["user-a"])
         #expect(deleteLocalData.deletedUserIds.isEmpty)
         #expect(!sut.isFullSyncing)
@@ -212,10 +248,7 @@ struct AppContentManagerFullSyncTests {
     @Test func `Syncing an inactive account leaves the active account's content alone`() async {
         let operation = sut.startFullSync(userId: "inactive-user", presentation: .sheet)
 
-        guard case .completed = await operation.result() else {
-            Issue.record("Inactive account sync should complete")
-            return
-        }
+        #expect(await operation.result().succeeded)
         #expect(deleteLocalData.deletedUserIds == ["inactive-user"])
         #expect(await shareRepository.invokedCreateVaultParameters?.userId == "inactive-user")
         #expect(!itemRepository.invokedGetAllItemsfunction)
@@ -244,10 +277,7 @@ struct AppContentManagerFullSyncTests {
         gate.release.open()
         await cancelling.value
 
-        guard case .cancelled = await operation.result() else {
-            Issue.record("The logged out account's sync must be cancelled")
-            return
-        }
+        #expect(await operation.result().isCancelled)
         #expect(deleteLocalData.deletedUserIds.isEmpty)
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
         #expect(!sut.isFullSyncing)
@@ -263,10 +293,7 @@ struct AppContentManagerFullSyncTests {
         #expect(running.outcome == nil)
 
         gate.release.open()
-        guard case .cancelled = await queued.result() else {
-            Issue.record("The logged out account's queued sync must be cancelled")
-            return
-        }
+        #expect(await queued.result().isCancelled)
         #expect(refresh.calls == ["user-a"])
     }
 
@@ -305,20 +332,19 @@ struct AppContentManagerFullSyncTests {
         #expect(syncEventLoop.invokedStartCount == 0)
     }
 
-    @Test func `A sync without progress fails so the user can retry`() async {
+    @Test func `A sync without progress fails so the user can retry`() async throws {
         let gate = refresh.pause("user-a")
 
         let stalled = sut.startFullSync(userId: "user-a", presentation: .sheet)
-        guard case let .failed(error) = await stalled.result() else {
-            Issue.record("A stalled sync must fail")
-            return
-        }
-        #expect((error as? URLError)?.code == .timedOut)
+        let error = try #require(await stalled.result().error as? URLError)
+        #expect(error.code == .timedOut)
 
         let retried = sut.startFullSync(userId: "user-a", presentation: .sheet)
         gate.release.open()
         _ = await retried.result()
 
+        #expect(stalled.outcome?.error is URLError,
+                "The stalled task returning later must not replace the failure")
         #expect(retried !== stalled)
         #expect(refresh.calls == ["user-a", "user-a"])
         #expect(deleteLocalData.deletedUserIds == ["user-a"])
@@ -350,10 +376,7 @@ struct AppContentManagerFullSyncTests {
 
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
 
-        guard case .completed = await operation.result() else {
-            Issue.record("Each step is under the stall timeout, the sync must complete")
-            return
-        }
+        #expect(await operation.result().succeeded, "Each step is under the stall timeout")
     }
 
     @Test func `Switching account during the final load still completes the sync`() async {
@@ -363,10 +386,8 @@ struct AppContentManagerFullSyncTests {
         currentActiveUser.send(UserData.random())
         symmetricKeyProvider.release.open()
 
-        guard case .completed = await operation.result() else {
-            Issue.record("The switched away account is fully synced and must not be resynced later")
-            return
-        }
+        #expect(await operation.result().succeeded,
+                "The switched away account is fully synced and must not be resynced later")
         #expect(sut.state == .loading)
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
@@ -374,6 +395,32 @@ struct AppContentManagerFullSyncTests {
 
 private enum FullSyncTestError: Error {
     case offline
+}
+
+private extension FullSyncOperation.Outcome {
+    var isCancelled: Bool {
+        if case .cancelled = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    var error: (any Error)? {
+        if case let .failed(error) = self {
+            error
+        } else {
+            nil
+        }
+    }
+
+    var hasUndecryptableShares: Bool? {
+        if case let .completed(hasUndecryptableShares) = self {
+            hasUndecryptableShares
+        } else {
+            nil
+        }
+    }
 }
 
 @MainActor
