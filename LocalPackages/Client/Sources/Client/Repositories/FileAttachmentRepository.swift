@@ -26,11 +26,9 @@ import Foundation
 @preconcurrency import ProtonCoreDoh
 
 private struct UploadMultipartResponse: Decodable {
-    let code: Int
     let error: String?
 
     enum CodingKeys: String, CodingKey {
-        case code = "Code"
         case error = "Error"
     }
 }

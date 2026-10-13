@@ -26,6 +26,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+// periphery:ignore - `icon` was rendered by the commented-out UpsellingView
 public nonisolated struct UpsellElement: @unchecked Sendable, Hashable, Identifiable {
     public let id = UUID().uuidString
     let icon: Image
@@ -45,6 +46,7 @@ public nonisolated struct UpsellElement: @unchecked Sendable, Hashable, Identifi
     }
 }
 
+// periphery:ignore - `icon` was rendered by the commented-out UpsellingView
 public nonisolated struct UpsellingViewConfiguration: @unchecked Sendable, Hashable {
     let icon: Image
     let title: String

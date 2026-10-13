@@ -35,14 +35,11 @@ public extension CanAddNewAccountUseCase {
 public final class CanAddNewAccount: CanAddNewAccountUseCase {
     private let localDatasource: any LocalAccessDatasourceProtocol
     private let remoteDatasource: any RemoteAccessDatasourceProtocol
-    private let authManager: any AuthManagerProtocol
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
-                remoteDatasource: any RemoteAccessDatasourceProtocol,
-                authManager: any AuthManagerProtocol) {
+                remoteDatasource: any RemoteAccessDatasourceProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.authManager = authManager
     }
 
     public func execute(userId: String) async throws -> Bool {

@@ -38,7 +38,6 @@ struct RestoreFileResponse: Decodable {
 
 struct RestoreFileResult: Decodable {
     let item: Item
-    let file: ItemFile
 }
 
 struct RestoreFileEndpoint: Endpoint {

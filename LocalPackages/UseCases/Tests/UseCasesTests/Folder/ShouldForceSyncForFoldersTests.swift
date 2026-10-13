@@ -39,13 +39,11 @@ struct ShouldForceSyncForFoldersTests {
                          online: Bool = true,
                          maxAttempts: Int = 10,
                          retryDelay: TimeInterval = 30 * 60,
-                         flags: FeatureFlagStub? = nil,
-                         refreshFlags: RefreshFeatureFlagsStub = .init())
+                         flags: FeatureFlagStub? = nil)
         -> any ShouldForceSyncForFoldersUseCase {
         ShouldForceSyncForFolders(getUserPreferences: GetPreferencesStub(store: store),
                                   getFeatureFlagStatus:
                                   flags ?? FeatureFlagStub(enabled: flagOn ? [flagName] : []),
-                                  refreshFeatureFlags: refreshFlags,
                                   userHasRemoteFolders: hasFolders,
                                   updateUserPreferences: UpdatePreferencesStub(store: store),
                                   reachability: ReachabilityStub(available: online),
@@ -205,15 +203,5 @@ struct ShouldForceSyncForFoldersTests {
         #expect(result == false)
         #expect(store.state.done)
         #expect(store.state.attempts == 10)
-    }
-
-    @Test func `users already done never pay for a flag refresh`() async throws {
-        store.setState(done: true)
-        let refreshFlags = RefreshFeatureFlagsStub()
-
-        let result = try await makeSut(refreshFlags: refreshFlags).execute(userId: userId)
-
-        #expect(result == false)
-        #expect(refreshFlags.callCount == 0)
     }
 }

@@ -617,3 +617,26 @@ struct ShareContentTests {
         #expect(content.subtreeFolderIds(from: "unknown-folder") == ["unknown-folder"])
     }
 }
+
+// MARK: - sortedByHidden
+
+extension ShareContentTests {
+    @Test func `sorting by hidden puts hidden vaults last, then orders by name and creation time`() {
+        func vault(_ id: String, name: String, hidden: Bool = false, createTime: Int64 = 0) -> ShareContent {
+            let share = Share.random(shareID: id, targetType: 1, createTime: createTime, flags: hidden ? 1 : 0)
+                .copy(with: VaultContentFactory.createVaultContent(name: name, description: ""))
+            return ShareContent(share: share, elements: [])
+        }
+        let shares = [
+            vault("hidden-a", name: "A", hidden: true),
+            vault("visible-b-new", name: "B", createTime: 2),
+            vault("hidden-c", name: "C", hidden: true),
+            vault("visible-b-old", name: "B", createTime: 1),
+            vault("visible-d", name: "D")
+        ]
+
+        let sorted = shares.sortedByHidden().map(\.share.shareId)
+
+        #expect(sorted == ["visible-b-old", "visible-b-new", "visible-d", "hidden-a", "hidden-c"])
+    }
+}

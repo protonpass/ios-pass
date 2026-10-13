@@ -30,7 +30,6 @@ import SwiftUI
 struct CreateEditNoteView: View {
     @StateObject private var viewModel: CreateEditNoteViewModel
     @FocusState private var focusedField: Field?
-    @State private var lastFocusedField: Field?
     @Namespace private var fileAttachmentsID
 
     enum Field: CustomFieldTypes {
@@ -64,7 +63,7 @@ struct CreateEditNoteView: View {
             // The below modifiers must be applied to the outer most view container
             // otherwise we would have bugs like "Add more" button not responsible
             .toolbar {
-                CreateEditKeyboardToolbar(lastFocusedField: $lastFocusedField,
+                CreateEditKeyboardToolbar(lastFocusedField: .constant(nil),
                                           focusedField: focusedField,
                                           onOpenCodeScanner: viewModel.openCodeScanner,
                                           onPasteTotpUri: { viewModel.handlePastingTotpUri(customField: $0) })
@@ -97,8 +96,6 @@ private extension CreateEditNoteView {
             CreateEditItemTitleSection(title: $viewModel.title,
                                        focusedField: $focusedField,
                                        field: .title,
-                                       itemContentType: viewModel.itemContentType,
-                                       isEditMode: viewModel.mode.isEditMode,
                                        onSubmit: { focusedField = .note })
 
             EditableTextViewWithPlaceholder(text: $viewModel.note,

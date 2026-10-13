@@ -21,21 +21,14 @@
 
 @testable import Client
 import CoreMocks
-import ProtonCoreCryptoGoImplementation
 import Testing
 
 @Suite(.tags(.manager))
 struct SymmetricKeyProviderTests {
-    /// `static` so the global crypto implementation is installed exactly once.
-    private static let cryptoIsInstalled: Bool = {
-        injectDefaultCryptoImplementation()
-        return true
-    }()
-
     private let sut: any SymmetricKeyProvider
 
     init() {
-        _ = Self.cryptoIsInstalled
+        _ = CryptoSetup.installed
 
         let keychainProvider = KeychainProtocolMockProvider()
         keychainProvider.setUp()

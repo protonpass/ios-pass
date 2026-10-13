@@ -123,8 +123,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws
-
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
     func updateCachedAliasInfo(userId: String,
@@ -165,6 +163,11 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func resetHistory(_ item: any ItemIdentifiable) async throws
 
     func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws
+
+    func importItems(userId: String,
+                     shareId: String,
+                     contents: [ItemContentProtobuf],
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -205,7 +208,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let localShareDatasource: any LocalShareDatasourceProtocol
-    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
@@ -219,7 +221,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 localShareDatasource: any LocalShareDatasourceProtocol,
-                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 logManager: any LogManagerProtocol) {
@@ -227,7 +228,6 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.localShareDatasource = localShareDatasource
-        self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
         self.featureFlagsRepository = featureFlagsRepository
         self.userManager = userManager
@@ -357,11 +357,6 @@ public extension ItemRepository {
         logger.trace("Saving \(encryptedItems.count) remote item revisions to local database")
         try await localDatasource.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
-
-        logger.trace("Refreshing last event ID for share \(shareId)")
-        try await shareEventIDRepository.getLastEventId(forceRefresh: true,
-                                                        userId: userId,
-                                                        shareId: shareId)
 
         try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
@@ -728,13 +723,6 @@ public extension ItemRepository {
         try await refreshPinnedItemDataStream()
     }
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
-        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
-        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
-        itemsWereUpdated.send()
-        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
-    }
-
     func updateLastUseTime(userId: String,
                            item: any ItemIdentifiable,
                            date: Date) async throws {
@@ -826,38 +814,52 @@ public extension ItemRepository {
     }
 
     func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws {
-        logger.trace("Importing \(logins.count) logins for user \(userId)")
+        let contents = logins.map { login in
+            let loginData = ItemContentData.login(.init(email: login.email,
+                                                        username: login.username,
+                                                        password: login.password,
+                                                        totpUri: "",
+                                                        urls: [login.url],
+                                                        autofillUrls: [AutofillUrl(url: login.url,
+                                                                                   mode: .default)],
+                                                        allowedAndroidApps: [],
+                                                        passkeys: []))
+            return ItemContentProtobuf(name: login.name,
+                                       note: login.note,
+                                       itemUuid: UUID().uuidString,
+                                       data: loginData,
+                                       customFields: [])
+        }
+        try await importItems(userId: userId, shareId: shareId, contents: contents, onProgress: nil)
+    }
+
+    func importItems(userId: String,
+                     shareId: String,
+                     contents: [ItemContentProtobuf],
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
+        logger.trace("Importing \(contents.count) items for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
-        let chunks = logins.chunked(into: 100)
         let isDomainMatchingSupported = domainMatchingSupported
-        for chunk in chunks {
-            let itemsToImport: [ItemToImport] = try chunk.map { login in
-                let loginData = ItemContentData.login(.init(email: login.email,
-                                                            username: login.username,
-                                                            password: login.password,
-                                                            totpUri: "",
-                                                            urls: [login.url],
-                                                            autofillUrls: [AutofillUrl(url: login.url,
-                                                                                       mode: .default)],
-                                                            allowedAndroidApps: [],
-                                                            passkeys: []))
-                let content = ItemContentProtobuf(name: login.name,
-                                                  note: login.note,
-                                                  itemUuid: UUID().uuidString,
-                                                  data: loginData,
-                                                  customFields: [])
-                return try .init(containerKey: vaultKey,
-                                 itemContent: content,
-                                 domainMatchingSupported: isDomainMatchingSupported)
+        var importedCount = 0
+        for chunk in contents.chunked(into: 100) {
+            let itemsToImport: [ItemToImport] = try chunk.map { content in
+                try .init(containerKey: vaultKey,
+                          itemContent: content,
+                          domainMatchingSupported: isDomainMatchingSupported)
             }
-            logger.debug("Bulk importing \(itemsToImport.count) logins")
+            let token = UUID().uuidString
+            logger.debug("Bulk importing \(itemsToImport.count) items with token \(token)")
             let items = try await remoteDatasource.importItems(userId: userId,
                                                                shareId: shareId,
                                                                items: itemsToImport)
+            logger.debug("Bulk imported remotely \(itemsToImport.count) items with token \(token)")
             try await upsertItems(userId: userId, items: items, shareId: shareId)
+            logger.debug("Bulk imported locally \(itemsToImport.count) items with token \(token)")
+            importedCount += items.count
+            await onProgress?(importedCount)
         }
         itemsWereUpdated.send()
-        logger.info("Imported \(logins.count) logins for user \(userId)")
+        logger.info("Imported \(contents.count) items for user \(userId)")
     }
 }
 

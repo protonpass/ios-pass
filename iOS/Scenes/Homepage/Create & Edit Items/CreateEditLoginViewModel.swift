@@ -86,6 +86,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     @LazyInjected(\UseCasesContainer.getOrganizationSettings) private var getOrganizationSettings
     @LazyInjected(\UseCasesContainer.scorePassword) private var scorePassword
+    @LazyInjected(\UseCasesContainer.getParentDomainMatchingExamples) private var getParentDomainMatchingExamples
 
     weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
@@ -413,6 +414,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             return
         }
         autofillUrls[index].value.mode = mode
+    }
+
+    func parentDomainMatchingExamples(for url: String) -> [DomainMatchingExample] {
+        getParentDomainMatchingExamples(for: url)
     }
 }
 

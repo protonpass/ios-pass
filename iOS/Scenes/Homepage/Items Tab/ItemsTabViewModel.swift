@@ -26,7 +26,6 @@ import DIComposition
 import Entities
 import FactoryKit
 import Macro
-import ProtonCoreLogin
 import Screens
 import Stores
 import SwiftUI
@@ -57,9 +56,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
-    @Published private(set) var organization: Entities.Organization?
+    @Published private(set) var vaultCreationAllowed = true
     @Published private(set) var showPromoBadge = false
-    @Published private var userData: UserData?
     @Published var searchMode: SearchMode?
     @Published var showSharedItemsAlert = false
     @Published private(set) var aliasesAllowed = true
@@ -68,7 +66,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
 
     private let itemRepository = dependency(\RepositoryContainer.itemRepository)
-    private let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let logger = dependency(\ToolingContainer.logger)
     private let getPendingUserInvitations = dependency(\UseCasesContainer.getPendingUserInvitations)
     private let doTrashSelectedItems = dependency(\UseCasesContainer.trashSelectedItems)
@@ -87,8 +84,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     let itemContextMenuHandler = dependency(\UIComponentsContainer.itemContextMenuHandler)
     @LazyInjected(\ServiceContainer.userManager) private var userManager
-    @LazyInjected(\RepositoryContainer.organizationRepository)
-    private var organizationRepository
 
     @LazyInjected(\UseCasesContainer.checkVaultCreationAllowance)
     private var checkVaultCreationAllowance
@@ -100,12 +95,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private var sortTask: Task<Void, Never>?
     private var refreshTask: Task<Void, Never>?
     private var pendingInvites = [Invite]()
-
-    var vaultCreationAllowed: Bool {
-        checkVaultCreationAllowance(userData: userData,
-                                    organization: organization,
-                                    vaultCount: appContentManager.getVaultsCount())
-    }
 
     var noVaults: Bool {
         appContentManager.getVaultsCount() == 0
@@ -431,12 +420,12 @@ extension ItemsTabViewModel {
             await filterAndSortItemsAsync(sortType: selectedSortType)
 
             do {
-                let userData = try await userManager.getUnwrappedActiveUserData()
-                if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    organization = try await organizationRepository.getOrganization(userId: userData.user.ID)
-                }
-                self.userData = userData
+                let userId = try await userManager.getActiveUserId()
+                let allowance = try await checkVaultCreationAllowance(userId: userId, newVaultCount: 1)
+                guard !Task.isCancelled else { return }
+                vaultCreationAllowed = allowance != .notAllowedByOrganization
             } catch {
+                guard !Task.isCancelled else { return }
                 handle(error: error)
             }
         }

@@ -1,7 +1,7 @@
 //
-// GetEventsEndpoint.swift
-// Proton Pass - Created on 27/10/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// DomainMatchingExample.swift
+// Proton Pass - Created on 08/10/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,22 +17,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import ProtonCoreNetworking
+public struct DomainMatchingExample: Sendable, Equatable {
+    public let url: String
+    public let suggested: Bool
 
-struct GetEventsResponse: Decodable {
-    let events: SyncEvents
-}
-
-struct GetEventsEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = GetEventsResponse
-
-    var debugDescription: String
-    var path: String
-
-    init(shareId: String, lastEventId: String) {
-        debugDescription = "Get events since a given eventID"
-        path = "/pass/v1/share/\(shareId)/event/\(lastEventId)"
+    public init(url: String, suggested: Bool) {
+        self.url = url
+        self.suggested = suggested
     }
 }

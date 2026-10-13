@@ -157,18 +157,18 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .loading
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
+    override func generateItemCreationInfo(userId: String) -> ItemCreationInfo {
         switch selectedItemType {
         case .login:
-            return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
+            return .init(userId: userId, data: .login(nil, nil))
 
         case .alias:
-            return .init(userId: userId, vaults: vaults, data: .alias)
+            return .init(userId: userId, data: .alias)
 
         default:
             assertionFailure("Only logins and aliases could be created when text autofilling")
             // Fallback to creating login
-            return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
+            return .init(userId: userId, data: .login(nil, nil))
         }
     }
 }

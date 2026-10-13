@@ -21,7 +21,6 @@
 import Client
 import Entities
 import Macro
-import ProtonCoreUIFoundations
 import SwiftUI
 
 extension ItemTypeFilterOption {
@@ -29,22 +28,21 @@ extension ItemTypeFilterOption {
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
-            .init(icon: IconProvider.grid2, title: #localized("All"), count: itemCount.total)
+            .init(title: #localized("All"), count: itemCount.total)
 
         case let .precise(type):
             type.uiModel(from: itemCount)
 
         case .itemSharedWithMe:
-            .init(icon: IconProvider.grid2, title: #localized("Shared with me"), count: itemCount.sharedWithMe)
+            .init(title: #localized("Shared with me"), count: itemCount.sharedWithMe)
 
         case .itemSharedByMe:
-            .init(icon: IconProvider.grid2, title: #localized("Shared by me"), count: itemCount.sharedByMe)
+            .init(title: #localized("Shared by me"), count: itemCount.sharedByMe)
         }
     }
 }
 
 struct ItemTypeFilterOptionUiModel {
-    let icon: Image
     let title: String
     let count: Int
 }
@@ -71,6 +69,6 @@ private extension ItemContentType {
         case .custom, .sshKey, .wifi:
             itemCount.custom
         }
-        return .init(icon: regularIcon, title: filterTitle, count: count)
+        return .init(title: filterTitle, count: count)
     }
 }
