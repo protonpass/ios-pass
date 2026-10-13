@@ -215,6 +215,28 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
+    func observeInlineSyncs() {
+        appContentManager.$fullSyncOperation
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .sink { [weak self] operation in
+                guard let self else { return }
+                trackInlineSync(operation)
+            }
+            .store(in: &cancellables)
+
+        // A failed inline sync keeps its retry screen, which must not stay over another account
+        userManager.currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
+                guard let self, let userId = inlineSyncProgress?.operation.userId,
+                      userId != userData?.user.ID else { return }
+                inlineSyncProgress = nil
+                shouldShowSyncProgress = false
+            }
+            .store(in: &cancellables)
+    }
+
     func trackInlineSync(_ operation: FullSyncOperation) {
         guard operation.outcome == nil, operation.userId == userManager.activeUserId else { return }
 
@@ -276,14 +298,7 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        appContentManager.$fullSyncOperation
-            .receive(on: DispatchQueue.main)
-            .compactMap(\.self)
-            .sink { [weak self] operation in
-                guard let self else { return }
-                trackInlineSync(operation)
-            }
-            .store(in: &cancellables)
+        observeInlineSyncs()
 
         Task { [weak self] in
             guard let self else { return }

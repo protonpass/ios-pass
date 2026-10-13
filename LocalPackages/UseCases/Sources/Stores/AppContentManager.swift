@@ -284,6 +284,18 @@ public extension AppContentManager {
         return operation
     }
 
+    /// Waits for the account's running sync to return so it writes nothing once the account is removed.
+    /// Queued syncs are not awaited, they return as cancelled before doing any work.
+    func cancelFullSync(userId: String) async {
+        let running = fullSyncTasks.first?.task
+        let tasks = fullSyncTasks.filter { $0.operation.userId == userId }.map(\.task)
+        tasks.forEach { $0.cancel() }
+        if let running, tasks.contains(running) {
+            await running.value
+        }
+        incompleteFullSyncUserIds.remove(userId)
+    }
+
     func localFullSync(userId: String) async throws {
         let generation = contentGeneration
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
@@ -364,14 +376,15 @@ private extension AppContentManager {
 
             // 4. Refresh invite and sl notes
             try startStep(operation)
-            await refreshInvitesAndAliases(userId: userId)
+            await refreshInvitesAndAliases(operation)
 
             // The event loop also full syncs inactive accounts, whose content must not replace
             // the active account's content on screen
             try startStep(operation)
-            let isActiveUser = userManager.activeUserId == userId
-            if isActiveUser {
+            if userManager.activeUserId == userId {
                 try await loadContents(userId: userId, for: remoteShares.shares, generation: generation)
+            } else {
+                await indexForAutoFill()
             }
 
             // 5. Get the lastEventID as a starting point for user events sync loop
@@ -379,7 +392,7 @@ private extension AppContentManager {
             try await getAndStoreLastEventId(userId: userId)
 
             try startStep(operation)
-            if isActiveUser {
+            if userManager.activeUserId == userId {
                 // Preferences are only loaded for the active user, an inactive account repeats
                 // its folder repair once it becomes active
                 await markFolderForceSyncDone()
@@ -435,8 +448,11 @@ private extension AppContentManager {
         }
     }
 
-    func refreshInvitesAndAliases(userId: String) async {
-        async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
+    func refreshInvitesAndAliases(_ operation: FullSyncOperation) async {
+        let userId = operation.userId
+        async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId) {
+            await operation.recordActivity()
+        }
         async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
         do {
             _ = try await (syncAliases, refreshInvites)

@@ -33,11 +33,13 @@ import Testing
 import UseCases
 import UseCasesMocks
 
-@Suite(.serialized, .timeLimit(.minutes(1)))
+@Suite(.serialized, .timeLimit(.minutes(1)), .tags(.store))
 @MainActor
 struct AppContentManagerFullSyncTests {
     private let refresh = RefreshUserDataFake()
     private let deleteLocalData = DeleteLocalDataSpy()
+    private let aliasSynchronizer = AliasSynchronizerFake()
+    private let indexAllLoginItems = IndexAllLoginItemsSpy()
     private let itemRepository = ItemRepositoryProtocolMock()
     private let shareRepository = ShareRepositoryProtocolMock()
     private let folderRepository = FolderRepositoryProtocolMock()
@@ -58,8 +60,6 @@ struct AppContentManagerFullSyncTests {
         folderRepository.stubbedGetAllLocalFoldersResult = []
         let userManager = UserManagerProtocolMock()
         userManager.stubbedCurrentActiveUser = currentActiveUser
-        let featureFlags = GetFeatureFlagStatusUseCaseMock()
-        featureFlags.stubbedExecuteResult = false
         let logManager = LogManagerProtocolMock()
         let preferences = PreferencesManager(userManager: userManager,
                                              appPreferencesDatasource: LocalAppPreferencesDatasourceProtocolMock(),
@@ -70,15 +70,14 @@ struct AppContentManagerFullSyncTests {
                                 shareRepository: shareRepository,
                                 inviteRepository: FullInviteRepositoryProtocolMock(),
                                 folderRepository: folderRepository,
-                                slNoteSynchronizer: SimpleLoginNoteSynchronizerProtocolMock(),
+                                slNoteSynchronizer: aliasSynchronizer,
                                 userManager: userManager,
                                 preferencesManager: preferences,
                                 symmetricKeyProvider: symmetricKeyProvider,
-                                indexAllLoginItems: SyncWorkStub(),
+                                indexAllLoginItems: indexAllLoginItems,
                                 indexItemsForSpotlight: SyncWorkStub(),
                                 deleteLocalDataBeforeFullSync: deleteLocalData,
                                 getAndStoreLastEventId: SyncWorkStub(),
-                                getFeatureFlagStatus: featureFlags,
                                 dedupShare: SyncWorkStub(),
                                 refreshUserData: refresh,
                                 processVaultSyncEvent: ProcessVaultSyncEvent(),
@@ -87,8 +86,7 @@ struct AppContentManagerFullSyncTests {
                                 fullSyncStallTimeout: .seconds(1))
     }
 
-    @Test
-    func `A finished sync keeps reporting its outcome to late observers`() async {
+    @Test func `A finished sync keeps reporting its outcome to late observers`() async {
         refresh.failingUserIds = ["user-a"]
 
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
@@ -103,8 +101,7 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.incompleteFullSyncUserIds == ["user-a"])
     }
 
-    @Test
-    func `Concurrent requests for the same user share one sync`() async {
+    @Test func `Concurrent requests for the same user share one sync`() async {
         let gate = refresh.pause("user-a")
 
         let first = sut.startFullSync(userId: "user-a", presentation: .sheet)
@@ -117,8 +114,7 @@ struct AppContentManagerFullSyncTests {
         #expect(refresh.calls == ["user-a"])
     }
 
-    @Test
-    func `A sheet request joins an inline sync in flight without presenting it`() async {
+    @Test func `A sheet request joins an inline sync in flight without presenting it`() async {
         let gate = refresh.pause("user-a")
 
         let inline = sut.startFullSync(userId: "user-a", presentation: .inline)
@@ -132,8 +128,7 @@ struct AppContentManagerFullSyncTests {
         #expect(refresh.calls == ["user-a"])
     }
 
-    @Test
-    func `Syncs for different users run one after the other`() async {
+    @Test func `Syncs for different users run one after the other`() async {
         let gate = refresh.pause("user-a")
         refresh.failingUserIds = ["user-a", "user-b"]
 
@@ -152,8 +147,7 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.fullSyncOperation === second)
     }
 
-    @Test
-    func `Retrying after a failure starts a new sync`() async {
+    @Test func `Retrying after a failure starts a new sync`() async {
         refresh.failingUserIds = ["user-a"]
 
         let failed = sut.startFullSync(userId: "user-a", presentation: .sheet)
@@ -165,8 +159,7 @@ struct AppContentManagerFullSyncTests {
         #expect(refresh.calls == ["user-a", "user-a"])
     }
 
-    @Test
-    func `Reset cancels running and queued syncs and waits for them`() async {
+    @Test func `Reset cancels running and queued syncs and waits for them`() async {
         let gate = refresh.pause("user-a")
         let running = sut.startFullSync(userId: "user-a", presentation: .sheet)
         let queued = sut.startFullSync(userId: "user-b", presentation: .sheet)
@@ -193,8 +186,7 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 
-    @Test
-    func `A cancelled sync finishing late does not drop the sync started after it`() async {
+    @Test func `A cancelled sync finishing late does not drop the sync started after it`() async {
         let gateA = refresh.pause("user-a")
         let gateC = refresh.pause("user-c")
         _ = sut.startFullSync(userId: "user-a", presentation: .sheet)
@@ -217,8 +209,7 @@ struct AppContentManagerFullSyncTests {
         #expect(!sut.isFullSyncing)
     }
 
-    @Test
-    func `Syncing an inactive account leaves the active account's content alone`() async {
+    @Test func `Syncing an inactive account leaves the active account's content alone`() async {
         let operation = sut.startFullSync(userId: "inactive-user", presentation: .sheet)
 
         guard case .completed = await operation.result() else {
@@ -233,8 +224,53 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 
-    @Test
-    func `A refresh racing a reset does not publish stale content`() async {
+    @Test func `Syncing an inactive account re-indexes AutoFill`() async {
+        _ = await sut.startFullSync(userId: "inactive-user", presentation: .sheet).result()
+
+        #expect(indexAllLoginItems.callCount == 1)
+    }
+
+    @Test func `Logging out an account cancels its sync and clears its marker`() async {
+        let gate = refresh.pause("user-b")
+        let operation = sut.startFullSync(userId: "user-b", presentation: .sheet)
+        await gate.entered.wait()
+
+        let cancelRequested = Gate()
+        let cancelling = Task {
+            cancelRequested.open()
+            await sut.cancelFullSync(userId: "user-b")
+        }
+        await cancelRequested.wait()
+        gate.release.open()
+        await cancelling.value
+
+        guard case .cancelled = await operation.result() else {
+            Issue.record("The logged out account's sync must be cancelled")
+            return
+        }
+        #expect(deleteLocalData.deletedUserIds.isEmpty)
+        #expect(sut.incompleteFullSyncUserIds.isEmpty)
+        #expect(!sut.isFullSyncing)
+    }
+
+    @Test func `Logging out an account with a queued sync does not wait for the running one`() async {
+        let gate = refresh.pause("user-a")
+        let running = sut.startFullSync(userId: "user-a", presentation: .sheet)
+        let queued = sut.startFullSync(userId: "user-b", presentation: .sheet)
+        await gate.entered.wait()
+
+        await sut.cancelFullSync(userId: "user-b")
+        #expect(running.outcome == nil)
+
+        gate.release.open()
+        guard case .cancelled = await queued.result() else {
+            Issue.record("The logged out account's queued sync must be cancelled")
+            return
+        }
+        #expect(refresh.calls == ["user-a"])
+    }
+
+    @Test func `A refresh racing a reset does not publish stale content`() async {
         let refreshing = Task { await sut.refresh(userId: activeUser.user.ID) }
         await symmetricKeyProvider.entered.wait()
 
@@ -246,8 +282,7 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.currentShares.value.isEmpty)
     }
 
-    @Test
-    func `A sync that owns the event loop cancels the running iteration and keeps looping`() async {
+    @Test func `A sync that owns the event loop cancels the running iteration and keeps looping`() async {
         refresh.failingUserIds = ["user-a"]
         let fullContentSync = FullContentSync(syncEventLoop: syncEventLoop, appContentManager: sut)
 
@@ -259,8 +294,7 @@ struct AppContentManagerFullSyncTests {
         _ = await operation.result()
     }
 
-    @Test
-    func `A sync that does not own the event loop leaves it alone`() async {
+    @Test func `A sync that does not own the event loop leaves it alone`() async {
         refresh.failingUserIds = ["user-a"]
         let fullContentSync = FullContentSync(syncEventLoop: syncEventLoop, appContentManager: sut)
 
@@ -271,8 +305,7 @@ struct AppContentManagerFullSyncTests {
         #expect(syncEventLoop.invokedStartCount == 0)
     }
 
-    @Test
-    func `A sync without progress fails so the user can retry`() async {
+    @Test func `A sync without progress fails so the user can retry`() async {
         let gate = refresh.pause("user-a")
 
         let stalled = sut.startFullSync(userId: "user-a", presentation: .sheet)
@@ -291,8 +324,7 @@ struct AppContentManagerFullSyncTests {
         #expect(deleteLocalData.deletedUserIds == ["user-a"])
     }
 
-    @Test
-    func `Another account completing its sync keeps an interrupted account marked`() async {
+    @Test func `Another account completing its sync keeps an interrupted account marked`() async {
         refresh.failingUserIds = ["user-a"]
 
         _ = await sut.startFullSync(userId: "user-a", presentation: .sheet).result()
@@ -301,8 +333,7 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.incompleteFullSyncUserIds == ["user-a"])
     }
 
-    @Test
-    func `An interrupted account marked by an older version is resumed and cleared`() async {
+    @Test func `An interrupted account marked by an older version is resumed and cleared`() async {
         kSharedUserDefaults.set("inactive-user", forKey: Constants.incompleteFullSyncUserId)
         #expect(sut.incompleteFullSyncUserIds == ["inactive-user"])
 
@@ -312,10 +343,10 @@ struct AppContentManagerFullSyncTests {
         #expect(kSharedUserDefaults.string(forKey: Constants.incompleteFullSyncUserId) == nil)
     }
 
-    @Test
-    func `Slow steps are not a stall as long as the sync moves on`() async {
-        refresh.delay = .milliseconds(600)
-        deleteLocalData.delay = .milliseconds(600)
+    @Test func `Slow steps are not a stall as long as the sync moves on`() async {
+        refresh.delay = .milliseconds(300)
+        deleteLocalData.delay = .milliseconds(300)
+        await aliasSynchronizer.slowDown(pages: 5, each: .milliseconds(300))
 
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
 
@@ -325,8 +356,7 @@ struct AppContentManagerFullSyncTests {
         }
     }
 
-    @Test
-    func `Switching account during the final load still completes the sync`() async {
+    @Test func `Switching account during the final load still completes the sync`() async {
         let operation = sut.startFullSync(userId: activeUser.user.ID, presentation: .sheet)
         await symmetricKeyProvider.entered.wait()
 
@@ -415,11 +445,43 @@ private final class DeleteLocalDataSpy: DeleteLocalDataBeforeFullSyncUseCase {
     }
 }
 
-private struct SyncWorkStub: GetAndStoreLastEventIdUseCase, IndexAllLoginItemsUseCase,
-    IndexItemsForSpotlightUseCase, DedupShareUseCase {
-    func callAsFunction(userId: String) async throws {}
+@MainActor
+private final class IndexAllLoginItemsSpy: IndexAllLoginItemsUseCase {
+    private(set) var callCount = 0
 
-    func execute() async throws {}
+    nonisolated func execute() async throws {
+        await record()
+    }
+
+    private func record() {
+        callCount += 1
+    }
+}
+
+private actor AliasSynchronizerFake: SimpleLoginNoteSynchronizerProtocol {
+    private var pageDelays: [Duration] = []
+
+    func slowDown(pages: Int, each delay: Duration) {
+        pageDelays = Array(repeating: delay, count: pages)
+    }
+
+    func syncAllAliases(userId: String,
+                        onPageSynced: nonisolated(nonsending) @escaping @Sendable () async -> Void)
+        async throws -> Bool {
+        for delay in pageDelays {
+            try await Task.sleep(for: delay)
+            await onPageSynced()
+        }
+        return !pageDelays.isEmpty
+    }
+
+    func syncAliases(userId: String, aliases: [any ItemIdentifiable]) async throws -> Bool {
+        false
+    }
+}
+
+private struct SyncWorkStub: GetAndStoreLastEventIdUseCase, IndexItemsForSpotlightUseCase, DedupShareUseCase {
+    func callAsFunction(userId: String) async throws {}
 
     func execute(_ settings: any SpotlightSettingsProvider) async throws {}
 

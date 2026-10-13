@@ -73,10 +73,11 @@ public final class FullSyncProgressViewModel {
         }
     }
 
+    /// The owner tracks the new operation once it is published
     func retry() {
-        track(fullContentSync.start(userId: operation.userId,
-                                    presentation: operation.presentation,
-                                    shouldStopEventLoop: true))
+        fullContentSync.start(userId: operation.userId,
+                              presentation: operation.presentation,
+                              shouldStopEventLoop: true)
     }
 
     func shareHostAppLogs() {
