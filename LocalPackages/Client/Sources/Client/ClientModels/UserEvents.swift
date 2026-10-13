@@ -88,7 +88,6 @@ public struct ChangeEvent: Sendable, Decodable, Equatable {
 public struct FolderEvent: Sendable, Decodable, Equatable, FolderIdentifiable {
     public let shareID: String
     public let folderID: String
-    public let eventToken: String
 
     // Seemingly redundant but we need to keep `shareID` and `itemID`
     // with capitalized D in order to not break the decoding process

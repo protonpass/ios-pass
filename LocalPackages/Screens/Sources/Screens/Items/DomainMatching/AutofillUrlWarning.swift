@@ -1,7 +1,7 @@
 //
-// LastUseItem.swift
-// Proton Pass - Created on 13/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// AutofillUrlWarning.swift
+// Proton Pass - Created on 09/10/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,9 +19,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import DesignSystem
+import ProtonCoreUIFoundations
+import SwiftUI
 
-public struct LastUseItem: Decodable, Sendable {
-    let itemID: String
-    let lastUseTime: Int
+public struct AutofillUrlWarning: View {
+    private let message: String
+
+    public init(_ message: String) {
+        self.message = message
+    }
+
+    public var body: some View {
+        Label(title: {
+            Text(verbatim: message)
+        }, icon: {
+            IconProvider.exclamationCircle
+                .resizable()
+                .scaledToFit()
+                .frame(width: 16)
+        })
+        .foregroundStyle(PassColor.signalWarning)
+    }
 }

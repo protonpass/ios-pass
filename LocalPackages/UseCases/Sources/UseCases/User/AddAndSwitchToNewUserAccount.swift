@@ -36,26 +36,20 @@ public extension AddAndSwitchToNewUserAccountUseCase {
 public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUseCase {
     private let syncEventLoop: any SyncEventLoopProtocol
     private let userManager: any UserManagerProtocol
-    private let authManager: any AuthManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
-    private let apiManager: any APIManagerProtocol
     private let fullContentSync: any FullContentSyncUseCase
     private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
     private let inviteRepository: any InviteRepositoryProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
                 userManager: any UserManagerProtocol,
-                authManager: any AuthManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
-                apiManager: any APIManagerProtocol,
                 fullContentSync: any FullContentSyncUseCase,
                 refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
                 inviteRepository: any InviteRepositoryProtocol) {
         self.syncEventLoop = syncEventLoop
         self.userManager = userManager
-        self.authManager = authManager
         self.preferencesManager = preferencesManager
-        self.apiManager = apiManager
         self.fullContentSync = fullContentSync
         self.refreshFeatureFlags = refreshFeatureFlags
         self.inviteRepository = inviteRepository
@@ -65,8 +59,6 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         syncEventLoop.stop()
         defer { syncEventLoop.start() }
         let userId = userData.user.ID
-        // We add the new user and credential to the user manager and the main authManager
-        // We also update the main apiservice with the new session id through apiManager
         try await userManager.upsertAndMarkAsActive(userData: userData)
         try await preferencesManager.switchUserPreferences(userId: userId)
         refreshFeatureFlags()

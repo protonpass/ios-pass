@@ -26,7 +26,6 @@ import Foundation
 public struct FavIcon: Hashable, Sendable {
     public let domain: String
     public let data: Data
-    public let isFromCache: Bool
 }
 
 /// Take care of fetching and caching behind the scenes
@@ -145,9 +144,7 @@ public extension FavIconRepository {
             if let domainData = try getDecryptedData(domainUrl),
                let decryptedImageData = try getDecryptedData(url),
                let decryptedRootDomain = String(data: domainData, encoding: .utf8) {
-                let fav = FavIcon(domain: decryptedRootDomain,
-                                  data: decryptedImageData,
-                                  isFromCache: true)
+                let fav = FavIcon(domain: decryptedRootDomain, data: decryptedImageData)
                 icons.append(fav)
                 cache[decryptedRootDomain] = .loaded(fav)
             }
@@ -181,7 +178,7 @@ private extension FavIconRepository {
             if let encryptedData = try getDataOrRemoveIfObsolete(url: dataUrl),
                let decryptedData = try? symmetricKey.decrypt(encryptedData) {
                 cache[domain] = nil
-                return FavIcon(domain: domain, data: decryptedData, isFromCache: true)
+                return FavIcon(domain: domain, data: decryptedData)
             }
 
             if checkAndHandleCancellation(for: domain) {
@@ -213,7 +210,7 @@ private extension FavIconRepository {
             try FileUtils.createOrOverwrite(data: symmetricKey.encrypt(domainData),
                                             fileName: "\(hashedDomain).domain",
                                             containerUrl: containerUrl)
-            return FavIcon(domain: domain, data: dataToWrite, isFromCache: false)
+            return FavIcon(domain: domain, data: dataToWrite)
         } catch {
             cache[domain] = nil
             throw error

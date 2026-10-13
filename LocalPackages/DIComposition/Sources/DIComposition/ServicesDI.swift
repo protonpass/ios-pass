@@ -43,7 +43,6 @@ public extension ServiceContainer {
                             authManager: ToolingContainer.shared.authManager(),
                             mainKeyProvider: ToolingContainer.shared.mainKeyProvider(),
                             logger: ToolingContainer.shared.logger(),
-                            storage: kSharedUserDefaults,
                             transactionsObserver: ToolingContainer.shared.transactionsObserver())
         }
     }
@@ -94,19 +93,6 @@ public extension ServiceContainer {
         self { CredentialManager(logManager: self.logManager) }
     }
 
-    var eventSynchronizer: Factory<any EventSynchronizerProtocol> {
-        self { EventSynchronizer(shareRepository: self.shareRepository,
-                                 itemRepository: self.itemRepository,
-                                 shareKeyRepository: RepositoryContainer.shared.shareKeyRepository(),
-                                 shareEventIDRepository: RepositoryContainer.shared.shareEventIDRepository(),
-                                 remoteSyncEventsDatasource: RepositoryContainer.shared
-                                     .remoteSyncEventsDatasource(),
-                                 aliasRepository: RepositoryContainer.shared.aliasRepository(),
-                                 accessRepository: self.accessRepository,
-                                 userManager: self.userManager(),
-                                 logManager: self.logManager) }
-    }
-
     var userEventsSynchronizer: Factory<any UserEventsSynchronizerProtocol> {
         self {
             let container = RepositoryContainer.shared
@@ -138,7 +124,6 @@ public extension ServiceContainer {
 
     var syncEventLoop: Factory<SyncEventLoop> {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
-                             synchronizer: self.eventSynchronizer(),
                              userEventsSynchronizer: self.userEventsSynchronizer(),
                              coreEventsSynchronizer: self.coreEventsSynchronizer(),
                              userManager: self.userManager(),
@@ -169,7 +154,6 @@ public extension ServiceContainer {
                                      .deleteLocalDataBeforeFullSync(),
                                  getAndStoreLastEventId: UseCasesContainer.shared
                                      .getAndStoreLastEventId(),
-                                 getFeatureFlagStatus: UseCasesContainer.shared.getFeatureFlagStatus(),
                                  dedupShare: UseCasesContainer.shared.dedupShare(),
                                  refreshUserData: UseCasesContainer.shared.refreshUserData(),
                                  processVaultSyncEvent: UseCasesContainer.shared.processVaultSyncEvent(),
@@ -185,7 +169,7 @@ public extension ServiceContainer {
     }
 
     var databaseService: Factory<any DatabaseServiceProtocol> {
-        self { DatabaseService(logManager: self.logManager) }
+        self { DatabaseService() }
     }
 
     var reachabilityService: Factory<any ReachabilityServicing> {
@@ -242,7 +226,6 @@ public extension ServiceContainer {
                           groupRepository: RepositoryContainer.shared.groupRepository(),
                           logManager: self.logManager,
                           publicKeyRepository: RepositoryContainer.shared.publicKeyRepository(),
-                          symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
                           userManager: self.userManager())
         }
     }
@@ -253,8 +236,7 @@ public extension ServiceContainer {
 public extension ServiceContainer {
     var userManager: Factory<any UserManagerProtocol> {
         self {
-            UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource(),
-                        logManager: self.logManager)
+            UserManager(userDataDatasource: RepositoryContainer.shared.localUserDataDatasource())
         }
     }
 }

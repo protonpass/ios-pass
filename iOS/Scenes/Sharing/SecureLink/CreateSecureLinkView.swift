@@ -104,7 +104,6 @@ private extension CreateSecureLinkView {
                     CapsuleStepper(value: $viewModel.readCount,
                                    step: 1,
                                    minValue: 1,
-                                   textColor: PassColor.textNorm,
                                    backgroundColor: PassColor.interactionNormMinor1)
                         .frame(minWidth: 145)
                 }

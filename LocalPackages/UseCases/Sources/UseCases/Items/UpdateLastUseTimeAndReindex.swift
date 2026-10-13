@@ -40,16 +40,13 @@ public extension UpdateLastUseTimeAndReindexUseCase {
 
 public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
     private let itemRepository: any ItemRepositoryProtocol
-    private let localItemDatasource: any LocalItemDatasourceProtocol
     private let localShareDatasource: any LocalShareDatasourceProtocol
     private let reindexLoginItem: any ReindexLoginItemUseCase
 
     public init(itemRepository: any ItemRepositoryProtocol,
-                localItemDatasource: any LocalItemDatasourceProtocol,
                 localShareDatasource: any LocalShareDatasourceProtocol,
                 reindexLoginItem: any ReindexLoginItemUseCase) {
         self.itemRepository = itemRepository
-        self.localItemDatasource = localItemDatasource
         self.localShareDatasource = localShareDatasource
         self.reindexLoginItem = reindexLoginItem
     }

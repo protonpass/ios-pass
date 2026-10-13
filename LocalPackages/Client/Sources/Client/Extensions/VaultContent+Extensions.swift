@@ -19,11 +19,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Foundation
 import Macro
 
 public extension VaultContent {
     static var defaultVault: VaultContent {
         let name = #localized("Personal", bundle: .module)
         return VaultContent(name: name, description: name, color: .color1, icon: .icon1)
+    }
+
+    static func importedVault(date: Date = .now) -> VaultContent {
+        let name = #localized("Imported on %@",
+                              bundle: .module,
+                              date.formatted(date: .numeric, time: .shortened))
+        return .init(name: name,
+                     description: "",
+                     color: .color1,
+                     icon: .icon1)
     }
 }

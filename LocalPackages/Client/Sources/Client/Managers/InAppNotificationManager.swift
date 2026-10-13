@@ -52,7 +52,6 @@ public actor InAppNotificationManager: InAppNotificationManagerProtocol {
     private let userManager: any UserManagerProtocol
     private let logger: Logger
     private var notifications: [InAppNotification] = []
-    private var lastId: String?
     private var displayState: InAppNotificationDisplayState = .inactive
 
     private let delayBetweenNotifications: TimeInterval
@@ -95,7 +94,6 @@ public extension InAppNotificationManager {
         let paginatedNotifications = try await repository
             .getPaginatedNotifications(lastNotificationId: offsetId,
                                        userId: userId)
-        lastId = paginatedNotifications.lastID
         if reset {
             notifications = paginatedNotifications.notifications
         } else {

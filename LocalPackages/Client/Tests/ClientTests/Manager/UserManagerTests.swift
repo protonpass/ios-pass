@@ -32,8 +32,7 @@ struct UserManagerTests {
     private let sut: any UserManagerProtocol
 
     init() {
-        sut = UserManager(userDataDatasource: userDataDatasource,
-                          logManager: LogManagerProtocolMock())
+        sut = UserManager(userDataDatasource: userDataDatasource)
     }
 }
 
@@ -188,6 +187,25 @@ extension UserManagerTests {
         #expect(!getAllUsers.contains(where: { $0.user.ID == activeUserId }))
         #expect(sut.activeUserId == getAllUsers.first?.user.ID)
         #expect(sut.currentActiveUser.value?.user.ID == getAllUsers.first?.user.ID)
+    }
+
+    @Test func `removing the last user clears the active user`() async throws {
+        let lastUser = UserProfile.randomInactive().copy(isActive: true)
+        var allUserDatas = [lastUser]
+        userDataDatasource.closureGetAll = { [weak userDataDatasource] in
+            guard let userDataDatasource else { return }
+            userDataDatasource.stubbedGetAllResult = allUserDatas
+        }
+        userDataDatasource.closureRemove = {
+            allUserDatas.removeAll()
+        }
+
+        try await sut.setUp()
+
+        try await sut.remove(userId: lastUser.userdata.user.ID)
+
+        #expect(try await sut.getAllUsers().isEmpty)
+        #expect(sut.currentActiveUser.value == nil)
     }
 
     @Test func `switching the active user updates the active user id`() async throws {

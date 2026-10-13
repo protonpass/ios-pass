@@ -39,7 +39,7 @@ final class ImporterViewModel {
     private(set) var users: [UserUiModel] = []
     var selectedUser: UserUiModel?
     var importSuccessMessage: String?
-    var error: (any Error)?
+    var errorMessage: String?
 
     private let getUsers = dependency(\UseCasesContainer.getUserUiModels)
     private let createVaultAndImportLogins = dependency(\UseCasesContainer.createVaultAndImportLogins)
@@ -101,6 +101,12 @@ extension ImporterViewModel {
                 importSuccessMessage = #localized("%lld logins imported",
                                                   bundle: .module,
                                                   selectedCount)
+            } catch PassError.importer(.vaultLimitReached) {
+                errorMessage = #localized("Upgrade your plan to get enough vaults for this import.",
+                                          bundle: .module)
+            } catch PassError.importer(.vaultCreationNotAllowed) {
+                errorMessage = #localized("Your organization doesn't allow creating the vaults this import needs.",
+                                          bundle: .module)
             } catch {
                 handle(error)
             }
@@ -112,7 +118,7 @@ extension ImporterViewModel {
                 function: String = #function,
                 line: UInt = #line,
                 column: UInt = #column) {
-        self.error = error
+        errorMessage = error.localizedDebugDescription
         logger.error(error, file: file, function: function, line: line, column: column)
     }
 }
@@ -124,6 +130,8 @@ private extension ImporterViewModel {
         } else {
             try await userManager.getActiveUserId()
         }
-        try await createVaultAndImportLogins(userId: userId, logins: logins)
+        try await createVaultAndImportLogins(userId: userId,
+                                             logins: logins,
+                                             vaultContent: .importedVault())
     }
 }

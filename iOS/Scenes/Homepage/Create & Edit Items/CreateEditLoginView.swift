@@ -78,8 +78,6 @@ struct CreateEditLoginView: View {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
-                                                   itemContentType: viewModel.itemContentType,
-                                                   isEditMode: viewModel.mode.isEditMode,
                                                    onSubmit: {
                                                        if viewModel.emailUsernameExpanded {
                                                            focusedField = .email
@@ -722,14 +720,20 @@ private struct WebsiteSection<Field: Hashable>: View {
                         if viewModel.domainMatchingSupported,
                            !url.value.url.isEmpty,
                            let title = url.value.mode.title {
-                            Text(verbatim: title)
-                                .font(.callout)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(viewModel.itemContentType.normMajor2Color)
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 10)
-                                .background(PassColor.inputBackgroundNorm)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(verbatim: title)
+                                    .foregroundStyle(viewModel.itemContentType.normMajor2Color)
+
+                                if let warning = url.value.mode.autofillWarning {
+                                    AutofillUrlWarning(warning)
+                                }
+                            }
+                            .font(.callout)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.vertical, 6)
+                            .padding(.horizontal, 10)
+                            .background(PassColor.inputBackgroundNorm)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
 
                         if url.id != viewModel.autofillUrls.last?.id {
@@ -753,6 +757,8 @@ private struct WebsiteSection<Field: Hashable>: View {
         .contentShape(.rect)
         .sheet(item: $selectedAutofillUrl) { autofillUrl in
             EditDomainMatchingView(url: autofillUrl,
+                                   parentDomainExamples: viewModel
+                                       .parentDomainMatchingExamples(for: autofillUrl.value.url),
                                    onSave: { newMode in
                                        viewModel.update(mode: newMode, for: autofillUrl)
                                    })

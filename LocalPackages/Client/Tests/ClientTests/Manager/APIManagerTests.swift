@@ -27,7 +27,6 @@ import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreAuthentication
-import ProtonCoreCryptoGoImplementation
 import ProtonCoreDoh
 import ProtonCoreKeymaker
 import ProtonCoreLogin
@@ -66,12 +65,6 @@ public final class ProtonPassDoHMock: DoH, ServerConfig {
 /// must not be created concurrently. This is the only suite that creates one.
 @Suite(.tags(.manager), .serialized)
 struct APIManagerTests {
-    /// `static` so the global crypto implementation is installed exactly once.
-    private static let cryptoIsInstalled: Bool = {
-        injectDefaultCryptoImplementation()
-        return true
-    }()
-
     private let userManager = UserManagerProtocolMock()
     private let themeProvider = ThemeProviderMock()
     private let authManager: any AuthManagerProtocol
@@ -111,7 +104,7 @@ struct APIManagerTests {
     )
 
     init() {
-        _ = Self.cryptoIsInstalled
+        _ = CryptoSetup.installed
 
         userManager.stubbedCurrentActiveUser = .init(nil)
         themeProvider.stubbedSharedPreferences = .init(.default)
@@ -197,7 +190,6 @@ struct APIManagerTests {
 private extension APIManagerTests {
     func makeSUT() -> APIManager {
         APIManager(authManager: authManager,
-                   userManager: userManager,
                    themeProvider: themeProvider,
                    appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                    doh: ProtonPassDoHMock(),

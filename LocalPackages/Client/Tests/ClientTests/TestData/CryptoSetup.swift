@@ -1,7 +1,7 @@
 //
-// GetLastEventIDEndpoint.swift
-// Proton Pass - Created on 27/10/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// CryptoSetup.swift
+// Proton Pass - Created on 05/10/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,21 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreNetworking
+import ProtonCoreCryptoGoImplementation
 
-struct GetLastEventIDResponse: Decodable {
-    let eventID: String
-}
-
-struct GetLastEventIDEndpoint: Endpoint {
-    typealias Body = EmptyRequest
-    typealias Response = GetLastEventIDResponse
-
-    var debugDescription: String
-    var path: String
-
-    init(shareId: String) {
-        debugDescription = "Get last eventID"
-        path = "/pass/v1/share/\(shareId)/event"
-    }
+/// ProtonCore's crypto implementation is a process-wide global that must be installed before any
+/// `CryptoGo` call. Swift Testing runs suites in parallel and in random order, so every test that
+/// needs it goes through this lazily initialised static, which runs exactly once whichever suite
+/// reaches it first.
+enum CryptoSetup {
+    static let installed: Void = injectDefaultCryptoImplementation()
 }

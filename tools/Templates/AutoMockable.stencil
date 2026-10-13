@@ -68,13 +68,13 @@
         {% if param.typeName.isClosure %}
         if let resultOf{{param.argumentLabel|upperFirstLetter }} = stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}Result {
             {% if param.typeName.closure.parameters.count == 1 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0)
             {% endif %}
             {% if param.typeName.closure.parameters.count == 2 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1)
             {% endif %}
             {% if param.typeName.closure.parameters.count == 3 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1, resultOf{{param.argumentLabel|upperFirstLetter }}.2)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1, resultOf{{param.argumentLabel|upperFirstLetter }}.2)
             {% endif %}
         }
         {% endif %}{% endfor %}
@@ -135,13 +135,13 @@
         {% if param.typeName.isClosure %}
         if let resultOf{{param.argumentLabel|upperFirstLetter }} = stubbed{{ method.callName|upperFirstLetter }}{{param.argumentLabel|upperFirstLetter}}Result {
             {% if param.typeName.closure.parameters.count == 1 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0)
             {% endif %}
             {% if param.typeName.closure.parameters.count == 2 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1)
             {% endif %}
             {% if param.typeName.closure.parameters.count == 3 %}
-            {{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1, resultOf{{param.argumentLabel|upperFirstLetter }}.2)
+            {% if param.typeName.closure.isAsync %}await {% endif %}{{param.name}}{% if param.typeName.isOptional %}?{% endif %}(resultOf{{param.argumentLabel|upperFirstLetter }}.0, resultOf{{param.argumentLabel|upperFirstLetter }}.1, resultOf{{param.argumentLabel|upperFirstLetter }}.2)
             {% endif %}
         }
         {% endif %}{% endfor %}

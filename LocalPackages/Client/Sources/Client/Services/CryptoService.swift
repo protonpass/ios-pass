@@ -33,7 +33,6 @@ public final class CryptoService: CryptoServiceProtocol {
     private let localDatasource: any LocalShareDatasourceProtocol
     private let groupRepository: any GroupRepositoryProtocol
     private let logger: Logger
-    private let symmetricKeyProvider: any SymmetricKeyProvider
     private let publicKeyRepository: any PublicKeyRepositoryProtocol
     private let userManager: any UserManagerProtocol
 
@@ -42,13 +41,11 @@ public final class CryptoService: CryptoServiceProtocol {
                 groupRepository: any GroupRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 publicKeyRepository: any PublicKeyRepositoryProtocol,
-                symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol) {
         self.remoteDatasource = remoteDatasource
         self.groupRepository = groupRepository
         logger = .init(manager: logManager)
         self.publicKeyRepository = publicKeyRepository
-        self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.userManager = userManager
     }
