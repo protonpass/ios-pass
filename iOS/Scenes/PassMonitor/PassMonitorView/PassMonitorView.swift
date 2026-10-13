@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import DesignSystem
 import Entities
 import Macro
@@ -186,7 +187,8 @@ struct PassMonitorView: View {
             .swipeBackEnabled()
             .navigationStackEmbeded($router.path)
             .environment(router)
-            .onReceive(.splitViewCollapseStateDidChange) { router.popToRoot() }
+            // Dark Web Monitoring opened while narrow must not linger in the sidebar once both columns show
+            .onReceive(.splitViewDidExpand) { router.popToRoot() }
             .task {
                 await viewModel.refresh(fromView: true)
             }

@@ -181,7 +181,7 @@ struct AliasSyncConfigurationView: View {
                        }
                    })
 
-                   Button("Cancel", action: { viewModel.goBack() })
+                   Button(role: .cancel, label: { Text("Cancel") })
                },
                message: {
                    if let error = viewModel.error {

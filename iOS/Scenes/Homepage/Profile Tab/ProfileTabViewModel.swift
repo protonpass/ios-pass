@@ -306,7 +306,7 @@ extension ProfileTabViewModel {
     }
 
     func showSettingsMenu() {
-        router.present(for: .settings(asSheet: false))
+        router.present(for: .settings)
     }
 
     func showAliasSyncConfiguration() {

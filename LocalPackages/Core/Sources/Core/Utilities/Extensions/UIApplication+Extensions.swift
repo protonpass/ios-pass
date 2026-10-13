@@ -41,6 +41,10 @@ public extension UIApplication {
         return !(keyWindow.frame.width == keyWindow.screen.bounds.width)
     }
 
+    var hasRegularWidth: Bool {
+        keyWindow?.traitCollection.horizontalSizeClass == .regular
+    }
+
     var keyWindow: UIWindow? {
         // Get connected scenes
         connectedScenes

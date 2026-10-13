@@ -89,8 +89,9 @@ final class PassMonitorViewModel: ObservableObject {
         }
     }
 
+    /// The split view collapses exactly when its width is compact, a narrower window can still show both columns
     var showsDarkWebMonitorInDetailPane: Bool {
-        UIDevice.current.isIpad && !UIApplication.shared.isSplitOrSlideOver
+        UIDevice.current.isIpad && UIApplication.shared.hasRegularWidth
     }
 
     func showDarkWebMonitorInDetailPane(_ breaches: UserBreaches) {

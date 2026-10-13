@@ -33,6 +33,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var sheet: Sheet?
+    @State private var bugReportSent = false
     @State private var showSwitcher = false
     @State private var showImportOptions = false
 
@@ -80,7 +81,7 @@ struct ProfileTabView: View {
 
                 Button(role: .cancel, label: { Text("Cancel") })
             }
-            .sheet(item: $sheet) { sheet in
+            .sheet(item: $sheet, onDismiss: showReportSuccessMessageIfNeeded) { sheet in
                 switch sheet {
                 case .feedbackChannels:
                     FeedbackChannelsView { selectedChannel in
@@ -89,6 +90,7 @@ struct ProfileTabView: View {
                             self.sheet = .bugReport
 
                         default:
+                            self.sheet = nil
                             if let urlString = selectedChannel.urlString {
                                 viewModel.open(urlString: urlString)
                             }
@@ -97,8 +99,8 @@ struct ProfileTabView: View {
 
                 case .bugReport:
                     BugReportView(onSuccess: {
+                        bugReportSent = true
                         self.sheet = nil
-                        viewModel.showReportSuccessMessage()
                     })
 
                 case .importFromChrome:
@@ -111,6 +113,13 @@ struct ProfileTabView: View {
             .task {
                 await viewModel.reload()
             }
+    }
+
+    /// A banner shown while the bug report sheet is still on screen is attached to it and leaves with it
+    private func showReportSuccessMessageIfNeeded() {
+        guard bugReportSent else { return }
+        bugReportSent = false
+        viewModel.showReportSuccessMessage()
     }
 
     var mainContainer: some View {

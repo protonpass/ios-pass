@@ -84,7 +84,7 @@ public enum SheetDestination: Equatable, Hashable {
     case restoreHistory
     case tutorial
     case accountSettings
-    case settings(asSheet: Bool)
+    case settings
     /// iOS 26+ only
     case createNewItem
     case createEditLogin(mode: Entities.ItemMode, dismissAllSheets: Bool)
