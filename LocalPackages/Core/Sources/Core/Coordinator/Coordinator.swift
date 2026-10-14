@@ -248,7 +248,7 @@ open class Coordinator: CoordinatorProtocol {
                     return
                 }
 
-                // Embed in a `UINavigationController` so that `splitViewController` replaces the secondary view
+                // Embed in a `PPSplitViewController` so that `splitViewController` replaces the secondary view
                 // instead of pushing it into the navigation stack of the current secondary view controller.
                 // This is to reduce memory footprint.
                 let navigationController = UINavigationController(rootViewController: viewController)
@@ -308,7 +308,8 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    /// `true` when a page is pushed over the tab bar, which only happens while a single column is shown
+    /// `true` when a page is pushed over the tab bar
+    /// which only happens for iPhone and iPad in regular width mode
     public func isShowingPushedPage() -> Bool {
         let navigationController: UINavigationController? = switch type {
         case let .navigation(navigationController):
