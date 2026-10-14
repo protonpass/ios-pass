@@ -83,10 +83,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 @available(iOS 26.2, *)
 extension CredentialProviderViewController {
     override func performWithoutUserInteraction(generatePasswordsRequest request: ASGeneratePasswordsRequest) {
-        coordinator.setUpAndStart(mode: .generatePasswords(request.toGeneratePasswordsRequest))
+        coordinator.setUpAndStart(mode: .generatePasswords(request.passwordRules))
     }
 
     override func prepareInterface(for request: ASGeneratePasswordsRequest) {
-        coordinator.setUpAndStart(mode: .generatePasswords(request.toGeneratePasswordsRequest, withUI: true))
+        coordinator.setUpAndStart(mode: .generatePasswords(request.passwordRules, withUI: true))
     }
 }
