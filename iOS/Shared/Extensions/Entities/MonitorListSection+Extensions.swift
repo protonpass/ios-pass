@@ -46,7 +46,8 @@ extension MonitorListSection {
     var subtitleInfo: String? {
         switch self {
         case .weakness(.compromisedPassword):
-            #localized("These passwords appeared in data breaches. Change them to keep your accounts safe.")
+            // swiftlint:disable:next line_length
+            #localized("Compromised passwords are the ones exposed in data breaches. Never reuse passwords to limit the impact when a data breach occurs.")
 
         case .weakness(.weakPassword):
             #localized("Weak passwords are easier to guess. Generate strong passwords to keep your accounts safe.")

@@ -371,7 +371,7 @@ extension SearchViewModel {
     }
 
     func openSettings() {
-        router.present(for: .settingsMenu)
+        router.present(for: .settings)
     }
 }
 

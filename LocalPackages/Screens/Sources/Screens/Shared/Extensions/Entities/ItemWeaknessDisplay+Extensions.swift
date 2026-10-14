@@ -50,7 +50,9 @@ public extension ItemWeaknessDisplay {
             #localized("This item is not being monitored", bundle: .module)
 
         case .weakness(.compromisedPassword, _):
-            #localized("Password exposed on the dark web.", bundle: .module)
+            // swiftlint:disable:next line_length
+            #localized("This login password appears in a data breach. Please visit the service and change the password.",
+                       bundle: .module)
 
         case .weakness(.weakPassword, _):
             #localized("This account is vulnerable, visit the service and change your password", bundle: .module)

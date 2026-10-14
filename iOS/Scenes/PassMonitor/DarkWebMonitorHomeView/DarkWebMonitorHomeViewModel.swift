@@ -75,6 +75,10 @@ final class DarkWebMonitorHomeViewModel: ObservableObject {
         fetchCustomEmails()
         fetchSuggestedEmails()
     }
+
+    func goBack() {
+        router.action(.back(isShownAsSheet: false))
+    }
 }
 
 extension DarkWebMonitorHomeViewModel {

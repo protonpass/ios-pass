@@ -35,8 +35,6 @@ struct SecurityWeaknessDetailView: View {
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
 
-    let isSheet: Bool
-
     var body: some View {
         mainContainer
             .navigationStackEmbeded()
@@ -192,12 +190,11 @@ private extension SecurityWeaknessDetailView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: isSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
+            CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close") {
-                viewModel.dismiss(isSheet: isSheet)
-            }
+                         accessibilityLabel: "Go back",
+                         action: { viewModel.goBack() })
         }
     }
 }

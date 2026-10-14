@@ -75,13 +75,17 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
             let serviceId = credentialRequest.serviceIdentifier.identifier
             let response = try resolvePasskeyChallenge(serviceIdentifier: serviceId,
                                                        clientDataHash: credentialRequest.clientDataHash,
-                                                       passkey: key.content)
-            credential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
-                                                      relyingParty: key.rpID,
-                                                      signature: response.signature,
-                                                      clientDataHash: response.clientDataHash,
-                                                      authenticatorData: response.authenticatorData,
-                                                      credentialID: response.credentialId)
+                                                       passkey: key.content,
+                                                       prf: credentialRequest.assertionPrf?
+                                                           .values(for: key.credentialID))
+            let passkeyCredential = ASPasskeyAssertionCredential(userHandle: key.userHandle,
+                                                                 relyingParty: key.rpID,
+                                                                 signature: response.signature,
+                                                                 clientDataHash: response.clientDataHash,
+                                                                 authenticatorData: response.authenticatorData,
+                                                                 credentialID: response.credentialId)
+            passkeyCredential.setPrfOutput(response.prfValues)
+            credential = passkeyCredential
 
         case .oneTimeCode:
             if #available(iOS 18, *) {

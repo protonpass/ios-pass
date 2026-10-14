@@ -75,8 +75,8 @@ public struct ImportFromChromeInstructions: View {
 
             Spacer()
         }
-        .fullSheetBackground()
         .padding(.horizontal)
+        .fullSheetBackground()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 CircleButton(icon: IconProvider.cross,

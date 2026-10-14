@@ -53,6 +53,8 @@ final class SecureLinkListViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
+    let isShownAsSheet: Bool
+
     var searchSecureLink: Bool {
         UserDefaults.standard.bool(forKey: Constants.QA.searchAndListSecureLink)
     }
@@ -69,8 +71,13 @@ final class SecureLinkListViewModel: ObservableObject {
         display == .grid
     }
 
-    init() {
+    init(isShownAsSheet: Bool) {
+        self.isShownAsSheet = isShownAsSheet
         setUp()
+    }
+
+    func goBack() {
+        router.action(.back(isShownAsSheet: isShownAsSheet))
     }
 
     func toggleDisplay() {

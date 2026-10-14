@@ -62,6 +62,11 @@ struct InternalNavigationDestinationTests {
                 expectation: .viewItem(shareID: "a1b2c3d4==", itemID: "e5f6g7h8==")
             ),
             InternalNavigationDestinationTestCase(
+                name: "AliasManagement with no parameters",
+                input: "/internal/alias_management",
+                expectation: .aliasManagement
+            ),
+            InternalNavigationDestinationTestCase(
                 name: "Unknown route",
                 input: "/internal/unknown_route",
                 expectation: .unknown(urlString: "/internal/unknown_route")

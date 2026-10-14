@@ -39,12 +39,28 @@ struct DarkWebMonitorHomeView: View {
     @State private var showBreachesFoundAlert = false
     @Environment(PathRouter.self) private var router: PathRouter
     private let addTelemetryEvent = dependency(\UseCasesContainer.addTelemetryEvent)
+    let isShownInDetailPane: Bool
 
     var body: some View {
         mainContainer
             .refreshable {
                 try? await viewModel.refresh()
             }
+    }
+}
+
+struct DarkWebMonitorDetailPaneView: View {
+    let userBreaches: UserBreaches
+    @State private var router = PathRouter()
+
+    var body: some View {
+        DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches),
+                               isShownInDetailPane: true)
+            .routingProvided
+            .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .swipeBackEnabled()
+            .navigationStackEmbeded($router.path)
+            .environment(router)
     }
 }
 
@@ -533,8 +549,14 @@ private extension DarkWebMonitorHomeView {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
+                         accessibilityLabel: "Go back",
+                         action: {
+                             if isShownInDetailPane {
+                                 viewModel.goBack()
+                             } else {
+                                 dismiss()
+                             }
+                         })
         }
 
         if let aliasBreaches = viewModel.aliasBreachesState.fetchedObject,

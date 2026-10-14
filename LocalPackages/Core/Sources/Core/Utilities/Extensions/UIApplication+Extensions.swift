@@ -36,9 +36,8 @@ public extension UIApplication {
         open(url)
     }
 
-    var isSplitOrSlideOver: Bool {
-        guard let keyWindow else { return false }
-        return !(keyWindow.frame.width == keyWindow.screen.bounds.width)
+    var hasRegularWidth: Bool {
+        keyWindow?.traitCollection.horizontalSizeClass == .regular
     }
 
     var keyWindow: UIWindow? {
