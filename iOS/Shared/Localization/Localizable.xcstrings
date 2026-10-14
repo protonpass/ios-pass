@@ -36609,12 +36609,12 @@
         }
       }
     },
-    "Common passwords that frequently appear in data breaches" : {
+    "Common passwords found in data breaches" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Common passwords that frequently appear in data breaches"
+            "value" : "Common passwords found in data breaches"
           }
         }
       }
@@ -36841,6 +36841,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compromised passwords"
+          }
+        }
+      }
+    },
+    "Compromised passwords are the ones exposed in data breaches. Never reuse passwords to limit the impact when a data breach occurs." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compromised passwords are the ones exposed in data breaches. Never reuse passwords to limit the impact when a data breach occurs."
           }
         }
       }
@@ -143726,16 +143736,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "這些項目仍有風險"
-          }
-        }
-      }
-    },
-    "These passwords appeared in data breaches. Change them to keep your accounts safe." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "These passwords appeared in data breaches. Change them to keep your accounts safe."
           }
         }
       }

@@ -276,8 +276,12 @@ private extension CompromisedPasswordChecker {
         } catch {
             logger.error(error)
             // Keep cached results on error; never invalidate or mark unbreached.
-            let cachedBreachCounts = candidates.compactMap { candidate in
-                cachedChecks[candidate.id].map { (candidate.id, $0.breachCount) }
+            let cachedBreachCounts = candidates.compactMap { candidate -> (String, Int)? in
+                guard let cachedCheck = cachedChecks[candidate.id],
+                      cachedCheck.passwordHash == candidate.passwordHash else {
+                    return nil
+                }
+                return (candidate.id, cachedCheck.breachCount)
             }
             return .init(breachCounts: Dictionary(cachedBreachCounts, uniquingKeysWith: { _, new in new }),
                          checks: [],

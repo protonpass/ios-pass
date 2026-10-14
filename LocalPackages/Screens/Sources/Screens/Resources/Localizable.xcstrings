@@ -52315,88 +52315,6 @@
         }
       }
     },
-    "Password exposed on the dark web." : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Пароль знойдзены ў даркнэце."
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contrasenya exposada a la web fosca."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adgangskoden er afsløret på det mørke net."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passwort wurde im Dark Web veröffentlicht."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κωδικός πρόσβασης εκτεθειμένος στο dark web."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password exposed on the dark web."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contraseña expuesta en la dark web."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mot de passe exposé sur le dark web."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Password esposta sul dark web."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wachtwoord zichtbaar op het dark web."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Parolă expusă pe internetul ascuns."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Heslo bolo zverejnené na dark webe."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Parola karanlık ağda açığa çıkmış."
-          }
-        }
-      }
-    },
     "Pending access to the shared data" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -70866,6 +70784,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "此項目未受監控"
+          }
+        }
+      }
+    },
+    "This login password appears in a data breach. Please visit the service and change the password." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This login password appears in a data breach. Please visit the service and change the password."
           }
         }
       }

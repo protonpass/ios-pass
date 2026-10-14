@@ -36,6 +36,10 @@ public struct SecurityAffectedItem: Sendable {
     /// even if the item flags carry some.
     public let suppressedChecks: Set<WeaknessKind>
 
+    /// Whole-item exclusion honoured for this item, false when per-check exclusion is available
+    /// even if the item flags carry it: per-check flags then hold every exclusion.
+    public let isFullyExcluded: Bool
+
     /// Items sharing a password get the same value; nil when the password isn't reused. Only
     /// comparable within a single refresh, and carries nothing derived from the password.
     public let reuseGroup: Int?
@@ -44,26 +48,34 @@ public struct SecurityAffectedItem: Sendable {
                 detected: Set<WeaknessKind>,
                 display: ItemUiModel,
                 suppressedChecks: Set<WeaknessKind>,
+                isFullyExcluded: Bool,
                 reuseGroup: Int?) {
         self.item = item
         self.detected = detected
         self.display = display
         self.suppressedChecks = suppressedChecks
+        self.isFullyExcluded = isFullyExcluded
         self.reuseGroup = reuseGroup
     }
 }
 
 public extension SecurityAffectedItem {
-    var isFullyExcluded: Bool {
-        item.item.monitoringDisabled
-    }
-
     var activeWeaknesses: Set<WeaknessKind> {
         isFullyExcluded ? [] : detected.subtracting(suppressedChecks)
     }
 
+    /// Suppressed checks whose weakness is still detected on the item
+    var suppressedWeaknesses: Set<WeaknessKind> {
+        detected.intersection(suppressedChecks)
+    }
+
     var isExcludedItem: Bool {
         isFullyExcluded || !suppressedChecks.isEmpty
+    }
+
+    /// Fully excluded, or every weakness still detected on the item is individually suppressed
+    var hasNothingMonitored: Bool {
+        isFullyExcluded || (!suppressedChecks.isEmpty && activeWeaknesses.isEmpty)
     }
 
     var shouldBeIncluded: Bool {
