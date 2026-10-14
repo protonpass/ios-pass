@@ -34,6 +34,7 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
     public let needsPrf: Bool
     public let saltInput1: Data?
     public let saltInput2: Data?
+    public let assertionPrf: PasskeyAssertionPrfInput?
 
     public init(userName: String,
                 relyingPartyIdentifier: String,
@@ -44,7 +45,8 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
                 supportedAlgorithms: [ASCOSEAlgorithmIdentifier],
                 needsPrf: Bool,
                 saltInput1: Data?,
-                saltInput2: Data?) {
+                saltInput2: Data?,
+                assertionPrf: PasskeyAssertionPrfInput?) {
         self.userName = userName
         self.relyingPartyIdentifier = relyingPartyIdentifier
         self.serviceIdentifier = serviceIdentifier
@@ -55,5 +57,6 @@ public struct PasskeyCredentialRequest: Sendable, Equatable, Hashable {
         self.needsPrf = needsPrf
         self.saltInput1 = saltInput1
         self.saltInput2 = saltInput2
+        self.assertionPrf = assertionPrf
     }
 }

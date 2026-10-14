@@ -197,4 +197,14 @@ struct ItemFlagableTests {
                                                   .skipWeakPasswordCheck(false),
                                                   .skip2FACheck(false)])
     }
+
+    // MARK: - flagsToExcludeFromMonitoring
+
+    @Test func `flagsToExcludeFromMonitoring sets full exclusion and turns off every check`() {
+        #expect(MockItem(flags: 0).flagsToExcludeFromMonitoring == [.skipHealthCheck(true),
+                                                                    .skipWeakPasswordCheck(true),
+                                                                    .skipCompromisedPasswordCheck(true),
+                                                                    .skipReusedPasswordCheck(true),
+                                                                    .skip2FACheck(true)])
+    }
 }
