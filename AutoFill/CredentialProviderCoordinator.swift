@@ -162,9 +162,9 @@ private extension CredentialProviderCoordinator {
         case .arbitraryTextInsertion:
             handleArbitraryTextInsertion(users: users)
 
-        case let .generatePasswords(request, withUI: withUI):
+        case let .generatePasswords(rules, withUI: withUI):
             if #available(iOS 26.2, *) {
-                handleGeneratePasswords(request, withUI)
+                handleGeneratePasswords(rules, withUI)
             }
         }
     }
@@ -278,8 +278,7 @@ private extension CredentialProviderCoordinator {
 
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
-    // periphery:ignore:parameters request
-    func handleGeneratePasswords(_ request: GeneratePasswordsRequest, _ withUI: Bool) {
+    func handleGeneratePasswords(_ rules: PasswordRules?, _ withUI: Bool) {
         guard let context else { return }
 
         if withUI {
@@ -308,12 +307,19 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        do {
-            let passwords = try generatePasswords()
-            context.completeGeneratePasswordRequest(results: passwords) { _ in }
-        } catch {
-            logger.error(error)
-            cancelAutoFill(reason: .failed, context: context)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let passwords = try await generatePasswords(rules: rules).map { ASGeneratedPassword($0) }
+                if passwords.isEmpty {
+                    cancelAutoFill(reason: .failed, context: context)
+                } else {
+                    context.completeGeneratePasswordRequest(results: passwords) { _ in }
+                }
+            } catch {
+                logger.error(error)
+                cancelAutoFill(reason: .failed, context: context)
+            }
         }
     }
 }

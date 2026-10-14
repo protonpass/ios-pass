@@ -1,6 +1,6 @@
 //
-// GeneratePasswordsRequest.swift
-// Proton Pass - Created on 29/07/2026.
+// AutoFillPasswordSuggestion.swift
+// Proton Pass - Created on 14/10/2026.
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,22 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
 import Foundation
 
-struct GeneratePasswordsRequest: Sendable {
-    let serviceIdentifier: ASCredentialServiceIdentifier
-    let passwordFieldPasswordRules: String?
-    let confirmPasswordFieldPasswordRules: String?
-    let passwordRulesFromQuirks: String?
-}
+public struct AutoFillPasswordSuggestion: Sendable, Equatable {
+    public enum Kind: Sendable {
+        case strong, alphanumeric, passphrase
+    }
 
-@available(iOS 26.2, *)
-extension ASGeneratePasswordsRequest {
-    var toGeneratePasswordsRequest: GeneratePasswordsRequest {
-        .init(serviceIdentifier: serviceIdentifier,
-              passwordFieldPasswordRules: passwordFieldPasswordRules,
-              confirmPasswordFieldPasswordRules: confirmPasswordFieldPasswordRules,
-              passwordRulesFromQuirks: passwordRulesFromQuirks)
+    public let kind: Kind
+    public let value: String
+
+    public init(kind: Kind, value: String) {
+        self.kind = kind
+        self.value = value
     }
 }

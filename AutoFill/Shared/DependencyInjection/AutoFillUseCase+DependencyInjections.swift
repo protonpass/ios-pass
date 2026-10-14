@@ -224,8 +224,13 @@ extension AutoFillUseCaseContainer {
         self { GenerateAutofillPasswords(generatePassword: UseCasesContainer.shared.generatePassword(),
                                          generateRandomWords: UseCasesContainer.shared.generateRandomWords(),
                                          generatePassphrase: UseCasesContainer.shared.generatePassphrase(),
+                                         generateRuleCompliantPassword: GenerateRuleCompliantPassword(),
+                                         resolvePasswordPolicy: UseCasesContainer.shared.resolvePasswordPolicy(),
+                                         getOrganizationSettings: UseCasesContainer.shared
+                                             .getOrganizationSettings(),
                                          localDataSource: RepositoryContainer.shared
-                                             .localPasswordPreferencesDatasource())
+                                             .localPasswordPreferencesDatasource(),
+                                         logManager: self.logManager)
         }
     }
 }
