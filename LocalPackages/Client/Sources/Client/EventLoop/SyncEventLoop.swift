@@ -39,8 +39,9 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// Called at the beginning of every sync loop.
     func syncEventLoopDidBeginNewLoop(userId: String)
 
-    /// Return `true` while a full sync rewrites local data, loops are skipped until it is done
-    func syncEventLoopIsFullSyncing() async -> Bool
+    /// Return `true` while a full sync rewrites the account's local data, its loops are skipped until it is done
+    @MainActor
+    func syncEventLoopIsFullSyncing(userId: String) -> Bool
 
     /// Called when a loop is skipped
     /// - Parameters:
@@ -66,7 +67,7 @@ public enum SyncEventLoopSkipReason {
     case noInternetConnection
     case previousLoopNotFinished(userId: String)
     case backOff
-    case fullSyncInProgress
+    case fullSyncInProgress(userId: String)
 }
 
 private let kThresholdRange = 55...60
@@ -208,16 +209,13 @@ private extension SyncEventLoop {
                 return
             }
 
-            if await delegate?.syncEventLoopIsFullSyncing() == true {
-                pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
-                delegate?.syncEventLoopDidSkipLoop(reason: .fullSyncInProgress)
-                return
-            }
-
             for userData in userManager.allUserAccounts.value {
                 let userId = userData.user.ID
                 if activeTasks[userId] != nil {
                     delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userId))
+                } else if delegate?.syncEventLoopIsFullSyncing(userId: userId) == true {
+                    pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                    delegate?.syncEventLoopDidSkipLoop(reason: .fullSyncInProgress(userId: userId))
                 } else {
                     activeTasks[userId] = Task { [weak self] in
                         guard let self else { return }

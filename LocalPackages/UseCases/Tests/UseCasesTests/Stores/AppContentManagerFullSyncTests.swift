@@ -208,6 +208,20 @@ struct AppContentManagerFullSyncTests {
         #expect(refresh.calls == ["user-a"])
     }
 
+    @Test func `Joining a sync publishes it again for observers that skipped it`() async {
+        let gate = refresh.pause("user-a")
+        let running = sut.startFullSync(userId: "user-a", presentation: .inline)
+        let queued = sut.startFullSync(userId: "user-b", presentation: .sheet)
+        await gate.entered.wait()
+
+        let joined = sut.startFullSync(userId: "user-a", presentation: .sheet)
+
+        #expect(joined === running)
+        #expect(sut.fullSyncOperation === running)
+        gate.release.open()
+        _ = await queued.result()
+    }
+
     @Test func `Syncs for different users run one after the other`() async {
         let gate = refresh.pause("user-a")
         refresh.failingUserIds = ["user-a", "user-b"]
@@ -453,8 +467,34 @@ struct AppContentManagerFullSyncTests {
 
         #expect(await operation.result().succeeded)
         #expect(sut.isFullSyncing, "The notes still hold back the next sync")
+        #expect(sut.hasFullSyncTask(userId: "user-a"), "The event loop must not write the account's items yet")
         #expect(!sut.isFullSyncing(userId: "user-a"), "Switching to the account must not resync it")
         aliasNotes.open()
+    }
+
+    @Test func `A sync waiting in the queue skips the alias notes of the one before`() async {
+        let gate = refresh.pause("user-a")
+        _ = sut.startFullSync(userId: "user-a", presentation: .sheet)
+        let queued = sut.startFullSync(userId: "user-b", presentation: .sheet)
+        await gate.entered.wait()
+
+        gate.release.open()
+        _ = await queued.result()
+        await sut.reset()
+
+        #expect(await aliasSynchronizer.syncedUserIds == ["user-b"])
+    }
+
+    @Test func `A sync queued during the alias notes stops them`() async {
+        await aliasSynchronizer.take(.seconds(30))
+        _ = await sut.startFullSync(userId: "user-a", presentation: .sheet).result()
+
+        let queued = sut.startFullSync(userId: "user-a", presentation: .sheet)
+        let start = ContinuousClock.now
+        #expect(await queued.result().succeeded)
+
+        #expect(ContinuousClock.now - start < .seconds(10), "The notes must not hold the next sync back")
+        await sut.reset()
     }
 
     @Test func `Switching account during the final load still completes the sync`() async {
@@ -589,14 +629,25 @@ private final class IndexAllLoginItemsSpy: IndexAllLoginItemsUseCase {
 }
 
 private actor AliasSynchronizerFake: SimpleLoginNoteSynchronizerProtocol {
+    private(set) var syncedUserIds: [String] = []
     private var gate: Gate?
+    private var duration: Duration?
 
     func pause(until gate: Gate) {
         self.gate = gate
     }
 
+    /// Unlike `pause(until:)`, stops early when cancelled, like requests that honour cancellation
+    func take(_ duration: Duration) {
+        self.duration = duration
+    }
+
     func syncAllAliases(userId: String) async throws -> Bool {
+        syncedUserIds.append(userId)
         await gate?.wait()
+        if let duration {
+            try await Task.sleep(for: duration)
+        }
         return false
     }
 

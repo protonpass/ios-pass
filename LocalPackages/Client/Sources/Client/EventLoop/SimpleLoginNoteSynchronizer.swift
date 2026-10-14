@@ -70,6 +70,7 @@ private extension SimpleLoginNoteSynchronizer {
                 guard let self else { return }
 
                 for chunk in aliases.chunked(into: pageSize) {
+                    try Task.checkCancellation()
                     let details = try await remoteDatasource.getAliasDetails(userId: userId,
                                                                              items: chunk)
                     try await itemRepository.updateCachedAliasInfo(userId: userId,

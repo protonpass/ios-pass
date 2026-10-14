@@ -601,10 +601,7 @@ private extension HomepageCoordinator {
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
         guard appContentManager.incompleteFullSyncUserIds.contains(userId)
             || appContentManager.isFullSyncing(userId: userId) else { return }
-        // Joining a sync in flight publishes no operation, so the sheet is presented here
-        presentFullSyncProgressIfNeeded(for: fullContentSync.start(userId: userId,
-                                                                   presentation: .sheet,
-                                                                   shouldStopEventLoop: true))
+        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
     /// Only one progress sheet exists at a time, and only for the active user: the event loop
@@ -666,8 +663,8 @@ private extension HomepageCoordinator {
         }
     }
 
-    /// Dismisses the progress sheet itself rather than the top most sheet, which could be
-    /// anything presented above it.
+    /// Dismisses the progress sheet rather than the top most sheet. Anything presented above it,
+    /// like the logs share sheet, goes with it.
     func dismissFullSyncProgress(completion: (() -> Void)? = nil) {
         guard let controller = fullSyncProgress?.controller else { return }
         fullSyncProgress = nil
@@ -2045,8 +2042,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Stopped looping")
     }
 
-    func syncEventLoopIsFullSyncing() -> Bool {
-        appContentManager.isFullSyncing
+    func syncEventLoopIsFullSyncing(userId: String) -> Bool {
+        appContentManager.hasFullSyncTask(userId: userId)
     }
 
     nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
