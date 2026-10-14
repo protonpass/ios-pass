@@ -122,7 +122,7 @@ extension View {
                 MonitorAllAliasesView(infos: infos, monitored: monitored)
 
             case let .darkWebMonitorHome(breach):
-                DarkWebMonitorHomeView(viewModel: .init(userBreaches: breach))
+                DarkWebMonitorHomeView(viewModel: .init(userBreaches: breach), isShownInDetailPane: false)
 
             case let .contacts(infos):
                 AliasContactsView(viewModel: .init(infos: infos))
@@ -155,7 +155,6 @@ final class PathRouter {
         path.append(destination)
     }
 
-    // periphery:ignore
     func popToRoot() {
         path = NavigationPath()
     }

@@ -32,10 +32,21 @@ struct ProfileTabView: View {
     // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
+    @State private var sheet: Sheet?
+    @State private var bugReportSent = false
     @State private var showSwitcher = false
     @State private var showImportOptions = false
-    @State private var showImportFromChrome = false
-    @State private var showQaFeatures = false
+
+    private enum Sheet: Identifiable {
+        case feedbackChannels
+        case bugReport
+        case importFromChrome
+        case qaFeatures
+
+        var id: Self {
+            self
+        }
+    }
 
     var body: some View {
         mainContainer
@@ -60,7 +71,7 @@ struct ProfileTabView: View {
                                 isPresented: $showImportOptions) {
                 if viewModel.isChromeInstalled {
                     Button(role: nil,
-                           action: { showImportFromChrome.toggle() },
+                           action: { sheet = .importFromChrome },
                            label: { Text("Import from Chrome") })
                 }
 
@@ -70,15 +81,45 @@ struct ProfileTabView: View {
 
                 Button(role: .cancel, label: { Text("Cancel") })
             }
-            .sheet(isPresented: $showImportFromChrome) {
-                ImportFromChromeInstructions()
-            }
-            .sheet(isPresented: $showQaFeatures) {
-                QAFeaturesView()
+            .sheet(item: $sheet, onDismiss: showReportSuccessMessageIfNeeded) { sheet in
+                switch sheet {
+                case .feedbackChannels:
+                    FeedbackChannelsView { selectedChannel in
+                        switch selectedChannel {
+                        case .bugReport:
+                            self.sheet = .bugReport
+
+                        default:
+                            self.sheet = nil
+                            if let urlString = selectedChannel.urlString {
+                                viewModel.open(urlString: urlString)
+                            }
+                        }
+                    }
+
+                case .bugReport:
+                    BugReportView(onSuccess: {
+                        bugReportSent = true
+                        self.sheet = nil
+                    })
+
+                case .importFromChrome:
+                    ImportFromChromeInstructions()
+
+                case .qaFeatures:
+                    QAFeaturesView()
+                }
             }
             .task {
                 await viewModel.reload()
             }
+    }
+
+    /// A banner shown while the bug report sheet is still on screen is attached to it and leaves with it
+    private func showReportSuccessMessageIfNeeded() {
+        guard bugReportSent else { return }
+        bugReportSent = false
+        viewModel.showReportSuccessMessage()
     }
 
     var mainContainer: some View {
@@ -124,7 +165,7 @@ struct ProfileTabView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .onTapGesture(count: 3) {
                         if Bundle.main.isQaBuild {
-                            showQaFeatures.toggle()
+                            sheet = .qaFeatures
                         }
                     }
                 Spacer()
@@ -449,7 +490,7 @@ struct ProfileTabView: View {
                 .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
+                TextOptionRow(title: #localized("Feedback"), action: { sheet = .feedbackChannels })
 
                 PassSectionDivider()
                 OptionRow(action: { viewModel.showTutorial() },

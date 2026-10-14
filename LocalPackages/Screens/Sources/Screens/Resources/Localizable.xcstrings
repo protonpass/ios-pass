@@ -35037,6 +35037,16 @@
         }
       }
     },
+    "Go back" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go back"
+          }
+        }
+      }
+    },
     "Go to **Password manager** and tap on **Settings**" : {
       "comment" : "Part of instruction to import from Chrome",
       "localizations" : {

@@ -111,7 +111,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
     }
 
     func showSecureLinkList() {
-        router.present(for: .secureLinks)
+        router.present(for: .secureLinks(asSheet: true))
     }
 
     func viewItemDetail() {
