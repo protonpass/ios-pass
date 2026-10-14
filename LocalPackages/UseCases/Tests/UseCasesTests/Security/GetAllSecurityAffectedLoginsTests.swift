@@ -105,6 +105,7 @@ private extension GetAllSecurityAffectedLoginsTests {
                                     detected: detected,
                                     display: .mock(itemId: itemId, shareId: "share-1"),
                                     suppressedChecks: suppressed,
+                                    isFullyExcluded: monitoringDisabled,
                                     reuseGroup: reuseGroup)
     }
 }

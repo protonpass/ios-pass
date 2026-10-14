@@ -532,7 +532,7 @@ struct PassMonitorRepositoryTests {
         let evaluator = ItemWeaknessEvaluatorProtocolMock()
         evaluator.stubbedEvaluateResult = []
         let sut = makePaidSut(checker: checker, weaknessEvaluator: evaluator)
-        // Lets the refresh started by `init` finish before counting
+        try await sut.refreshSecurityChecks()
         try await waitUntil { sut.weaknessStats.value?.count(for: .compromisedPassword) == 1 }
         evaluator.invokedEvaluateCount = 0
 
@@ -580,6 +580,7 @@ struct PassMonitorRepositoryTests {
         let checker = GatedCompromisedPasswordChecker()
         await checker.open()
         let sut = makePaidSut(checker: checker)
+        try await sut.refreshSecurityChecks()
         // The gated checker reports both the weak and the strong login as breached
         try await waitUntil { sut.weaknessStats.value?.count(for: .compromisedPassword) == 2 }
 
@@ -630,7 +631,6 @@ struct PassMonitorRepositoryTests {
         let sut = makePaidSut(checker: checker)
 
         let refresh = Task { try await sut.refreshSecurityChecks() }
-        // Checks run one at a time, so only one of this refresh and the `init` one parks in the checker
         try await waitUntil { await checker.invocationCount == 1 }
 
         await sut.reset()
