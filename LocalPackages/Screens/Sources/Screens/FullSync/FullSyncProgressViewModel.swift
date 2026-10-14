@@ -60,6 +60,7 @@ public final class FullSyncProgressViewModel {
         track(operation)
     }
 
+    /// Switches to another operation, e.g. a retry, and stops waiting for the previous one
     public func track(_ operation: FullSyncOperation) {
         self.operation = operation
         waitForOutcomeTask?.cancel()

@@ -156,7 +156,6 @@ public extension ServiceContainer {
                                      .getAndStoreLastEventId(),
                                  dedupShare: UseCasesContainer.shared.dedupShare(),
                                  refreshUserData: UseCasesContainer.shared.refreshUserData(),
-                                 processVaultSyncEvent: UseCasesContainer.shared.processVaultSyncEvent(),
                                  logger: ToolingContainer.shared.logger(),
                                  loginMethod: DataContainer.shared.loginMethod()) }
     }

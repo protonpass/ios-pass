@@ -231,8 +231,7 @@ private extension ItemsTabViewModel {
             .sink { [weak self] userData in
                 guard let self, let userId = inlineSyncProgress?.operation.userId,
                       userId != userData?.user.ID else { return }
-                inlineSyncProgress = nil
-                shouldShowSyncProgress = false
+                removeInlineSync()
             }
             .store(in: &cancellables)
     }
@@ -242,8 +241,7 @@ private extension ItemsTabViewModel {
 
         // The progress sheet takes over, so the retry screen of a failed inline sync must not stay behind
         guard operation.presentation == .inline else {
-            inlineSyncProgress = nil
-            shouldShowSyncProgress = false
+            removeInlineSync()
             return
         }
 
@@ -252,10 +250,9 @@ private extension ItemsTabViewModel {
             return
         }
 
-        inlineSyncProgress = FullSyncProgressViewModel(operation: operation) { [weak self] operation, outcome in
+        let viewModel = FullSyncProgressViewModel(operation: operation) { [weak self] operation, outcome in
             guard let self, inlineSyncProgress?.operation === operation else { return }
-            inlineSyncProgress = nil
-            shouldShowSyncProgress = false
+            removeInlineSync()
             switch outcome {
             case .completed(hasUndecryptableShares: false):
                 router.display(element: .infosMessage(#localized("The app is now ready to use"),
@@ -268,6 +265,19 @@ private extension ItemsTabViewModel {
                 break
             }
         }
+        inlineSyncProgress = viewModel
+
+        // Syncs that finish within 5 seconds never show the progress
+        Task { [weak self] in
+            try? await Task.sleep(seconds: 5)
+            guard let self, inlineSyncProgress === viewModel else { return }
+            shouldShowSyncProgress = true
+        }
+    }
+
+    func removeInlineSync() {
+        inlineSyncProgress = nil
+        shouldShowSyncProgress = false
     }
 
     // swiftlint:disable:next cyclomatic_complexity
@@ -333,15 +343,6 @@ private extension ItemsTabViewModel {
                 refreshBanners(pendingInvites)
             }
             .store(in: &cancellables)
-
-        // Show the progress if the sync after logging in still runs after 5 seconds
-        Task { [weak self] in
-            guard let self else { return }
-            try? await Task.sleep(seconds: 5)
-            if inlineSyncProgress != nil {
-                shouldShowSyncProgress = true
-            }
-        }
 
         getAllPinnedItems()
             .receive(on: DispatchQueue.main)

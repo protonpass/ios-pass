@@ -76,6 +76,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         featureFlagsRepository.clearUserId()
 
         for userData in userManager.allUserAccounts.value {
+            await appContentManager.cancelFullSync(userId: userData.user.ID)
             try await removeUserLocalData(userId: userData.user.ID)
         }
 

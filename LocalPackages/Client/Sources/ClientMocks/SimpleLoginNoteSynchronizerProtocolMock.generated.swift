@@ -27,22 +27,19 @@ public actor SimpleLoginNoteSynchronizerProtocolMock: SimpleLoginNoteSynchronize
     public init() {}
 
     // MARK: - syncAllAliases
-    public var syncAllAliasesUserIdOnPageSyncedThrowableError1: Error?
+    public var syncAllAliasesUserIdThrowableError1: Error?
     public var closureSyncAllAliases: () -> () = {}
     public var invokedSyncAllAliasesfunction = false
     public var invokedSyncAllAliasesCount = 0
-    public var invokedSyncAllAliasesParameters: (userId: String, onPageSynced: () async -> Void)?
-    public var invokedSyncAllAliasesParametersList = [(userId: String, onPageSynced: () async -> Void)]()
+    public var invokedSyncAllAliasesParameters: (userId: String, Void)?
+    public var invokedSyncAllAliasesParametersList = [(userId: String, Void)]()
     public nonisolated(unsafe) var stubbedSyncAllAliasesResult: Bool!
-    public var stubbedSyncAllAliasesOnPageSyncedResult: (Void)?
 
-    public func syncAllAliases(userId: String, onPageSynced: @Sendable @escaping () async -> Void) async throws -> Bool {
+    public func syncAllAliases(userId: String) async throws -> Bool {
         invokedSyncAllAliasesfunction = true
         invokedSyncAllAliasesCount += 1
-        invokedSyncAllAliasesParameters = (userId, onPageSynced)
-        if let resultOfOnPageSynced = stubbedSyncAllAliasesOnPageSyncedResult {
-        }
-        if let error = syncAllAliasesUserIdOnPageSyncedThrowableError1 {
+        invokedSyncAllAliasesParameters = (userId, ())
+        if let error = syncAllAliasesUserIdThrowableError1 {
             throw error
         }
         closureSyncAllAliases()

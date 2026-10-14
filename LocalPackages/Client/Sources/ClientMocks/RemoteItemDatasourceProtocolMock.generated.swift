@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import Entities
 import Foundation
@@ -33,11 +32,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
     public var invokedGetItemsCount = 0
-    public var invokedGetItemsParameters: (userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedGetItemsParametersList = [(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedGetItemsParameters: (userId: String, shareId: String, eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?)?
+    public var invokedGetItemsParametersList = [(userId: String, shareId: String, eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?)]()
     public nonisolated(unsafe) var stubbedGetItemsResult: [Item]!
 
-    public func getItems(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
+    public func getItems(userId: String, shareId: String, eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws -> [Item] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (userId, shareId, eventStream)
