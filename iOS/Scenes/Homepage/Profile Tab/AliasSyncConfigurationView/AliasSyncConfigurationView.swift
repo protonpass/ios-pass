@@ -34,7 +34,6 @@ private enum AliasSyncConfigurationSheetState {
 
 struct AliasSyncConfigurationView: View {
     @StateObject private var viewModel = AliasSyncConfigurationViewModel()
-    @Environment(\.dismiss) private var dismiss
     @State private var router = PathRouter()
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
@@ -182,7 +181,7 @@ struct AliasSyncConfigurationView: View {
                        }
                    })
 
-                   Button("Cancel", action: dismiss.callAsFunction)
+                   Button(role: .cancel, label: { Text("Cancel") })
                },
                message: {
                    if let error = viewModel.error {
@@ -391,11 +390,11 @@ private extension AliasSyncConfigurationView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.cross,
+            CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor1,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
+                         accessibilityLabel: "Go back") {
+                viewModel.goBack()
             }
         }
     }

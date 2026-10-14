@@ -347,7 +347,6 @@ private extension HomepageCoordinator {
         self.itemsTabViewModel = itemsTabViewModel
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
-        profileTabViewModel.delegate = self
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
@@ -662,8 +661,8 @@ extension HomepageCoordinator {
                 case .securityKeys:
                     presentSecurityKeys()
 
-                case .settingsMenu:
-                    profileTabViewModelWantsToShowSettingsMenu()
+                case .settings:
+                    push(SettingsView())
 
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
@@ -712,6 +711,9 @@ extension HomepageCoordinator {
                 case let .securityDetail(filter):
                     presentSecurity(filter)
 
+                case let .darkWebMonitorHome(breaches):
+                    push(DarkWebMonitorDetailPaneView(userBreaches: breaches))
+
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
 
@@ -724,8 +726,8 @@ extension HomepageCoordinator {
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
 
-                case .secureLinks:
-                    presentSecureLinks()
+                case let .secureLinks(asSheet):
+                    presentSecureLinks(asSheet: asSheet)
 
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
@@ -744,7 +746,7 @@ extension HomepageCoordinator {
                     }
 
                 case .aliasesSyncConfiguration:
-                    present(AliasSyncConfigurationView())
+                    push(AliasSyncConfigurationView())
 
                 case .loginsWith2fa:
                     presentLoginsWith2faView()
@@ -773,7 +775,7 @@ extension HomepageCoordinator {
                     }
 
                 case .passwordHistory:
-                    presentPasswordHistoryView()
+                    presentPasswordHistoryView(asSheet: false)
 
                 case .signInToAnotherDevice:
                     presentSignInToAnotherDeviceView()
@@ -1053,7 +1055,7 @@ extension HomepageCoordinator {
         let viewPasswordHistory: @MainActor (PMBanner) -> Void = { [weak self] banner in
             guard let self else { return }
             banner.dismiss()
-            presentPasswordHistoryView()
+            presentPasswordHistoryView(asSheet: true)
         }
 
         let copyPassword: (String) -> Void = { [weak self] password in
@@ -1256,16 +1258,24 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentPasswordHistoryView() {
+    func presentPasswordHistoryView(asSheet: Bool) {
         let createLogin: (String) -> Void = { [weak self] clearPassword in
             guard let self else { return }
+            let mode = ItemMode.create(.login(password: clearPassword, autofill: false))
+            guard asSheet else {
+                // Expanded iPad shows the page alone in the detail column, popping would only hide the sidebar
+                if isCollapsed() {
+                    popTopViewController(animated: false)
+                }
+                presentCreateEditLoginView(mode: mode)
+                return
+            }
             dismissTopMostViewController(animated: true) { [weak self] in
                 guard let self else { return }
-                presentCreateEditLoginView(mode: .create(.login(password: clearPassword,
-                                                                autofill: false)))
+                presentCreateEditLoginView(mode: mode)
             }
         }
-        let view = PasswordHistoryView { [weak self] action in
+        let view = PasswordHistoryView(isShownAsSheet: asSheet) { [weak self] action in
             guard let self else { return }
             switch action {
             case let .copy(password):
@@ -1275,10 +1285,12 @@ extension HomepageCoordinator {
 
             case let .create(password):
                 createLogin(password)
+
+            case .close:
+                itemDetailViewModelWantsToGoBack(isShownAsSheet: asSheet)
             }
         }
-
-        present(view)
+        showView(view: view, asSheet: asSheet)
     }
 
     func presentSignInToAnotherDeviceView() {
@@ -1429,16 +1441,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentSecurity(_ type: MonitorListSection) {
-        let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
-                                                        isSheet: isSheet),
-                       isSheet: isSheet)
-
-        if results.isSheet {
-            present(results.view)
-        } else {
-            push(results.view)
-        }
+        push(SecurityWeaknessDetailView(viewModel: .init(type: type)))
     }
 }
 
@@ -1654,55 +1657,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
-    }
-}
-
-// MARK: - ProfileTabViewModelDelegate
-
-extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowSettingsMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
-        let view = SettingsView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
-    func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [weak self] selectedChannel in
-            guard let self else { return }
-            switch selectedChannel {
-            case .bugReport:
-                dismissTopMostViewController(animated: true) { [weak self] in
-                    guard let self else { return }
-                    presentBugReportView()
-                }
-
-            default:
-                if let urlString = selectedChannel.urlString {
-                    urlOpener.open(urlString: urlString)
-                }
-            }
-        }
-
-        let viewController = UIHostingController(rootView: view)
-        let customHeight = 52 * FeedbackChannel.allCases.count + 80
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentBugReportView() {
-        let successHandler: () -> Void = { [weak self] in
-            guard let self else { return }
-            dismissTopMostViewController { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
-            }
-        }
-        let view = BugReportView(onSuccess: successHandler)
-        present(view)
     }
 }
 

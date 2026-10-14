@@ -22,11 +22,13 @@
 
 import Client
 import Combine
+import Core
 import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Screens
+import UIKit
 
 @MainActor
 final class PassMonitorViewModel: ObservableObject {
@@ -85,6 +87,14 @@ final class PassMonitorViewModel: ObservableObject {
         if let eventType = filter.telemetryEventType {
             addTelemetryEvent(with: eventType)
         }
+    }
+
+    var showsDarkWebMonitorInDetailPane: Bool {
+        UIDevice.current.isIpad && UIApplication.shared.hasRegularWidth
+    }
+
+    func showDarkWebMonitorInDetailPane(_ breaches: UserBreaches) {
+        router.present(for: .darkWebMonitorHome(breaches))
     }
 
     func sentinelSheetAction() {
