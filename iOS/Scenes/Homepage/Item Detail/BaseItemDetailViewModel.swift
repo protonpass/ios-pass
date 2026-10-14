@@ -127,13 +127,12 @@ class BaseItemDetailViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passMonitorPerCheckExclusion)
     }
 
-    /// When true, "Include for monitoring" is always offered and clears every exclusion, not just the full one
-    var restoresAllMonitoring: Bool {
-        false
+    var offersIncludeInMonitoring: Bool {
+        !isMonitored
     }
 
-    var offersIncludeInMonitoring: Bool {
-        !isMonitored || restoresAllMonitoring
+    var flagsToToggleFullMonitoring: [ItemFlag] {
+        [.skipHealthCheck(isMonitored)]
     }
 
     var isAllowedToEdit: Bool {
@@ -332,8 +331,8 @@ class BaseItemDetailViewModel: ObservableObject {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 let including = offersIncludeInMonitoring
-                let flags = if case .fullyExcluded = weakness, restoresAllMonitoring {
-                    itemContent.item.flagsToRestoreMonitoring
+                let flags = if case .fullyExcluded = weakness {
+                    flagsToToggleFullMonitoring
                 } else {
                     [weakness.flag(isMonitored)]
                 }

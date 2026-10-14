@@ -691,9 +691,11 @@ extension HomepageCoordinator {
 
                 case let .itemDetail(content,
                                      automaticDisplay,
+                                     fromPassMonitor,
                                      showExcludedWeaknesses):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
+                                          fromPassMonitor: fromPassMonitor,
                                           showExcludedWeaknesses: showExcludedWeaknesses)
 
                 case .editSpotlightSearchableContent:
@@ -991,9 +993,15 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
+    func presentItemDetailView(for itemContent: ItemContent,
+                               asSheet: Bool,
+                               fromPassMonitor: Bool = false,
+                               showExcludedWeaknesses: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
-        coordinator.showDetail(for: itemContent, asSheet: asSheet, showExcludedWeaknesses: showExcludedWeaknesses)
+        coordinator.showDetail(for: itemContent,
+                               asSheet: asSheet,
+                               fromPassMonitor: fromPassMonitor,
+                               showExcludedWeaknesses: showExcludedWeaknesses)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
