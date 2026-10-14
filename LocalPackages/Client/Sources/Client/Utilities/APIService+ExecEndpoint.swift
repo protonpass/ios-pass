@@ -18,28 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-actor SessionTask {
-    private var state: State = .ready
+final class SessionTask: Sendable {
+    private let state = SafeMutex(State.ready)
 
     func cancel() {
-        if case let .executing(task) = state {
-            task.cancel()
+        state.withLock { state in
+            if case let .executing(task) = state {
+                task.cancel()
+            }
+            state = .cancelled
         }
-        state = .cancelled
     }
 
     func setTask(_ task: URLSessionDataTask) {
-        // `cancel()` can arrive first: both calls reach the actor through unstructured tasks
-        if case .cancelled = state {
-            task.cancel()
-            return
+        state.withLock { state in
+            // The caller can be cancelled before ProtonCore creates the request
+            if case .cancelled = state {
+                task.cancel()
+                return
+            }
+            state = .executing(task)
         }
-        state = .executing(task)
     }
 
     private enum State {
@@ -56,21 +61,19 @@ extension APIService {
             return try await withTaskCancellationHandler {
                 try await withCheckedThrowingContinuation { continuation in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint)
+                    // ProtonCore's default executor hops to the main queue just to run this completion
                     perform(request: endpoint,
+                            callCompletionBlockUsing: .immediateExecutor,
                             onDataTaskCreated: { task in
-                                Task {
-                                    await sessionTask.setTask(task)
-                                }
+                                sessionTask.setTask(task)
                             }, decodableCompletion: { task, result in
                                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                                 continuation.resume(with: result)
                             })
                 }
             } onCancel: {
-                Task { await sessionTask.cancel() }
+                sessionTask.cancel()
             }
-        } catch URLError.cancelled {
-            throw CancellationError()
         } catch {
             if Task.isCancelled {
                 throw CancellationError()
@@ -93,7 +96,10 @@ extension APIService {
 
         return try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
+            performUpload(request: endpoint,
+                          files: files,
+                          callCompletionBlockUsing: .immediateExecutor,
+                          uploadProgress: progress) { task, result in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint,
                                                task: task,
                                                result: result)
@@ -113,10 +119,9 @@ extension APIService {
                     NetworkDebugger.printDebugInfo(endpoint: endpoint)
 
                     perform(request: endpoint,
+                            callCompletionBlockUsing: .immediateExecutor,
                             onDataTaskCreated: { task in
-                                Task {
-                                    await sessionTask.setTask(task)
-                                }
+                                sessionTask.setTask(task)
                             },
                             decodableCompletion: { task, result in
                                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
@@ -137,10 +142,8 @@ extension APIService {
                             })
                 }
             } onCancel: {
-                Task { await sessionTask.cancel() }
+                sessionTask.cancel()
             }
-        } catch URLError.cancelled {
-            throw CancellationError()
         } catch {
             if Task.isCancelled {
                 throw CancellationError()

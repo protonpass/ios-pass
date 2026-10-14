@@ -24,12 +24,12 @@ import Testing
 
 @Suite(.tags(.utilities))
 struct SessionTaskTests {
-    @Test func `A request created after the cancellation is cancelled`() async throws {
+    @Test func `A request created after the cancellation is cancelled`() throws {
         let sessionTask = SessionTask()
         let request = try URLSession.shared.dataTask(with: #require(URL(string: "https://pass.proton.me")))
 
-        await sessionTask.cancel()
-        await sessionTask.setTask(request)
+        sessionTask.cancel()
+        sessionTask.setTask(request)
 
         #expect([URLSessionTask.State.canceling, .completed].contains(request.state))
     }
