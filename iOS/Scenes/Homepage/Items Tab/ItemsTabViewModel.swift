@@ -440,8 +440,9 @@ extension ItemsTabViewModel {
             guard let self else { return }
             await filterAndSortItemsAsync(sortType: selectedSortType)
 
+            // Nil while signing out the last account, whose content reset re-filters the list
+            guard let userId = userManager.activeUserId else { return }
             do {
-                let userId = try await userManager.getActiveUserId()
                 let allowance = try await checkVaultCreationAllowance(userId: userId, newVaultCount: 1)
                 guard !Task.isCancelled else { return }
                 vaultCreationAllowed = allowance != .notAllowedByOrganization
