@@ -73,7 +73,6 @@ struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
                                                 capitalise: true,
                                                 includeNumbers: true)
         var results = [ASGeneratedPassword]()
-        results.append(ASGeneratedPassword(kind: .passphrase, value: passphrase))
 
         if preference.passwordType == .memorable {
             results.append(ASGeneratedPassword(kind: .passphrase, value: passphrase))
