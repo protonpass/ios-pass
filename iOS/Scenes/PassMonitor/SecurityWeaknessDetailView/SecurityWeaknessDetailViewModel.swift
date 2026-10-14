@@ -69,6 +69,7 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
                 }
                 router.present(for: .itemDetail(itemContent,
                                                 automaticDisplay: false,
+                                                fromPassMonitor: true,
                                                 showExcludedWeaknesses: type == .excludedItems))
                 let eventType: TelemetryEventType? = switch type {
                 case .weakness(.weakPassword):
@@ -95,8 +96,8 @@ final class SecurityWeaknessDetailViewModel: ObservableObject {
         }
     }
 
-    func dismiss(isSheet: Bool) {
-        router.action(.back(isShownAsSheet: isSheet))
+    func goBack() {
+        router.action(.back(isShownAsSheet: false))
     }
 }
 

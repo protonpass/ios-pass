@@ -124,6 +124,10 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
         router.present(for: .simpleLoginSyncActivation(dismissAllSheets: false))
     }
 
+    func goBack() {
+        router.action(.back(isShownAsSheet: false))
+    }
+
     func setDefaultMailBox(mailbox: Mailbox) {
         guard !mailboxes.isEmpty,
               aliasSettings?.defaultMailboxID != mailbox.mailboxID else {

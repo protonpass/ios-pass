@@ -23,7 +23,6 @@ import Core
 import CoreData
 @preconcurrency import CryptoKit
 import Entities
-import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 
 // swiftlint:disable function_parameter_count
@@ -209,7 +208,7 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let localShareDatasource: any LocalShareDatasourceProtocol
     private let passKeyManager: any PassKeyManagerProtocol
-    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
+    private let isFeatureEnabled: @Sendable (FeatureFlagType) -> Bool
     private let logger: Logger
 
     public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
@@ -222,14 +221,14 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 localShareDatasource: any LocalShareDatasourceProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
-                featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
+                isFeatureEnabled: @escaping @Sendable (FeatureFlagType) -> Bool,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.localShareDatasource = localShareDatasource
         self.passKeyManager = passKeyManager
-        self.featureFlagsRepository = featureFlagsRepository
+        self.isFeatureEnabled = isFeatureEnabled
         self.userManager = userManager
         logger = .init(manager: logManager)
         // swiftlint:disable:next todo
@@ -938,15 +937,8 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
-    /// Mirrors `GetFeatureFlagStatus`, which lives in `UseCases` and so is not reachable from
-    /// `Client`. Duplicated rather than threaded down as a parameter through four call layers.
     var domainMatchingSupported: Bool {
-        let flag = FeatureFlagType.passAutofillUrlAdvancedModes
-        if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
-            return true
-        }
-
-        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
+        isFeatureEnabled(.passAutofillUrlAdvancedModes)
     }
 
     func getSymmetricKey() async throws -> SymmetricKey {

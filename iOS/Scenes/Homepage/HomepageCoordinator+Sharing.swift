@@ -24,8 +24,9 @@ import Foundation
 import SwiftUI
 
 extension HomepageCoordinator {
-    func presentSecureLinks() {
-        present(SecureLinkListView())
+    func presentSecureLinks(asSheet: Bool) {
+        let view = SecureLinkListView(isShownAsSheet: asSheet)
+        showView(view: view, asSheet: asSheet)
     }
 
     func presentSecureLinkDetail(link: SecureLinkListUIModel) {

@@ -38,11 +38,15 @@ final class ItemDetailCoordinator: DeinitPrintable {
         self.itemDetailViewModelDelegate = itemDetailViewModelDelegate
     }
 
-    func showDetail(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
+    func showDetail(for itemContent: ItemContent,
+                    asSheet: Bool,
+                    fromPassMonitor: Bool = false,
+                    showExcludedWeaknesses: Bool = false) {
         let itemDetailPage: ItemDetailPage = switch itemContent.contentData {
         case .login:
             makeLoginItemDetailPage(from: itemContent,
                                     asSheet: asSheet,
+                                    fromPassMonitor: fromPassMonitor,
                                     showExcludedWeaknesses: showExcludedWeaknesses)
 
         case .note:
@@ -86,10 +90,12 @@ private extension ItemDetailCoordinator {
 
     func makeLoginItemDetailPage(from itemContent: ItemContent,
                                  asSheet: Bool,
+                                 fromPassMonitor: Bool = false,
                                  showExcludedWeaknesses: Bool = false) -> ItemDetailPage {
         let viewModel = LogInDetailViewModel(isShownAsSheet: asSheet,
                                              itemContent: itemContent,
                                              upgradeChecker: upgradeChecker,
+                                             fromPassMonitor: fromPassMonitor,
                                              showExcludedWeaknesses: showExcludedWeaknesses)
         return .init(viewModel: viewModel, view: LogInDetailView(viewModel: viewModel))
     }

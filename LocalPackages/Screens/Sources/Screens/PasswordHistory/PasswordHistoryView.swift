@@ -28,14 +28,16 @@ import SwiftUI
 public enum PasswordHistoryViewAction {
     case create(String)
     case copy(String)
+    case close
 }
 
 public struct PasswordHistoryView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var viewModel = PasswordHistoryViewModel()
+    let isShownAsSheet: Bool
     let action: (PasswordHistoryViewAction) -> Void
 
-    public init(action: @escaping (PasswordHistoryViewAction) -> Void) {
+    public init(isShownAsSheet: Bool, action: @escaping (PasswordHistoryViewAction) -> Void) {
+        self.isShownAsSheet = isShownAsSheet
         self.action = action
     }
 
@@ -71,11 +73,11 @@ private extension PasswordHistoryView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.passwordInteractionNormMajor2,
                          backgroundColor: PassColor.passwordInteractionNormMinor1,
-                         accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
+                         accessibilityLabel: isShownAsSheet ? "Close" : "Go back",
+                         action: { action(.close) })
         }
 
         if !viewModel.passwords.isEmpty {

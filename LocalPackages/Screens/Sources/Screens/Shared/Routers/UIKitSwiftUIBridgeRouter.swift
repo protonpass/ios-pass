@@ -83,7 +83,7 @@ public enum SheetDestination: Equatable, Hashable {
     case restoreHistory
     case tutorial
     case accountSettings
-    case settingsMenu
+    case settings
     /// iOS 26+ only
     case createNewItem
     case createEditLogin(mode: Entities.ItemMode, dismissAllSheets: Bool)
@@ -96,18 +96,23 @@ public enum SheetDestination: Equatable, Hashable {
     case updateItem(type: ItemContentType, updated: Bool)
     /// `automaticDisplay` differs by entry point: search and the security centre share one presentation,
     /// the main list tab uses another.
-    case itemDetail(ItemContent, automaticDisplay: Bool = true, showExcludedWeaknesses: Bool = false)
+    case itemDetail(ItemContent,
+                    automaticDisplay: Bool = true,
+                    fromPassMonitor: Bool = false,
+                    showExcludedWeaknesses: Bool = false)
     case editSpotlightSearchableContent
     case editSpotlightSearchableVaults
     case editSpotlightVaults
     case passkeyDetail(Passkey)
     case securityDetail(MonitorListSection)
+    /// iPad detail pane only, compact layouts push inside the Pass Monitor tab's own navigation stack
+    case darkWebMonitorHome(UserBreaches)
     case securityKeys
     case passwordReusedItemList(ItemContent)
     case changePassword(PasswordChangeModule.PasswordChangeMode)
     case createSecureLink(ItemContent, Share)
     case enableExtraPassword
-    case secureLinks
+    case secureLinks(asSheet: Bool)
     case secureLinkDetail(SecureLinkListUIModel)
     case addAccount
     case simpleLoginSyncActivation(dismissAllSheets: Bool)
