@@ -70,16 +70,36 @@ public final class FullSyncOperation: Identifiable {
         return await withCheckedContinuation { waiters.append($0) }
     }
 
-    public func updateProgresses(_ progresses: [VaultSyncProgress]) {
+    /// Ignored once the sync has finished, so late events from cancelled work change nothing
+    public func apply(_ event: VaultSyncProgressEvent) {
         guard outcome == nil else { return }
-        self.progresses = progresses
+        switch event {
+        case let .downloadedShares(shares):
+            progresses = shares.map { .init(shareId: $0.shareID, vault: nil, itemsState: .loading) }
+
+        case let .decryptedVault(vault):
+            updateProgress(of: vault.shareId) { $0.copy(vault: vault) }
+
+        case let .getRemoteItems(progress):
+            updateProgress(of: progress.shareId) {
+                $0.copy(itemState: .download(downloaded: progress.downloaded, total: progress.total))
+            }
+
+        case let .decryptItems(progress):
+            updateProgress(of: progress.shareId) {
+                $0.copy(itemState: .decrypt(decrypted: progress.decrypted, total: progress.total))
+            }
+        }
         recordActivity()
     }
 
+    /// For steps that report no progress event, so the watchdog doesn't take them for a stall
     public func recordActivity() {
         activity += 1
     }
 
+    /// Only the first outcome counts: a stalled task returning after the watchdog failed it
+    /// must not replace that failure
     public func finish(_ outcome: Outcome) {
         guard self.outcome == nil else { return }
         self.outcome = outcome
@@ -88,5 +108,11 @@ public final class FullSyncOperation: Identifiable {
         for waiter in pending {
             waiter.resume(returning: outcome)
         }
+    }
+}
+
+private extension FullSyncOperation {
+    func updateProgress(of shareId: String, _ transform: (VaultSyncProgress) -> VaultSyncProgress) {
+        progresses = progresses.map { $0.shareId == shareId ? transform($0) : $0 }
     }
 }

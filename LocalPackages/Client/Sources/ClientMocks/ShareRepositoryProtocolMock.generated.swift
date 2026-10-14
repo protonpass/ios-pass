@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
 import Core
 import CryptoKit
 import Entities
@@ -165,10 +164,10 @@ public actor ShareRepositoryProtocolMock: ShareRepositoryProtocol {
     public var closureUpsertShares: () -> () = {}
     public var invokedUpsertSharesfunction = false
     public var invokedUpsertSharesCount = 0
-    public var invokedUpsertSharesParameters: (userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedUpsertSharesParametersList = [(userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedUpsertSharesParameters: (userId: String, shares: [Share], eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?)?
+    public var invokedUpsertSharesParametersList = [(userId: String, shares: [Share], eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?)]()
 
-    public func upsertShares(userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
+    public func upsertShares(userId: String, shares: [Share], eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws {
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
         invokedUpsertSharesParameters = (userId, shares, eventStream)

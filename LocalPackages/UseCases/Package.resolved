@@ -1,5 +1,5 @@
 {
-  "originHash" : "fc22252c1068f5f8cb22b8be8d70a8b6f49006c894522060fc1a30e659ab8c58",
+  "originHash" : "b099d649ff8bdfdff7f775c616ebfb6b8f5aa284cbd9f97e255751ef44c84f6f",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ProtonMail/protoncore_ios",
       "state" : {
-        "revision" : "b2c09e71efc5613f42e2ecd4a52203b1b8730557",
-        "version" : "37.6.1"
+        "revision" : "27ca38fb5c6dc4e4c99775707a4939080929d701",
+        "version" : "38.0.0"
       }
     },
     {

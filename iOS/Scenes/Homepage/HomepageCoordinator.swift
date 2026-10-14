@@ -597,8 +597,10 @@ private extension HomepageCoordinator {
     /// Runs on launch and on every account switch: an interrupted sync left the account's local
     /// data wiped. Joins the account's sync already in flight, e.g. the one right after logging in,
     /// and queues behind another account's background sync instead of skipping.
+    /// A sync queued while the account was inactive published no sheet, so it is joined here too.
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
-        guard appContentManager.incompleteFullSyncUserIds.contains(userId) else { return }
+        guard appContentManager.incompleteFullSyncUserIds.contains(userId)
+            || appContentManager.isFullSyncing(userId: userId) else { return }
         // Joining a sync in flight publishes no operation, so the sheet is presented here
         presentFullSyncProgressIfNeeded(for: fullContentSync.start(userId: userId,
                                                                    presentation: .sheet,
@@ -636,18 +638,14 @@ private extension HomepageCoordinator {
 
     /// Presenting fails silently while the top most controller is still presenting or dismissing,
     /// e.g. right after the login sheet of the add account flow closes, so retry until it sticks.
-    func present(fullSyncProgress controller: UIViewController, attempt: Int = 1) {
+    /// Retries stop once the sheet is dismissed. Giving up earlier would hide a failure's retry screen.
+    func present(fullSyncProgress controller: UIViewController) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             guard let self, fullSyncProgress?.controller === controller,
                   controller.presentingViewController == nil else { return }
             rootViewController.topMostViewController.present(controller, animated: true)
             guard controller.presentingViewController == nil else { return }
-            if attempt < 10 {
-                present(fullSyncProgress: controller, attempt: attempt + 1)
-            } else {
-                logger.error("Failed to present the full sync progress")
-                fullSyncProgress = nil
-            }
+            present(fullSyncProgress: controller)
         }
     }
 

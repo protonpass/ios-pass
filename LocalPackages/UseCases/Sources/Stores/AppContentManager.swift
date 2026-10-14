@@ -108,7 +108,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
     private let dedupShare: any DedupShareUseCase
     private let refreshUserData: any RefreshUserDataUseCase
-    private let processVaultSyncEvent: any ProcessVaultSyncEventUseCase
     private let fullSyncStallTimeout: Duration
 
     private var cancellables = Set<AnyCancellable>()
@@ -141,7 +140,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
                 dedupShare: any DedupShareUseCase,
                 refreshUserData: any RefreshUserDataUseCase,
-                processVaultSyncEvent: any ProcessVaultSyncEventUseCase,
                 logger: Logger,
                 loginMethod: LoginMethodFlow,
                 fullSyncStallTimeout: Duration = .seconds(180)) {
@@ -159,7 +157,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         self.getAndStoreLastEventId = getAndStoreLastEventId
         self.dedupShare = dedupShare
         self.refreshUserData = refreshUserData
-        self.processVaultSyncEvent = processVaultSyncEvent
         self.logger = logger
         self.loginMethod = loginMethod
         self.fullSyncStallTimeout = fullSyncStallTimeout
@@ -172,6 +169,11 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 
     public var isFullSyncing: Bool {
         !fullSyncTasks.isEmpty
+    }
+
+    /// Includes a sync still queued behind another account's, which has not marked the account yet
+    public func isFullSyncing(userId: String) -> Bool {
+        fullSyncTasks.contains { $0.operation.userId == userId && $0.operation.outcome == nil }
     }
 
     /// Waits for cancelled syncs to return so none of them writes data after the reset
@@ -229,13 +231,15 @@ public extension AppContentManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                _ = await startFullSync(userId: userId, presentation: .inline).result()
+                let outcome = await startFullSync(userId: userId, presentation: .inline).result()
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId, generation: generation)
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
-                _ = await startFullSync(userId: userId, presentation: .inline).result()
+                let outcome = await startFullSync(userId: userId, presentation: .inline).result()
                 logger.info("Crypto error occurred. Done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId, generation: generation)
             } else {
                 logger.info("Not manual login, getting local shares & items")
                 let shares = try await shareRepository.getDecryptedShares(userId: userId)
@@ -277,6 +281,10 @@ public extension AppContentManager {
                 await performFullSync(operation)
             }
             operation.finish(outcome)
+            if outcome.succeeded {
+                // Still part of the task so the next sync can't wipe the items while their notes are written
+                await syncAliasNotes(userId: operation.userId)
+            }
             fullSyncTasks.removeAll { $0.operation === operation }
         }
         fullSyncTasks.append((operation, task))
@@ -299,25 +307,34 @@ public extension AppContentManager {
     func localFullSync(userId: String) async throws {
         let generation = contentGeneration
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        // `loadContents` publishes nothing for a stale load, which would leave this loading state behind
+        guard generation == contentGeneration, userManager.activeUserId == userId else { return }
         state = .loading
         try await loadContents(userId: userId, for: shares, generation: generation)
     }
 }
 
 private extension AppContentManager {
+    /// Unlike other failures, an inactive key failure removes the inline progress instead of keeping
+    /// its retry screen, so the local content has to replace the loading state
+    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome,
+                                          userId: String,
+                                          generation: Int) async throws {
+        guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        try await loadContents(userId: userId, for: shares, generation: generation)
+    }
+
     func performFullSync(_ operation: FullSyncOperation) async -> FullSyncOperation.Outcome {
         let userId = operation.userId
         let generation = contentGeneration
-        let events = PassthroughSubject<VaultSyncProgressEvent, Never>()
-        let processVaultSyncEvent = processVaultSyncEvent
-        let progressSubscription = events
-            .receive(on: DispatchQueue.main)
-            .sink { event in
-                MainActor.assumeIsolated {
-                    operation.updateProgresses(processVaultSyncEvent(event, with: operation.progresses))
-                }
+        let (progressEvents, events) = AsyncStream.makeStream(of: VaultSyncProgressEvent.self)
+        Task {
+            for await event in progressEvents {
+                operation.apply(event)
             }
-        defer { progressSubscription.cancel() }
+        }
+        defer { events.finish() }
         let stallWatchdog = Task { [weak self] in
             guard let self else { return }
             await failWhenStalled(operation)
@@ -325,7 +342,6 @@ private extension AppContentManager {
         defer { stallWatchdog.cancel() }
 
         logger.info("Starting full sync \(operation.id) for user \(userId)")
-        incompleteFullSyncUserIds.insert(userId)
         var hasUndecryptableShares = false
         do {
             // 0. Refresh user data to handle account changes like added address keys
@@ -334,13 +350,14 @@ private extension AppContentManager {
 
             // 1. Delete all local data
             try startStep(operation)
+            incompleteFullSyncUserIds.insert(userId)
             try await deleteLocalDataBeforeFullSync(userId: userId)
 
             // 2. Get all remote shares and their items
             try startStep(operation)
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
-            events.send(.downloadedShares(remoteShares.shares.representingVaults))
+            events.yield(.downloadedShares(remoteShares.shares.representingVaults))
 
             try startStep(operation)
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
@@ -374,9 +391,9 @@ private extension AppContentManager {
             try startStep(operation)
             try await createDefaultVaultIfNeeded(userId: userId, shares: remoteShares.shares)
 
-            // 4. Refresh invite and sl notes
+            // 4. Refresh invites
             try startStep(operation)
-            await refreshInvitesAndAliases(operation)
+            await refreshInvites(userId: userId)
 
             // The event loop also full syncs inactive accounts, whose content must not replace
             // the active account's content on screen
@@ -419,13 +436,21 @@ private extension AppContentManager {
     /// Fails a sync with no activity for `fullSyncStallTimeout` so the user gets the retry screen
     /// instead of an endless spinner. The outcome is published before cancelling because a call
     /// that ignores cancellation keeps the task, and any sync queued behind it, alive until it returns.
+    ///
+    /// Counts ticks instead of reading a clock: clocks keep running while the app is suspended in
+    /// the background, so a single sleep would fail the sync the moment the app comes back.
     func failWhenStalled(_ operation: FullSyncOperation) async {
+        let ticksBeforeStall = 10
         var lastActivity = operation.activity
-        while await (try? Task.sleep(for: fullSyncStallTimeout)) != nil {
+        var stalledTicks = 0
+        while await (try? Task.sleep(for: fullSyncStallTimeout / ticksBeforeStall)) != nil {
             guard operation.activity == lastActivity else {
                 lastActivity = operation.activity
+                stalledTicks = 0
                 continue
             }
+            stalledTicks += 1
+            guard stalledTicks == ticksBeforeStall else { continue }
             let error = URLError(.timedOut)
             logger.error(message: "Full sync \(operation.id) made no progress", error: error)
             operation.finish(.failed(error))
@@ -448,17 +473,22 @@ private extension AppContentManager {
         }
     }
 
-    func refreshInvitesAndAliases(_ operation: FullSyncOperation) async {
-        let userId = operation.userId
-        async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId) {
-            await operation.recordActivity()
-        }
-        async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
+    func refreshInvites(userId: String) async {
         do {
-            _ = try await (syncAliases, refreshInvites)
+            try await inviteRepository.refreshAllInvites(userId: userId)
         } catch {
             // We logs the errors silently to let the full content refresh continue offering a better
             // experience to the user.
+            logger.error(error)
+        }
+    }
+
+    /// Runs after the sync has finished so the progress UI closes once the items are loaded:
+    /// the notes are only read when an alias is opened, and their request has taken 15 s before failing.
+    func syncAliasNotes(userId: String) async {
+        do {
+            _ = try await slNoteSynchronizer.syncAllAliases(userId: userId)
+        } catch {
             logger.error(error)
         }
     }

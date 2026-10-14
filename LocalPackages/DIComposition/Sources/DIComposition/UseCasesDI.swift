@@ -763,10 +763,6 @@ public extension UseCasesContainer {
 // MARK: Vault
 
 public extension UseCasesContainer {
-    var processVaultSyncEvent: Factory<any ProcessVaultSyncEventUseCase> {
-        self { ProcessVaultSyncEvent() }
-    }
-
     @MainActor
     var getMainVault: Factory<any GetMainVaultUseCase> {
         self { GetMainVault(appContentManager: self.appContentManager) }

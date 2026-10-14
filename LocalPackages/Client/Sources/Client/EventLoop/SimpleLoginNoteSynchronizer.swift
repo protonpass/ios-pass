@@ -24,8 +24,7 @@ import Entities
 public protocol SimpleLoginNoteSynchronizerProtocol: Sendable, Actor {
     /// Sync notes for all aliases of a given user if aliases are not in synced
     /// Return `true` if some note were synced to act accordingly (refresh items on memory)
-    func syncAllAliases(userId: String,
-                        onPageSynced: @escaping @Sendable () async -> Void) async throws -> Bool
+    func syncAllAliases(userId: String) async throws -> Bool
 
     /// Sync notes for specific aliases of a given user (told by user events system)
     /// Return `true` if some note were synced to act accordingly (refresh items on memory)
@@ -47,11 +46,10 @@ public actor SimpleLoginNoteSynchronizer: SimpleLoginNoteSynchronizerProtocol {
 }
 
 public extension SimpleLoginNoteSynchronizer {
-    func syncAllAliases(userId: String,
-                        onPageSynced: @escaping @Sendable () async -> Void) async throws -> Bool {
+    func syncAllAliases(userId: String) async throws -> Bool {
         let aliases = try await itemRepository.getUnsyncedSimpleLoginNoteAliases(userId: userId)
         guard !aliases.isEmpty else { return false }
-        try await groupByShareIdAndSyncInBatch(userId: userId, aliases: aliases, onPageSynced: onPageSynced)
+        try await groupByShareIdAndSyncInBatch(userId: userId, aliases: aliases)
         return true
     }
 
@@ -66,8 +64,7 @@ public extension SimpleLoginNoteSynchronizer {
 
 private extension SimpleLoginNoteSynchronizer {
     func groupByShareIdAndSyncInBatch(userId: String,
-                                      aliases: [SymmetricallyEncryptedItem],
-                                      onPageSynced: @escaping @Sendable () async -> Void = {}) async throws {
+                                      aliases: [SymmetricallyEncryptedItem]) async throws {
         let batchSync: @Sendable ([SymmetricallyEncryptedItem], String) async throws
             -> Void = { [weak self] aliases, _ in
                 guard let self else { return }
@@ -78,7 +75,6 @@ private extension SimpleLoginNoteSynchronizer {
                     try await itemRepository.updateCachedAliasInfo(userId: userId,
                                                                    items: chunk,
                                                                    aliases: details)
-                    await onPageSynced()
                 }
             }
 
