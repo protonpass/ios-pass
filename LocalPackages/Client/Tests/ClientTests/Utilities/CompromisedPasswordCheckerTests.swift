@@ -168,6 +168,28 @@ struct CompromisedPasswordCheckerTests {
         #expect(results.contains(candidate.id))
     }
 
+    @Test func `A failed query does not reuse the breach count of a changed password`() async throws {
+        let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()
+        let local = LocalCompromisedPasswordDatasourceProtocolMock()
+        remote.stubbedGetLastChangeTimestampResult = 1_000_000
+        remote.queryPrefix6EtagThrowableError2 = PassError.compromisePassword(.invalidResponse)
+        local.stubbedGetChecksResult = [
+            .init(shareId: "share",
+                  itemId: "item",
+                  passwordHash: fingerprint("old breached password"),
+                  prefix: prefix,
+                  etag: "\"v1\"",
+                  breachCount: 555,
+                  checkedAt: 900)
+        ]
+        let candidate = candidate()
+
+        let results = try await makeSUT(remote: remote, local: local)
+            .check(userId: "user", candidates: [candidate])
+
+        #expect(!results.contains(candidate.id))
+    }
+
     @Test
     func `Keeps the cached result and retries next time when the corpus timestamp fetch fails`() async throws {
         let remote = RemoteCompromisedPasswordsDatasourceProtocolMock()

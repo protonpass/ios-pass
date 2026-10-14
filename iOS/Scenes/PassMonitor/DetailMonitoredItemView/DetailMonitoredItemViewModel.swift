@@ -134,7 +134,7 @@ final class DetailMonitoredItemViewModel: ObservableObject {
                                                                             itemId: item.itemId) else {
                     return
                 }
-                router.present(for: .itemDetail(content, automaticDisplay: false))
+                router.present(for: .itemDetail(content, automaticDisplay: false, fromPassMonitor: true))
             } catch {
                 handle(error: error)
             }
