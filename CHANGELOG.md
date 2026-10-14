@@ -5,7 +5,7 @@
 
 Others:
 - Removed the legacy sync mechanism
-- Rust library upgraded from 2.2.0 to 2.2.2
+- Rust library upgraded from 2.2.0 to 2.3.1
 
 # Version 1.22.0
 - Added support for URL matching (behind feature flag)
