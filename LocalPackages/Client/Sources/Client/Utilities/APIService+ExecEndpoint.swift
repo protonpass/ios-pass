@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-private actor SessionTask {
+actor SessionTask {
     private var state: State = .ready
 
     func cancel() {
@@ -34,7 +34,9 @@ private actor SessionTask {
     }
 
     func setTask(_ task: URLSessionDataTask) {
+        // `cancel()` can arrive first: both calls reach the actor through unstructured tasks
         if case .cancelled = state {
+            task.cancel()
             return
         }
         state = .executing(task)
