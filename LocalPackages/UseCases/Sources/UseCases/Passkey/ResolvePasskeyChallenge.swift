@@ -20,22 +20,26 @@
 //
 
 import AuthenticationServices
+import Entities
 import Foundation
 import PassRustCore
 
 public protocol ResolvePasskeyChallengeUseCase: Sendable {
     func execute(serviceIdentifier: String,
                  clientDataHash: Data,
-                 passkey: Data) throws -> AuthenticateWithPasskeyIosResponse
+                 passkey: Data,
+                 prf: PasskeyPrfValues?) throws -> AuthenticateWithPasskeyIosResponse
 }
 
 public extension ResolvePasskeyChallengeUseCase {
     func callAsFunction(serviceIdentifier: String,
                         clientDataHash: Data,
-                        passkey: Data) throws -> AuthenticateWithPasskeyIosResponse {
+                        passkey: Data,
+                        prf: PasskeyPrfValues?) throws -> AuthenticateWithPasskeyIosResponse {
         try execute(serviceIdentifier: serviceIdentifier,
                     clientDataHash: clientDataHash,
-                    passkey: passkey)
+                    passkey: passkey,
+                    prf: prf)
     }
 }
 
@@ -48,10 +52,19 @@ public final class ResolvePasskeyChallenge: ResolvePasskeyChallengeUseCase {
 
     public func execute(serviceIdentifier: String,
                         clientDataHash: Data,
-                        passkey: Data) throws -> AuthenticateWithPasskeyIosResponse {
+                        passkey: Data,
+                        prf: PasskeyPrfValues?) throws -> AuthenticateWithPasskeyIosResponse {
         let resolveRequest = AuthenticateWithPasskeyIosRequest(serviceIdentifier: serviceIdentifier,
                                                                passkey: passkey,
-                                                               clientDataHash: clientDataHash)
+                                                               clientDataHash: clientDataHash,
+                                                               prf: prf.map { .init(first: $0.first,
+                                                                                    second: $0.second) })
         return try managerProvider.manager.resolveChallengeForIos(request: resolveRequest)
+    }
+}
+
+public extension AuthenticateWithPasskeyIosResponse {
+    var prfValues: PasskeyPrfValues? {
+        prf.map { .init(first: $0.first, second: $0.second) }
     }
 }

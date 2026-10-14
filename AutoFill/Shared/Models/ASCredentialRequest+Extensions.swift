@@ -40,6 +40,7 @@ extension ASCredentialRequest {
         var needsPrf = false
         var saltInput1: Data?
         var saltInput2: Data?
+        var assertionPrf: PasskeyAssertionPrfInput?
         if #available(iOS 18.0, *) {
             switch request.extensionInput {
             case let .registration(input):
@@ -48,6 +49,9 @@ extension ASCredentialRequest {
                     saltInput1 = prf.inputValues?.saltInput1
                     saltInput2 = prf.inputValues?.saltInput2
                 }
+
+            case let .assertion(input):
+                assertionPrf = input.prf?.toPasskeyAssertionPrfInput
 
             default:
                 break
@@ -63,7 +67,8 @@ extension ASCredentialRequest {
                                         supportedAlgorithms: request.supportedAlgorithms,
                                         needsPrf: needsPrf,
                                         saltInput1: saltInput1,
-                                        saltInput2: saltInput2)
+                                        saltInput2: saltInput2,
+                                        assertionPrf: assertionPrf)
     }
 
     @available(iOSApplicationExtension 18.0, *)
@@ -103,5 +108,20 @@ extension ASCredentialRequest {
             return nil
         }
         return nil
+    }
+}
+
+@available(iOS 18.0, *)
+extension ASAuthorizationPublicKeyCredentialPRFAssertionInput {
+    var toPasskeyAssertionPrfInput: PasskeyAssertionPrfInput {
+        .init(values: inputValues?.toPasskeyPrfValues,
+              valuesByCredentialId: perCredentialInputValues?.mapValues(\.toPasskeyPrfValues) ?? [:])
+    }
+}
+
+@available(iOS 18.0, *)
+private extension ASAuthorizationPublicKeyCredentialPRFAssertionInput.InputValues {
+    var toPasskeyPrfValues: PasskeyPrfValues {
+        .init(first: saltInput1, second: saltInput2)
     }
 }
