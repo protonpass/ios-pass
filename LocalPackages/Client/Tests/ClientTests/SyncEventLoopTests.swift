@@ -31,28 +31,45 @@ import Testing
 @Suite(.timeLimit(.minutes(1)), .tags(.synchronizer))
 struct SyncEventLoopTests {
     private let user = UserData.random()
+    private let otherUser = UserData.random()
     private let userEventsSynchronizer = UserEventsSynchronizerSpy()
 
     @Test func `A full sync in progress skips the loop and stops pull to refresh`() async {
-        let events = await runLoop(isFullSyncing: true, untilEventCount: 2)
+        let events = await runLoop(users: [user], syncingUserIds: [user.user.ID], untilEventCount: 2)
 
-        #expect(events == [.stoppedRefreshing, .skippedForFullSync])
+        #expect(events == [.stoppedRefreshing, .skippedForFullSync(userId: user.user.ID)])
         #expect(await userEventsSynchronizer.syncedUserIds.isEmpty)
     }
 
     @Test func `Without a full sync in progress every account is synced`() async {
-        let events = await runLoop(isFullSyncing: false, untilEventCount: 2)
+        let events = await runLoop(users: [user], syncingUserIds: [], untilEventCount: 2)
 
         #expect(events == [.began(userId: user.user.ID), .finished(userId: user.user.ID)])
         #expect(await userEventsSynchronizer.syncedUserIds == [user.user.ID])
     }
+
+    @Test func `A full sync skips only its own account`() async {
+        let events = await runLoop(users: [user, otherUser],
+                                   syncingUserIds: [user.user.ID],
+                                   untilEventCount: 4)
+
+        #expect(events == [
+            .stoppedRefreshing,
+            .skippedForFullSync(userId: user.user.ID),
+            .began(userId: otherUser.user.ID),
+            .finished(userId: otherUser.user.ID)
+        ])
+        #expect(await userEventsSynchronizer.syncedUserIds == [otherUser.user.ID])
+    }
 }
 
 private extension SyncEventLoopTests {
-    func runLoop(isFullSyncing: Bool, untilEventCount count: Int) async -> [SyncEventLoopDelegateFake.Event] {
+    func runLoop(users: [UserData],
+                 syncingUserIds: Set<String>,
+                 untilEventCount count: Int) async -> [SyncEventLoopDelegateFake.Event] {
         let userManager = UserManagerProtocolMock()
-        userManager.stubbedAllUserAccounts = .init([user])
-        let delegate = SyncEventLoopDelegateFake(isFullSyncing: isFullSyncing)
+        userManager.stubbedAllUserAccounts = .init(users)
+        let delegate = SyncEventLoopDelegateFake(syncingUserIds: syncingUserIds)
         let loop = SyncEventLoop(currentDateProvider: CurrentDateProvider(),
                                  userEventsSynchronizer: userEventsSynchronizer,
                                  coreEventsSynchronizer: CoreEventsSynchronizerStub(),
@@ -75,17 +92,17 @@ private final class SyncEventLoopDelegateFake: SyncEventLoopDelegate, SyncEventL
         case began(userId: String)
         case finished(userId: String)
         case failed(userId: String)
-        case skippedForFullSync
+        case skippedForFullSync(userId: String)
         case skippedForOtherReason
         case stoppedRefreshing
     }
 
-    private let isFullSyncing: Bool
+    private let syncingUserIds: Set<String>
     private let stream: AsyncStream<Event>
     private let continuation: AsyncStream<Event>.Continuation
 
-    init(isFullSyncing: Bool) {
-        self.isFullSyncing = isFullSyncing
+    init(syncingUserIds: Set<String>) {
+        self.syncingUserIds = syncingUserIds
         (stream, continuation) = AsyncStream.makeStream()
     }
 
@@ -105,13 +122,13 @@ private final class SyncEventLoopDelegateFake: SyncEventLoopDelegate, SyncEventL
         continuation.yield(.began(userId: userId))
     }
 
-    func syncEventLoopIsFullSyncing() async -> Bool {
-        isFullSyncing
+    func syncEventLoopIsFullSyncing(userId: String) -> Bool {
+        syncingUserIds.contains(userId)
     }
 
     func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
-        if case .fullSyncInProgress = reason {
-            continuation.yield(.skippedForFullSync)
+        if case let .fullSyncInProgress(userId) = reason {
+            continuation.yield(.skippedForFullSync(userId: userId))
         } else {
             continuation.yield(.skippedForOtherReason)
         }

@@ -23,12 +23,11 @@
 import Client
 
 public protocol FullContentSyncUseCase: Sendable {
-    /// The event loop skips its iterations while a full sync runs, but one could already be running
+    /// The event loop skips an account's iterations while it full syncs, but one could already be running
     /// when the full sync starts. `shouldStopEventLoop` cancels it to avoid a data race.
     ///
-    /// However, user events system could also trigger a force full refresh,
-    /// this is the only case where we shouldn't stop the event loop because user events happen inside
-    /// event loop, so if we stop the loop, the full sync will be cancelled.
+    /// User events can also require a full sync from inside an iteration. That caller must not stop
+    /// the loop, which would cancel the very iteration waiting for the sync.
     /// - Returns: whether the sync completed. Failures are not thrown,
     /// so callers that announce the outcome must check this.
     @discardableResult
@@ -72,7 +71,7 @@ public final class FullContentSync: FullContentSyncUseCase {
         let operation = appContentManager.startFullSync(userId: userId, presentation: presentation)
         if shouldStopEventLoop {
             // Stopping cancels the running iteration, restarting right away is safe because
-            // iterations are skipped until no full sync is left
+            // the account's iterations are skipped until its sync is done
             syncEventLoop.stop()
             syncEventLoop.start()
         }

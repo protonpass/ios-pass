@@ -267,10 +267,15 @@ private extension ItemsTabViewModel {
         }
         inlineSyncProgress = viewModel
 
-        // Syncs that finish within 5 seconds never show the progress
+        // Syncs that finish within 5 seconds never show the progress, unless they fail
         Task { [weak self] in
             try? await Task.sleep(seconds: 5)
             guard let self, inlineSyncProgress === viewModel else { return }
+            shouldShowSyncProgress = true
+        }
+        Task { [weak self] in
+            guard case let .failed(error) = await operation.result(), !error.isInactiveUserKey,
+                  let self, inlineSyncProgress === viewModel else { return }
             shouldShowSyncProgress = true
         }
     }

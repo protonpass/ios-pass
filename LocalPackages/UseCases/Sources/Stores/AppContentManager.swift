@@ -67,7 +67,7 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     @Published public private(set) var state = AppContentState.loading
     @Published public private(set) var shareSelection = ShareSelection.all
     @Published public private(set) var itemCount = ItemCount.zero
-    /// The latest full sync started, kept after it finishes so observers can read its outcome
+    /// The latest full sync started or joined, kept after it finishes so observers can read its outcome
     @Published public private(set) var fullSyncOperation: FullSyncOperation?
 
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
@@ -176,6 +176,12 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         fullSyncTasks.contains { $0.operation.userId == userId && $0.operation.outcome == nil }
     }
 
+    /// Unlike `isFullSyncing(userId:)`, also counts the alias notes written after the sync finished
+    /// and a stalled sync whose task has not returned yet
+    public func hasFullSyncTask(userId: String) -> Bool {
+        fullSyncTasks.contains { $0.operation.userId == userId }
+    }
+
     /// Waits for cancelled syncs to return so none of them writes data after the reset
     public func reset() async {
         contentGeneration += 1
@@ -256,7 +262,8 @@ public extension AppContentManager {
     /// Deletes everything and downloads again. Returns before any work starts so the UI can bind
     /// to the operation straight away.
     ///
-    /// A request for a user whose sync is already in flight joins it instead of wiping twice.
+    /// A request for a user whose sync is already in flight joins it instead of wiping twice, and
+    /// publishes it again for observers that skipped it, e.g. while its account was inactive.
     /// Syncs of different users run one after the other, never in parallel.
     @discardableResult
     func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation {
@@ -264,13 +271,18 @@ public extension AppContentManager {
             $0.operation.userId == userId && $0.operation.outcome == nil && !$0.task.isCancelled
         }) {
             logger.info("Full sync already in progress, joining it for user \(userId)")
+            fullSyncOperation = joined.operation
             return joined.operation
         }
 
         let operation = FullSyncOperation(userId: userId, presentation: presentation)
-        let previous = fullSyncTasks.last?.task
+        let previous = fullSyncTasks.last
+        if let previous, previous.operation.outcome != nil {
+            // Its alias notes would hold this sync back with no stall watchdog
+            previous.task.cancel()
+        }
         let task = Task { [weak self] in
-            await previous?.value
+            await previous?.task.value
             guard let self else {
                 operation.finish(.cancelled)
                 return
@@ -281,7 +293,9 @@ public extension AppContentManager {
                 await performFullSync(operation)
             }
             operation.finish(outcome)
-            if outcome.succeeded {
+            // The published outcome, so a stalled sync that completes anyway stays a failure. Notes are only a
+            // cache that opening an alias fills too, so they give way to a sync waiting behind this one.
+            if operation.outcome?.succeeded == true, fullSyncTasks.last?.operation === operation {
                 // Still part of the task so the next sync can't wipe the items while their notes are written
                 await syncAliasNotes(userId: operation.userId)
             }
@@ -488,6 +502,8 @@ private extension AppContentManager {
     func syncAliasNotes(userId: String) async {
         do {
             _ = try await slNoteSynchronizer.syncAllAliases(userId: userId)
+        } catch is CancellationError {
+            logger.info("Stopped syncing alias notes for user \(userId)")
         } catch {
             logger.error(error)
         }

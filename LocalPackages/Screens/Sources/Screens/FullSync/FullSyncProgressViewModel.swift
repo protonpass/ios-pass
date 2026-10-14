@@ -74,11 +74,11 @@ public final class FullSyncProgressViewModel {
         }
     }
 
-    /// The owner tracks the new operation once it is published
+    /// Tracks the operation itself: the sheet's owner ignores an inline sync this retry may join
     func retry() {
-        fullContentSync.start(userId: operation.userId,
-                              presentation: operation.presentation,
-                              shouldStopEventLoop: true)
+        track(fullContentSync.start(userId: operation.userId,
+                                    presentation: operation.presentation,
+                                    shouldStopEventLoop: true))
     }
 
     func shareHostAppLogs() {
