@@ -60,15 +60,21 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
                  identifiers: [ASCredentialServiceIdentifier],
                  params: ASPasskeyCredentialRequestParameters,
                  context: ASCredentialProviderExtensionContext) async throws {
+        var prf: PasskeyPrfValues?
+        if #available(iOS 18.0, *) {
+            prf = params.extensionInput?.prf?.toPasskeyAssertionPrfInput.values(for: passkey.credentialID)
+        }
         let response = try resolveChallenge(serviceIdentifier: params.relyingPartyIdentifier,
                                             clientDataHash: params.clientDataHash,
-                                            passkey: passkey.content)
+                                            passkey: passkey.content,
+                                            prf: prf)
         let credential = ASPasskeyAssertionCredential(userHandle: response.userHandle,
                                                       relyingParty: response.relyingParty,
                                                       signature: response.signature,
                                                       clientDataHash: response.clientDataHash,
                                                       authenticatorData: response.authenticatorData,
                                                       credentialID: response.credentialId)
+        credential.setPrfOutput(response.prfValues)
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: identifiers,
                                    credential: credential,
