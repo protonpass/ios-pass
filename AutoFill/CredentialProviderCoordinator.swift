@@ -76,7 +76,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
-    private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var startTask: Task<Void, Never>?
 
@@ -527,7 +526,6 @@ private extension CredentialProviderCoordinator {
                                                          upgradeChecker: upgradeChecker)
             viewModel.delegate = self
             present(CreateEditLoginView(viewModel: viewModel), dismissBeforePresenting: true)
-            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -539,7 +537,6 @@ private extension CredentialProviderCoordinator {
             let viewModel = try CreateEditAliasViewModel(mode: .create(.alias),
                                                          upgradeChecker: upgradeChecker)
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
-            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
