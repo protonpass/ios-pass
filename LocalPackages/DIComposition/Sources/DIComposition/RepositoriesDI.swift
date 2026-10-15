@@ -29,10 +29,10 @@ import ProtonCoreLogin
 import ProtonCoreUtilities
 
 public final class RepositoryContainer: SharedContainer, AutoRegistering {
-    public static let shared = RepositoryContainer()
+    @TaskLocal public static var shared = RepositoryContainer()
     public let manager = ContainerManager()
 
-    private init() {}
+    init() {}
 
     public func autoRegister() {
         manager.defaultScope = .singleton

@@ -19,7 +19,7 @@ import FactoryKit
 import UseCases
 
 public final class UseCasesContainer: SharedContainer, AutoRegistering {
-    public static let shared = UseCasesContainer()
+    @TaskLocal public static var shared = UseCasesContainer()
     public let manager = ContainerManager()
 
     public func autoRegister() {

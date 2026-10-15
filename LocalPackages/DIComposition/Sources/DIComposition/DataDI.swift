@@ -27,10 +27,10 @@ import FactoryKit
 import Foundation
 
 public final class DataContainer: SharedContainer, AutoRegistering {
-    public static let shared = DataContainer()
+    @TaskLocal public static var shared = DataContainer()
     public let manager = ContainerManager()
 
-    private init() {
+    init() {
         Self.setUpContext()
     }
 

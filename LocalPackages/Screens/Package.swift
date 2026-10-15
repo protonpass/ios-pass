@@ -58,6 +58,16 @@ let package = Package(
               .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
               .enableUpcomingFeature("InferIsolatedConformances")
             ]
+        ),
+        .testTarget(
+            name: "ScreensTests",
+            dependencies: [
+                "Screens",
+                .product(name: "CoreMocks", package: "Core"),
+                .product(name: "DIComposition", package: "DIComposition"),
+                .product(name: "FactoryTesting", package: "Factory"),
+            ],
+            path: "Tests"
         )
     ],
     swiftLanguageModes: [.version("6")]
