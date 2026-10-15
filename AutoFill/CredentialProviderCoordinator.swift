@@ -164,7 +164,7 @@ private extension CredentialProviderCoordinator {
 
         case let .generatePasswords(rules, withUI: withUI):
             if #available(iOS 26.2, *) {
-                handleGeneratePasswords(rules, withUI)
+                await handleGeneratePasswords(rules, withUI)
             }
         }
     }
@@ -278,7 +278,7 @@ private extension CredentialProviderCoordinator {
 
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
-    func handleGeneratePasswords(_ rules: PasswordRules?, _ withUI: Bool) {
+    func handleGeneratePasswords(_ rules: PasswordRules?, _ withUI: Bool) async {
         guard let context else { return }
 
         if withUI {
@@ -307,19 +307,18 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let passwords = try await generatePasswords(rules: rules).map { ASGeneratedPassword($0) }
-                if passwords.isEmpty {
-                    cancelAutoFill(reason: .failed, context: context)
-                } else {
-                    context.completeGeneratePasswordRequest(results: passwords) { _ in }
-                }
-            } catch {
-                logger.error(error)
+        do {
+            let passwords = try await generatePasswords(rules: rules).map { ASGeneratedPassword($0) }
+            // `setUpAndStart` cancelled this run for a newer request, which now owns the context
+            guard !Task.isCancelled else { return }
+            if passwords.isEmpty {
                 cancelAutoFill(reason: .failed, context: context)
+            } else {
+                context.completeGeneratePasswordRequest(results: passwords) { _ in }
             }
+        } catch {
+            logger.error(error)
+            cancelAutoFill(reason: .failed, context: context)
         }
     }
 }
