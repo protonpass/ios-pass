@@ -83,6 +83,11 @@ final class PasswordGeneratorViewModel {
     @ObservationIgnored
     private var persistTask: Task<Void, Never>?
 
+    /// Never reset: every caller ends the presentation after a result, so a second CTA tap
+    /// (the AutoFill button stays on screen) must not store or deliver the password again.
+    @ObservationIgnored
+    private var hasSubmitted = false
+
     /// The preferences produced by the last organisation-policy application. While the live
     /// preferences still equal this value the change came from the policy (or a redundant
     /// re-delivery of the change callback) and must not be persisted; the first genuine user edit
@@ -183,6 +188,8 @@ final class PasswordGeneratorViewModel {
     }
 
     func handleCta() {
+        guard !hasSubmitted else { return }
+        hasSubmitted = true
         // Strong `self` capture is intentional: the caller dismisses the view immediately after
         // calling this, which releases the view-owned view model. A weak capture could deallocate
         // `self` before `insertPassword` resumes, silently dropping `onResult`. The task is

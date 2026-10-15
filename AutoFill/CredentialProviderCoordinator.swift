@@ -226,6 +226,8 @@ private extension CredentialProviderCoordinator {
                 throw ASExtensionError(.credentialIdentityNotFound)
             }
 
+            // A superseded start must not complete or cancel the context the newer request owns
+            guard !Task.isCancelled else { return }
             let prefs = getSharedPreferences()
             try await checkAndAutoFill(request,
                                        userId: item.userId,
