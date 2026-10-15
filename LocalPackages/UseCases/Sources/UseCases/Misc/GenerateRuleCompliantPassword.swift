@@ -20,6 +20,7 @@
 
 import Core
 import Entities
+import Security
 
 // sourcery: AutoMockable
 public protocol GenerateRuleCompliantPasswordUseCase: Sendable {
@@ -41,20 +42,21 @@ public struct GenerateRuleCompliantPassword: GenerateRuleCompliantPasswordUseCas
         guard minLength <= maxLength else { return nil }
         let length = preferredLength.clamp(to: minLength...maxLength)
 
+        // A class already implied by a required set would take a slot from a class that isn't
         let strengtheningSets = [PasswordRules.CharacterClass.lower, .upper, .digit]
             .map { $0.characters.intersection(pool) }
-            .filter { !$0.isEmpty }
+            .filter { set in !set.isEmpty && !requiredSets.contains { set.isSuperset(of: $0) } }
         let guaranteedPools = (requiredSets + strengtheningSets.prefix(length - requiredSets.count))
             .map { Array($0) }
         let poolCharacters = Array(pool)
-        var generator = SystemRandomNumberGenerator()
+        var generator = SecureRandomNumberGenerator()
 
         // Retrying is enough for `maxConsecutive`: Apple's quirks list never goes below 2, where a retry is
         // rarely needed. A one-character pool with a limit below the length exhausts the attempts.
         for _ in 0..<100 {
-            var characters = guaranteedPools.compactMap { $0.randomElement(using: &generator) }
-            characters += (characters.count..<length).compactMap { _ in
-                poolCharacters.randomElement(using: &generator)
+            var characters = guaranteedPools.map { $0.uniformElement(using: &generator) }
+            characters += (characters.count..<length).map { _ in
+                poolCharacters.uniformElement(using: &generator)
             }
             characters.shuffle(using: &generator)
             let password = String(characters)
@@ -63,5 +65,26 @@ public struct GenerateRuleCompliantPassword: GenerateRuleCompliantPasswordUseCas
             }
         }
         return nil
+    }
+}
+
+/// Backed by `SecRandomCopyBytes` so the source of entropy for passwords is explicitly cryptographically secure.
+private struct SecureRandomNumberGenerator: RandomNumberGenerator {
+    mutating func next() -> UInt64 {
+        var value: UInt64 = 0
+        let status = withUnsafeMutableBytes(of: &value) { buffer in
+            guard let baseAddress = buffer.baseAddress else { return errSecAllocate }
+            return SecRandomCopyBytes(kSecRandomDefault, buffer.count, baseAddress)
+        }
+        // Like `SystemRandomNumberGenerator`, trap rather than hand out predictable values
+        precondition(status == errSecSuccess, "SecRandomCopyBytes failed with status \(status)")
+        return value
+    }
+}
+
+private extension Array {
+    /// Callers guarantee non-emptiness; an empty array traps instead of silently shortening the password.
+    func uniformElement(using generator: inout some RandomNumberGenerator) -> Element {
+        self[Int.random(in: indices, using: &generator)]
     }
 }

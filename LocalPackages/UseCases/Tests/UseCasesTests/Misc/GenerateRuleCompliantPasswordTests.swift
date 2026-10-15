@@ -31,7 +31,9 @@ struct GenerateRuleCompliantPasswordTests {
         "minlength: 8; maxlength: 20; max-consecutive: 2; required: lower, upper; required: digit;",
         "minlength: 8; maxlength: 16; required: upper; required: [!#$%&*@^]; allowed: lower, digit;",
         "minlength: 6; maxlength: 6; allowed: digit; max-consecutive: 2",
-        "allowed: [ ab]; minlength: 12"
+        "allowed: [ ab]; minlength: 12",
+        "required: lower; required: upper; required: digit; required: special; minlength: 4; maxlength: 4",
+        "allowed: ascii-printable; max-consecutive: 2"
     ])
     func `every generated password satisfies the rules and has no space`(rawRules: String) throws {
         let rules = try #require(PasswordRules(rawRules))
@@ -72,9 +74,21 @@ struct GenerateRuleCompliantPasswordTests {
         }
     }
 
+    @Test func `strengthening classes are not crowded out by a required class`() throws {
+        let rules =
+            try #require(PasswordRules("required: lower; allowed: upper, digit; minlength: 3; maxlength: 3"))
+
+        for _ in 0..<200 {
+            let password = try #require(sut(rules: rules, preferredLength: 3))
+            #expect(password.contains { $0.isUppercase })
+            #expect(password.contains { $0.isNumber })
+        }
+    }
+
     @Test(arguments: [
         "required: [ ]",
         "allowed: [ ]",
+        "minlength: 10; maxlength: 5",
         "allowed: [a]; minlength: 2; max-consecutive: 1"
     ])
     func `unsatisfiable rules generate nothing`(rawRules: String) throws {
