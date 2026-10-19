@@ -1,3 +1,6 @@
+# Version 1.22.1
+Fixed an issue that prevented logins with advanced URL matching modes from being edited
+
 # Version 1.22.0
 - Added support for URL matching (behind feature flag)
 - Added support for checking whether your passwords have been compromised (behind feature flag)
