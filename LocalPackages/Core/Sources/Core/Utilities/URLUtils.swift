@@ -36,18 +36,26 @@ public enum URLUtils {
             let httpsUrlString = "https://" + urlString
             if let httpsUrl = URL(string: httpsUrlString),
                httpsUrl.scheme != nil,
-               let httpsUrlHost = httpsUrl.host,
-               httpsUrlHost.components(separatedBy: ".").count > 1 {
+               isValid(host: httpsUrl.host) {
                 return httpsUrlString
             }
 
             if let url = URL(string: urlString),
                url.scheme != nil,
-               url.host != nil {
+               isValid(host: url.host) {
                 return urlString
             }
 
             return nil
+        }
+
+        private static func isValid(host: String?) -> Bool {
+            guard let host else { return false }
+            if host.lowercased() == "localhost" {
+                return true
+            }
+            let labels = host.split(separator: ".", omittingEmptySubsequences: false)
+            return labels.count > 1 && labels.allSatisfy { !$0.isEmpty }
         }
     }
 }
