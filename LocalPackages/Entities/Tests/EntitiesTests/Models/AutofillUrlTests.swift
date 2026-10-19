@@ -83,6 +83,18 @@ struct AutofillUrlTests {
         #expect(login(urls: ["https://a.com"], autofillUrls: []).autofillableUrls == ["https://a.com"])
     }
 
+    // MARK: - shouldValidateUrl
+
+    @Test(arguments: [AutofillUrlMode.default, .exact, .never])
+    func `modes matching on a host require a valid url`(mode: AutofillUrlMode) {
+        #expect(mode.shouldValidateUrl)
+    }
+
+    @Test(arguments: [AutofillUrlMode.startWith, .pattern, .regularExpression, .exactPath, .unrecognized(9)])
+    func `pattern based and unknown modes accept free form input`(mode: AutofillUrlMode) {
+        #expect(!mode.shouldValidateUrl)
+    }
+
     // MARK: - Protobuf round trip
 
     @Test(arguments: [AutofillUrlMode.default,
