@@ -60,6 +60,8 @@ public struct ParseCxpImport: ParseCxpImportUseCase {
             }
             return CxpImportedVault(vault: vault, items: items)
         }
-        return .init(exporterName: exporterName, vaults: vaults)
+        return .init(exporterName: exporterName,
+                     vaults: vaults,
+                     hasUnsupportedItems: !result.warnings.isEmpty)
     }
 }

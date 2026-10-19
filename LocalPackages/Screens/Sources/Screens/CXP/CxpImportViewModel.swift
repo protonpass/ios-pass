@@ -31,13 +31,17 @@ final class CxpImportViewModel {
     let exporterName: String
     let rows: [CxpImportSummaryUiModel]
     let itemCount: Int
+    let hasUnsupportedItems: Bool
     private(set) var importedCount: Int?
+    private(set) var users: [UserUiModel] = []
+    var selectedUser: UserUiModel?
     var importSuccessMessage: String?
     var errorMessage: String?
 
     private let result: CxpImportResult
     private let getCxpImportSummary = dependency(\UseCasesContainer.getCxpImportSummary)
     private let importCxpItems = dependency(\UseCasesContainer.importCxpItems)
+    private let getUsers = dependency(\UseCasesContainer.getUserUiModels)
     private let userManager = dependency(\ServiceContainer.userManager)
     private let logger = dependency(\ToolingContainer.logger)
 
@@ -45,9 +49,18 @@ final class CxpImportViewModel {
         importedCount != nil
     }
 
+    var hasMultipleAccounts: Bool {
+        users.count > 1
+    }
+
+    var canImport: Bool {
+        !importing && itemCount > 0 && selectedUser != nil
+    }
+
     init(result: CxpImportResult) {
         self.result = result
         exporterName = result.exporterName
+        hasUnsupportedItems = result.hasUnsupportedItems
         let items = result.vaults.flatMap(\.items)
         itemCount = items.count
         rows = getCxpImportSummary(items: items)
@@ -55,21 +68,32 @@ final class CxpImportViewModel {
 }
 
 extension CxpImportViewModel {
+    func loadUsers() async {
+        do {
+            users = try await getUsers()
+            let activeUserId = try await userManager.getActiveUserId()
+            selectedUser = users.first { $0.id == activeUserId } ?? users.first
+        } catch {
+            errorMessage = error.localizedDebugDescription
+            logger.error(error)
+        }
+    }
+
     /// One-shot: a failure can leave some vaults imported, so retrying would duplicate them
     func startImporting() {
-        guard importedCount == nil else { return }
+        guard importedCount == nil, let userId = selectedUser?.id else { return }
         importedCount = 0
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try await userManager.getActiveUserId()
                 try await importCxpItems(userId: userId,
                                          result: result,
                                          defaultVaultContent: .importedVault()) { @MainActor [weak self] count in
                     guard let self else { return }
                     importedCount = count
                 }
-                importSuccessMessage = #localized("%lld items imported", bundle: .module, itemCount)
+                importSuccessMessage = #localized("%lld items imported from %@", bundle: .module, itemCount,
+                                                  exporterName)
             } catch PassError.importer(.vaultLimitReached) {
                 errorMessage = #localized("Upgrade your plan to get enough vaults for this import.",
                                           bundle: .module)
