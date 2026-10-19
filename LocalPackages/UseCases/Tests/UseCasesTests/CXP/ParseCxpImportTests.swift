@@ -22,6 +22,7 @@
 import AuthenticationServices
 import Entities
 import Foundation
+import PassRustCore
 import Testing
 
 @Suite(.tags(.cxp))
@@ -53,6 +54,28 @@ struct ParseCxpImportTests {
         #expect(!login.totpUri.isEmpty)
     }
 
+    @Test(arguments: [
+        CxfWarningKind.unsupportedCredential,
+        .unsupportedItemType,
+        .partialFieldMapping,
+        .malformedInput
+    ])
+    func `flag unsupported items for any warning`(kind: CxfWarningKind) throws {
+        let sut = ParseCxpImport(cxfSerialization: CxfSerializationStub(warningKinds: [kind]))
+
+        let result = try sut.parse(payload: "", exporterName: "Exporter")
+
+        #expect(result.hasUnsupportedItems)
+    }
+
+    @Test func `do not flag unsupported items without warnings`() throws {
+        let sut = ParseCxpImport(cxfSerialization: CxfSerializationStub(warningKinds: []))
+
+        let result = try sut.parse(payload: "", exporterName: "Exporter")
+
+        #expect(!result.hasUnsupportedItems)
+    }
+
     @Test func `throw on malformed payload`() {
         #expect(throws: (any Error).self) {
             try sut.parse(payload: "{}", exporterName: "Exporter")
@@ -81,6 +104,23 @@ struct ParseCxpImportTests {
 
         #expect(data.timestamp.timeIntervalSince1970.rounded(.down) == 1_700_000_000)
         #expect(result.vaults.flatMap(\.items).count == 1)
+    }
+}
+
+private final class CxfSerializationStub: CxfSerializationProtocol {
+    let warningKinds: [CxfWarningKind]
+
+    init(warningKinds: [CxfWarningKind]) {
+        self.warningKinds = warningKinds
+    }
+
+    func export(input: CxfExportInput) throws -> CxfExportResult {
+        throw PassError.unexpectedError
+    }
+
+    func `import`(payload: String) throws -> CxfImportResult {
+        .init(vaults: [],
+              warnings: warningKinds.map { .init(itemTitle: nil, message: "", kind: $0) })
     }
 }
 

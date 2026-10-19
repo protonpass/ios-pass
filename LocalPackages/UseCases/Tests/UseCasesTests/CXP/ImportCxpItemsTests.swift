@@ -51,7 +51,8 @@ struct ImportCxpItemsTests {
                                                             icon: .icon1),
                                                items: []),
                                          .init(vault: nil, items: [.note(name: "Note 3")])
-                                     ])
+                                     ],
+                                     hasUnsupportedItems: false)
         let progress = OSAllocatedUnfairLock(initialState: [Int]())
         let sut = makeSut()
 
@@ -69,7 +70,8 @@ struct ImportCxpItemsTests {
     @Test func `check allowance only for the vaults that will be created`() async throws {
         let allowance = VaultCreationAllowanceStub()
         let result = CxpImportResult(exporterName: "Exporter",
-                                     vaults: CxpImportResult.twoVaults.vaults + [.init(vault: nil, items: [])])
+                                     vaults: CxpImportResult.twoVaults.vaults + [.init(vault: nil, items: [])],
+                                     hasUnsupportedItems: false)
         let sut = makeSut(allowance: allowance)
 
         try await sut(userId: "user", result: result, defaultVaultContent: .defaultVault, onProgress: nil)
@@ -126,7 +128,8 @@ private extension CxpImportResult {
               vaults: [
                   .init(vault: nil, items: [.note(name: "Note 1")]),
                   .init(vault: nil, items: [.note(name: "Note 2")])
-              ])
+              ],
+              hasUnsupportedItems: false)
     }
 }
 
