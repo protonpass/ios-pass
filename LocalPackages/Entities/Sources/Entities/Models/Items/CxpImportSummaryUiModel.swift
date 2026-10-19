@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct CxpImportSummaryUiModel: Sendable, Hashable, Identifiable {
-    public enum Category: Sendable, Hashable, CaseIterable {
+    public enum Category: Sendable, Hashable, CaseIterable, Comparable {
         case login, totp, note, passkey, alias, custom, identity, creditCard
     }
 

@@ -46,6 +46,7 @@ public struct CxpImportView: View {
                 .frame(minHeight: geometry.size.height)
             }
             .frame(width: geometry.size.width)
+            .opacity(viewModel.importSuccessMessage == nil ? 1 : 0)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
@@ -79,6 +80,7 @@ public struct CxpImportView: View {
                    }
                })
         .idleTimerDisabled(viewModel.importing)
+        .task { await viewModel.loadUsers() }
     }
 }
 
@@ -94,6 +96,14 @@ private extension CxpImportView {
                 .font(.title2.bold())
                 .foregroundStyle(PassColor.textNorm)
                 .multilineTextAlignment(.center)
+
+            if viewModel.hasMultipleAccounts {
+                UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                         users: viewModel.users,
+                                         allowNoSelection: false,
+                                         alignment: .center)
+                    .disabled(viewModel.importing)
+            }
         }
     }
 
@@ -121,16 +131,35 @@ private extension CxpImportView {
     @ViewBuilder
     var footer: some View {
         if let importedCount = viewModel.importedCount {
-            HStack {
-                ProgressView()
-                Text("\(importedCount) of \(viewModel.itemCount) items", bundle: .module)
+            VStack(spacing: 16) {
+                HStack {
+                    ProgressView()
+                    Text("\(importedCount) of \(viewModel.itemCount) items", bundle: .module)
+                }
+                .foregroundStyle(PassColor.textNorm)
+
+                keepAppOpenNotice
             }
-            .foregroundStyle(PassColor.textNorm)
-        } else {
+        } else if viewModel.hasUnsupportedItems {
             Text("Not all item types are supported by other password managers.", bundle: .module)
                 .foregroundStyle(PassColor.textWeak)
                 .multilineTextAlignment(.center)
         }
+    }
+
+    var keepAppOpenNotice: some View {
+        Label(title: {
+            // swiftlint:disable:next line_length
+            Text("Please keep Proton Pass open until the import finishes. Leaving the app or locking your device may interrupt it.",
+                 bundle: .module)
+        }, icon: {
+            Image(systemName: "exclamationmark.triangle.fill")
+        })
+        .foregroundStyle(PassColor.noteInteractionNormMajor2)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(PassColor.noteInteractionNormMinor1)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     var actionButtons: some View {
@@ -140,7 +169,7 @@ private extension CxpImportView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.interactionNorm,
                                         disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: viewModel.importing || viewModel.itemCount == 0,
+                                        disabled: !viewModel.canImport,
                                         action: viewModel.startImporting)
 
             CapsuleTextButton(title: #localized("Cancel", bundle: .module),
