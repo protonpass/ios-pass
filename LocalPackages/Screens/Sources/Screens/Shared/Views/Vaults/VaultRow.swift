@@ -140,6 +140,7 @@ public struct VaultRow<Thumbnail: View>: View {
                     .buttonStyle(.glassProminent)
                     .buttonBorderShape(share.newUserInvitesReady > 0 || share.shared ?
                         .capsule : .circle)
+                    .fixedSize()
                 } else {
                     Button(action: {
                         viewAction(share)
@@ -150,6 +151,7 @@ public struct VaultRow<Thumbnail: View>: View {
                     .background(PassColor.interactionNormMinor1)
                     .cornerRadius(20)
                     .buttonStyle(.plain)
+                    .fixedSize()
                 }
             }
         }
