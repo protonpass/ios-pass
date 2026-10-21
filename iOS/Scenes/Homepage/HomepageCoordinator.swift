@@ -110,7 +110,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
     private var checkingFolderForceSync = false
-    private var fullSyncProgress: (viewModel: FullSyncProgressViewModel, controller: UIViewController)?
+    private var fullSyncProgressViewModel: FullSyncProgressViewModel?
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -582,7 +582,7 @@ private extension HomepageCoordinator {
             .removeDuplicates { $0?.user.ID == $1?.user.ID }
             .sink { [weak self] userData in
                 guard let self else { return }
-                if let operation = fullSyncProgress?.viewModel.operation,
+                if let operation = fullSyncProgressViewModel?.operation,
                    operation.userId != userData?.user.ID {
                     dismissFullSyncProgress()
                 }
@@ -610,8 +610,8 @@ private extension HomepageCoordinator {
               operation.outcome == nil,
               operation.userId == userManager.activeUserId else { return }
 
-        if let fullSyncProgress {
-            fullSyncProgress.viewModel.track(operation)
+        if let fullSyncProgressViewModel {
+            fullSyncProgressViewModel.track(operation)
             return
         }
 
@@ -619,34 +619,16 @@ private extension HomepageCoordinator {
             guard let self else { return }
             fullSyncDidFinish(operation, outcome: outcome)
         }
-        let view = FullSyncProgressView(viewModel: viewModel)
-            // Other flows dismiss the top most controller, e.g. after saving an item, which can be this sheet
-            .onDisappear { [weak self] in
-                guard let self, let controller = fullSyncProgress?.controller else { return }
-                present(fullSyncProgress: controller)
-            }
-        let controller = UIHostingController(rootView: view)
-        controller.sheetPresentationController?.preferredCornerRadius = 16
-        controller.isModalInPresentation = true
-        fullSyncProgress = (viewModel, controller)
-        present(fullSyncProgress: controller)
-    }
-
-    /// Presenting fails silently while the top most controller is still presenting or dismissing,
-    /// e.g. right after the login sheet of the add account flow closes, so retry until it sticks.
-    /// Retries stop once the sheet is dismissed. Giving up earlier would hide a failure's retry screen.
-    func present(fullSyncProgress controller: UIViewController) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            guard let self, fullSyncProgress?.controller === controller,
-                  controller.presentingViewController == nil else { return }
-            rootViewController.topMostViewController.present(controller, animated: true)
-            guard controller.presentingViewController == nil else { return }
-            present(fullSyncProgress: controller)
-        }
+        let controller = UIHostingController(rootView: FullSyncProgressView(viewModel: viewModel))
+        // Tagged by hand: `present(uniquenessTag:)` would dismiss the top most sheet instead of presenting
+        // while the previous progress sheet is still animating out, e.g. on an account switch
+        controller.view.tag = UniqueSheet.fullSyncProgress.rawValue
+        fullSyncProgressViewModel = viewModel
+        present(controller, dismissible: false)
     }
 
     func fullSyncDidFinish(_ operation: FullSyncOperation, outcome: FullSyncOperation.Outcome) {
-        guard fullSyncProgress?.viewModel.operation === operation else { return }
+        guard fullSyncProgressViewModel?.operation === operation else { return }
         dismissFullSyncProgress { [weak self] in
             guard let self else { return }
             switch outcome {
@@ -665,19 +647,12 @@ private extension HomepageCoordinator {
     /// Dismisses the progress sheet rather than the top most sheet. Anything presented above it,
     /// like the logs share sheet, goes with it.
     func dismissFullSyncProgress(completion: (() -> Void)? = nil) {
-        guard let controller = fullSyncProgress?.controller else { return }
-        fullSyncProgress = nil
-        let dismiss = {
-            guard let presenter = controller.presentingViewController else {
-                completion?()
-                return
-            }
-            presenter.dismiss(animated: true, completion: completion)
+        fullSyncProgressViewModel = nil
+        guard let controller = rootViewController.viewControllerWithTag(UniqueSheet.fullSyncProgress) else {
+            completion?()
+            return
         }
-        if controller.transitionCoordinator?.animate(alongsideTransition: nil,
-                                                     completion: { _ in dismiss() }) != true {
-            dismiss()
-        }
+        controller.dismiss(animated: true, completion: completion)
     }
 }
 
