@@ -40,7 +40,7 @@ public extension FullContentSyncUseCase {
     /// - Returns: whether the sync completed. Failures are not thrown,
     /// so callers that announce the outcome must check this.
     @discardableResult
-    func execute(userId: String, shouldStopEventLoop: Bool) async -> Bool {
+    func callAsFunction(userId: String, shouldStopEventLoop: Bool) async -> Bool {
         await callAsFunction(userId: userId, presentation: .sheet, shouldStopEventLoop: shouldStopEventLoop)
             .result()
             .isCompleted
