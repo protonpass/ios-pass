@@ -151,7 +151,7 @@ struct AppContentManagerFullSyncTests {
         await sut.refresh(userId: activeUser.user.ID)
 
         #expect(sut.fullSyncOperation?.presentation == .inline)
-        #expect(sut.fullSyncOperation?.outcome?.succeeded == true)
+        #expect(sut.fullSyncOperation?.outcome?.isCompleted == true)
         #expect(await loginMethod.isManualLogIn() == false)
     }
 
@@ -320,7 +320,7 @@ struct AppContentManagerFullSyncTests {
     @Test func `Syncing an inactive account leaves the active account's content alone`() async {
         let operation = sut.startFullSync(userId: "inactive-user", presentation: .sheet)
 
-        #expect(await operation.result().succeeded)
+        #expect(await operation.result().isCompleted)
         #expect(deleteLocalData.deletedUserIds == ["inactive-user"])
         #expect(await shareRepository.invokedCreateVaultParameters?.userId == "inactive-user")
         #expect(!itemRepository.invokedGetAllItemsfunction)
@@ -394,7 +394,7 @@ struct AppContentManagerFullSyncTests {
         refresh.failingUserIds = ["user-a"]
         let fullContentSync = FullContentSync(syncEventLoop: syncEventLoop, appContentManager: sut)
 
-        let operation = fullContentSync.start(userId: "user-a", presentation: .sheet, shouldStopEventLoop: true)
+        let operation = fullContentSync(userId: "user-a", presentation: .sheet, shouldStopEventLoop: true)
 
         #expect(sut.isFullSyncing)
         #expect(syncEventLoop.invokedStopCount == 1)
@@ -406,7 +406,7 @@ struct AppContentManagerFullSyncTests {
         refresh.failingUserIds = ["user-a"]
         let fullContentSync = FullContentSync(syncEventLoop: syncEventLoop, appContentManager: sut)
 
-        let operation = fullContentSync.start(userId: "user-a", presentation: .sheet, shouldStopEventLoop: false)
+        let operation = fullContentSync(userId: "user-a", presentation: .sheet, shouldStopEventLoop: false)
         _ = await operation.result()
 
         #expect(syncEventLoop.invokedStopCount == 0)
@@ -456,7 +456,7 @@ struct AppContentManagerFullSyncTests {
 
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
 
-        #expect(await operation.result().succeeded, "Each step is under the stall timeout")
+        #expect(await operation.result().isCompleted, "Each step is under the stall timeout")
     }
 
     @Test func `A sync finishes without waiting for the alias notes`() async {
@@ -465,7 +465,7 @@ struct AppContentManagerFullSyncTests {
 
         let operation = sut.startFullSync(userId: "user-a", presentation: .sheet)
 
-        #expect(await operation.result().succeeded)
+        #expect(await operation.result().isCompleted)
         #expect(sut.isFullSyncing, "The notes still hold back the next sync")
         #expect(sut.hasFullSyncTask(userId: "user-a"), "The event loop must not write the account's items yet")
         #expect(!sut.isFullSyncing(userId: "user-a"), "Switching to the account must not resync it")
@@ -491,7 +491,7 @@ struct AppContentManagerFullSyncTests {
 
         let queued = sut.startFullSync(userId: "user-a", presentation: .sheet)
         let start = ContinuousClock.now
-        #expect(await queued.result().succeeded)
+        #expect(await queued.result().isCompleted)
 
         #expect(ContinuousClock.now - start < .seconds(10), "The notes must not hold the next sync back")
         await sut.reset()
@@ -504,7 +504,7 @@ struct AppContentManagerFullSyncTests {
         currentActiveUser.send(UserData.random())
         symmetricKeyProvider.release.open()
 
-        #expect(await operation.result().succeeded,
+        #expect(await operation.result().isCompleted,
                 "The switched away account is fully synced and must not be resynced later")
         #expect(sut.state == .loading)
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
