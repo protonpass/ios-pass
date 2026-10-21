@@ -32,8 +32,20 @@ struct GetCxpImportSummaryTests {
         #expect(sut(items: []).isEmpty)
     }
 
-    @Test func `rows follow category order and omit empty categories`() {
+    @Test func `rows are sorted by descending total and omit empty categories`() {
         let items: [ItemContentProtobuf] = [
+            .item(data: .creditCard(.init(cardholderName: "",
+                                          type: .unspecified,
+                                          number: "",
+                                          verificationNumber: "",
+                                          expirationDate: "",
+                                          pin: ""))),
+            .item(data: .creditCard(.init(cardholderName: "",
+                                          type: .unspecified,
+                                          number: "",
+                                          verificationNumber: "",
+                                          expirationDate: "",
+                                          pin: ""))),
             .item(data: .creditCard(.init(cardholderName: "",
                                           type: .unspecified,
                                           number: "",
@@ -46,7 +58,26 @@ struct GetCxpImportSummaryTests {
         ]
 
         #expect(sut(items: items) == [
+            .init(category: .creditCard, total: 3),
             .init(category: .note, total: 2),
+            .init(category: .alias, total: 1)
+        ])
+    }
+
+    @Test func `equal totals keep category order`() {
+        let items: [ItemContentProtobuf] = [
+            .item(data: .creditCard(.init(cardholderName: "",
+                                          type: .unspecified,
+                                          number: "",
+                                          verificationNumber: "",
+                                          expirationDate: "",
+                                          pin: ""))),
+            .item(data: .alias),
+            .item(data: .note)
+        ]
+
+        #expect(sut(items: items) == [
+            .init(category: .note, total: 1),
             .init(category: .alias, total: 1),
             .init(category: .creditCard, total: 1)
         ])
@@ -60,8 +91,8 @@ struct GetCxpImportSummaryTests {
 
         #expect(sut(items: items) == [
             .init(category: .login, total: 2),
-            .init(category: .totp, total: 1),
-            .init(category: .passkey, total: 2)
+            .init(category: .passkey, total: 2),
+            .init(category: .totp, total: 1)
         ])
     }
 
@@ -72,8 +103,8 @@ struct GetCxpImportSummaryTests {
         ]
 
         #expect(sut(items: items) == [
-            .init(category: .login, total: 1),
             .init(category: .totp, total: 4),
+            .init(category: .login, total: 1),
             .init(category: .note, total: 1)
         ])
     }

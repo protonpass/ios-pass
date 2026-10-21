@@ -28,13 +28,16 @@ public struct UserAccountSelectionMenu: View {
     @Binding private var selectedUser: UserUiModel?
     private let users: [UserUiModel]
     private let allowNoSelection: Bool
+    private let alignment: Alignment
 
     public init(selectedUser: Binding<UserUiModel?>,
                 users: [UserUiModel],
-                allowNoSelection: Bool = true) {
+                allowNoSelection: Bool = true,
+                alignment: Alignment = .leading) {
         _selectedUser = selectedUser
         self.users = users
         self.allowNoSelection = allowNoSelection
+        self.alignment = alignment
     }
 
     public var body: some View {
@@ -82,7 +85,7 @@ public struct UserAccountSelectionMenu: View {
                         .clipShape(shape)
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: alignment)
         })
     }
 }

@@ -56,9 +56,13 @@ public struct GetCxpImportSummary: GetCxpImportSummaryUseCase {
             }
         }
 
-        return CxpImportSummaryUiModel.Category.allCases.compactMap { category in
-            guard let total = totals[category], total > 0 else { return nil }
-            return .init(category: category, total: total)
-        }
+        return CxpImportSummaryUiModel.Category.allCases
+            .compactMap { category -> CxpImportSummaryUiModel? in
+                guard let total = totals[category], total > 0 else { return nil }
+                return .init(category: category, total: total)
+            }
+            .sorted { lhs, rhs in
+                lhs.total == rhs.total ? lhs.category < rhs.category : lhs.total > rhs.total
+            }
     }
 }
