@@ -139,25 +139,40 @@ public extension ServiceContainer {
     }
 
     @MainActor
+    var fullSyncManager: Factory<FullSyncManager> {
+        self { FullSyncManager(itemRepository: self.itemRepository,
+                               shareRepository: self.shareRepository,
+                               inviteRepository: RepositoryContainer.shared.inviteRepository(),
+                               folderRepository: RepositoryContainer.shared.folderRepository(),
+                               slNoteSynchronizer: ServiceContainer.shared.simpleLoginNoteSynchronizer(),
+                               refreshUserData: UseCasesContainer.shared.refreshUserData(),
+                               deleteLocalDataBeforeFullSync: UseCasesContainer.shared
+                                   .deleteLocalDataBeforeFullSync(),
+                               getAndStoreLastEventId: UseCasesContainer.shared.getAndStoreLastEventId(),
+                               logger: ToolingContainer.shared.logger()) }
+    }
+
+    @MainActor
     var appContentManager: Factory<AppContentManager> {
-        self { AppContentManager(itemRepository: self.itemRepository,
-                                 shareRepository: self.shareRepository,
-                                 inviteRepository: RepositoryContainer.shared.inviteRepository(),
-                                 folderRepository: RepositoryContainer.shared.folderRepository(),
-                                 slNoteSynchronizer: ServiceContainer.shared.simpleLoginNoteSynchronizer(),
-                                 userManager: self.userManager(),
-                                 preferencesManager: ToolingContainer.shared.preferencesManager(),
-                                 symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
-                                 indexAllLoginItems: UseCasesContainer.shared.indexAllLoginItems(),
-                                 indexItemsForSpotlight: UseCasesContainer.shared.indexItemsForSpotlight(),
-                                 deleteLocalDataBeforeFullSync: UseCasesContainer.shared
-                                     .deleteLocalDataBeforeFullSync(),
-                                 getAndStoreLastEventId: UseCasesContainer.shared
-                                     .getAndStoreLastEventId(),
-                                 dedupShare: UseCasesContainer.shared.dedupShare(),
-                                 refreshUserData: UseCasesContainer.shared.refreshUserData(),
-                                 logger: ToolingContainer.shared.logger(),
-                                 loginMethod: DataContainer.shared.loginMethod()) }
+        self {
+            let fullSyncManager = self.fullSyncManager()
+            let manager = AppContentManager(itemRepository: self.itemRepository,
+                                            shareRepository: self.shareRepository,
+                                            inviteRepository: RepositoryContainer.shared.inviteRepository(),
+                                            folderRepository: RepositoryContainer.shared.folderRepository(),
+                                            userManager: self.userManager(),
+                                            fullSyncManager: fullSyncManager,
+                                            preferencesManager: ToolingContainer.shared.preferencesManager(),
+                                            symmetricKeyProvider: DataContainer.shared.symmetricKeyProvider(),
+                                            indexAllLoginItems: UseCasesContainer.shared.indexAllLoginItems(),
+                                            indexItemsForSpotlight: UseCasesContainer.shared
+                                                .indexItemsForSpotlight(),
+                                            dedupShare: UseCasesContainer.shared.dedupShare(),
+                                            logger: ToolingContainer.shared.logger(),
+                                            loginMethod: DataContainer.shared.loginMethod())
+            fullSyncManager.contentDelegate = manager
+            return manager
+        }
     }
 
     @MainActor

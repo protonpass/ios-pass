@@ -49,19 +49,19 @@ public extension FullContentSyncUseCase {
 
 public struct FullContentSync: FullContentSyncUseCase {
     private let syncEventLoop: any SyncEventLoopProtocol
-    private let appContentManager: any AppContentManagerProtocol
+    private let fullSyncManager: any FullSyncManagerProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
-                appContentManager: any AppContentManagerProtocol) {
+                fullSyncManager: any FullSyncManagerProtocol) {
         self.syncEventLoop = syncEventLoop
-        self.appContentManager = appContentManager
+        self.fullSyncManager = fullSyncManager
     }
 
     @MainActor
     public func callAsFunction(userId: String,
                                presentation: FullSyncPresentation,
                                shouldStopEventLoop: Bool) -> FullSyncOperation {
-        let operation = appContentManager.startFullSync(userId: userId, presentation: presentation)
+        let operation = fullSyncManager.start(userId: userId, presentation: presentation)
         if shouldStopEventLoop {
             // Stopping cancels the running iteration, restarting right away is safe because
             // the account's iterations are skipped until its sync is done

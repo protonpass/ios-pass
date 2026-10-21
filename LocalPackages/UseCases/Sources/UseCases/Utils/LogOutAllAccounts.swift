@@ -44,6 +44,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let appContentManager: any AppContentManagerProtocol
+    private let fullSyncManager: any FullSyncManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let credentialManager: any CredentialManagerProtocol
     private let keychain: any KeychainProtocol
@@ -55,6 +56,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
                 featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 appContentManager: any AppContentManagerProtocol,
+                fullSyncManager: any FullSyncManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 credentialManager: any CredentialManagerProtocol,
                 keychain: any KeychainProtocol) {
@@ -65,6 +67,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         self.featureFlagsRepository = featureFlagsRepository
         self.passMonitorRepository = passMonitorRepository
         self.appContentManager = appContentManager
+        self.fullSyncManager = fullSyncManager
         self.authManager = authManager
         self.credentialManager = credentialManager
         self.keychain = keychain
@@ -76,20 +79,20 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         featureFlagsRepository.clearUserId()
 
         for userData in userManager.allUserAccounts.value {
-            await appContentManager.cancelFullSync(userId: userData.user.ID)
+            await fullSyncManager.cancel(userId: userData.user.ID)
             try await removeUserLocalData(userId: userData.user.ID)
         }
+        await fullSyncManager.reset()
+        await appContentManager.reset()
 
         async let preferenceReset: Void = preferencesManager.resetAll()
         async let removeCredentials: Void = credentialManager.removeAllCredentials()
         async let cleanPassMonitor: Void = passMonitorRepository.reset()
-        async let cleanAppContentManager: Void = appContentManager.reset()
         async let userManagerReset: Void = userManager.cleanAllUsers()
 
         _ = try await (preferenceReset,
                        removeCredentials,
                        cleanPassMonitor,
-                       cleanAppContentManager,
                        userManagerReset)
 
         // Removes all flags linked to user account
