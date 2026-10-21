@@ -28,8 +28,6 @@ public enum FullSyncPresentation: Sendable {
     case inline
 }
 
-/// State of one full sync for one user. Observers read the state instead of listening to events,
-/// so they can start observing at any time, even after the sync has finished.
 @MainActor
 @Observable
 public final class FullSyncOperation: Identifiable {
@@ -38,7 +36,7 @@ public final class FullSyncOperation: Identifiable {
         case failed(any Error)
         case cancelled
 
-        public var succeeded: Bool {
+        public var isCompleted: Bool {
             if case .completed = self {
                 return true
             }
