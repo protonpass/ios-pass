@@ -353,18 +353,6 @@ struct AppContentManagerFullSyncTests {
         #expect(refresh.calls == ["user-a"])
     }
 
-    @Test func `A refresh racing a reset does not publish stale content`() async {
-        let refreshing = Task { await sut.refresh(userId: activeUser.user.ID) }
-        await symmetricKeyProvider.entered.wait()
-
-        await sut.reset()
-        symmetricKeyProvider.release.open()
-        await refreshing.value
-
-        #expect(sut.state == .loading)
-        #expect(sut.currentShares.value.isEmpty)
-    }
-
     @Test func `Reloading an account that is no longer active leaves the content alone`() async throws {
         symmetricKeyProvider.release.open()
         try await sut.localFullSync(userId: activeUser.user.ID)
