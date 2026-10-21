@@ -295,7 +295,7 @@ public extension AppContentManager {
             operation.finish(outcome)
             // The published outcome, so a stalled sync that completes anyway stays a failure. Notes are only a
             // cache that opening an alias fills too, so they give way to a sync waiting behind this one.
-            if operation.outcome?.succeeded == true, fullSyncTasks.last?.operation === operation {
+            if operation.outcome?.isCompleted == true, fullSyncTasks.last?.operation === operation {
                 // Still part of the task so the next sync can't wipe the items while their notes are written
                 await syncAliasNotes(userId: operation.userId)
             }

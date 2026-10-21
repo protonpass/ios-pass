@@ -600,7 +600,7 @@ private extension HomepageCoordinator {
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
         guard appContentManager.incompleteFullSyncUserIds.contains(userId)
             || appContentManager.isFullSyncing(userId: userId) else { return }
-        fullContentSync.start(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
+        fullContentSync(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
     /// Only one progress sheet exists at a time, and only for the active user: the event loop
