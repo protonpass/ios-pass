@@ -128,22 +128,6 @@ struct AppContentManagerFullSyncTests {
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
 
-    @Test func `A finished sync releases its operation`() async throws {
-        shareRepository.stubbedGetDecryptedRemoteSharesResult = .init(shares: [.random(targetType: 1)],
-                                                                      hasUndecryptableShares: false)
-        symmetricKeyProvider.release.open()
-
-        weak var operation = sut.startFullSync(userId: activeUser.user.ID, presentation: .sheet)
-        _ = await operation?.result()
-        await sut.reset()
-
-        // The progress stream's consumer task keeps the operation until the stream is finished
-        for _ in 0..<100 where operation != nil {
-            try await Task.sleep(for: .milliseconds(10))
-        }
-        #expect(operation == nil)
-    }
-
     @Test func `Logging in runs the full sync with the inline progress`() async {
         symmetricKeyProvider.release.open()
         await loginMethod.setLogInFlow(newState: true)

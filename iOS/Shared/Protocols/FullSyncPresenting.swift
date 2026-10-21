@@ -37,8 +37,8 @@ extension FullSyncPresenting {
     /// instead of throwing.
     func runFullSync(userId: String, shouldStopEventLoop: Bool, reason: String) async {
         logger.info("Full syncing: \(reason)")
-        let succeeded = await fullContentSync.execute(userId: userId,
-                                                      shouldStopEventLoop: shouldStopEventLoop)
+        let succeeded = await fullContentSync(userId: userId,
+                                              shouldStopEventLoop: shouldStopEventLoop)
         logger.info("Done full syncing: \(reason), succeeded: \(succeeded)")
         guard succeeded else { return }
         router.display(element: .successMessage(config: .refresh))
