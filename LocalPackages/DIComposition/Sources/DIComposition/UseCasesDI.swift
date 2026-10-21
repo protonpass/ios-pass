@@ -80,6 +80,11 @@ private extension UseCasesContainer {
         ServiceContainer.shared.appContentManager()
     }
 
+    @MainActor
+    var fullSyncManager: any FullSyncManagerProtocol {
+        ServiceContainer.shared.fullSyncManager()
+    }
+
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         RepositoryContainer.shared.passMonitorRepository()
     }
@@ -771,7 +776,7 @@ public extension UseCasesContainer {
     @MainActor
     var fullContentSync: Factory<any FullContentSyncUseCase> {
         self { FullContentSync(syncEventLoop: ServiceContainer.shared.syncEventLoop(),
-                               appContentManager: self.appContentManager) }
+                               fullSyncManager: self.fullSyncManager) }
     }
 }
 
@@ -887,6 +892,7 @@ public extension UseCasesContainer {
                        passMonitorRepository: self.passMonitorRepository,
                        accessRepository: self.accessRepository,
                        appContentManager: self.appContentManager,
+                       fullSyncManager: self.fullSyncManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: ServiceContainer.shared.credentialManager(),
@@ -1045,6 +1051,7 @@ public extension UseCasesContainer {
                                  featureFlagsRepository: RepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: self.passMonitorRepository,
                                  appContentManager: self.appContentManager,
+                                 fullSyncManager: self.fullSyncManager,
                                  authManager: self.authManager,
                                  credentialManager: ServiceContainer.shared.credentialManager(),
                                  keychain: self.keychain) }

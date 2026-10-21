@@ -59,6 +59,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
     let appContentManager = dependency(\ServiceContainer.appContentManager)
+    private let fullSyncManager = dependency(\ServiceContainer.fullSyncManager)
     private let loginMethod = dependency(\DataContainer.loginMethod)
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
@@ -396,13 +397,13 @@ private extension HomepageCoordinator {
     /// Active user only: `PreferencesManager` resolves the active user, so other runs write the wrong row.
     /// Kept off the event loop, which fires mid-task: it shows a blocking screen and wipes local data.
     func forceSyncForFoldersIfNeeded(userId: String) async {
-        guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
+        guard !checkingFolderForceSync, !fullSyncManager.isFullSyncing else { return }
         checkingFolderForceSync = true
         defer { checkingFolderForceSync = false }
 
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
-            guard !appContentManager.isFullSyncing else { return }
+            guard !fullSyncManager.isFullSyncing else { return }
             await runFullSync(userId: userId,
                               shouldStopEventLoop: true,
                               reason: "folders migration")
@@ -568,7 +569,7 @@ private extension HomepageCoordinator {
 
 private extension HomepageCoordinator {
     func observeFullSyncs() {
-        appContentManager.$fullSyncOperation
+        fullSyncManager.$fullSyncOperation
             .receive(on: DispatchQueue.main)
             .compactMap(\.self)
             .sink { [weak self] operation in
@@ -598,8 +599,8 @@ private extension HomepageCoordinator {
     /// and queues behind another account's background sync instead of skipping.
     /// A sync queued while the account was inactive published no sheet, so it is joined here too.
     func resumeIncompleteFullSyncIfNeeded(userId: String) {
-        guard appContentManager.incompleteFullSyncUserIds.contains(userId)
-            || appContentManager.isFullSyncing(userId: userId) else { return }
+        guard fullSyncManager.incompleteFullSyncUserIds.contains(userId)
+            || fullSyncManager.isFullSyncing(userId: userId) else { return }
         fullContentSync(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
     }
 
@@ -1980,7 +1981,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopIsFullSyncing(userId: String) -> Bool {
-        appContentManager.hasFullSyncTask(userId: userId)
+        fullSyncManager.hasFullSyncTask(userId: userId)
     }
 
     nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {

@@ -64,6 +64,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     let currentSelectedItems = dependency(\DataContainer.currentSelectedItems)
     @LazyInjected(\ServiceContainer.appContentManager) var appContentManager
+    @LazyInjected(\ServiceContainer.fullSyncManager) private var fullSyncManager
 
     private let itemRepository = dependency(\RepositoryContainer.itemRepository)
     private let logger = dependency(\ToolingContainer.logger)
@@ -216,7 +217,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
 private extension ItemsTabViewModel {
     func observeInlineSyncs() {
-        appContentManager.$fullSyncOperation
+        fullSyncManager.$fullSyncOperation
             .receive(on: DispatchQueue.main)
             .compactMap(\.self)
             .sink { [weak self] operation in

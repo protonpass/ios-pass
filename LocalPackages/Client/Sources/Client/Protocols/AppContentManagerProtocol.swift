@@ -29,15 +29,12 @@ public protocol AppContentManagerProtocol: Sendable {
 
     func select(_ selection: ShareSelection, filterOption: ItemTypeFilterOption?)
     func refresh(userId: String) async
-    @discardableResult
-    func startFullSync(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation
-    func cancelFullSync(userId: String) async
     func localFullSync(userId: String) async throws
     func getShareContent(for shareId: String) -> ShareContent?
     func getItems(shareId: String, containerId: String?) -> [ItemUiModel]
     func delete(userId: String, shareId: String) async throws
     func getOldestOwnedVault() async -> Share?
-    func reset() async
+    func reset()
 }
 
 public extension AppContentManagerProtocol {

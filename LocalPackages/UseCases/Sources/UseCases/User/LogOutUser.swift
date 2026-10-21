@@ -47,6 +47,7 @@ public final class LogOutUser: LogOutUserUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let appContentManager: any AppContentManagerProtocol
+    private let fullSyncManager: any FullSyncManagerProtocol
     private let apiManager: any APIManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let credentialManager: any CredentialManagerProtocol
@@ -60,6 +61,7 @@ public final class LogOutUser: LogOutUserUseCase {
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 appContentManager: any AppContentManagerProtocol,
+                fullSyncManager: any FullSyncManagerProtocol,
                 apiManager: any APIManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 credentialManager: any CredentialManagerProtocol,
@@ -72,6 +74,7 @@ public final class LogOutUser: LogOutUserUseCase {
         self.passMonitorRepository = passMonitorRepository
         self.accessRepository = accessRepository
         self.appContentManager = appContentManager
+        self.fullSyncManager = fullSyncManager
         self.apiManager = apiManager
         self.authManager = authManager
         self.credentialManager = credentialManager
@@ -112,16 +115,17 @@ private extension LogOutUser {
     func signOutLastUser(_ userData: UserData) async throws {
         syncEventLoop.reset()
         featureFlagsRepository.clearUserId()
+        // Before clearing the content so no cancelled sync loads it again
+        await fullSyncManager.reset()
+        await appContentManager.reset()
 
         async let preferenceReset: Void = preferencesManager.reset()
         async let removeCredentials: Void = credentialManager.removeAllCredentials()
         async let cleanPassMonitor: Void = passMonitorRepository.reset()
-        async let cleanAppContentManager: Void = appContentManager.reset()
 
         _ = try await (preferenceReset,
                        removeCredentials,
-                       cleanPassMonitor,
-                       cleanAppContentManager)
+                       cleanPassMonitor)
 
         try await commonDeletionActions(userId: userData.user.ID)
         apiManager.reset()
@@ -153,7 +157,7 @@ private extension LogOutUser {
     }
 
     func commonDeletionActions(userId: String) async throws {
-        await appContentManager.cancelFullSync(userId: userId)
+        await fullSyncManager.cancel(userId: userId)
         async let removeUser: Void = userManager.remove(userId: userId)
         async let removeUserData: Void = removeUserLocalData(userId: userId)
         _ = try await (removeUser, removeUserData)
