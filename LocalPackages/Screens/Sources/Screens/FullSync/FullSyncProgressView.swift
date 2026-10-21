@@ -72,6 +72,7 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: viewModel.error == nil)
+        .idleTimerDisabled(viewModel.error == nil)
     }
 }
 

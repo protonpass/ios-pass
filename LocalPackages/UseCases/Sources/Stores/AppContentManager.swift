@@ -77,6 +77,8 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     public private(set) var incompleteFullSyncUserIds: Set<String> {
         get {
             let userIds = kSharedUserDefaults.stringArray(forKey: Constants.incompleteFullSyncUserIds) ?? []
+            // swiftlint:disable:next todo
+            // TODO: Added on Oct 2026, could be removed several months later
             let legacyUserId = kSharedUserDefaults.string(forKey: Constants.incompleteFullSyncUserId)
             return Set(userIds + [legacyUserId].compactMap(\.self))
         }
@@ -113,8 +115,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
-    /// Bumped on reset so loading that started before a logout cannot publish content after it
-    private var contentGeneration = 0
     /// Running sync first, then the ones queued behind it
     private var fullSyncTasks: [(operation: FullSyncOperation, task: Task<Void, Never>)] = []
     /// The filter option after switching vaults
@@ -184,7 +184,6 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
 
     /// Waits for cancelled syncs to return so none of them writes data after the reset
     public func reset() async {
-        contentGeneration += 1
         pendingRefreshUserId = nil
         let tasks = fullSyncTasks.map(\.task)
         tasks.forEach { $0.cancel() }
@@ -209,7 +208,6 @@ public extension AppContentManager {
             return
         }
         refreshingUserId = userId
-        let generation = contentGeneration
         defer {
             refreshingUserId = nil
             if let pending = pendingRefreshUserId {
@@ -240,20 +238,20 @@ public extension AppContentManager {
                 let outcome = await startFullSync(userId: userId, presentation: .inline).result()
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
-                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId, generation: generation)
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
                 let outcome = await startFullSync(userId: userId, presentation: .inline).result()
                 logger.info("Crypto error occurred. Done full sync")
-                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId, generation: generation)
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else {
                 logger.info("Not manual login, getting local shares & items")
                 let shares = try await shareRepository.getDecryptedShares(userId: userId)
-                try await loadContents(userId: userId, for: shares, generation: generation)
+                try await loadContents(userId: userId, for: shares)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
-            guard generation == contentGeneration, !(error is CancellationError) else { return }
+            guard !(error is CancellationError), userManager.activeUserId == userId else { return }
             logger.error(message: "Failed to refresh content for user \(userId)", error: error)
             state = .error(error)
         }
@@ -319,29 +317,25 @@ public extension AppContentManager {
     }
 
     func localFullSync(userId: String) async throws {
-        let generation = contentGeneration
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
         // `loadContents` publishes nothing for a stale load, which would leave this loading state behind
-        guard generation == contentGeneration, userManager.activeUserId == userId else { return }
+        guard userManager.activeUserId == userId else { return }
         state = .loading
-        try await loadContents(userId: userId, for: shares, generation: generation)
+        try await loadContents(userId: userId, for: shares)
     }
 }
 
 private extension AppContentManager {
     /// Unlike other failures, an inactive key failure removes the inline progress instead of keeping
     /// its retry screen, so the local content has to replace the loading state
-    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome,
-                                          userId: String,
-                                          generation: Int) async throws {
+    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
         guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        try await loadContents(userId: userId, for: shares, generation: generation)
+        try await loadContents(userId: userId, for: shares)
     }
 
     func performFullSync(_ operation: FullSyncOperation) async -> FullSyncOperation.Outcome {
         let userId = operation.userId
-        let generation = contentGeneration
         let (progressEvents, events) = AsyncStream.makeStream(of: VaultSyncProgressEvent.self)
         Task {
             for await event in progressEvents {
@@ -413,7 +407,7 @@ private extension AppContentManager {
             // the active account's content on screen
             try startStep(operation)
             if userManager.activeUserId == userId {
-                try await loadContents(userId: userId, for: remoteShares.shares, generation: generation)
+                try await loadContents(userId: userId, for: remoteShares.shares)
             } else {
                 await indexForAutoFill()
             }
@@ -822,10 +816,9 @@ private extension AppContentManager {
         logger.info("Created default vault for user")
     }
 
-    /// Skips publishing when the account is no longer the active one or the content was reset
-    /// since `generation` was read
+    /// Skips publishing when the account is no longer the active one
     @MainActor
-    func loadContents(userId: String, for shares: [Share], generation: Int) async throws {
+    func loadContents(userId: String, for shares: [Share]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
 
         async let allItemsFetch = itemRepository.getAllItems(userId: userId)
@@ -839,7 +832,7 @@ private extension AppContentManager {
                                                  shares: dedupShares,
                                                  folders: folders,
                                                  items: allItems)
-        guard generation == contentGeneration, userManager.activeUserId == userId else { return }
+        guard userManager.activeUserId == userId else { return }
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
         currentShares.send(shares)
