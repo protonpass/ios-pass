@@ -3533,7 +3533,7 @@
         }
       }
     },
-    "%lld items imported" : {
+    "%lld items imported from %@" : {
       "localizations" : {
         "en" : {
           "variations" : {
@@ -3541,13 +3541,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld item imported"
+                  "value" : "%1$lld item imported from %2$@"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld items imported"
+                  "value" : "%1$lld items imported from %2$@"
                 }
               }
             }
@@ -53920,6 +53920,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "請保持此應用程式開啟。"
+          }
+        }
+      }
+    },
+    "Please keep Proton Pass open until the import finishes. Leaving the app or locking your device may interrupt it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please keep Proton Pass open until the import finishes. Leaving the app or locking your device may interrupt it."
           }
         }
       }

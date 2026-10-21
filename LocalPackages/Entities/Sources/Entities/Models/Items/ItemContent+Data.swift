@@ -72,6 +72,16 @@ public enum AutofillUrlMode: Sendable, Equatable, Hashable {
     /// A mode added to the protobuf after this build. Carries the raw value so saving an
     /// item edited on this client does not overwrite another platform's rule with `.default`.
     case unrecognized(Int)
+
+    public var shouldValidateUrl: Bool {
+        switch self {
+        case .default, .exact, .never:
+            true
+
+        case .exactPath, .pattern, .regularExpression, .startWith, .unrecognized:
+            false
+        }
+    }
 }
 
 public struct AutofillUrl: Sendable, Equatable, Hashable {
