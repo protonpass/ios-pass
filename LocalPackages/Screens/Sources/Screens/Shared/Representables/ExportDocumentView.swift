@@ -21,19 +21,34 @@
 
 import SwiftUI
 
-public struct ExportDocumentView: UIViewControllerRepresentable {
+public struct ExportDocumentView: View {
+    @Environment(\.dismiss) private var dismiss
     let url: URL
 
     public init(url: URL) {
         self.url = url
     }
 
-    public func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+    public var body: some View {
+        // The picker raises NSInternalInconsistencyException for a URL whose file is gone,
+        // e.g. a temporary attachment purged after it was downloaded (IOS-PASS-DSE)
+        if FileManager.default.fileExists(atPath: url.path()) {
+            DocumentExportPicker(url: url)
+        } else {
+            Color.clear.onAppear { dismiss() }
+        }
+    }
+}
+
+private struct DocumentExportPicker: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         UIDocumentPickerViewController(forExporting: [url])
     }
 
-    public func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
-                                       context: Context) {
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
+                                context: Context) {
         // Not applicable
     }
 }
