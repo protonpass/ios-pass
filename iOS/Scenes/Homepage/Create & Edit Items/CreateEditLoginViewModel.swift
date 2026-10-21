@@ -106,7 +106,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func bindValues() {
         super.bindValues()
         defer {
-            emailUsernameExpanded = emailUsernameExpanded || getSharedPreferences().alwaysShowUsernameField
+            if getSharedPreferences().alwaysShowUsernameField {
+                expandEmailAndUsername()
+            }
         }
 
         switch mode {
