@@ -77,7 +77,7 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, _, error in
+            let task = session.dataTask(with: request) { [weak self] data, response, error in
                 defer {
                     if let self {
                         observations[request] = nil
@@ -85,6 +85,9 @@ public extension ApiServiceLite {
                 }
                 if let error {
                     continuation.finish(throwing: error)
+                } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                          !(200..<300).contains(statusCode) {
+                    continuation.finish(throwing: PassError.api(.unexpectedStatusCode(statusCode)))
                 } else if let data {
                     do {
                         let response = try JSONDecoder().decode(R.self, from: data)
@@ -121,7 +124,7 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, _, error in
+            let task = session.dataTask(with: request) { [weak self] data, response, error in
                 defer {
                     if let self {
                         observations[request] = nil
@@ -129,6 +132,10 @@ public extension ApiServiceLite {
                 }
                 if let error {
                     continuation.finish(throwing: error)
+                } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                          !(200..<300).contains(statusCode) {
+                    // Error bodies must not reach callers as payload: they would be decrypted as file chunks
+                    continuation.finish(throwing: PassError.api(.unexpectedStatusCode(statusCode)))
                 } else if let data {
                     continuation.yield(.result(data))
                     continuation.finish()
