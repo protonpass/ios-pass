@@ -22,23 +22,17 @@
 import PassRustCore
 
 public protocol SanitizeFileNameUseCase: Sendable {
-    func execute(_ fileName: String) -> String
+    func callAsFunction(_ fileName: String) -> String
 }
 
-public extension SanitizeFileNameUseCase {
-    func callAsFunction(_ fileName: String) -> String {
-        execute(fileName)
-    }
-}
-
-public final class SanitizeFileName: SanitizeFileNameUseCase {
+public struct SanitizeFileName: SanitizeFileNameUseCase {
     private let fileDecoder: any FileDecoderProtocol
 
     public init(fileDecoder: any FileDecoderProtocol = FileDecoder()) {
         self.fileDecoder = fileDecoder
     }
 
-    public func execute(_ fileName: String) -> String {
+    public func callAsFunction(_ fileName: String) -> String {
         fileDecoder.sanitizeFilename(name: fileName, windows: false)
     }
 }

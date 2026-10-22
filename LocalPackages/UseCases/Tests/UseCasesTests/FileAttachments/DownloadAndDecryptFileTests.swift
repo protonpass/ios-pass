@@ -20,7 +20,6 @@
 
 import Client
 import ClientMocks
-import Core
 import CryptoKit
 import Entities
 import EntitiesMocks
@@ -78,6 +77,9 @@ private struct DownloadContext {
     let item = DummyItemIdentifiable(itemId: .random(), shareId: .random())
     let file: ItemFile
     let shareRepository = ShareRepositoryProtocolMock()
+    let directory = FileManager.default.temporaryDirectory
+        .appending(path: "DownloadAndDecryptFileTests")
+        .appending(path: UUID().uuidString)
     let sut: DownloadAndDecryptFile
 
     init(fileName: String) throws {
@@ -104,11 +106,10 @@ private struct DownloadContext {
         let encryptedChunk = try AES.GCM.seal(content,
                                               key: fileKey,
                                               associatedData: .fileData(version: 1, chunkIndex: 0, chunkCount: 1))
-        sut =
-            DownloadAndDecryptFile(generateFileTempUrl: GenerateFileTempUrl(sanitizeFileName: SanitizeFileName()),
-                                   shareRepository: shareRepository,
-                                   keyManager: keyManager,
-                                   apiService: ChunkApiServiceLite(chunk: encryptedChunk))
+        sut = DownloadAndDecryptFile(generateFileTempUrl: IsolatedFileTempUrl(directory: directory),
+                                     shareRepository: shareRepository,
+                                     keyManager: keyManager,
+                                     apiService: ChunkApiServiceLite(chunk: encryptedChunk))
     }
 
     func download() async throws -> URL {
@@ -122,9 +123,17 @@ private struct DownloadContext {
     }
 
     func removeDownloads() {
-        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory
-            .appending(path: Constants.Attachment.rootDirectoryName)
-            .appending(path: userId))
+        try? FileManager.default.removeItem(at: directory)
+    }
+}
+
+/// Kept out of the real attachment root: `ClearCacheForLoggedOutUsersTests` runs in parallel
+/// and deletes every user folder there that its stubbed users don't own
+private struct IsolatedFileTempUrl: GenerateFileTempUrlUseCase {
+    let directory: URL
+
+    func execute(userId: String, item: any ItemIdentifiable, file: ItemFile) -> URL {
+        directory.appendingPathComponent(SanitizeFileName()(file.name ?? ""), conformingTo: .data)
     }
 }
 

@@ -63,7 +63,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
         -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
-        if fileManager.fileExists(atPath: url.path()),
+        if fileManager.fileExists(atPath: url.path(percentEncoded: false)),
            let attributes = try? fileManager.attributesOfItem(atPath: url.path),
            let fileSize = (attributes[FileAttributeKey.size] as? NSNumber)?.intValue,
            // Heuristically make sure downloaded decrypted file size is >= 98% of the encrypted size
