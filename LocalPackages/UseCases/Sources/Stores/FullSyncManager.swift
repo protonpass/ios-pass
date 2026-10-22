@@ -178,6 +178,8 @@ private extension FullSyncManager {
     func performFullSync(_ operation: FullSyncOperation) async -> FullSyncOperation.Outcome {
         let userId = operation.userId
         let (progressEvents, events) = AsyncStream.makeStream(of: VaultSyncProgressEvent.self)
+        // The repository actors yield progress while this function awaits them, so the events are applied
+        // in a separate main actor task. It ends once `events.finish()` runs, and `apply` drops late events.
         Task {
             for await event in progressEvents {
                 operation.apply(event)
