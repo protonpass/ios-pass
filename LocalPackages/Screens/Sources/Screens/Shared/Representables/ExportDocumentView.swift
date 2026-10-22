@@ -30,8 +30,6 @@ public struct ExportDocumentView: View {
     }
 
     public var body: some View {
-        // The picker raises NSInternalInconsistencyException for a URL whose file is gone,
-        // e.g. a temporary attachment purged after it was downloaded (IOS-PASS-DSE)
         if FileManager.default.fileExists(atPath: url.path()) {
             DocumentExportPicker(url: url)
         } else {
