@@ -512,7 +512,7 @@ private extension BaseItemDetailViewModel {
                 let url = try generateFileTempUrl(userId: userId,
                                                   item: itemContent,
                                                   file: file)
-                if FileManager.default.fileExists(atPath: url.path()) {
+                if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
                     switch postAction {
                     case .save:
                         urlToSave = url
