@@ -213,8 +213,9 @@ public extension AppContentManager {
 }
 
 private extension AppContentManager {
-    /// Unlike other failures, an inactive key failure removes the inline progress instead of keeping
-    /// its retry screen, so the local content has to replace the loading state
+    /// A completed sync already loaded the content through `fullSyncDidStoreContent`. Unlike other failures,
+    /// an inactive key failure removes the inline progress instead of keeping its retry screen,
+    /// so the local content has to replace the loading state
     func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
         guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
