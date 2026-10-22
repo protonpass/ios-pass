@@ -175,13 +175,13 @@ public struct VaultRow<Thumbnail: View>: View {
                 .resizable()
                 .scaledToFit()
                 .foregroundStyle(PassColor.interactionNormMajor2)
-                .frame(maxHeight: 20)
+                .frame(width: 20, height: 20)
             if share.newUserInvitesReady > 0 {
                 IconProvider.exclamationCircleFilled
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.signalDanger)
-                    .frame(maxHeight: 16)
+                    .frame(width: 16, height: 16)
                     .offset(y: -10)
             }
             if share.shared {
