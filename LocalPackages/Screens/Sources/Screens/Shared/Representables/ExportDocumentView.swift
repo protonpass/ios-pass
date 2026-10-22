@@ -21,32 +21,19 @@
 
 import SwiftUI
 
-public struct ExportDocumentView: View {
-    @Environment(\.dismiss) private var dismiss
+public struct ExportDocumentView: UIViewControllerRepresentable {
     let url: URL
 
     public init(url: URL) {
         self.url = url
     }
 
-    public var body: some View {
-        if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
-            DocumentExportPicker(url: url)
-        } else {
-            Color.clear.onAppear { dismiss() }
-        }
-    }
-}
-
-private struct DocumentExportPicker: UIViewControllerRepresentable {
-    let url: URL
-
-    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+    public func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         UIDocumentPickerViewController(forExporting: [url])
     }
 
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
-                                context: Context) {
+    public func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
+                                       context: Context) {
         // Not applicable
     }
 }

@@ -30,10 +30,57 @@ import UseCases
 
 @Suite(.tags(.useCase))
 struct DownloadAndDecryptFileTests {
-    @Test(arguments: ["report.pdf", "测试报告.txt", "נספח.docx", "café.txt", "My report [final] #2 100%.pdf"])
+    @Test(arguments: [
+        "report.pdf",
+        "My report [final] #2 100%.pdf",
+        "café.txt",
+        "Lønseddel.pdf",
+        "Driver’s license.pdf",
+        "Notes – draft….txt",
+        "Screenshot 2026-10-05 at 1.47.07\u{202F}PM.png",
+        "测试报告.txt",
+        "ハ\u{3099}ックアッフ\u{309A}.png",
+        "사업자등록증.jpg",
+        "נספח.docx"
+    ])
     func `downloads and decrypts a file under its original name`(fileName: String) async throws {
         // Given
-        let content = Data("Proton Pass".utf8)
+        let context = try DownloadContext(fileName: fileName)
+        defer { context.removeDownloads() }
+
+        // When
+        let url = try await context.download()
+
+        // Then
+        #expect(url.lastPathComponent == fileName)
+        #expect(try Data(contentsOf: url) == context.content)
+    }
+
+    @Test(arguments: ["report.pdf", "测试报告.txt", "Screenshot 2026-10-05 at 1.47.07\u{202F}PM.png"])
+    func `reuses an already downloaded file instead of downloading it again`(fileName: String) async throws {
+        // Given
+        let context = try DownloadContext(fileName: fileName)
+        defer { context.removeDownloads() }
+        let firstUrl = try await context.download()
+
+        // When
+        let secondUrl = try await context.download()
+
+        // Then
+        #expect(secondUrl == firstUrl)
+        #expect(await context.shareRepository.invokedGetShareCount == 1)
+    }
+}
+
+private struct DownloadContext {
+    let content = Data("Proton Pass".utf8)
+    let userId = String.random()
+    let item = DummyItemIdentifiable(itemId: .random(), shareId: .random())
+    let file: ItemFile
+    let shareRepository = ShareRepositoryProtocolMock()
+    let sut: DownloadAndDecryptFile
+
+    init(fileName: String) throws {
         let itemKey = Data((0..<32).map { _ in UInt8.random(in: .min ... .max) })
         let fileKey = Data((0..<32).map { _ in UInt8.random(in: .min ... .max) })
         let chunk = try JSONDecoder().decode(FileChunk.self,
@@ -45,9 +92,8 @@ struct DownloadAndDecryptFileTests {
                                        chunks: [chunk],
                                        encryptionVersion: 1)
         file.name = fileName
-        let item = DummyItemIdentifiable(itemId: .random(), shareId: .random())
+        self.file = file
 
-        let shareRepository = ShareRepositoryProtocolMock()
         shareRepository.stubbedGetShareResult = .random(shareID: item.shareId)
         let keyManager = PassKeyManagerProtocolMock()
         keyManager.stubbedGetShareKeysResult = [
@@ -58,30 +104,27 @@ struct DownloadAndDecryptFileTests {
         let encryptedChunk = try AES.GCM.seal(content,
                                               key: fileKey,
                                               associatedData: .fileData(version: 1, chunkIndex: 0, chunkCount: 1))
-        let userId = String.random()
-        let sut =
+        sut =
             DownloadAndDecryptFile(generateFileTempUrl: GenerateFileTempUrl(sanitizeFileName: SanitizeFileName()),
                                    shareRepository: shareRepository,
                                    keyManager: keyManager,
                                    apiService: ChunkApiServiceLite(chunk: encryptedChunk))
-        defer {
-            try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory
-                .appending(path: Constants.Attachment.rootDirectoryName)
-                .appending(path: userId))
-        }
+    }
 
-        // When
+    func download() async throws -> URL {
         var url: URL?
         for try await event in try await sut(userId: userId, item: item, file: file) {
             if case let .result(value) = event {
                 url = value
             }
         }
+        return try #require(url)
+    }
 
-        // Then
-        let fileUrl = try #require(url)
-        #expect(fileUrl.lastPathComponent == fileName)
-        #expect(try Data(contentsOf: fileUrl) == content)
+    func removeDownloads() {
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectory
+            .appending(path: Constants.Attachment.rootDirectoryName)
+            .appending(path: userId))
     }
 }
 
