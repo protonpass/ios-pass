@@ -30,7 +30,7 @@ public struct ExportDocumentView: View {
     }
 
     public var body: some View {
-        if FileManager.default.fileExists(atPath: url.path()) {
+        if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
             DocumentExportPicker(url: url)
         } else {
             Color.clear.onAppear { dismiss() }

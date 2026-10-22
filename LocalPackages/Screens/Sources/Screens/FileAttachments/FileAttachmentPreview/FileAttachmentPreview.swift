@@ -158,7 +158,7 @@ private extension FileAttachmentPreview {
     /// to download the file again. Otherwise, if the users try to save or share again,
     /// the app will crash because file no more exists at the previous URL
     func dismissIfFileIsRemoved(_ url: URL) {
-        if !FileManager.default.fileExists(atPath: url.path()) {
+        if !FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
             dismiss()
         }
     }

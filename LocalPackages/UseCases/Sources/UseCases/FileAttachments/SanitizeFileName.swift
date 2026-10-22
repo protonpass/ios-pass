@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Core
 import PassRustCore
 
 public protocol SanitizeFileNameUseCase: Sendable {
@@ -40,25 +39,6 @@ public final class SanitizeFileName: SanitizeFileNameUseCase {
     }
 
     public func execute(_ fileName: String) -> String {
-        // When initializing FileHandle using FileHandle(forWritingTo:), file name with some characters
-        // fails the initialization hence break the whole download process.
-        // So we replace characters by hyphens to bypass this system bug.
-        var fileName = fileName
-            .replacingOccurrences(of: " ", with: "_")
-            .replacingOccurrences(of: "[", with: "_")
-            .replacingOccurrences(of: "]", with: "_")
-            .replacingOccurrences(of: "%", with: "-")
-            .replacingOccurrences(of: "*", with: "-")
-            .replacingOccurrences(of: "?", with: "-")
-            .replacingOccurrences(of: "#", with: "-")
-            .replacingOccurrences(of: "<", with: "-")
-            .replacingOccurrences(of: ">", with: "-")
-            .replacingOccurrences(of: "|", with: "-")
-            .replacingOccurrences(of: "\"", with: "-")
-            .replacingOccurrences(of: "\\", with: "-")
-        fileName = fileDecoder.sanitizeFilename(name: fileName, windows: false)
-
-        // Remove accents
-        return fileName.accentsRemoved
+        fileDecoder.sanitizeFilename(name: fileName, windows: false)
     }
 }
