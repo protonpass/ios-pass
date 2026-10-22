@@ -397,13 +397,13 @@ private extension HomepageCoordinator {
     /// Active user only: `PreferencesManager` resolves the active user, so other runs write the wrong row.
     /// Kept off the event loop, which fires mid-task: it shows a blocking screen and wipes local data.
     func forceSyncForFoldersIfNeeded(userId: String) async {
-        guard !checkingFolderForceSync, !fullSyncManager.isFullSyncing else { return }
+        guard !checkingFolderForceSync, !fullSyncManager.isFullSyncing(userId: userId) else { return }
         checkingFolderForceSync = true
         defer { checkingFolderForceSync = false }
 
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
-            guard !fullSyncManager.isFullSyncing else { return }
+            guard !fullSyncManager.isFullSyncing(userId: userId) else { return }
             await runFullSync(userId: userId,
                               shouldStopEventLoop: true,
                               reason: "folders migration")

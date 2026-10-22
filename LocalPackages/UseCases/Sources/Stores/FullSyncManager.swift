@@ -92,10 +92,6 @@ public final class FullSyncManager: FullSyncManagerProtocol {
         self.fullSyncStallTimeout = fullSyncStallTimeout
     }
 
-    public var isFullSyncing: Bool {
-        !fullSyncTasks.isEmpty
-    }
-
     /// Includes a sync still queued behind another account's, which has not marked the account yet
     public func isFullSyncing(userId: String) -> Bool {
         fullSyncTasks.contains { $0.operation.userId == userId && $0.operation.outcome == nil }
@@ -304,7 +300,9 @@ private extension FullSyncManager {
     func createDefaultVaultIfNeeded(userId: String, shares: [Share]) async throws {
         guard shares.representingVaults.isEmpty else { return }
         do {
-            try await createDefaultVault(userId: userId)
+            logger.trace("Creating default vault for user")
+            try await shareRepository.createVault(userId: userId, vault: .defaultVault)
+            logger.info("Created default vault for user")
         } catch {
             guard let apiError = error.asPassApiError,
                   apiError == .notAllowed else {
@@ -313,12 +311,6 @@ private extension FullSyncManager {
             // Can't create default vault because of B2B policy
             // Do nothing and just move on
         }
-    }
-
-    func createDefaultVault(userId: String) async throws {
-        logger.trace("Creating default vault for user")
-        try await shareRepository.createVault(userId: userId, vault: .defaultVault)
-        logger.info("Created default vault for user")
     }
 
     func refreshInvites(userId: String) async {

@@ -67,7 +67,7 @@ struct FullSyncManagerTests {
 
         #expect(await operation.result().error != nil, "Late observer must still see the failure")
         #expect(sut.fullSyncOperation === operation)
-        #expect(!sut.isFullSyncing)
+        #expect(!sut.hasFullSyncTask(userId: "user-a"))
     }
 
     @Test(arguments: [true, false])
@@ -213,7 +213,7 @@ struct FullSyncManagerTests {
             await sut.reset()
         }
         await resetRequested.wait()
-        #expect(sut.isFullSyncing)
+        #expect(sut.hasFullSyncTask(userId: "user-a"))
         gate.release.open()
         await resetting.value
 
@@ -221,7 +221,8 @@ struct FullSyncManagerTests {
         #expect(await queued.result().isCancelled)
         #expect(refresh.calls == ["user-a"])
         #expect(deleteLocalData.deletedUserIds.isEmpty)
-        #expect(!sut.isFullSyncing)
+        #expect(!sut.hasFullSyncTask(userId: "user-a"))
+        #expect(!sut.hasFullSyncTask(userId: "user-b"))
         #expect(sut.fullSyncOperation == nil)
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
     }
@@ -243,12 +244,12 @@ struct FullSyncManagerTests {
         await resetting.value
         await gateC.entered.wait()
 
-        #expect(sut.isFullSyncing)
+        #expect(sut.hasFullSyncTask(userId: "user-c"))
         gateC.release.open()
         _ = await next.result()
         // The task outlives the operation while alias notes sync, so wait for it to return
         await sut.reset()
-        #expect(!sut.isFullSyncing, "Each task removes only its own entry")
+        #expect(!sut.hasFullSyncTask(userId: "user-c"), "Each task removes only its own entry")
     }
 
     @Test func `Logging out an account cancels its sync and clears its marker`() async {
@@ -268,7 +269,7 @@ struct FullSyncManagerTests {
         #expect(await operation.result().isCancelled)
         #expect(deleteLocalData.deletedUserIds.isEmpty)
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
-        #expect(!sut.isFullSyncing)
+        #expect(!sut.hasFullSyncTask(userId: "user-b"))
     }
 
     @Test func `Logging out an account with a queued sync does not wait for the running one`() async {
@@ -291,7 +292,7 @@ struct FullSyncManagerTests {
 
         let operation = fullContentSync(userId: "user-a", presentation: .sheet, shouldStopEventLoop: true)
 
-        #expect(sut.isFullSyncing)
+        #expect(sut.hasFullSyncTask(userId: "user-a"))
         #expect(syncEventLoop.invokedStopCount == 1)
         #expect(syncEventLoop.invokedStartCount == 1)
         _ = await operation.result()
@@ -361,7 +362,6 @@ struct FullSyncManagerTests {
         let operation = sut.start(userId: "user-a", presentation: .sheet)
 
         #expect(await operation.result().isCompleted)
-        #expect(sut.isFullSyncing, "The notes still hold back the next sync")
         #expect(sut.hasFullSyncTask(userId: "user-a"), "The event loop must not write the account's items yet")
         #expect(!sut.isFullSyncing(userId: "user-a"), "Switching to the account must not resync it")
         aliasNotes.open()
