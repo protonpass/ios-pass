@@ -46,7 +46,6 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
-    private nonisolated(unsafe) var observations: [URLRequest: NSKeyValueObservation] = [:]
 
     public init(session: URLSession = .shared,
                 appVersion: String,
@@ -77,12 +76,7 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, response, error in
-                defer {
-                    if let self {
-                        observations[request] = nil
-                    }
-                }
+            let task = session.dataTask(with: request) { data, response, error in
                 if let error {
                     continuation.finish(throwing: error)
                 } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
@@ -101,10 +95,11 @@ public extension ApiServiceLite {
                 }
             }
 
-            task.resume()
-            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+            let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
+            continuation.onTermination = { _ in observation.invalidate() }
+            task.resume()
         }
     }
 
@@ -124,12 +119,7 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, response, error in
-                defer {
-                    if let self {
-                        observations[request] = nil
-                    }
-                }
+            let task = session.dataTask(with: request) { data, response, error in
                 if let error {
                     continuation.finish(throwing: error)
                 } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
@@ -144,10 +134,11 @@ public extension ApiServiceLite {
                 }
             }
 
-            task.resume()
-            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+            let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
+            continuation.onTermination = { _ in observation.invalidate() }
+            task.resume()
         }
     }
 }
