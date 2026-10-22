@@ -275,7 +275,7 @@ extension SettingsViewModel {
         do {
             let manager = FileManager.default
             let url = manager.temporaryDirectory.appending(path: Constants.Attachment.rootDirectoryName)
-            if manager.fileExists(atPath: url.path()) {
+            if manager.fileExists(atPath: url.path(percentEncoded: false)) {
                 try manager.removeItem(at: url)
             }
             router.display(element: .successMessage(#localized("Downloaded files cleared")))
