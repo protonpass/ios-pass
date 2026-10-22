@@ -36,17 +36,20 @@ public final class SetUpSentry: SetUpSentryUseCase {
     public init() {}
 
     public func execute(bundle: Bundle) {
+        guard !SentrySDK.isEnabled else { return }
         SentrySDK.start { options in
             options.dsn = bundle.plistString(for: .sentryDSN, in: .prod)
             if ProcessInfo.processInfo.environment["me.proton.pass.SentryDebug"] == "1" {
                 options.debug = true
             }
-            options.enableFileIOTracing = true
-            options.enableCoreDataTracing = true
-            options.attachViewHierarchy = true // EXPERIMENTAL
             let environment = ProtonPassDoH(bundle: bundle).environment
             options.environment = environment.name
             options.enableCaptureFailedRequests = environment.isProd
+            options.enableMetricKit = true
+            // Extensions exit without willTerminate, which Sentry reports as watchdog terminations
+            if bundle.bundleURL.pathExtension == "appex" {
+                options.enableWatchdogTerminationTracking = false
+            }
         }
     }
 }

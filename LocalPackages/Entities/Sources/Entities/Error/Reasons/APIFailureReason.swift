@@ -25,6 +25,7 @@ public extension PassError {
         case noApiServiceLinkedToUserId
         case invalidApiHost(String)
         case errorOrDataExpected
+        case unexpectedStatusCode(Int)
 
         public var debugDescription: String {
             switch self {
@@ -36,6 +37,9 @@ public extension PassError {
 
             case .errorOrDataExpected:
                 "Error or data expected"
+
+            case let .unexpectedStatusCode(statusCode):
+                "Unexpected HTTP status code \(statusCode)"
             }
         }
     }
