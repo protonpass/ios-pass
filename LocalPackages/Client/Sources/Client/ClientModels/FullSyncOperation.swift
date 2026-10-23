@@ -57,8 +57,6 @@ public final class FullSyncOperation {
     public private(set) var progresses: [VaultSyncProgress] = []
     /// `nil` while the sync is queued or running
     public private(set) var outcome: Outcome?
-    /// Bumped on every progress update and sync step, lets a watchdog tell a slow sync from a stalled one
-    @ObservationIgnored public private(set) var activity = 0
     @ObservationIgnored private var waiters: [CheckedContinuation<Outcome, Never>] = []
 
     public init(userId: String, presentation: FullSyncPresentation) {
@@ -95,16 +93,9 @@ public final class FullSyncOperation {
                 $0.copy(itemState: .decrypt(decrypted: progress.decrypted, total: progress.total))
             }
         }
-        recordActivity()
     }
 
-    /// For steps that report no progress event, so the watchdog doesn't take them for a stall
-    public func recordActivity() {
-        activity += 1
-    }
-
-    /// Only the first outcome counts: a stalled task returning after the watchdog failed it
-    /// must not replace that failure
+    /// Only the first outcome counts
     public func finish(_ outcome: Outcome) {
         guard self.outcome == nil else { return }
         self.outcome = outcome

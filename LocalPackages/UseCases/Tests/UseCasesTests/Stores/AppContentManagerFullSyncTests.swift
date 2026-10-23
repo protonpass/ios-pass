@@ -82,7 +82,7 @@ struct AppContentManagerFullSyncTests {
         shareRepository.stubbedGetDecryptedSharesResult = [vault]
         symmetricKeyProvider.release.open()
 
-        try await sut.fullSyncDidStoreContent(userId: activeUser.user.ID)
+        try await sut.fullSyncDidFinish(userId: activeUser.user.ID)
 
         #expect(sut.currentShares.value.map(\.shareID) == [vault.shareID])
         #expect(sut.state.loadedContent?.shares.count == 1)
@@ -120,13 +120,13 @@ struct AppContentManagerFullSyncTests {
         symmetricKeyProvider.release.open()
 
         let userId = syncsActiveAccount ? activeUser.user.ID : "inactive-user"
-        try await sut.fullSyncDidStoreContent(userId: userId)
+        try await sut.fullSyncDidFinish(userId: userId)
 
         #expect(preferences.userPreferences.value?.folderForceSync.done == syncsActiveAccount)
     }
 
     @Test func `Syncing an inactive account leaves the active account's content alone`() async throws {
-        try await sut.fullSyncDidStoreContent(userId: "inactive-user")
+        try await sut.fullSyncDidFinish(userId: "inactive-user")
 
         #expect(!itemRepository.invokedGetAllItemsfunction)
         #expect(sut.state == .loading)
@@ -134,7 +134,7 @@ struct AppContentManagerFullSyncTests {
     }
 
     @Test func `Syncing an inactive account re-indexes AutoFill`() async throws {
-        try await sut.fullSyncDidStoreContent(userId: "inactive-user")
+        try await sut.fullSyncDidFinish(userId: "inactive-user")
 
         #expect(indexAllLoginItems.callCount == 1)
     }
@@ -150,7 +150,7 @@ struct AppContentManagerFullSyncTests {
 
     @Test func `Switching account during the final load still completes the sync`() async throws {
         try await preferences.setUp()
-        let loading = Task { try await sut.fullSyncDidStoreContent(userId: activeUser.user.ID) }
+        let loading = Task { try await sut.fullSyncDidFinish(userId: activeUser.user.ID) }
         await symmetricKeyProvider.entered.wait()
 
         currentActiveUser.send(UserData.random())
