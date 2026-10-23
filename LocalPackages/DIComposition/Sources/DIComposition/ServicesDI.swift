@@ -170,7 +170,7 @@ public extension ServiceContainer {
                                             dedupShare: UseCasesContainer.shared.dedupShare(),
                                             logger: ToolingContainer.shared.logger(),
                                             loginMethod: DataContainer.shared.loginMethod())
-            fullSyncManager.contentDelegate = manager
+            fullSyncManager.delegate = manager
             return manager
         }
     }
