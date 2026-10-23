@@ -181,13 +181,15 @@ public extension AppContentManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                fullSyncManager.start(userId: userId, presentation: .inline)
+                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
-                fullSyncManager.start(userId: userId, presentation: .inline)
+                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
                 logger.info("Crypto error occurred. Done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else {
                 logger.info("Not manual login, getting local shares & items")
                 try await loadContents(userId: userId)
@@ -203,6 +205,16 @@ public extension AppContentManager {
     func localFullSync(userId: String) async throws {
         guard userManager.activeUserId == userId else { return }
         state = .loading
+        try await loadContents(userId: userId)
+    }
+}
+
+private extension AppContentManager {
+    /// A completed sync already loaded the content through `fullSyncDidFinish`, which a failed sync never reaches.
+    /// Unlike other failures, an inactive key failure removes the inline progress instead of keeping its retry
+    /// screen, so the local content has to replace the loading state
+    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
+        guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
         try await loadContents(userId: userId)
     }
 }
@@ -436,21 +448,16 @@ extension AppContentManager: LimitationCounterProtocol {
     }
 }
 
-// MARK: - FullSyncContentDelegate
+// MARK: - FullSyncManagerDelegate
 
 extension AppContentManager: FullSyncManagerDelegate {
-    public func fullSyncDidFinish(userId: String, operation: FullSyncOperation) async throws {
+    /// The event loop also full syncs inactive accounts, whose content must not replace
+    /// the active account's content on screen
+    public func fullSyncDidFinish(userId: String) async throws {
         await indexForAutoFill()
         guard userManager.activeUserId == userId else {
             return
         }
-
-        // Only inactive user key error could be ignored, others must be surfaced
-        if case let .failed(error) = operation.outcome,
-           !error.isInactiveUserKey {
-            throw error
-        }
-
         try await loadContents(userId: userId)
         // Preferences are only loaded for the active user, an inactive account repeats
         // its folder repair once it becomes active

@@ -27,7 +27,7 @@ import UseCases
 
 @MainActor
 public protocol FullSyncManagerDelegate: AnyObject, Sendable {
-    func fullSyncDidFinish(userId: String, operation: FullSyncOperation) async throws
+    func fullSyncDidFinish(userId: String) async throws
 }
 
 @MainActor
@@ -61,7 +61,6 @@ public final class FullSyncManager: FullSyncManagerProtocol {
     private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
     private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
     private let logger: Logger
-    private let fullSyncStallTimeout: Duration
 
     /// Running sync first, then the ones queued behind it
     private var fullSyncTasks: [(operation: FullSyncOperation, task: Task<Void, Never>)] = []
@@ -74,8 +73,7 @@ public final class FullSyncManager: FullSyncManagerProtocol {
                 refreshUserData: any RefreshUserDataUseCase,
                 deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
                 getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
-                logger: Logger,
-                fullSyncStallTimeout: Duration = .seconds(180)) {
+                logger: Logger) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.inviteRepository = inviteRepository
@@ -85,7 +83,6 @@ public final class FullSyncManager: FullSyncManagerProtocol {
         self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
         self.getAndStoreLastEventId = getAndStoreLastEventId
         self.logger = logger
-        self.fullSyncStallTimeout = fullSyncStallTimeout
     }
 
     /// Includes a sync still queued behind another account's, which has not marked the account yet
@@ -94,7 +91,6 @@ public final class FullSyncManager: FullSyncManagerProtocol {
     }
 
     /// Unlike `isFullSyncing(userId:)`, also counts the alias notes written after the sync finished
-    /// and a stalled sync whose task has not returned yet
     public func hasFullSyncTask(userId: String) -> Bool {
         fullSyncTasks.contains { $0.operation.userId == userId }
     }
@@ -118,7 +114,7 @@ public final class FullSyncManager: FullSyncManagerProtocol {
         let operation = FullSyncOperation(userId: userId, presentation: presentation)
         let previous = fullSyncTasks.last
         if let previous, previous.operation.outcome != nil {
-            // Its alias notes would hold this sync back with no stall watchdog
+            // Its alias notes are only a cache, they must not hold this sync back
             previous.task.cancel()
         }
         let task = Task { [weak self] in
@@ -133,9 +129,8 @@ public final class FullSyncManager: FullSyncManagerProtocol {
                 await performFullSync(operation)
             }
             operation.finish(outcome)
-            // The published outcome, so a stalled sync that completes anyway stays a failure. Notes are only a
-            // cache that opening an alias fills too, so they give way to a sync waiting behind this one.
-            if operation.outcome?.isCompleted == true, fullSyncTasks.last?.operation === operation {
+            // Notes are only a cache that opening an alias fills too, so they give way to a queued sync
+            if case .completed = outcome, fullSyncTasks.last?.operation === operation {
                 // Still part of the task so the next sync can't wipe the items while their notes are written
                 await syncAliasNotes(userId: operation.userId)
             }
@@ -181,31 +176,26 @@ private extension FullSyncManager {
             }
         }
         defer { events.finish() }
-        let stallWatchdog = Task { [weak self] in
-            guard let self else { return }
-            await failWhenStalled(operation)
-        }
-        defer { stallWatchdog.cancel() }
 
         logger.info("Starting full sync \(operation.id) for user \(userId)")
         var hasUndecryptableShares = false
         do {
             // 0. Refresh user data to handle account changes like added address keys
-            try startStep(operation)
+            try Task.checkCancellation()
             try await refreshUserData(userId: userId)
 
             // 1. Delete all local data
-            try startStep(operation)
+            try Task.checkCancellation()
             incompleteFullSyncUserIds.insert(userId)
             try await deleteLocalDataBeforeFullSync(userId: userId)
 
             // 2. Get all remote shares and their items
-            try startStep(operation)
+            try Task.checkCancellation()
             let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             hasUndecryptableShares = remoteShares.hasUndecryptableShares
             events.yield(.downloadedShares(remoteShares.shares.representingVaults))
 
-            try startStep(operation)
+            try Task.checkCancellation()
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
                                                                                 shares: remoteShares.shares,
@@ -230,21 +220,21 @@ private extension FullSyncManager {
             }
 
             // 3. Create default vault if no vaults
-            try startStep(operation)
+            try Task.checkCancellation()
             try await createDefaultVaultIfNeeded(userId: userId, shares: remoteShares.shares)
 
             // 4. Refresh invites
-            try startStep(operation)
+            try Task.checkCancellation()
             await refreshInvites(userId: userId)
 
             // 5. Get the lastEventID as a starting point for user events sync loop
-            try startStep(operation)
+            try Task.checkCancellation()
             try await getAndStoreLastEventId(userId: userId)
 
             // Last so the delegate only acts on a sync that succeeded
-            try startStep(operation)
+            try Task.checkCancellation()
             assert(delegate != nil, "Full sync delegate not set")
-            try await delegate?.fullSyncDidFinish(userId: userId, operation: operation)
+            try await delegate?.fullSyncDidFinish(userId: userId)
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.info("Cancelled full sync \(operation.id) for user \(userId)")
@@ -257,37 +247,6 @@ private extension FullSyncManager {
         incompleteFullSyncUserIds.remove(userId)
         logger.info("Finished full sync \(operation.id) for user \(userId)")
         return .completed(hasUndecryptableShares: hasUndecryptableShares)
-    }
-
-    func startStep(_ operation: FullSyncOperation) throws {
-        try Task.checkCancellation()
-        operation.recordActivity()
-    }
-
-    /// Fails a sync with no activity for `fullSyncStallTimeout` so the user gets the retry screen
-    /// instead of an endless spinner. The outcome is published before cancelling because a call
-    /// that ignores cancellation keeps the task, and any sync queued behind it, alive until it returns.
-    ///
-    /// Counts ticks instead of reading a clock: clocks keep running while the app is suspended in
-    /// the background, so a single sleep would fail the sync the moment the app comes back.
-    func failWhenStalled(_ operation: FullSyncOperation) async {
-        let ticksBeforeStall = 10
-        var lastActivity = operation.activity
-        var stalledTicks = 0
-        while await (try? Task.sleep(for: fullSyncStallTimeout / ticksBeforeStall)) != nil {
-            guard operation.activity == lastActivity else {
-                lastActivity = operation.activity
-                stalledTicks = 0
-                continue
-            }
-            stalledTicks += 1
-            guard stalledTicks == ticksBeforeStall else { continue }
-            let error = URLError(.timedOut)
-            logger.error(message: "Full sync \(operation.id) made no progress", error: error)
-            operation.finish(.failed(error))
-            fullSyncTasks.first { $0.operation === operation }?.task.cancel()
-            return
-        }
     }
 
     func createDefaultVaultIfNeeded(userId: String, shares: [Share]) async throws {

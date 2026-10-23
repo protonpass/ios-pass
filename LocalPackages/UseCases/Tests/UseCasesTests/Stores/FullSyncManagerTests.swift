@@ -54,9 +54,8 @@ struct FullSyncManagerTests {
                               refreshUserData: refresh,
                               deleteLocalDataBeforeFullSync: deleteLocalData,
                               getAndStoreLastEventId: lastEventId,
-                              logger: Logger(manager: LogManagerProtocolMock()),
-                              fullSyncStallTimeout: .seconds(1))
-        sut.contentDelegate = contentDelegate
+                              logger: Logger(manager: LogManagerProtocolMock()))
+        sut.delegate = contentDelegate
     }
 
     @Test func `A finished sync keeps reporting its outcome to late observers`() async {
@@ -309,24 +308,6 @@ struct FullSyncManagerTests {
         #expect(syncEventLoop.invokedStartCount == 0)
     }
 
-    @Test func `A sync without progress fails so the user can retry`() async throws {
-        let gate = refresh.pause("user-a")
-
-        let stalled = sut.start(userId: "user-a", presentation: .sheet)
-        let error = try #require(await stalled.result().error as? URLError)
-        #expect(error.code == .timedOut)
-
-        let retried = sut.start(userId: "user-a", presentation: .sheet)
-        gate.release.open()
-        _ = await retried.result()
-
-        #expect(stalled.outcome?.error is URLError,
-                "The stalled task returning later must not replace the failure")
-        #expect(retried !== stalled)
-        #expect(refresh.calls == ["user-a", "user-a"])
-        #expect(deleteLocalData.deletedUserIds == ["user-a"])
-    }
-
     @Test func `Another account completing its sync keeps an interrupted account marked`() async {
         deleteLocalData.failingUserIds = ["user-a"]
 
@@ -344,15 +325,6 @@ struct FullSyncManagerTests {
 
         #expect(sut.incompleteFullSyncUserIds.isEmpty)
         #expect(kSharedUserDefaults.string(forKey: Constants.incompleteFullSyncUserId) == nil)
-    }
-
-    @Test func `Slow steps are not a stall as long as the sync moves on`() async {
-        refresh.delay = .milliseconds(600)
-        deleteLocalData.delay = .milliseconds(600)
-
-        let operation = sut.start(userId: "user-a", presentation: .sheet)
-
-        #expect(await operation.result().isCompleted, "Each step is under the stall timeout")
     }
 
     @Test func `A sync finishes without waiting for the alias notes`() async {
@@ -428,7 +400,6 @@ private final class RefreshUserDataFake: RefreshUserDataUseCase {
     private(set) var calls: [String] = []
     var failingUserIds: Set<String> = []
     var error: any Error = FullSyncTestError.offline
-    var delay: Duration?
     private var gates: [String: (entered: Gate, release: Gate)] = [:]
 
     func pause(_ userId: String) -> (entered: Gate, release: Gate) {
@@ -443,9 +414,6 @@ private final class RefreshUserDataFake: RefreshUserDataUseCase {
 
     private func refresh(userId: String) async throws {
         calls.append(userId)
-        if let delay {
-            try await Task.sleep(for: delay)
-        }
         if let gate = gates[userId] {
             gate.entered.open()
             await gate.release.wait()
@@ -480,7 +448,6 @@ final class Gate {
 private final class DeleteLocalDataSpy: DeleteLocalDataBeforeFullSyncUseCase {
     private(set) var deletedUserIds: [String] = []
     var failingUserIds: Set<String> = []
-    var delay: Duration?
 
     nonisolated func execute(userId: String) async throws {
         try await record(userId)
@@ -488,9 +455,6 @@ private final class DeleteLocalDataSpy: DeleteLocalDataBeforeFullSyncUseCase {
 
     private func record(_ userId: String) async throws {
         deletedUserIds.append(userId)
-        if let delay {
-            try await Task.sleep(for: delay)
-        }
         if failingUserIds.contains(userId) {
             throw FullSyncTestError.offline
         }
@@ -543,11 +507,11 @@ private final class LastEventIdSpy: GetAndStoreLastEventIdUseCase {
 }
 
 @MainActor
-private final class ContentDelegateSpy: FullSyncContentDelegate {
+private final class ContentDelegateSpy: FullSyncManagerDelegate {
     private(set) var loadedUserIds: [String] = []
     var onLoad: (() -> Void)?
 
-    func fullSyncDidStoreContent(userId: String) async throws {
+    func fullSyncDidFinish(userId: String) async throws {
         onLoad?()
         loadedUserIds.append(userId)
     }
