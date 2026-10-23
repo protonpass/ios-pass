@@ -1,7 +1,7 @@
 //
 // LocalAuthenticationMethodUiModel+Extensions.swift
-// Proton Pass - Created on 19/08/2026.
-// Copyright (c) 2026 Proton Technologies AG
+// Proton Pass - Created on 31/10/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //

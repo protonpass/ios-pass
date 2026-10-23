@@ -1,7 +1,7 @@
 //
 // LocalAuthenticationViewModel.swift
-// Proton Pass - Created on 18/08/2026.
-// Copyright (c) 2026 Proton Technologies AG
+// Proton Pass - Created on 22/06/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -33,12 +33,9 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     private(set) var state: LocalAuthenticationState = .noAttempts
 
     /// Why the last prompt was dismissed without reaching a verdict, so no attempt was consumed.
-    /// Drives the retry button and the re-prompt when the app becomes active again.
     private(set) var promptDismissal: LAError.Code?
 
-    // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier
-    // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
-    // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+    // Automatic keyboard avoidance is broken in the app cover, so the view pads for the keyboard itself
     let manuallyAvoidKeyboard: Bool
     let mode: LocalAuthenticationView.Mode
     let onAuth: () -> Void

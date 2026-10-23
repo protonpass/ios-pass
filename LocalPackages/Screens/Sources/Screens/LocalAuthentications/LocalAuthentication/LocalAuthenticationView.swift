@@ -1,7 +1,7 @@
 //
 // LocalAuthenticationView.swift
-// Proton Pass - Created on 18/08/2026.
-// Copyright (c) 2026 Proton Technologies AG
+// Proton Pass - Created on 22/06/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
