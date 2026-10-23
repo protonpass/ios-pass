@@ -192,8 +192,7 @@ public extension AppContentManager {
                 try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else {
                 logger.info("Not manual login, getting local shares & items")
-                let shares = try await shareRepository.getDecryptedShares(userId: userId)
-                try await loadContents(userId: userId, for: shares)
+                try await loadLocalContents(userId: userId)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
@@ -218,6 +217,10 @@ private extension AppContentManager {
     /// so the local content has to replace the loading state
     func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
         guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
+        try await loadLocalContents(userId: userId)
+    }
+
+    func loadLocalContents(userId: String) async throws {
         let shares = try await shareRepository.getDecryptedShares(userId: userId)
         try await loadContents(userId: userId, for: shares)
     }
@@ -462,8 +465,7 @@ extension AppContentManager: FullSyncContentDelegate {
             await indexForAutoFill()
             return
         }
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        try await loadContents(userId: userId, for: shares)
+        try await loadLocalContents(userId: userId)
         // Preferences are only loaded for the active user, an inactive account repeats
         // its folder repair once it becomes active
         if userManager.activeUserId == userId {

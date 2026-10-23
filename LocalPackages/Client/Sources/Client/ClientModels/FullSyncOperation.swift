@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Foundation
 import Observation
 
@@ -30,7 +31,7 @@ public enum FullSyncPresentation: Sendable {
 
 @MainActor
 @Observable
-public final class FullSyncOperation: Identifiable {
+public final class FullSyncOperation {
     public enum Outcome: Sendable {
         case completed(hasUndecryptableShares: Bool)
         case failed(any Error)
@@ -41,6 +42,12 @@ public final class FullSyncOperation: Identifiable {
                 return true
             }
             return false
+        }
+
+        /// An inactive key failure has no retry screen, the progress UI is removed as for any other outcome
+        public var retryableError: (any Error)? {
+            guard case let .failed(error) = self, !error.isInactiveUserKey else { return nil }
+            return error
         }
     }
 
