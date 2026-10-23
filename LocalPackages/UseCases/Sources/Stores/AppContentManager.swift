@@ -181,18 +181,16 @@ public extension AppContentManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
+                fullSyncManager.start(userId: userId, presentation: .inline)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
-                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
-                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
+                fullSyncManager.start(userId: userId, presentation: .inline)
                 logger.info("Crypto error occurred. Done full sync")
-                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else {
                 logger.info("Not manual login, getting local shares & items")
-                try await loadLocalContents(userId: userId)
+                try await loadContents(userId: userId)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
@@ -203,26 +201,9 @@ public extension AppContentManager {
     }
 
     func localFullSync(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        // `loadContents` publishes nothing for a stale load, which would leave this loading state behind
         guard userManager.activeUserId == userId else { return }
         state = .loading
-        try await loadContents(userId: userId, for: shares)
-    }
-}
-
-private extension AppContentManager {
-    /// A completed sync already loaded the content through `fullSyncDidStoreContent`. Unlike other failures,
-    /// an inactive key failure removes the inline progress instead of keeping its retry screen,
-    /// so the local content has to replace the loading state
-    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
-        guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
-        try await loadLocalContents(userId: userId)
-    }
-
-    func loadLocalContents(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
-        try await loadContents(userId: userId, for: shares)
+        try await loadContents(userId: userId)
     }
 }
 
@@ -458,14 +439,19 @@ extension AppContentManager: LimitationCounterProtocol {
 // MARK: - FullSyncContentDelegate
 
 extension AppContentManager: FullSyncManagerDelegate {
-    /// The event loop also full syncs inactive accounts, whose content must not replace
-    /// the active account's content on screen
-    public func fullSyncDidFinish(userId: String) async throws {
+    public func fullSyncDidFinish(userId: String, operation: FullSyncOperation) async throws {
+        await indexForAutoFill()
         guard userManager.activeUserId == userId else {
-            await indexForAutoFill()
             return
         }
-        try await loadLocalContents(userId: userId)
+
+        // Only inactive user key error could be ignored, others must be surfaced
+        if case let .failed(error) = operation.outcome,
+           !error.isInactiveUserKey {
+            throw error
+        }
+
+        try await loadContents(userId: userId)
         // Preferences are only loaded for the active user, an inactive account repeats
         // its folder repair once it becomes active
         if userManager.activeUserId == userId {
@@ -553,7 +539,8 @@ private extension AppContentManager {
 
     /// Skips publishing when the account is no longer the active one
     @MainActor
-    func loadContents(userId: String, for shares: [Share]) async throws {
+    func loadContents(userId: String) async throws {
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
 
         async let allItemsFetch = itemRepository.getAllItems(userId: userId)

@@ -27,7 +27,7 @@ import UseCases
 
 @MainActor
 public protocol FullSyncManagerDelegate: AnyObject, Sendable {
-    func fullSyncDidFinish(userId: String) async throws
+    func fullSyncDidFinish(userId: String, operation: FullSyncOperation) async throws
 }
 
 @MainActor
@@ -244,7 +244,7 @@ private extension FullSyncManager {
             // Last so the delegate only acts on a sync that succeeded
             try startStep(operation)
             assert(delegate != nil, "Full sync delegate not set")
-            try await delegate?.fullSyncDidFinish(userId: userId)
+            try await delegate?.fullSyncDidFinish(userId: userId, operation: operation)
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.info("Cancelled full sync \(operation.id) for user \(userId)")
