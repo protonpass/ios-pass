@@ -71,12 +71,8 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     public private(set) var filterOption = ItemTypeFilterOption.all
 
-    @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
-    public private(set) var incompleteFullSyncUserId: String?
-
     public nonisolated let currentShares: CurrentValueSubject<[Share], Never> = .init([])
 
-    public nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
     public nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
     private let itemRepository: any ItemRepositoryProtocol
@@ -86,21 +82,18 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let preferencesManager: any PreferencesManagerProtocol
     private let inviteRepository: any FullInviteRepositoryProtocol
-    private let slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol
     private let folderRepository: any FolderRepositoryProtocol
+    private let userManager: any UserManagerProtocol
+    private let fullSyncManager: any FullSyncManagerProtocol
 
     // Use cases
     private let indexAllLoginItems: any IndexAllLoginItemsUseCase
     private let indexItemsForSpotlight: any IndexItemsForSpotlightUseCase
-    private let deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase
-    private let getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase
     private let dedupShare: any DedupShareUseCase
-    private let refreshUserData: any RefreshUserDataUseCase
 
     private var cancellables = Set<AnyCancellable>()
     private var refreshingUserId: String?
     private var pendingRefreshUserId: String?
-    private var fullSyncTask: (userId: String, task: Task<Bool, Never>)?
     /// The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
 
@@ -114,30 +107,26 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
                 shareRepository: any ShareRepositoryProtocol,
                 inviteRepository: any FullInviteRepositoryProtocol,
                 folderRepository: any FolderRepositoryProtocol,
-                slNoteSynchronizer: any SimpleLoginNoteSynchronizerProtocol,
+                userManager: any UserManagerProtocol,
+                fullSyncManager: any FullSyncManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 indexAllLoginItems: any IndexAllLoginItemsUseCase,
                 indexItemsForSpotlight: any IndexItemsForSpotlightUseCase,
-                deleteLocalDataBeforeFullSync: any DeleteLocalDataBeforeFullSyncUseCase,
-                getAndStoreLastEventId: any GetAndStoreLastEventIdUseCase,
                 dedupShare: any DedupShareUseCase,
-                refreshUserData: any RefreshUserDataUseCase,
                 logger: Logger,
                 loginMethod: LoginMethodFlow) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.inviteRepository = inviteRepository
         self.folderRepository = folderRepository
-        self.slNoteSynchronizer = slNoteSynchronizer
+        self.userManager = userManager
+        self.fullSyncManager = fullSyncManager
         self.preferencesManager = preferencesManager
         self.symmetricKeyProvider = symmetricKeyProvider
         self.indexAllLoginItems = indexAllLoginItems
         self.indexItemsForSpotlight = indexItemsForSpotlight
-        self.deleteLocalDataBeforeFullSync = deleteLocalDataBeforeFullSync
-        self.getAndStoreLastEventId = getAndStoreLastEventId
         self.dedupShare = dedupShare
-        self.refreshUserData = refreshUserData
         self.logger = logger
         self.loginMethod = loginMethod
         setUp()
@@ -147,18 +136,12 @@ public final class AppContentManager: ObservableObject, DeinitPrintable, AppCont
         getAllShares().numberOfOwnedVault <= 1
     }
 
-    public var isFullSyncing: Bool {
-        fullSyncTask != nil
-    }
-
     public func reset() {
-        fullSyncTask?.task.cancel()
-        fullSyncTask = nil
+        pendingRefreshUserId = nil
         state = .loading
         shareSelection = .all
         itemCount = .zero
         currentShares.send([])
-        vaultSyncEventStream.send(.initialization)
     }
 }
 
@@ -198,147 +181,41 @@ public extension AppContentManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                await fullSync(userId: userId)
+                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else if cryptoErrorOccurred {
                 logger.info("Crypto error occurred. Doing full sync")
-                await fullSync(userId: userId)
+                let outcome = await fullSyncManager.start(userId: userId, presentation: .inline).result()
                 logger.info("Crypto error occurred. Done full sync")
+                try await loadContentsIfInactiveKeyFailure(outcome, userId: userId)
             } else {
                 logger.info("Not manual login, getting local shares & items")
-                let shares = try await shareRepository.getDecryptedShares(userId: userId)
-                try await loadContents(userId: userId, for: shares)
+                try await loadContents(userId: userId)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
+            guard !(error is CancellationError), userManager.activeUserId == userId else { return }
             logger.error(message: "Failed to refresh content for user \(userId)", error: error)
             state = .error(error)
         }
     }
 
-    /// Delete everything and download again
-    ///
-    /// Several unrelated triggers can land here at once (settings, server-forced refresh, crash
-    /// resume, folder repair). A caller for the *same* user joins the sync already in flight
-    /// instead of starting a parallel wipe, and must not return early: callers present a
-    /// non-dismissible progress screen that only closes on a `vaultSyncEventStream` terminal
-    /// event, so returning without awaiting the real completion would strand that screen forever.
-    /// A caller for a different user waits its turn and then runs its own sync - joining would
-    /// report that user as synced without having downloaded anything for them.
-    ///
-    /// The loop is load-bearing: several callers can be parked on the same `await`, and they
-    /// resume one at a time on the main actor. `fullSyncTask` is assigned synchronously after
-    /// `Task { }` with no suspension in between, so whoever resumes second observes the new task
-    /// and joins it rather than starting a duplicate.
-    @discardableResult
-    func fullSync(userId: String) async -> Bool {
-        while let inFlight = fullSyncTask {
-            logger.info("Full sync already in progress, joining it for user \(userId)")
-            let succeeded = await inFlight.task.value
-            if inFlight.userId == userId {
-                return succeeded
-            }
-        }
-
-        let task = Task { [weak self] in
-            guard let self else { return false }
-
-            defer { fullSyncTask = nil }
-            return await performFullSync(userId: userId)
-        }
-        fullSyncTask = (userId, task)
-        return await task.value
-    }
-
     func localFullSync(userId: String) async throws {
-        let shares = try await shareRepository.getDecryptedShares(userId: userId)
+        guard userManager.activeUserId == userId else { return }
         state = .loading
-        try await loadContents(userId: userId, for: shares)
+        try await loadContents(userId: userId)
     }
 }
 
 private extension AppContentManager {
-    func performFullSync(userId: String) async -> Bool {
-        vaultSyncEventStream.send(.started)
-
-        incompleteFullSyncUserId = userId
-        var hasUndecryptableShares = false
-        do {
-            // 0. Refresh user data to handle account changes like added address keys
-            try await refreshUserData(userId: userId)
-
-            // 1. Delete all local data
-            try await deleteLocalDataBeforeFullSync(userId: userId)
-
-            // 2. Get all remote shares and their items
-            let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
-            hasUndecryptableShares = remoteShares.hasUndecryptableShares
-            vaultSyncEventStream.send(.downloadedShares(remoteShares.shares.representingVaults))
-
-            try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-                // Step 1: Upsert all shares in a single batch
-                async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
-                                                                                shares: remoteShares.shares,
-                                                                                eventStream: vaultSyncEventStream)
-
-                // Step 2: Process each share's folders and items concurrently
-                for share in remoteShares.shares {
-                    taskGroup.addTask { [weak self] in
-                        guard let self else { return }
-                        if share.shareType == .vault {
-                            try await folderRepository.refreshFolders(userId: userId,
-                                                                      shareId: share.shareID)
-                        }
-
-                        try await itemRepository.refreshItems(userId: userId,
-                                                              shareId: share.shareID,
-                                                              eventStream: vaultSyncEventStream)
-                    }
-                }
-
-                // Wait for both the upsert task and all item processing tasks to complete
-                _ = try await (upsertSharesTask, taskGroup.waitForAll())
-            }
-
-            // 3. Create default vault if no vaults
-            if remoteShares.shares.representingVaults.isEmpty {
-                do {
-                    try await createDefaultVault()
-                } catch {
-                    guard let apiError = error.asPassApiError,
-                          apiError == .notAllowed else {
-                        throw error
-                    }
-                    // Can't create default vault because of B2B policy
-                    // Do nothing and just move on
-                }
-            }
-
-            // 4. Refresh invite and sl notes
-            async let syncAliases: Bool = slNoteSynchronizer.syncAllAliases(userId: userId)
-            async let refreshInvites: Void = inviteRepository.refreshAllInvites(userId: userId)
-            do {
-                _ = try await (syncAliases, refreshInvites)
-            } catch {
-                // We logs the errors silently to let the full content refresh continue offering a better
-                // experience to the user.
-                logger.error(error)
-            }
-
-            try await loadContents(userId: userId, for: remoteShares.shares)
-
-            // 5. Get the lastEventID as a starting point for user events sync loop
-            try await getAndStoreLastEventId(userId: userId)
-        } catch {
-            vaultSyncEventStream.send(.error(userId: userId, error: error))
-            return false
-        }
-
-        incompleteFullSyncUserId = nil
-        await markFolderForceSyncDone()
-        vaultSyncEventStream.send(.done(hasUndecryptableShares: hasUndecryptableShares))
-        return true
+    /// A completed sync already loaded the content through `fullSyncDidFinish`, which a failed sync never reaches.
+    /// Unlike other failures, an inactive key failure removes the inline progress instead of keeping its retry
+    /// screen, so the local content has to replace the loading state
+    func loadContentsIfInactiveKeyFailure(_ outcome: FullSyncOperation.Outcome, userId: String) async throws {
+        guard case let .failed(error) = outcome, error.isInactiveUserKey else { return }
+        try await loadContents(userId: userId)
     }
 }
 
@@ -571,6 +448,26 @@ extension AppContentManager: LimitationCounterProtocol {
     }
 }
 
+// MARK: - FullSyncManagerDelegate
+
+extension AppContentManager: FullSyncManagerDelegate {
+    /// The event loop also full syncs inactive accounts, whose content must not replace
+    /// the active account's content on screen
+    public func fullSyncDidFinish(userId: String) async throws {
+        guard userManager.activeUserId == userId else {
+            // Only index when inactive user because `loadContents` also indexes
+            await indexForAutoFill()
+            return
+        }
+        try await loadContents(userId: userId)
+        // Preferences are only loaded for the active user, an inactive account repeats
+        // its folder repair once it becomes active
+        if userManager.activeUserId == userId {
+            await markFolderForceSyncDone()
+        }
+    }
+}
+
 // MARK: - Private APIs
 
 private extension AppContentManager {
@@ -648,14 +545,10 @@ private extension AppContentManager {
         }
     }
 
-    func createDefaultVault() async throws {
-        logger.trace("Creating default vault for user")
-        try await shareRepository.createVault(userId: nil, vault: .defaultVault)
-        logger.info("Created default vault for user")
-    }
-
+    /// Skips publishing when the account is no longer the active one
     @MainActor
-    func loadContents(userId: String, for shares: [Share]) async throws {
+    func loadContents(userId: String) async throws {
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
 
         async let allItemsFetch = itemRepository.getAllItems(userId: userId)
@@ -669,6 +562,7 @@ private extension AppContentManager {
                                                  shares: dedupShares,
                                                  folders: folders,
                                                  items: allItems)
+        guard userManager.activeUserId == userId else { return }
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
         currentShares.send(shares)

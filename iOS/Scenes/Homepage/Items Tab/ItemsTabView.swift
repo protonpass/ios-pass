@@ -43,17 +43,15 @@ struct ItemsTabView: View {
         ZStack {
             switch viewModel.sectionedItems {
             case .fetching:
-                // We display both the skeleton and the progress at the same time
-                // and use opacity trick because we need fullSyncProgressView
-                // to be intialized asap so its viewModel doesn't miss any events
-                fullSyncProgressView
-                    .opacity(viewModel.shouldShowSyncProgress ? 1 : 0)
-                ItemsTabsSkeleton()
-                    .opacity(viewModel.shouldShowSyncProgress ? 0 : 1)
+                if let inlineSyncProgress {
+                    FullSyncProgressView(viewModel: inlineSyncProgress)
+                } else {
+                    ItemsTabsSkeleton()
+                }
 
             case let .fetched(sections):
-                if viewModel.shouldShowSyncProgress {
-                    fullSyncProgressView
+                if let inlineSyncProgress {
+                    FullSyncProgressView(viewModel: inlineSyncProgress)
                 } else {
                     vaultContent(sections)
                 }
@@ -86,8 +84,8 @@ struct ItemsTabView: View {
         }
     }
 
-    private var fullSyncProgressView: some View {
-        FullSyncProgressView(mode: .logIn)
+    private var inlineSyncProgress: FullSyncProgressViewModel? {
+        viewModel.shouldShowSyncProgress ? viewModel.inlineSyncProgress : nil
     }
 
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
@@ -148,7 +146,6 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
-                viewModel.continueFullSyncIfNeeded()
             }
             .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
                                               enabled: aliasToTrash?.aliasEnabled ?? false,

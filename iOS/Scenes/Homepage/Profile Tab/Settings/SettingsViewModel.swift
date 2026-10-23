@@ -262,9 +262,9 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                await presentFullSync(userId: userId,
-                                      shouldStopEventLoop: true,
-                                      reason: "settings")
+                await runFullSync(userId: userId,
+                                  shouldStopEventLoop: true,
+                                  reason: "settings")
             } catch {
                 handle(error)
             }
@@ -275,7 +275,7 @@ extension SettingsViewModel {
         do {
             let manager = FileManager.default
             let url = manager.temporaryDirectory.appending(path: Constants.Attachment.rootDirectoryName)
-            if manager.fileExists(atPath: url.path()) {
+            if manager.fileExists(atPath: url.path(percentEncoded: false)) {
                 try manager.removeItem(at: url)
             }
             router.display(element: .successMessage(#localized("Downloaded files cleared")))

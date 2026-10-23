@@ -152,8 +152,6 @@ private extension EditDomainMatchingView {
             row(for: .default)
             row(for: .never)
             row(for: .exact)
-            // swiftlint:disable:next line_length
-            unavailableText("Exact subdomain rule is not available on iOS due to limitations in the operating system APIs.")
 
             if selectedMode == .default, !parentDomainExamples.isEmpty {
                 suggestionExamples
@@ -270,9 +268,6 @@ private extension AutofillUrlMode {
     }
 
     var isSupported: Bool {
-        switch self {
-        case .default, .never: true
-        default: false
-        }
+        isBasic
     }
 }
