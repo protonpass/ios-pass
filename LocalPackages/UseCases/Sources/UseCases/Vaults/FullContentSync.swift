@@ -23,7 +23,7 @@
 import Client
 
 public protocol FullContentSyncUseCase: Sendable {
-    /// Same as `execute` but returns the operation before any work starts, for UI to observe
+    /// Returns the operation before any work starts, for UI to observe
     @MainActor
     @discardableResult
     func callAsFunction(userId: String,

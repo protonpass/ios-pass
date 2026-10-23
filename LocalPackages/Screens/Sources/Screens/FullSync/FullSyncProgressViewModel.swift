@@ -41,8 +41,7 @@ public final class FullSyncProgressViewModel {
     private var waitForOutcomeTask: Task<Void, Never>?
 
     var error: (any Error)? {
-        guard case let .failed(error) = operation.outcome, !error.isInactiveUserKey else { return nil }
-        return error
+        operation.outcome?.retryableError
     }
 
     var progresses: [VaultSyncProgress] {
@@ -66,10 +65,7 @@ public final class FullSyncProgressViewModel {
         waitForOutcomeTask?.cancel()
         waitForOutcomeTask = Task { [weak self] in
             let outcome = await operation.result()
-            guard let self, !Task.isCancelled else { return }
-            if case let .failed(error) = outcome, !error.isInactiveUserKey {
-                return
-            }
+            guard let self, !Task.isCancelled, outcome.retryableError == nil else { return }
             onFinish(operation, outcome)
         }
     }

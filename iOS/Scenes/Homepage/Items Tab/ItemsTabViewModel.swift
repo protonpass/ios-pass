@@ -275,7 +275,7 @@ private extension ItemsTabViewModel {
             shouldShowSyncProgress = true
         }
         Task { [weak self] in
-            guard case let .failed(error) = await operation.result(), !error.isInactiveUserKey,
+            guard await operation.result().retryableError != nil,
                   let self, inlineSyncProgress === viewModel else { return }
             shouldShowSyncProgress = true
         }

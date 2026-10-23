@@ -153,11 +153,10 @@ public final class FullSyncManager: FullSyncManagerProtocol {
     /// Waits for the account's running sync to return so it writes nothing once the account is removed.
     /// Queued syncs are not awaited, they return as cancelled before doing any work.
     public func cancel(userId: String) async {
-        let running = fullSyncTasks.first?.task
-        let tasks = fullSyncTasks.filter { $0.operation.userId == userId }.map(\.task)
-        tasks.forEach { $0.cancel() }
-        if let running, tasks.contains(running) {
-            await running.value
+        let running = fullSyncTasks.first
+        fullSyncTasks.filter { $0.operation.userId == userId }.forEach { $0.task.cancel() }
+        if let running, running.operation.userId == userId {
+            await running.task.value
         }
         incompleteFullSyncUserIds.remove(userId)
     }
@@ -212,15 +211,12 @@ private extension FullSyncManager {
 
             try startStep(operation)
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
-                // Step 1: Upsert all shares in a single batch
                 async let upsertSharesTask: Void = shareRepository.upsertShares(userId: userId,
                                                                                 shares: remoteShares.shares,
                                                                                 eventStream: events)
 
-                // Step 2: Process each share's folders and items concurrently
                 for share in remoteShares.shares {
-                    taskGroup.addTask { [weak self] in
-                        guard let self else { return }
+                    taskGroup.addTask { [self] in
                         try Task.checkCancellation()
                         if share.shareType == .vault {
                             try await folderRepository.refreshFolders(userId: userId,
@@ -234,7 +230,6 @@ private extension FullSyncManager {
                     }
                 }
 
-                // Wait for both the upsert task and all item processing tasks to complete
                 _ = try await (upsertSharesTask, taskGroup.waitForAll())
             }
 
