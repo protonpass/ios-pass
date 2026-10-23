@@ -22,23 +22,23 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct FullSyncProgressView: View {
+public struct FullSyncProgressView: View {
     @State private var isShowingDetail = false
-    @StateObject private var viewModel: FullSyncProgressViewModel
+    let viewModel: FullSyncProgressViewModel
 
-    init(mode: FullSyncProgressViewModel.Mode) {
-        _viewModel = .init(wrappedValue: .init(mode: mode))
+    public init(viewModel: FullSyncProgressViewModel) {
+        self.viewModel = viewModel
     }
 
-    var body: some View {
-        switch viewModel.mode {
-        case .fullSync:
+    public var body: some View {
+        switch viewModel.operation.presentation {
+        case .sheet:
             NavigationStack {
                 realBody
                     .background(PassColor.backgroundNorm)
             }
 
-        case .logIn:
+        case .inline:
             realBody
         }
     }
@@ -53,7 +53,7 @@ private extension FullSyncProgressView {
             if let error = viewModel.error {
                 RetryableErrorView(error: error,
                                    onShareLogs: viewModel.shareHostAppLogs,
-                                   onRetry: retry)
+                                   onRetry: viewModel.retry)
                     .padding()
             } else {
                 VStack {
@@ -72,12 +72,7 @@ private extension FullSyncProgressView {
             }
         }
         .animation(.default, value: viewModel.error == nil)
-    }
-
-    func retry() {
-        Task {
-            await viewModel.retry()
-        }
+        .idleTimerDisabled(viewModel.error == nil)
     }
 }
 
@@ -87,21 +82,21 @@ private extension FullSyncProgressView {
             FullSyncInProgressView()
                 .frame(width: 80)
 
-            Text("Syncing items...")
+            Text("Syncing items...", bundle: .module)
                 .font(.title3.bold())
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
                 .padding(.bottom, 8)
 
-            Text("We are downloading and decrypting your items.")
+            Text("We are downloading and decrypting your items.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
 
-            Text("This might take a few minutes.")
+            Text("This might take a few minutes.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
 
-            Text("Please keep the app open.")
+            Text("Please keep the app open.", bundle: .module)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)
                 .padding(.top, 8)
@@ -110,10 +105,10 @@ private extension FullSyncProgressView {
             if viewModel.progresses.isEmpty {
                 ProgressView()
             } else {
-                ProgressView(value: Float(viewModel.numberOfSyncedVaults()),
+                ProgressView(value: Float(viewModel.numberOfSyncedVaults),
                              total: Float(viewModel.progresses.count))
                     .frame(width: 200)
-                    .animation(.default, value: viewModel.numberOfSyncedVaults())
+                    .animation(.default, value: viewModel.numberOfSyncedVaults)
                     .progressViewStyle(.pass)
             }
         }
@@ -129,7 +124,7 @@ private extension FullSyncProgressView {
             isShowingDetail = true
         }, label: {
             VStack(alignment: .center) {
-                Text("More info")
+                Text("More info", bundle: .module)
                 Label(title: { Text(verbatim: "") },
                       icon: { Image(systemName: "chevron.down") })
             }

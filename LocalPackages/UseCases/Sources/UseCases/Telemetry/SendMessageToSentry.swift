@@ -24,20 +24,15 @@ import Foundation
 import Sentry
 
 public protocol SendMessageToSentryUseCase: Sendable {
-    func execute(_ message: String, userId: String, sessionId: String?)
+    func callAsFunction(_ message: String, level: SentryLevel, userId: String, sessionId: String?)
 }
 
-public extension SendMessageToSentryUseCase {
-    func callAsFunction(_ message: String, userId: String, sessionId: String?) {
-        execute(message, userId: userId, sessionId: sessionId)
-    }
-}
-
-public final class SendMessageToSentry: SendMessageToSentryUseCase {
+public struct SendMessageToSentry: SendMessageToSentryUseCase {
     public init() {}
 
-    public func execute(_ message: String, userId: String, sessionId: String?) {
+    public func callAsFunction(_ message: String, level: SentryLevel, userId: String, sessionId: String?) {
         SentrySDK.capture(message: message) { scope in
+            scope.setLevel(level)
             if let sessionId {
                 scope.setTag(value: sessionId, key: Constants.Sentry.sessionId)
             }

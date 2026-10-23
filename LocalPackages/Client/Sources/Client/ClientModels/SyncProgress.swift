@@ -51,10 +51,6 @@ public struct DecryptItemsProgress: Sendable {
 
 /// Possible events when synching vaults
 public enum VaultSyncProgressEvent: Sendable {
-    /// An initial value for the sake of being able to make a `CurrentValueSubject`
-    case initialization
-    /// The sync progress has started (log in or full sync)
-    case started
     /// Remote shares are fetched but not yet decrypted so no info like vault names or icons are known at this
     /// stage
     case downloadedShares([Share])
@@ -64,10 +60,6 @@ public enum VaultSyncProgressEvent: Sendable {
     case getRemoteItems(GetRemoteItemsProgress)
     /// Decrypting fetched remote items of a share
     case decryptItems(DecryptItemsProgress)
-    /// The sync progress is done
-    case done(hasUndecryptableShares: Bool)
-    /// Error occurred
-    case error(userId: String, error: any Error)
 }
 
 /// The sync progress of a given vault

@@ -24,5 +24,6 @@ extension HomepageCoordinator {
     enum UniqueSheet: Int {
         case reusedPasswordList = 100
         case inAppNotificationDisplay = 200
+        case fullSyncProgress = 300
     }
 }

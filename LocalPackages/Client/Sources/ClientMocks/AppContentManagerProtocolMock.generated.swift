@@ -88,23 +88,8 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedRefreshParameters = (userId, ())
         closureRefresh()
     }
-    // MARK: - fullSync
-    public var closureFullSync: () -> () = {}
-    public var invokedFullSyncfunction = false
-    public var invokedFullSyncCount = 0
-    public var invokedFullSyncParameters: (userId: String, Void)?
-    public var invokedFullSyncParametersList = [(userId: String, Void)]()
-    public nonisolated(unsafe) var stubbedFullSyncResult: Bool!
-
-    public func fullSync(userId: String) async -> Bool {
-        invokedFullSyncfunction = true
-        invokedFullSyncCount += 1
-        invokedFullSyncParameters = (userId, ())
-        closureFullSync()
-        return stubbedFullSyncResult
-    }
     // MARK: - localFullSync
-    public var localFullSyncUserIdThrowableError4: Error?
+    public var localFullSyncUserIdThrowableError3: Error?
     public var closureLocalFullSync: () -> () = {}
     public var invokedLocalFullSyncfunction = false
     public var invokedLocalFullSyncCount = 0
@@ -115,7 +100,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedLocalFullSyncfunction = true
         invokedLocalFullSyncCount += 1
         invokedLocalFullSyncParameters = (userId, ())
-        if let error = localFullSyncUserIdThrowableError4 {
+        if let error = localFullSyncUserIdThrowableError3 {
             throw error
         }
         closureLocalFullSync()
@@ -151,7 +136,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         return stubbedGetItemsResult
     }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError7: Error?
+    public var deleteUserIdShareIdThrowableError6: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -162,7 +147,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeletefunction = true
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
-        if let error = deleteUserIdShareIdThrowableError7 {
+        if let error = deleteUserIdShareIdThrowableError6 {
             throw error
         }
         closureDelete()
@@ -184,7 +169,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     public var invokedResetfunction = false
     public var invokedResetCount = 0
 
-    public func reset() async {
+    public func reset() {
         invokedResetfunction = true
         invokedResetCount += 1
         closureReset()

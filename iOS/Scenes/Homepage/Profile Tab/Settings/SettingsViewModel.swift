@@ -262,9 +262,9 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                await presentFullSync(userId: userId,
-                                      shouldStopEventLoop: true,
-                                      reason: "settings")
+                await runFullSync(userId: userId,
+                                  shouldStopEventLoop: true,
+                                  reason: "settings")
             } catch {
                 handle(error)
             }

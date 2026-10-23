@@ -30,13 +30,12 @@ protocol FullSyncPresenting {
 }
 
 extension FullSyncPresenting {
-    /// Shows the non-dismissible full sync screen, runs the sync and announces the outcome.
+    /// Runs the sync and refreshes the UI when it succeeds. The progress sheet is presented by
+    /// `HomepageCoordinator` whenever a sync of the active user starts, so callers never present it.
     ///
-    /// The success message is conditional because `fullContentSync` reports failures on
-    /// `vaultSyncEventStream` instead of throwing: announcing unconditionally stacks a
-    /// "refreshed" toast on top of the retry screen the user is looking at.
-    func presentFullSync(userId: String, shouldStopEventLoop: Bool, reason: String) async {
-        router.present(for: .fullSync)
+    /// The refresh is conditional because `fullContentSync` reports failures in its return value
+    /// instead of throwing.
+    func runFullSync(userId: String, shouldStopEventLoop: Bool, reason: String) async {
         logger.info("Full syncing: \(reason)")
         let succeeded = await fullContentSync(userId: userId,
                                               shouldStopEventLoop: shouldStopEventLoop)
