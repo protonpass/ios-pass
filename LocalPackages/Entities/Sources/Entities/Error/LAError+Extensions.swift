@@ -37,10 +37,3 @@ public extension LAError {
         }
     }
 }
-
-public extension Error {
-    /// Every error except an `LAError` that reached no verdict counts as a failed unlock attempt.
-    var consumesUnlockAttempt: Bool {
-        (self as? LAError)?.reachedNoVerdict != true
-    }
-}

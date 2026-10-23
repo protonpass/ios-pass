@@ -33,35 +33,43 @@ struct BiometricAuthenticationView: View {
 
                 passLogo
 
-                switch viewModel.state {
-                case .noAttempts:
-                    if let promptDismissal = viewModel.promptDismissal {
-                        Text(verbatim: promptDismissal.unavailabilityMessage ?? #localized("Please authenticate",
-                                                                                           bundle: .module))
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(PassColor.textNorm)
-                        retryButton
-                            .padding(.top)
-                    }
-
-                case .lastAttempt:
-                    Text("This is your last attempt. You will be logged out after failing to authenticate again.",
-                         bundle: .module)
+                if viewModel.completionFailed {
+                    Text("Error occurred", bundle: .module)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
-                    UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
                     retryButton
                         .padding(.top)
+                } else {
+                    switch viewModel.state {
+                    case .noAttempts:
+                        if let promptDismissal = viewModel.promptDismissal {
+                            Text(verbatim: promptDismissal.unavailabilityMessage
+                                ?? #localized("Please authenticate", bundle: .module))
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(PassColor.textNorm)
+                            retryButton
+                                .padding(.top)
+                        }
 
-                case let .remainingAttempts(count):
-                    Text("\(count) remaining attempt(s)", bundle: .module)
-                        .foregroundStyle(PassColor.textNorm)
-                    UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
-                    retryButton
-                        .padding(.top)
+                    case .lastAttempt:
+                        Text("This is your last attempt. You will be logged out after failing to authenticate again.",
+                             bundle: .module)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(PassColor.textNorm)
+                        UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
+                        retryButton
+                            .padding(.top)
 
-                case .exhausted:
-                    EmptyView()
+                    case let .remainingAttempts(count):
+                        Text("\(count) remaining attempt(s)", bundle: .module)
+                            .foregroundStyle(PassColor.textNorm)
+                        UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
+                        retryButton
+                            .padding(.top)
+
+                    case .exhausted:
+                        EmptyView()
+                    }
                 }
 
                 Spacer()

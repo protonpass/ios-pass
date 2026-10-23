@@ -37,23 +37,18 @@ struct LAErrorTests {
                       .userCancel,
                       .userFallback,
                       .systemCancel])
-    func `an error that can follow a rejected face consumes an attempt`(code: LAError.Code) {
-        #expect(LAError(code).consumesUnlockAttempt)
+    func `an error that can follow a rejected face reaches a verdict`(code: LAError.Code) {
+        #expect(!LAError(code).reachedNoVerdict)
     }
 
     @Test(arguments: [LAError.Code.passcodeNotSet,
                       .invalidContext])
-    func `any other error consumes an attempt`(code: LAError.Code) {
-        #expect(LAError(code).consumesUnlockAttempt)
+    func `any other error reaches a verdict`(code: LAError.Code) {
+        #expect(!LAError(code).reachedNoVerdict)
     }
 
-    @Test func `an LAErrorDomain error for notInteractive does not consume an attempt`() {
+    @Test func `an LAErrorDomain error thrown by the system bridges to a no verdict LAError`() {
         let error: any Error = NSError(domain: LAError.errorDomain, code: LAError.Code.notInteractive.rawValue)
-        #expect(!error.consumesUnlockAttempt)
-    }
-
-    @Test func `a non local authentication error consumes an attempt`() {
-        let error: any Error = NSError(domain: NSCocoaErrorDomain, code: NSFileWriteUnknownError)
-        #expect(error.consumesUnlockAttempt)
+        #expect((error as? LAError)?.reachedNoVerdict == true)
     }
 }

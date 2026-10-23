@@ -35,6 +35,9 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     /// Why the last prompt was dismissed without reaching a verdict, so no attempt was consumed.
     private(set) var promptDismissal: LAError.Code?
 
+    /// The credential was right but finishing the unlock failed, so no attempt was consumed.
+    private(set) var completionFailed = false
+
     // Automatic keyboard avoidance is broken in the app cover, so the view pads for the keyboard itself
     let manuallyAvoidKeyboard: Bool
     let mode: LocalAuthenticationView.Mode
@@ -114,6 +117,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 }
             }
             promptDismissal = nil
+            completionFailed = false
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
@@ -128,7 +132,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 // swiftlint:disable:next line_length
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
                                      bundle: .module))
-            } catch let error as LAError where !error.consumesUnlockAttempt {
+            } catch let error as LAError where error.reachedNoVerdict {
                 promptDismissal = error.code
                 logger.warning("\(mode) prompt dismissed without a verdict. \(error)")
             } catch {
@@ -144,6 +148,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
             defer {
                 pinCheckTask = nil
             }
+            completionFailed = false
             guard let currentPIN = getSharedPreferences().pinCode else {
                 // No PIN code is set before, can't do anything but logging out
                 let message = "Can not check PIN code. No PIN code set."
@@ -210,9 +215,9 @@ private extension LocalAuthenticationViewModel {
             try await updateSharedPreferences(\.failedAttemptCount, value: 0)
             try await onSuccess()
         } catch {
-            // The credential was right, so this must not consume an attempt
+            // The credential was right, so neither consume an attempt nor log out: let the user retry
             logger.error("\(mode) authentication succeeded but could not be completed. \(error)")
-            onFailure(nil)
+            completionFailed = true
         }
     }
 }
