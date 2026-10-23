@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
@@ -28,7 +27,7 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
     func getItems(userId: String,
                   shareId: String,
-                  eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
+                  eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws
         -> [Item]
     func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
         -> Paginated<Item>
@@ -76,7 +75,7 @@ public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceP
 public extension RemoteItemDatasource {
     func getItems(userId: String,
                   shareId: String,
-                  eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
+                  eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws -> [Item] {
         var itemRevisions = [Item]()
         var sinceToken: String?
         while true {
@@ -87,9 +86,9 @@ public extension RemoteItemDatasource {
 
             itemRevisions += response.items.revisionsData
             sinceToken = response.items.lastToken
-            eventStream?.send(.getRemoteItems(.init(shareId: shareId,
-                                                    total: response.items.total,
-                                                    downloaded: itemRevisions.count)))
+            eventStream?.yield(.getRemoteItems(.init(shareId: shareId,
+                                                     total: response.items.total,
+                                                     downloaded: itemRevisions.count)))
             if itemRevisions.count >= response.items.total {
                 break
             }

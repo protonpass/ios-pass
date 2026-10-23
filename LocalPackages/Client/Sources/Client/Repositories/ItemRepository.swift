@@ -63,7 +63,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Full sync for a given `shareId`
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws
 
     func refreshItem(userId: String, shareId: String, itemId: String, eventToken: String) async throws
 
@@ -316,7 +316,7 @@ public extension ItemRepository {
 
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws {
         logger.trace("Refreshing items for share \(shareId)")
         let itemRevisions = try await remoteDatasource.getItems(userId: userId,
                                                                 shareId: shareId,
@@ -334,9 +334,9 @@ public extension ItemRepository {
                                                                    shareId: shareId,
                                                                    userId: userId,
                                                                    symmetricKey: symmetricKey)
-                eventStream?.send(.decryptItems(.init(shareId: shareId,
-                                                      total: itemRevisions.count,
-                                                      decrypted: index + 1)))
+                eventStream?.yield(.decryptItems(.init(shareId: shareId,
+                                                       total: itemRevisions.count,
+                                                       decrypted: index + 1)))
                 encryptedItems.append(encryptedItem)
             } catch {
                 failedItemDecryption.append(itemRevision)

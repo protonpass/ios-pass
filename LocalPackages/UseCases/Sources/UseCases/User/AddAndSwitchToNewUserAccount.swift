@@ -57,6 +57,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
 
     public func execute(userData: UserData, hasExtraPassword: Bool) async throws {
         syncEventLoop.stop()
+        defer { syncEventLoop.start() }
         let userId = userData.user.ID
         try await userManager.upsertAndMarkAsActive(userData: userData)
         try await preferencesManager.switchUserPreferences(userId: userId)
@@ -67,6 +68,5 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         }
         await fullContentSync(userId: userId, shouldStopEventLoop: true)
         try await inviteRepository.refreshAllInvites(userId: userId)
-        syncEventLoop.start()
     }
 }
