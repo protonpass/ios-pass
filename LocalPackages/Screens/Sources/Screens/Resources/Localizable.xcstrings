@@ -5530,6 +5530,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроби"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроб"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилась %lld спроба"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld спроб"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -55022,6 +55052,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN kodu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-код"
           }
         },
         "zh-Hans" : {

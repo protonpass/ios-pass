@@ -49,14 +49,14 @@ struct BiometricAuthenticationView: View {
                          bundle: .module)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
-                    unavailabilityMessage
+                    UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
                     retryButton
                         .padding(.top)
 
                 case let .remainingAttempts(count):
                     Text("\(count) remaining attempt(s)", bundle: .module)
                         .foregroundStyle(PassColor.textNorm)
-                    unavailabilityMessage
+                    UnavailabilityMessage(message: viewModel.promptDismissal?.unavailabilityMessage)
                     retryButton
                         .padding(.top)
 
@@ -101,10 +101,13 @@ private extension BiometricAuthenticationView {
                 .foregroundStyle(PassColor.interactionNormMajor2)
         }
     }
+}
 
-    @ViewBuilder
-    var unavailabilityMessage: some View {
-        if let message = viewModel.promptDismissal?.unavailabilityMessage {
+private struct UnavailabilityMessage: View {
+    let message: String?
+
+    var body: some View {
+        if let message {
             Text(verbatim: message)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm)

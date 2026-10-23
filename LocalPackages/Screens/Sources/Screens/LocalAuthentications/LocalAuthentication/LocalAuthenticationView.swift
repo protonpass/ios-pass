@@ -132,5 +132,6 @@ private extension LocalAuthenticationView {
                 .foregroundStyle(PassColor.textNorm)
                 .padding()
         }
+        .accessibilityLabel(Text("Sign out", bundle: .module))
     }
 }
