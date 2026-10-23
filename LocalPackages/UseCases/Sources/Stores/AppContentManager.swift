@@ -454,8 +454,9 @@ extension AppContentManager: FullSyncManagerDelegate {
     /// The event loop also full syncs inactive accounts, whose content must not replace
     /// the active account's content on screen
     public func fullSyncDidFinish(userId: String) async throws {
-        await indexForAutoFill()
         guard userManager.activeUserId == userId else {
+            // Only index when inactive user because `loadContents` also indexes
+            await indexForAutoFill()
             return
         }
         try await loadContents(userId: userId)
