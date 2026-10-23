@@ -98,7 +98,10 @@ public extension ApiServiceLite {
             let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
-            continuation.onTermination = { _ in observation.invalidate() }
+            continuation.onTermination = { _ in
+                observation.invalidate()
+                task.cancel()
+            }
             task.resume()
         }
     }
@@ -137,7 +140,10 @@ public extension ApiServiceLite {
             let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
-            continuation.onTermination = { _ in observation.invalidate() }
+            continuation.onTermination = { _ in
+                observation.invalidate()
+                task.cancel()
+            }
             task.resume()
         }
     }

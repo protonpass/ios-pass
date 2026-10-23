@@ -112,28 +112,36 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 return
             }
             let chunkCount = file.chunks.count
-            for (index, chunk) in file.chunks.enumerated() {
-                let path =
-                    "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
-                let stream = try await apiService.download(path: path,
-                                                           userId: userId)
-                for try await event in stream {
-                    switch event {
-                    case let .progress(value):
-                        let overall = await tracker.overallProgress(currentProgress: value,
-                                                                    chunkSize: chunk.size)
-                        continuation.yield(.progress(overall))
+            do {
+                for (index, chunk) in file.chunks.enumerated() {
+                    let path =
+                        "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
+                    let stream = try await apiService.download(path: path,
+                                                               userId: userId)
+                    for try await event in stream {
+                        switch event {
+                        case let .progress(value):
+                            let overall = await tracker.overallProgress(currentProgress: value,
+                                                                        chunkSize: chunk.size)
+                            continuation.yield(.progress(overall))
 
-                    case let .result(encryptedData):
-                        let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
-                                                                     chunkIndex: index,
-                                                                     chunkCount: chunkCount)
-                        let decrypted = try AES.GCM.open(encryptedData,
-                                                         key: fileKey,
-                                                         associatedData: associatedData)
-                        try fileHandle.write(contentsOf: decrypted)
+                        case let .result(encryptedData):
+                            let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
+                                                                         chunkIndex: index,
+                                                                         chunkCount: chunkCount)
+                            let decrypted = try AES.GCM.open(encryptedData,
+                                                             key: fileKey,
+                                                             associatedData: associatedData)
+                            try fileHandle.write(contentsOf: decrypted)
+                        }
                     }
+                    // A cancelled stream ends without throwing
+                    try Task.checkCancellation()
                 }
+            } catch {
+                // A partial file of >= 98% of the size would be served as complete by the next download
+                try? FileManager.default.removeItem(at: url)
+                throw error
             }
             continuation.yield(.result(url))
             continuation.finish()
