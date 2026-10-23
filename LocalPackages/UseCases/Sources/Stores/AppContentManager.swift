@@ -457,10 +457,10 @@ extension AppContentManager: LimitationCounterProtocol {
 
 // MARK: - FullSyncContentDelegate
 
-extension AppContentManager: FullSyncContentDelegate {
+extension AppContentManager: FullSyncManagerDelegate {
     /// The event loop also full syncs inactive accounts, whose content must not replace
     /// the active account's content on screen
-    public func fullSyncDidStoreContent(userId: String) async throws {
+    public func fullSyncDidFinish(userId: String) async throws {
         guard userManager.activeUserId == userId else {
             await indexForAutoFill()
             return

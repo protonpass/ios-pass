@@ -21,7 +21,6 @@
 // sourcery: AutoMockable
 @MainActor
 public protocol FullSyncManagerProtocol: Sendable {
-    @discardableResult
     func start(userId: String, presentation: FullSyncPresentation) -> FullSyncOperation
     func cancel(userId: String) async
     func reset() async

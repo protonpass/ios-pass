@@ -26,20 +26,16 @@ import Foundation
 import UseCases
 
 @MainActor
-public protocol FullSyncContentDelegate: AnyObject, Sendable {
-    /// Last step of every sync, of any account. Runs inside the sync so its failure fails the sync,
-    /// and cancellation and the stall watchdog cover it.
-    func fullSyncDidStoreContent(userId: String) async throws
+public protocol FullSyncManagerDelegate: AnyObject, Sendable {
+    func fullSyncDidFinish(userId: String) async throws
 }
 
-/// Runs the full syncs of every account, not only the active one: the event loop also full syncs
-/// inactive accounts. Loading the synced content is left to `contentDelegate`.
 @MainActor
 public final class FullSyncManager: FullSyncManagerProtocol {
     /// The latest full sync started or joined, kept after it finishes so observers can read its outcome
     @Published public private(set) var fullSyncOperation: FullSyncOperation?
 
-    public weak var contentDelegate: (any FullSyncContentDelegate)?
+    public weak var delegate: (any FullSyncManagerDelegate)?
 
     /// Accounts whose last full sync wiped their local data without completing
     public private(set) var incompleteFullSyncUserIds: Set<String> {
@@ -247,8 +243,8 @@ private extension FullSyncManager {
 
             // Last so the delegate only acts on a sync that succeeded
             try startStep(operation)
-            assert(contentDelegate != nil, "Nothing loads the synced content")
-            try await contentDelegate?.fullSyncDidStoreContent(userId: userId)
+            assert(delegate != nil, "Full sync delegate not set")
+            try await delegate?.fullSyncDidFinish(userId: userId)
         } catch {
             if error is CancellationError || Task.isCancelled {
                 logger.info("Cancelled full sync \(operation.id) for user \(userId)")
