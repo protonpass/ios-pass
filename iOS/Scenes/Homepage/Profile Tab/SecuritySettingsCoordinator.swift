@@ -155,8 +155,8 @@ private extension SecuritySettingsCoordinator {
     func verifyPINCodeAndUpdateMethod(_ newMethod: LocalAuthenticationMethod) {
         let successHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
-            delegate?.childCoordinatorWantsToDismissTopViewController()
             try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
+            delegate?.childCoordinatorWantsToDismissTopViewController()
         }
 
         let failureHandler: (String?) -> Void = { [weak self] _ in
