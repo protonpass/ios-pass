@@ -98,6 +98,7 @@ public extension ApiServiceLite {
                 }
             }
 
+            continuation.onTermination = { _ in task.cancel() }
             task.resume()
             observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
@@ -137,6 +138,7 @@ public extension ApiServiceLite {
                 }
             }
 
+            continuation.onTermination = { _ in task.cancel() }
             task.resume()
             observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
