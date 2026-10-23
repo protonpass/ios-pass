@@ -106,7 +106,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override func bindValues() {
         super.bindValues()
         defer {
-            emailUsernameExpanded = emailUsernameExpanded || getSharedPreferences().alwaysShowUsernameField
+            if getSharedPreferences().alwaysShowUsernameField {
+                expandEmailAndUsername()
+            }
         }
 
         switch mode {
@@ -177,11 +179,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             let sanitizedTotpUri = try sanitizeTotpUriForSaving(originalUri: originalTotpUri,
                                                                 editedUri: totpUri)
 
-            let sanitizedAutofillUrls = autofillUrls.compactMap { url in
-                if let value = URLUtils.Sanitizer.sanitize(url.value.url) {
-                    return AutofillUrl(url: value, mode: url.value.mode)
-                }
-                return nil
+            let sanitizedAutofillUrls = autofillUrls.compactMap { url -> AutofillUrl? in
+                guard !url.value.url.isEmpty else { return nil }
+                guard url.value.mode.shouldValidateUrl else { return url.value }
+                return URLUtils.Sanitizer.sanitize(url.value.url)
+                    .map { AutofillUrl(url: $0, mode: url.value.mode) }
             }
 
             let sanitizedUrls = sanitizedAutofillUrls.map(\.url)
@@ -367,7 +369,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func validateURLs() -> Bool {
-        invalidURLs = autofillUrls.map(\.value.url).compactMap { url in
+        let applicableUrls = autofillUrls.filter(\.value.mode.shouldValidateUrl)
+        invalidURLs = applicableUrls.map(\.value.url).compactMap { url in
             if url.isEmpty {
                 return nil
             }

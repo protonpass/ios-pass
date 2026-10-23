@@ -46,8 +46,8 @@ extension ASCredentialRequest {
             case let .registration(input):
                 if let prf = input.prf {
                     needsPrf = true
-                    saltInput1 = prf.inputValues?.saltInput1
-                    saltInput2 = prf.inputValues?.saltInput2
+                    saltInput1 = prf.inputValues?.saltInput1.hmacSecretSalt
+                    saltInput2 = prf.inputValues?.saltInput2?.hmacSecretSalt
                 }
 
             case let .assertion(input):
@@ -122,6 +122,6 @@ extension ASAuthorizationPublicKeyCredentialPRFAssertionInput {
 @available(iOS 18.0, *)
 private extension ASAuthorizationPublicKeyCredentialPRFAssertionInput.InputValues {
     var toPasskeyPrfValues: PasskeyPrfValues {
-        .init(first: saltInput1, second: saltInput2)
+        .init(first: saltInput1.hmacSecretSalt, second: saltInput2?.hmacSecretSalt)
     }
 }

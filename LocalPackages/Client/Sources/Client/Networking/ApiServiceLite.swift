@@ -46,7 +46,6 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
-    private nonisolated(unsafe) var observations: [URLRequest: NSKeyValueObservation] = [:]
 
     public init(session: URLSession = .shared,
                 appVersion: String,
@@ -77,14 +76,12 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, _, error in
-                defer {
-                    if let self {
-                        observations[request] = nil
-                    }
-                }
+            let task = session.dataTask(with: request) { data, response, error in
                 if let error {
                     continuation.finish(throwing: error)
+                } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                          !(200..<300).contains(statusCode) {
+                    continuation.finish(throwing: PassError.api(.unexpectedStatusCode(statusCode)))
                 } else if let data {
                     do {
                         let response = try JSONDecoder().decode(R.self, from: data)
@@ -98,11 +95,14 @@ public extension ApiServiceLite {
                 }
             }
 
-            continuation.onTermination = { _ in task.cancel() }
-            task.resume()
-            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+            let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
+            continuation.onTermination = { _ in
+                observation.invalidate()
+                task.cancel()
+            }
+            task.resume()
         }
     }
 
@@ -122,14 +122,13 @@ public extension ApiServiceLite {
                 return
             }
 
-            let task = session.dataTask(with: request) { [weak self] data, _, error in
-                defer {
-                    if let self {
-                        observations[request] = nil
-                    }
-                }
+            let task = session.dataTask(with: request) { data, response, error in
                 if let error {
                     continuation.finish(throwing: error)
+                } else if let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                          !(200..<300).contains(statusCode) {
+                    // Error bodies must not reach callers as payload: they would be decrypted as file chunks
+                    continuation.finish(throwing: PassError.api(.unexpectedStatusCode(statusCode)))
                 } else if let data {
                     continuation.yield(.result(data))
                     continuation.finish()
@@ -138,11 +137,14 @@ public extension ApiServiceLite {
                 }
             }
 
-            continuation.onTermination = { _ in task.cancel() }
-            task.resume()
-            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+            let observation = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
+            continuation.onTermination = { _ in
+                observation.invalidate()
+                task.cancel()
+            }
+            task.resume()
         }
     }
 }

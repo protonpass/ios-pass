@@ -26,7 +26,9 @@ public enum Constants {
     public static let keychainGroup = "\(teamId).\(appGroup)"
     public static let sortTypeKey = "sortType"
     public static let filterTypeKey = "filterType"
+    /// Single-account marker written by older versions, only read to migrate to `incompleteFullSyncUserIds`
     public static let incompleteFullSyncUserId = "incompleteFullSyncUserId"
+    public static let incompleteFullSyncUserIds = "incompleteFullSyncUserIds"
     public static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6443490629"
 
     public static let freeAccountsLimit = 1

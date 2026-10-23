@@ -195,6 +195,8 @@ extension ProfileTabViewModel {
                 aliasesAllowed = settings.aliasCreateMode != .nobody
             }
         } catch {
+            // Cancelled when the active user changes, e.g. while switching accounts
+            guard !(error is CancellationError) else { return }
             logger.error(error)
         }
     }

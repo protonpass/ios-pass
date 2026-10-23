@@ -34,9 +34,13 @@ public struct CxpImportedVault: Sendable, Hashable {
 public struct CxpImportResult: Sendable, Hashable {
     public let exporterName: String
     public let vaults: [CxpImportedVault]
+    public let hasUnsupportedItems: Bool
 
-    public init(exporterName: String, vaults: [CxpImportedVault]) {
+    public init(exporterName: String,
+                vaults: [CxpImportedVault],
+                hasUnsupportedItems: Bool) {
         self.exporterName = exporterName
         self.vaults = vaults
+        self.hasUnsupportedItems = hasUnsupportedItems
     }
 }

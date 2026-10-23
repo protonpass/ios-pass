@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import Combine
 import Core
 @preconcurrency import CryptoKit
 import Entities
@@ -48,7 +47,7 @@ public protocol ShareRepositoryProtocol: Sendable, Actor {
     /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
     func upsertShares(userId: String,
                       shares: [Share],
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws
 
     /// Go fetch and store the latest data of a share because we know it's updated (e.g via user events system)
     /// - Returns: the freshly fetched share, before symmetric encryption
@@ -209,13 +208,13 @@ public extension ShareRepository {
 
     func upsertShares(userId: String,
                       shares: [Share],
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws {
         let shareIds = shares.map(\.id)
         logger.trace("Upserting \(shares.count) shares for user \(userId), shares \(shareIds)")
         let key = try await getSymmetricKey()
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
-                eventStream?.send(.decryptedVault($0))
+                eventStream?.yield(.decryptedVault($0))
                 // swiftlint:disable:next discouraged_optional_self
                 return try await self?.symmetricallyEncryptNullable(userId: userId, $0, symmetricKey: key)
             }

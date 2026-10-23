@@ -91,21 +91,19 @@ private extension VaultSyncProgressView {
 private extension VaultSyncProgressView {
     func detail(vaultContent: VaultContent, itemsState: VaultSyncProgress.ItemsState) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(vaultContent.name)
+            Text(verbatim: vaultContent.name)
                 .font(.headline)
                 .foregroundStyle(PassColor.textNorm)
 
-            Spacer()
-
             switch itemsState {
             case .loading:
-                spinnerLabel(text: #localized("Preparing..."))
+                spinnerLabel(text: #localized("Preparing...", bundle: .module))
 
             case let .download(downloaded, total):
                 if progress.isEmpty {
                     emptyText
                 } else {
-                    spinnerLabel(text: #localized("%@%% downloaded...",
+                    spinnerLabel(text: #localized("%@%% downloaded...", bundle: .module,
                                                   percentage(done: downloaded, total: total)))
                 }
 
@@ -113,10 +111,10 @@ private extension VaultSyncProgressView {
                 if progress.isEmpty {
                     emptyText
                 } else if progress.isDone {
-                    Text("\(total) item(s)")
+                    Text("\(total) item(s)", bundle: .module)
                         .foregroundStyle(PassColor.textWeak)
                 } else {
-                    spinnerLabel(text: #localized("%@%% decrypted...",
+                    spinnerLabel(text: #localized("%@%% decrypted...", bundle: .module,
                                                   percentage(done: decrypted, total: total)))
                 }
             }
@@ -127,7 +125,7 @@ private extension VaultSyncProgressView {
 
 private extension VaultSyncProgressView {
     var emptyText: some View {
-        Text("Empty")
+        Text("Empty", bundle: .module)
             .font(.body.italic())
             .foregroundStyle(PassColor.textWeak)
     }
@@ -137,7 +135,7 @@ private extension VaultSyncProgressView {
     func spinnerLabel(text: String) -> some View {
         HStack(spacing: 8) {
             ProgressView()
-            Text(text)
+            Text(verbatim: text)
         }
         .foregroundStyle(PassColor.textWeak)
     }

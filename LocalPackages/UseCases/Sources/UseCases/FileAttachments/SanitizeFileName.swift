@@ -19,46 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Core
 import PassRustCore
 
 public protocol SanitizeFileNameUseCase: Sendable {
-    func execute(_ fileName: String) -> String
+    func callAsFunction(_ fileName: String) -> String
 }
 
-public extension SanitizeFileNameUseCase {
-    func callAsFunction(_ fileName: String) -> String {
-        execute(fileName)
-    }
-}
-
-public final class SanitizeFileName: SanitizeFileNameUseCase {
+public struct SanitizeFileName: SanitizeFileNameUseCase {
     private let fileDecoder: any FileDecoderProtocol
 
     public init(fileDecoder: any FileDecoderProtocol = FileDecoder()) {
         self.fileDecoder = fileDecoder
     }
 
-    public func execute(_ fileName: String) -> String {
-        // When initializing FileHandle using FileHandle(forWritingTo:), file name with some characters
-        // fails the initialization hence break the whole download process.
-        // So we replace characters by hyphens to bypass this system bug.
-        var fileName = fileName
-            .replacingOccurrences(of: " ", with: "_")
-            .replacingOccurrences(of: "[", with: "_")
-            .replacingOccurrences(of: "]", with: "_")
-            .replacingOccurrences(of: "%", with: "-")
-            .replacingOccurrences(of: "*", with: "-")
-            .replacingOccurrences(of: "?", with: "-")
-            .replacingOccurrences(of: "#", with: "-")
-            .replacingOccurrences(of: "<", with: "-")
-            .replacingOccurrences(of: ">", with: "-")
-            .replacingOccurrences(of: "|", with: "-")
-            .replacingOccurrences(of: "\"", with: "-")
-            .replacingOccurrences(of: "\\", with: "-")
-        fileName = fileDecoder.sanitizeFilename(name: fileName, windows: false)
-
-        // Remove accents
-        return fileName.accentsRemoved
+    public func callAsFunction(_ fileName: String) -> String {
+        fileDecoder.sanitizeFilename(name: fileName, windows: false)
     }
 }

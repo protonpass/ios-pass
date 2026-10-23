@@ -76,7 +76,6 @@ public enum SheetDestination: Equatable, Hashable {
     case logView(module: PassModule)
     case autoFillInstructions
     case moveItemsBetweenVaults(MovingContext)
-    case fullSync
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
     case customizeNewVault(VaultContent, ItemContent)
     case setPINCode

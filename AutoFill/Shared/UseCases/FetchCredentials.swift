@@ -118,10 +118,14 @@ private extension FetchCredentials {
 
             searchableItems.append(SearchableItem(from: decryptedItem, allVaults: vaults))
 
-            let itemUrls = data.autofillableUrls.compactMap { URL(string: $0) }
             var matchResults = [UrlMatchResult]()
-            for itemUrl in itemUrls {
+            for autofillUrl in data.resolvedAutofillUrls where autofillUrl.mode != .never {
+                guard let itemUrl = URL(string: autofillUrl.url) else { continue }
                 for url in urls {
+                    if autofillUrl.mode == .exact,
+                       itemUrl.host()?.lowercased() != url.host()?.lowercased() {
+                        continue
+                    }
                     let result = try matchUrls(itemUrl, with: url)
                     if case .matched = result {
                         matchResults.append(result)
