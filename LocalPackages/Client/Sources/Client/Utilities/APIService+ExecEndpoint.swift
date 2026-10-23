@@ -38,7 +38,7 @@ final class SessionTask: Sendable {
 
     func setTask(_ task: URLSessionDataTask) {
         state.withLock { state in
-            // The caller can be cancelled before ProtonCore creates the request
+            // `cancel()` can run before ProtonCore hands over the data task
             if case .cancelled = state {
                 task.cancel()
                 return
@@ -61,12 +61,10 @@ extension APIService {
             return try await withTaskCancellationHandler {
                 try await withCheckedThrowingContinuation { continuation in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint)
-                    // ProtonCore's default executor hops to the main queue just to run this completion
                     perform(request: endpoint,
                             callCompletionBlockUsing: .immediateExecutor,
-                            onDataTaskCreated: { task in
-                                sessionTask.setTask(task)
-                            }, decodableCompletion: { task, result in
+                            onDataTaskCreated: sessionTask.setTask,
+                            decodableCompletion: { task, result in
                                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                                 continuation.resume(with: result)
                             })
@@ -74,11 +72,8 @@ extension APIService {
             } onCancel: {
                 sessionTask.cancel()
             }
-        } catch {
-            if Task.isCancelled {
-                throw CancellationError()
-            }
-            throw error
+        } catch _ where Task.isCancelled {
+            throw CancellationError()
         }
     }
 
@@ -112,44 +107,16 @@ extension APIService {
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        let sessionTask = SessionTask()
         do {
-            return try await withTaskCancellationHandler {
-                try await withCheckedThrowingContinuation { continuation in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint)
-
-                    perform(request: endpoint,
-                            callCompletionBlockUsing: .immediateExecutor,
-                            onDataTaskCreated: { task in
-                                sessionTask.setTask(task)
-                            },
-                            decodableCompletion: { task, result in
-                                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                                switch result {
-                                case .success:
-                                    continuation.resume(throwing: PassError.errorExpected)
-
-                                case let .failure(error):
-                                    if let responseError = error.underlyingError as? SessionResponseError,
-                                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                                        continuation.resume(returning: .init(httpCode: error.httpCode,
-                                                                             protonCode: error.responseCode,
-                                                                             data: body))
-                                        return
-                                    }
-                                    continuation.resume(throwing: PassError.unexpectedError)
-                                }
-                            })
-                }
-            } onCancel: {
-                sessionTask.cancel()
+            _ = try await exec(endpoint: endpoint)
+        } catch let error as ResponseError {
+            guard let responseError = error.underlyingError as? SessionResponseError,
+                  case let .responseBodyIsNotADecodableObject(body, _) = responseError else {
+                throw PassError.unexpectedError
             }
-        } catch {
-            if Task.isCancelled {
-                throw CancellationError()
-            }
-            throw error
+            return .init(httpCode: error.httpCode, protonCode: error.responseCode, data: body)
         }
+        throw PassError.errorExpected
     }
 }
 
