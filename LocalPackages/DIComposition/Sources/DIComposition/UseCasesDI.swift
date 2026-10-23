@@ -447,11 +447,6 @@ public extension UseCasesContainer {
                                         logOutUser: self.logOutUser()) }
     }
 
-    // periphery:ignore
-    var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
-        self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
-    }
-
     var verifyPassword: Factory<any VerifyPasswordUseCase> {
         self { VerifyPassword(userManager: self.userManager,
                               apiManager: self.apiManager) }
