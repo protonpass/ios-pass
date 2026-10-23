@@ -35,10 +35,14 @@ public final class FullSyncProgressViewModel {
     private let fullContentSync = dependency(\UseCasesContainer.fullContentSync)
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let createLogsFile = dependency(\UseCasesContainer.createLogsFile)
+    private let sendMessageToSentry = dependency(\UseCasesContainer.sendMessageToSentry)
+    private let logger = dependency(\ToolingContainer.logger)
     private let onFinish: (FullSyncOperation, FullSyncOperation.Outcome) -> Void
 
     @ObservationIgnored
     private var waitForOutcomeTask: Task<Void, Never>?
+    @ObservationIgnored
+    private var reportShownTooLongTask: Task<Void, Never>?
 
     var error: (any Error)? {
         operation.outcome?.retryableError
@@ -57,6 +61,9 @@ public final class FullSyncProgressViewModel {
         self.operation = operation
         self.onFinish = onFinish
         track(operation)
+        if operation.presentation == .sheet {
+            reportWhenShownTooLong()
+        }
     }
 
     /// Switches to another operation, e.g. a retry, and stops waiting for the previous one
@@ -66,6 +73,7 @@ public final class FullSyncProgressViewModel {
         waitForOutcomeTask = Task { [weak self] in
             let outcome = await operation.result()
             guard let self, !Task.isCancelled, outcome.retryableError == nil else { return }
+            reportShownTooLongTask?.cancel()
             onFinish(operation, outcome)
         }
     }
@@ -75,6 +83,21 @@ public final class FullSyncProgressViewModel {
         track(fullContentSync(userId: operation.userId,
                               presentation: operation.presentation,
                               shouldStopEventLoop: true))
+    }
+
+    private func reportWhenShownTooLong() {
+        reportShownTooLongTask = Task { [weak self] in
+            guard await (try? Task.sleep(for: .seconds(180), clock: .suspending)) != nil,
+                  let self else { return }
+            let message = error == nil ?
+                "Full sync progress sheet shown for more than 3 minutes" :
+                "Full sync retry screen shown for more than 3 minutes"
+            logger.warning(message)
+            sendMessageToSentry(message,
+                                level: .warning,
+                                userId: operation.userId,
+                                sessionId: nil)
+        }
     }
 
     func shareHostAppLogs() {

@@ -221,6 +221,7 @@ final class AppCoordinator {
                                       message: #localized("You're logged out from %@", email))
                             }
                             sendMessageToSentry("Invalidated session",
+                                                level: .info,
                                                 userId: userId,
                                                 sessionId: sessionInfos.sessionId)
                         } catch {

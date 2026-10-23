@@ -95,8 +95,6 @@ private extension VaultSyncProgressView {
                 .font(.headline)
                 .foregroundStyle(PassColor.textNorm)
 
-            Spacer()
-
             switch itemsState {
             case .loading:
                 spinnerLabel(text: #localized("Preparing...", bundle: .module))
