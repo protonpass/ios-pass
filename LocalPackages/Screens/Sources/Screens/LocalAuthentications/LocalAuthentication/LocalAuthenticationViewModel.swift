@@ -56,6 +56,8 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     @ObservationIgnored
     private var biometricCheckTask: Task<Void, Never>?
+    @ObservationIgnored
+    private var becameActiveDuringPrompt = false
     private var pinCheckTask: Task<Void, Never>?
 
     var isCheckingPinCode: Bool {
@@ -104,7 +106,12 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         biometricCheckTask = Task { [weak self] in
             guard let self else { return }
             defer {
+                let retry = becameActiveDuringPrompt && promptDismissal == .notInteractive
+                becameActiveDuringPrompt = false
                 biometricCheckTask = nil
+                if retry {
+                    biometricallyAuthenticate()
+                }
             }
             promptDismissal = nil
             do {
@@ -113,7 +120,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                                                            reason: #localized("Please authenticate",
                                                                               bundle: .module))
                 if authenticated {
-                    try await recordSuccess()
+                    await recordSuccess()
                 } else {
                     await recordFailure(nil)
                 }
@@ -121,7 +128,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 // swiftlint:disable:next line_length
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
                                      bundle: .module))
-            } catch let error as LAError where error.reachedNoVerdict {
+            } catch let error as LAError where !error.consumesUnlockAttempt {
                 promptDismissal = error.code
                 logger.warning("\(mode) prompt dismissed without a verdict. \(error)")
             } catch {
@@ -146,14 +153,21 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 return
             }
             if currentPIN == enteredPinCode {
-                do {
-                    try await recordSuccess()
-                } catch {
-                    await recordFailure(error)
-                }
+                await recordSuccess()
             } else {
                 await recordFailure(nil)
             }
+        }
+    }
+
+    func appDidBecomeActive() {
+        guard case .noAttempts = state else { return }
+        guard biometricCheckTask == nil else {
+            becameActiveDuringPrompt = true
+            return
+        }
+        if promptDismissal != nil {
+            biometricallyAuthenticate()
         }
     }
 
@@ -191,8 +205,14 @@ private extension LocalAuthenticationViewModel {
         }
     }
 
-    func recordSuccess() async throws {
-        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
-        try await onSuccess()
+    func recordSuccess() async {
+        do {
+            try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+            try await onSuccess()
+        } catch {
+            // The credential was right, so this must not consume an attempt
+            logger.error("\(mode) authentication succeeded but could not be completed. \(error)")
+            onFailure(nil)
+        }
     }
 }

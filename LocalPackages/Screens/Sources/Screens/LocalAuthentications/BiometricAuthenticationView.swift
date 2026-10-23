@@ -77,12 +77,8 @@ struct BiometricAuthenticationView: View {
                 viewModel.onAuth()
                 viewModel.biometricallyAuthenticate()
             }
-            // Covers -1004 from prompting before we were frontmost, and a sheet cancelled by backgrounding
-            .onReceive(UIApplication.didBecomeActiveNotification) {
-                if viewModel.promptDismissal != nil {
-                    viewModel.biometricallyAuthenticate()
-                }
-            }
+            // Covers -1004 from prompting before we were frontmost
+            .onReceive(UIApplication.didBecomeActiveNotification, perform: viewModel.appDidBecomeActive)
         }
     }
 }
