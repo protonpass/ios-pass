@@ -25,7 +25,6 @@ import Testing
 @Suite(.tags(.entity))
 struct LAErrorTests {
     @Test(arguments: [LAError.Code.notInteractive,
-                      .systemCancel,
                       .appCancel,
                       .biometryLockout,
                       .biometryNotAvailable,
@@ -37,9 +36,24 @@ struct LAErrorTests {
     @Test(arguments: [LAError.Code.authenticationFailed,
                       .userCancel,
                       .userFallback,
-                      .passcodeNotSet,
+                      .systemCancel])
+    func `an error that can follow a rejected face consumes an attempt`(code: LAError.Code) {
+        #expect(LAError(code).consumesUnlockAttempt)
+    }
+
+    @Test(arguments: [LAError.Code.passcodeNotSet,
                       .invalidContext])
-    func `an error that may follow a judged face reaches a verdict`(code: LAError.Code) {
-        #expect(!LAError(code).reachedNoVerdict)
+    func `any other error consumes an attempt`(code: LAError.Code) {
+        #expect(LAError(code).consumesUnlockAttempt)
+    }
+
+    @Test func `an LAErrorDomain error for notInteractive does not consume an attempt`() {
+        let error: any Error = NSError(domain: LAError.errorDomain, code: LAError.Code.notInteractive.rawValue)
+        #expect(!error.consumesUnlockAttempt)
+    }
+
+    @Test func `a non local authentication error consumes an attempt`() {
+        let error: any Error = NSError(domain: NSCocoaErrorDomain, code: NSFileWriteUnknownError)
+        #expect(error.consumesUnlockAttempt)
     }
 }
