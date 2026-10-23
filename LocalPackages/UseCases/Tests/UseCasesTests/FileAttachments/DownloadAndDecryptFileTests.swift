@@ -78,6 +78,7 @@ struct DownloadAndDecryptFileTests {
     }
 
     @Test func `A failed chunk download removes the partial file`() async throws {
+        defer { removeDownloads() }
         let file = try makeFile(chunkCount: 2)
         let firstChunk = try encryptedChunk(index: 0, chunkCount: 2)
         let sut = makeSut(file: file) { chunkID in
@@ -100,6 +101,7 @@ struct DownloadAndDecryptFileTests {
     }
 
     @Test func `A cancelled download stops and removes the partial file`() async throws {
+        defer { removeDownloads() }
         let file = try makeFile(chunkCount: 3)
         let firstChunk = try encryptedChunk(index: 0, chunkCount: 3)
         let (secondChunkRequested, secondChunkRequestedContinuation) = AsyncStream<Void>.makeStream()
@@ -163,6 +165,10 @@ private extension DownloadAndDecryptFileTests {
         try AES.GCM.seal(Data(repeating: 1, count: 100),
                          key: fileKey,
                          associatedData: .fileData(version: 1, chunkIndex: index, chunkCount: chunkCount))
+    }
+
+    func removeDownloads() {
+        try? FileManager.default.removeItem(at: url.deletingLastPathComponent())
     }
 
     func waitUntil(_ condition: () -> Bool) async throws {
