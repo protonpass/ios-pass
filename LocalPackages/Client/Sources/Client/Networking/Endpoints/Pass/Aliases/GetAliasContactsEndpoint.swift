@@ -24,7 +24,6 @@ import ProtonCoreNetworking
 public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {
     public let contacts: [AliasContact]
     public let total: Int
-    public let lastID: Int
 }
 
 struct GetAliasContactsEndpoint: Endpoint, @unchecked Sendable {

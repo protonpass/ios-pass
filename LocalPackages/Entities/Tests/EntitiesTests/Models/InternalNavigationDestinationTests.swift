@@ -30,8 +30,7 @@ fileprivate struct InternalNavigationDestinationTestCase: Sendable {
 
 @Suite(.tags(.entity))
 struct InternalNavigationDestinationTests {
-    @Test("In app navigation destination parsing",
-          arguments: [
+    @Test(arguments: [
             InternalNavigationDestinationTestCase(
                 name: "ViewVaultMembers with ShareID",
                 input: "/internal/share_members?ShareID=a1b2c3d4==",
@@ -63,6 +62,11 @@ struct InternalNavigationDestinationTests {
                 expectation: .viewItem(shareID: "a1b2c3d4==", itemID: "e5f6g7h8==")
             ),
             InternalNavigationDestinationTestCase(
+                name: "AliasManagement with no parameters",
+                input: "/internal/alias_management",
+                expectation: .aliasManagement
+            ),
+            InternalNavigationDestinationTestCase(
                 name: "Unknown route",
                 input: "/internal/unknown_route",
                 expectation: .unknown(urlString: "/internal/unknown_route")
@@ -78,7 +82,7 @@ struct InternalNavigationDestinationTests {
                 expectation: .viewVaultMembers(shareID: "a1b2c3d4==")
             )
             ])
-    fileprivate func encodingDecodingTelemetryEventType(testCase: InternalNavigationDestinationTestCase) {
+    fileprivate func `internal URLs parse into destinations`(testCase: InternalNavigationDestinationTestCase) {
         let expectation = InternalNavigationDestination.parse(urlString: testCase.input)
         #expect(expectation == testCase.expectation)
     }

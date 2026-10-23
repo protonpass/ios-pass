@@ -276,8 +276,7 @@ private extension LogInDetailView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Button(action: { showPenalties.toggle() },
                        label: {
-                           Text(strength
-                               .sectionTitle(reuseCount: viewModel.reusedItems.fetchedObject?.count))
+                           Text(strength.sectionTitle)
                                .font(.footnote)
                                .foregroundStyle(strength.sectionTitleColor)
                                .underline(!viewModel.password.isEmpty,
@@ -403,6 +402,10 @@ private extension LogInDetailView {
                 if url.mode != .default, let title = url.mode.title {
                     Text(verbatim: title)
                         .foregroundStyle(PassColor.textWeak)
+                }
+
+                if let warning = url.mode.autofillWarning {
+                    AutofillUrlWarning(warning)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

@@ -91,7 +91,6 @@ final class ShareCoordinator {
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
-    private var createEditItemViewModel: BaseCreateEditItemViewModel?
 
     private var parsedContent: SharedContent?
     private var cancellables = Set<AnyCancellable>()
@@ -280,7 +279,6 @@ private extension ShareCoordinator {
                     let creationType = ItemCreationType.note(title: title, note: content.note)
                     let viewModel = try CreateEditNoteViewModel(mode: .create(creationType),
                                                                 upgradeChecker: upgradeChecker)
-                    createEditItemViewModel = viewModel
                     let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
 
@@ -294,7 +292,6 @@ private extension ShareCoordinator {
                         try CreateEditLoginViewModel(mode: .create(creationType),
                                                      upgradeChecker: upgradeChecker)
                     viewModel.delegate = self
-                    createEditItemViewModel = viewModel
                     let view = CreateEditLoginView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
                 }

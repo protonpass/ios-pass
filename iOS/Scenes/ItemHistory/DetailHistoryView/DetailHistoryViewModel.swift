@@ -252,10 +252,6 @@ extension DetailHistoryViewModel: FileAttachmentsViewHandler {
         itemContentType.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: Color {
-        itemContentType.normMinor1Color
-    }
-
     var itemContentType: ItemContentType {
         currentRevision.type
     }
@@ -318,7 +314,7 @@ private extension DetailHistoryViewModel {
                 let url = try generateFileTempUrl(userId: userId,
                                                   item: selectedRevisionContent,
                                                   file: file)
-                if FileManager.default.fileExists(atPath: url.path()) {
+                if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
                     // File already downloaded => open directly
                     switch postAction {
                     case .save:

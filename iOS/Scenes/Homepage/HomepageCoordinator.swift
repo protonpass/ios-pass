@@ -43,8 +43,6 @@ import StoreKit
 import Stores
 import SwiftUI
 
-private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
-
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
@@ -61,7 +59,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let accessRepository = dependency(\RepositoryContainer.accessRepository)
     private let organizationRepository = dependency(\RepositoryContainer.organizationRepository)
     let appContentManager = dependency(\ServiceContainer.appContentManager)
-    private let refreshInvitations = dependency(\UseCasesContainer.refreshInvitations)
+    private let fullSyncManager = dependency(\ServiceContainer.fullSyncManager)
     private let loginMethod = dependency(\DataContainer.loginMethod)
     private let userSettingsRepository = dependency(\RepositoryContainer.userSettingsRepository)
     private let symmetricKeyProvider = dependency(\DataContainer.symmetricKeyProvider)
@@ -95,6 +93,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
     @LazyInjected(\UseCasesContainer.switchUser) var switchUser
+    @LazyInjected(\UseCasesContainer.parseCxpImport) var parseCxpImport
     @LazyInjected(\UseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\UseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
     @LazyInjected(\UseCasesContainer.addAndSwitchToNewUserAccount)
@@ -112,6 +111,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
     let getUserPreferences = dependency(\UseCasesContainer.getUserPreferences)
 
     private var checkingFolderForceSync = false
+    private var fullSyncProgressViewModel: FullSyncProgressViewModel?
     private(set) weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
@@ -143,11 +143,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable, FullSyncPresentin
             await suggestSimpleLoginSyncIfApplicable()
         }
         refreshOrganizationAndOverrideSecuritySettings()
-        refreshAccessAndMonitorStateSync()
+        startPassMonitoring()
         refreshSettings()
         // No `refreshFeatureFlags()` here: `AppCoordinator.setUpAndStart` already ran it
         // for this user before building this coordinator.
         sendAllEventsIfApplicable()
+        sendUserMonitoringStatsIfApplicable()
         doLogOutExcessFreeAccounts()
         cleanUpPasswordHistory()
     }
@@ -162,13 +163,9 @@ private extension HomepageCoordinator {
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
-        // User event caches invites locally so no need to fetch invites as part of event loop
-        if !getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1) {
-            eventLoop.addAdditionalTask(.init(label: kRefreshInvitationsTaskLabel,
-                                              task: refreshInvitations.callAsFunction))
-        }
-
         authenticated = getSharedPreferences().localAuthenticationMethod == .none
+
+        observeFullSyncs()
 
         accessRepository.didUpdateToNewPlan
             .receive(on: DispatchQueue.main)
@@ -197,6 +194,7 @@ private extension HomepageCoordinator {
                 }
                 removeInAppNotificationDisplay()
                 refreshInAppNotifications()
+                refreshAccessAndMonitorStateSync()
 
                 Task { [weak self] in
                     guard let self else { return }
@@ -214,6 +212,8 @@ private extension HomepageCoordinator {
                 guard let self else { return }
                 guard await authenticated,
                       let destination = await router.getDeeplink() else { return }
+                // Resolve before handling because handling can outlive the next timer tick
+                await router.resolveDeeplink()
                 switch destination {
                 case let .totp(uri):
                     await totpDeepLink(totpUri: uri)
@@ -221,10 +221,14 @@ private extension HomepageCoordinator {
                 case let .spotlightItemDetail(itemContent):
                     await router.present(for: .itemDetail(itemContent))
 
+                case let .credentialsImport(token):
+                    if #available(iOS 26.0, *) {
+                        await importCredentials(token: token)
+                    }
+
                 case let .error(error):
                     await router.display(element: .displayErrorBanner(error))
                 }
-                await router.resolveDeeplink()
             }
         }
 
@@ -303,6 +307,7 @@ private extension HomepageCoordinator {
                         }
                         refresh(exitEditMode: false)
                         sendAllEventsIfApplicable()
+                        sendUserMonitoringStatsIfApplicable()
                         eventLoop.start()
                         eventLoop.forceSync()
                         refreshOrganizationAndOverrideSecuritySettings()
@@ -312,8 +317,6 @@ private extension HomepageCoordinator {
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
                         forceSyncForFoldersIfNeededForActiveUser()
-
-                        try await sendUserMonitoringStats()
                     } catch {
                         logger.error(message: "Failed to set up after entering foreground", error: error)
                     }
@@ -348,7 +351,6 @@ private extension HomepageCoordinator {
         self.itemsTabViewModel = itemsTabViewModel
 
         let profileTabViewModel = ProfileTabViewModel(childCoordinatorDelegate: self)
-        profileTabViewModel.delegate = self
 
         let homeView = HomepageTabbarView(itemsTabViewModel: itemsTabViewModel,
                                           profileTabViewModel: profileTabViewModel,
@@ -395,18 +397,25 @@ private extension HomepageCoordinator {
     /// Active user only: `PreferencesManager` resolves the active user, so other runs write the wrong row.
     /// Kept off the event loop, which fires mid-task: it shows a blocking screen and wipes local data.
     func forceSyncForFoldersIfNeeded(userId: String) async {
-        guard !checkingFolderForceSync, !appContentManager.isFullSyncing else { return }
+        guard !checkingFolderForceSync, !fullSyncManager.isFullSyncing(userId: userId) else { return }
         checkingFolderForceSync = true
         defer { checkingFolderForceSync = false }
 
         do {
             guard try await shouldForceSyncForFolders(userId: userId) else { return }
-            guard !appContentManager.isFullSyncing else { return }
-            await presentFullSync(userId: userId,
-                                  shouldStopEventLoop: true,
-                                  reason: "folders migration")
+            guard !fullSyncManager.isFullSyncing(userId: userId) else { return }
+            await runFullSync(userId: userId,
+                              shouldStopEventLoop: true,
+                              reason: "folders migration")
         } catch {
             logger.error(message: "Failed folder force sync check", error: error)
+        }
+    }
+
+    func startPassMonitoring() {
+        Task { [weak self] in
+            guard let self else { return }
+            await passMonitorRepository.startMonitoring()
         }
     }
 
@@ -489,6 +498,17 @@ private extension HomepageCoordinator {
         }
     }
 
+    func sendUserMonitoringStatsIfApplicable() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await sendUserMonitoringStats()
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
     func doLogOutExcessFreeAccounts() {
         Task { [weak self] in
             guard let self else { return }
@@ -542,6 +562,98 @@ private extension HomepageCoordinator {
             return false
         }
         return true
+    }
+}
+
+// MARK: - Full sync progress
+
+private extension HomepageCoordinator {
+    func observeFullSyncs() {
+        fullSyncManager.$fullSyncOperation
+            .receive(on: DispatchQueue.main)
+            .compactMap(\.self)
+            .sink { [weak self] operation in
+                guard let self else { return }
+                presentFullSyncProgressIfNeeded(for: operation)
+            }
+            .store(in: &cancellables)
+
+        userManager.currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .removeDuplicates { $0?.user.ID == $1?.user.ID }
+            .sink { [weak self] userData in
+                guard let self else { return }
+                if let operation = fullSyncProgressViewModel?.operation,
+                   operation.userId != userData?.user.ID {
+                    dismissFullSyncProgress()
+                }
+                if let userId = userData?.user.ID {
+                    resumeIncompleteFullSyncIfNeeded(userId: userId)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Runs on launch and on every account switch: an interrupted sync left the account's local
+    /// data wiped. Joins the account's sync already in flight, e.g. the one right after logging in,
+    /// and queues behind another account's background sync instead of skipping.
+    /// A sync queued while the account was inactive published no sheet, so it is joined here too.
+    func resumeIncompleteFullSyncIfNeeded(userId: String) {
+        guard fullSyncManager.incompleteFullSyncUserIds.contains(userId)
+            || fullSyncManager.isFullSyncing(userId: userId) else { return }
+        fullContentSync(userId: userId, presentation: .sheet, shouldStopEventLoop: true)
+    }
+
+    /// Only one progress sheet exists at a time, and only for the active user: the event loop
+    /// also full syncs inactive accounts in the background.
+    func presentFullSyncProgressIfNeeded(for operation: FullSyncOperation) {
+        guard operation.presentation == .sheet,
+              operation.outcome == nil,
+              operation.userId == userManager.activeUserId else { return }
+
+        if let fullSyncProgressViewModel {
+            fullSyncProgressViewModel.track(operation)
+            return
+        }
+
+        let viewModel = FullSyncProgressViewModel(operation: operation) { [weak self] operation, outcome in
+            guard let self else { return }
+            fullSyncDidFinish(operation, outcome: outcome)
+        }
+        let controller = UIHostingController(rootView: FullSyncProgressView(viewModel: viewModel))
+        // Tagged by hand: `present(uniquenessTag:)` would dismiss the top most sheet instead of presenting
+        // while the previous progress sheet is still animating out, e.g. on an account switch
+        controller.view.tag = UniqueSheet.fullSyncProgress.rawValue
+        fullSyncProgressViewModel = viewModel
+        present(controller, dismissible: false)
+    }
+
+    func fullSyncDidFinish(_ operation: FullSyncOperation, outcome: FullSyncOperation.Outcome) {
+        guard fullSyncProgressViewModel?.operation === operation else { return }
+        dismissFullSyncProgress { [weak self] in
+            guard let self else { return }
+            switch outcome {
+            case .completed(hasUndecryptableShares: false):
+                bannerManager.displayBottomInfoMessage(#localized("Sync complete"))
+
+            case .completed(hasUndecryptableShares: true), .failed:
+                displayUndecryptableSharesBanner(false)
+
+            case .cancelled:
+                break
+            }
+        }
+    }
+
+    /// Dismisses the progress sheet rather than the top most sheet. Anything presented above it,
+    /// like the logs share sheet, goes with it.
+    func dismissFullSyncProgress(completion: (() -> Void)? = nil) {
+        fullSyncProgressViewModel = nil
+        guard let controller = rootViewController.viewControllerWithTag(UniqueSheet.fullSyncProgress) else {
+            completion?()
+            return
+        }
+        controller.dismiss(animated: true, completion: completion)
     }
 }
 
@@ -618,9 +730,6 @@ extension HomepageCoordinator {
                 case let .moveItemsBetweenVaults(context):
                     itemMoveBetweenVault(context: context)
 
-                case .fullSync:
-                    present(FullSyncProgressView(mode: .fullSync), dismissible: false)
-
                 case let .shareVaultFromItemDetail(vault, itemContent):
                     presentShareElementView(for: vault, itemContent: itemContent)
 
@@ -645,8 +754,8 @@ extension HomepageCoordinator {
                 case .securityKeys:
                     presentSecurityKeys()
 
-                case .settingsMenu:
-                    profileTabViewModelWantsToShowSettingsMenu()
+                case .settings:
+                    push(SettingsView())
 
                 case let .createEditLogin(item, dismissAllSheets):
                     if dismissAllSheets {
@@ -675,9 +784,11 @@ extension HomepageCoordinator {
 
                 case let .itemDetail(content,
                                      automaticDisplay,
+                                     fromPassMonitor,
                                      showExcludedWeaknesses):
                     presentItemDetailView(for: content,
                                           asSheet: automaticDisplay ? shouldShowAsSheet() : true,
+                                          fromPassMonitor: fromPassMonitor,
                                           showExcludedWeaknesses: showExcludedWeaknesses)
 
                 case .editSpotlightSearchableContent:
@@ -695,6 +806,9 @@ extension HomepageCoordinator {
                 case let .securityDetail(filter):
                     presentSecurity(filter)
 
+                case let .darkWebMonitorHome(breaches):
+                    push(DarkWebMonitorDetailPaneView(userBreaches: breaches))
+
                 case let .passwordReusedItemList(content):
                     presentPasswordReusedListView(for: content)
 
@@ -707,8 +821,8 @@ extension HomepageCoordinator {
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
 
-                case .secureLinks:
-                    presentSecureLinks()
+                case let .secureLinks(asSheet):
+                    presentSecureLinks(asSheet: asSheet)
 
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
@@ -727,7 +841,7 @@ extension HomepageCoordinator {
                     }
 
                 case .aliasesSyncConfiguration:
-                    present(AliasSyncConfigurationView())
+                    push(AliasSyncConfigurationView())
 
                 case .loginsWith2fa:
                     presentLoginsWith2faView()
@@ -738,6 +852,17 @@ extension HomepageCoordinator {
                 case let .breach(breach):
                     presentBreach(breach: breach)
 
+                case let .cxpImport(result):
+                    present(CxpImportView(result: result,
+                                          onSuccess: { [weak self] in
+                                              guard let self else { return }
+                                              refresh()
+                                          }),
+                            dismissible: false)
+
+                case .cxpExport:
+                    present(CxpExportView())
+
                 case .addMailbox:
                     dismissTopMostViewController { [weak self] in
                         guard let self else { return }
@@ -745,7 +870,7 @@ extension HomepageCoordinator {
                     }
 
                 case .passwordHistory:
-                    presentPasswordHistoryView()
+                    presentPasswordHistoryView(asSheet: false)
 
                 case .signInToAnotherDevice:
                     presentSignInToAnotherDeviceView()
@@ -961,9 +1086,15 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentItemDetailView(for itemContent: ItemContent, asSheet: Bool, showExcludedWeaknesses: Bool = false) {
+    func presentItemDetailView(for itemContent: ItemContent,
+                               asSheet: Bool,
+                               fromPassMonitor: Bool = false,
+                               showExcludedWeaknesses: Bool = false) {
         let coordinator = ItemDetailCoordinator(itemDetailViewModelDelegate: self)
-        coordinator.showDetail(for: itemContent, asSheet: asSheet, showExcludedWeaknesses: showExcludedWeaknesses)
+        coordinator.showDetail(for: itemContent,
+                               asSheet: asSheet,
+                               fromPassMonitor: fromPassMonitor,
+                               showExcludedWeaknesses: showExcludedWeaknesses)
         itemDetailCoordinator = coordinator
         addNewEvent(type: .read(itemContent.type))
     }
@@ -1025,7 +1156,7 @@ extension HomepageCoordinator {
         let viewPasswordHistory: @MainActor (PMBanner) -> Void = { [weak self] banner in
             guard let self else { return }
             banner.dismiss()
-            presentPasswordHistoryView()
+            presentPasswordHistoryView(asSheet: true)
         }
 
         let copyPassword: (String) -> Void = { [weak self] password in
@@ -1061,9 +1192,7 @@ extension HomepageCoordinator {
     }
 
     func presentShareElementView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let viewModel = ShareElementViewModel(share: vault.vault,
-                                              itemContent: itemContent,
-                                              itemCount: vault.itemCount)
+        let viewModel = ShareElementViewModel(share: vault.vault, itemContent: itemContent)
         let view = ShareElementView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
@@ -1230,16 +1359,24 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentPasswordHistoryView() {
+    func presentPasswordHistoryView(asSheet: Bool) {
         let createLogin: (String) -> Void = { [weak self] clearPassword in
             guard let self else { return }
+            let mode = ItemMode.create(.login(password: clearPassword, autofill: false))
+            guard asSheet else {
+                // Expanded iPad shows the page alone in the detail column, popping would only hide the sidebar
+                if isCollapsed() {
+                    popTopViewController(animated: false)
+                }
+                presentCreateEditLoginView(mode: mode)
+                return
+            }
             dismissTopMostViewController(animated: true) { [weak self] in
                 guard let self else { return }
-                presentCreateEditLoginView(mode: .create(.login(password: clearPassword,
-                                                                autofill: false)))
+                presentCreateEditLoginView(mode: mode)
             }
         }
-        let view = PasswordHistoryView { [weak self] action in
+        let view = PasswordHistoryView(isShownAsSheet: asSheet) { [weak self] action in
             guard let self else { return }
             switch action {
             case let .copy(password):
@@ -1249,10 +1386,12 @@ extension HomepageCoordinator {
 
             case let .create(password):
                 createLogin(password)
+
+            case .close:
+                itemDetailViewModelWantsToGoBack(isShownAsSheet: asSheet)
             }
         }
-
-        present(view)
+        showView(view: view, asSheet: asSheet)
     }
 
     func presentSignInToAnotherDeviceView() {
@@ -1403,16 +1542,7 @@ extension HomepageCoordinator {
 
 extension HomepageCoordinator {
     func presentSecurity(_ type: MonitorListSection) {
-        let isSheet = shouldShowAsSheet()
-        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: type),
-                                                        isSheet: isSheet),
-                       isSheet: isSheet)
-
-        if results.isSheet {
-            present(results.view)
-        } else {
-            push(results.view)
-        }
+        push(SecurityWeaknessDetailView(viewModel: .init(type: type)))
     }
 }
 
@@ -1628,55 +1758,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent) {
         presentItemDetailView(for: itemContent, asSheet: shouldShowAsSheet())
-    }
-}
-
-// MARK: - ProfileTabViewModelDelegate
-
-extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowSettingsMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
-        let view = SettingsView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
-    func profileTabViewModelWantsToShowFeedback() {
-        let view = FeedbackChannelsView { [weak self] selectedChannel in
-            guard let self else { return }
-            switch selectedChannel {
-            case .bugReport:
-                dismissTopMostViewController(animated: true) { [weak self] in
-                    guard let self else { return }
-                    presentBugReportView()
-                }
-
-            default:
-                if let urlString = selectedChannel.urlString {
-                    urlOpener.open(urlString: urlString)
-                }
-            }
-        }
-
-        let viewController = UIHostingController(rootView: view)
-        let customHeight = 52 * FeedbackChannel.allCases.count + 80
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentBugReportView() {
-        let successHandler: () -> Void = { [weak self] in
-            guard let self else { return }
-            dismissTopMostViewController { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomSuccessMessage(#localized("Report successfully sent"))
-            }
-        }
-        let view = BugReportView(onSuccess: successHandler)
-        present(view)
     }
 }
 
@@ -1899,12 +1980,12 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Stopped looping")
     }
 
-    nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
-        logger.info("Began new sync loop for userId \(userId)")
+    func syncEventLoopIsFullSyncing(userId: String) -> Bool {
+        fullSyncManager.hasFullSyncTask(userId: userId)
     }
 
-    func syncEventLoopShouldUseUserEvents() async -> Bool {
-        await getFeatureFlagStatus(for: FeatureFlagType.passUserEventsV1)
+    nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
+        logger.info("Began new sync loop for userId \(userId)")
     }
 
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
@@ -1912,9 +1993,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 
     func syncEventLoopRequiresFullSync(userId: String) async {
-        await presentFullSync(userId: userId,
-                              shouldStopEventLoop: false,
-                              reason: "user events")
+        await runFullSync(userId: userId,
+                          shouldStopEventLoop: false,
+                          reason: "user events")
     }
 
     nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {
@@ -1935,18 +2016,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
         logger.error(message: "User \(userId)", error: error)
-    }
-
-    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {
-        logger.trace("Began executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFinishAdditionalTask(userId: String, label: String) {
-        logger.info("Finished executing additional task \(label) for userId \(userId)")
-    }
-
-    nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
-        logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
 }
 

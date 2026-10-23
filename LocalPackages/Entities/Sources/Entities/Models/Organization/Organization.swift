@@ -33,6 +33,13 @@ public struct Organization: Sendable, Decodable, Equatable {
 }
 
 public extension Organization {
+    var exportAllowed: Bool {
+        guard let settings else { return true }
+        return canUpdate || settings.exportMode == .anyone
+    }
+}
+
+public extension Organization {
     enum ShareMode: Int, Sendable, Decodable, Equatable {
         /// Able to share within and outside of organization
         case unrestricted = 0

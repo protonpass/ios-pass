@@ -86,7 +86,6 @@ private final class AliasOptionsSheetContentViewModel {
     private(set) var showMailboxTip = false
     private(set) var showDomainTip = false
 
-    private let aliasCount: Int?
     private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
     private let action: (AliasOptionsSheetContentAction) -> Void
 
@@ -123,7 +122,6 @@ private final class AliasOptionsSheetContentViewModel {
          aliasCount: Int?,
          action: @escaping (AliasOptionsSheetContentAction) -> Void) {
         self.state = state
-        self.aliasCount = aliasCount
         self.action = action
 
         if let aliasCount, aliasCount > 2, module == .hostApp {

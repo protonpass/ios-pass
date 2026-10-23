@@ -63,7 +63,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
         -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
-        if fileManager.fileExists(atPath: url.path()),
+        if fileManager.fileExists(atPath: url.path(percentEncoded: false)),
            let attributes = try? fileManager.attributesOfItem(atPath: url.path),
            let fileSize = (attributes[FileAttributeKey.size] as? NSNumber)?.intValue,
            // Heuristically make sure downloaded decrypted file size is >= 98% of the encrypted size
@@ -99,7 +99,7 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
         // Create the empty file
         try fileManager.createDirectory(at: url.deletingLastPathComponent(),
                                         withIntermediateDirectories: true)
-        fileManager.createFile(atPath: url.path(), contents: nil)
+        fileManager.createFile(atPath: url.path(percentEncoded: false), contents: nil)
 
         // Download, decrypt and write to file chunk by chunk
         let fileHandle = try FileHandle(forWritingTo: url)
@@ -112,28 +112,36 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 return
             }
             let chunkCount = file.chunks.count
-            for (index, chunk) in file.chunks.enumerated() {
-                let path =
-                    "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
-                let stream = try await apiService.download(path: path,
-                                                           userId: userId)
-                for try await event in stream {
-                    switch event {
-                    case let .progress(value):
-                        let overall = await tracker.overallProgress(currentProgress: value,
-                                                                    chunkSize: chunk.size)
-                        continuation.yield(.progress(overall))
+            do {
+                for (index, chunk) in file.chunks.enumerated() {
+                    let path =
+                        "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
+                    let stream = try await apiService.download(path: path,
+                                                               userId: userId)
+                    for try await event in stream {
+                        switch event {
+                        case let .progress(value):
+                            let overall = await tracker.overallProgress(currentProgress: value,
+                                                                        chunkSize: chunk.size)
+                            continuation.yield(.progress(overall))
 
-                    case let .result(encryptedData):
-                        let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
-                                                                     chunkIndex: index,
-                                                                     chunkCount: chunkCount)
-                        let decrypted = try AES.GCM.open(encryptedData,
-                                                         key: fileKey,
-                                                         associatedData: associatedData)
-                        try fileHandle.write(contentsOf: decrypted)
+                        case let .result(encryptedData):
+                            let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
+                                                                         chunkIndex: index,
+                                                                         chunkCount: chunkCount)
+                            let decrypted = try AES.GCM.open(encryptedData,
+                                                             key: fileKey,
+                                                             associatedData: associatedData)
+                            try fileHandle.write(contentsOf: decrypted)
+                        }
                     }
+                    // A cancelled stream ends without throwing
+                    try Task.checkCancellation()
                 }
+            } catch {
+                // A partial file of >= 98% of the size would be served as complete by the next download
+                try? FileManager.default.removeItem(at: url)
+                throw error
             }
             continuation.yield(.result(url))
             continuation.finish()

@@ -127,6 +127,14 @@ class BaseItemDetailViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passMonitorPerCheckExclusion)
     }
 
+    var offersIncludeInMonitoring: Bool {
+        !isMonitored
+    }
+
+    var flagsToToggleFullMonitoring: [ItemFlag] {
+        [.skipHealthCheck(isMonitored)]
+    }
+
     var isAllowedToEdit: Bool {
         guard let vault else {
             return false
@@ -322,17 +330,22 @@ class BaseItemDetailViewModel: ObservableObject {
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
-                let flag = weakness.flag(isMonitored)
-                logger.trace("Updating monitoring flag \(flag) for \(itemContent.debugDescription)")
+                let including = offersIncludeInMonitoring
+                let flags = if case .fullyExcluded = weakness {
+                    flagsToToggleFullMonitoring
+                } else {
+                    [weakness.flag(isMonitored)]
+                }
+                logger.trace("Updating monitoring flags \(flags) for \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                try await toggleItemMonitoring(item: itemContent, flag: flag)
-                logger.trace("Updated monitoring flag \(flag) for \(itemContent.debugDescription)")
+                try await toggleItemMonitoring(item: itemContent, flags: flags)
+                logger.trace("Updated monitoring flags \(flags) for \(itemContent.debugDescription)")
                 switch weakness {
                 case .fullyExcluded:
-                    if isMonitored {
-                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
-                    } else {
+                    if including {
                         router.display(element: .successMessage(#localized("Item included for monitoring")))
+                    } else {
+                        router.display(element: .infosMessage(#localized("Item excluded from monitoring")))
                     }
 
                 case let .weakness(kind, isExcluded):
@@ -459,10 +472,6 @@ extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
         itemContent.type.normMajor2Color
     }
 
-    var fileAttachmentsSectionSecondaryColor: Color {
-        itemContent.type.normMinor1Color
-    }
-
     var itemContentType: ItemContentType {
         itemContent.type
     }
@@ -503,7 +512,7 @@ private extension BaseItemDetailViewModel {
                 let url = try generateFileTempUrl(userId: userId,
                                                   item: itemContent,
                                                   file: file)
-                if FileManager.default.fileExists(atPath: url.path()) {
+                if FileManager.default.fileExists(atPath: url.path(percentEncoded: false)) {
                     switch postAction {
                     case .save:
                         urlToSave = url

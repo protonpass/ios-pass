@@ -25,6 +25,7 @@ import SwiftUI
 
 struct ItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
+    // periphery:ignore - read through its binding
     @State private var expandedMoreInfo = false
     let item: SelectedItem
     let selectedTextStream: SelectedTextStream

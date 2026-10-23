@@ -21,52 +21,39 @@
 @testable import Client
 import ClientMocks
 import Entities
-import XCTest
+import Testing
 
-final class MigrationManagerTests: XCTestCase {
-    var migrationDatasource: LocalDataMigrationDatasourceProtocol!
-    var sut: DataMigrationManagerProtocol!
+@Suite(.tags(.manager))
+struct MigrationManagerTests {
+    private let sut: any DataMigrationManagerProtocol =
+        DataMigrationManager(datasource: LocalDataMigrationDatasourceProtocolMock())
 
-    override func setUp() {
-        super.setUp()
-
-        migrationDatasource = LocalDataMigrationDatasourceProtocolMock()
-        sut = DataMigrationManager(datasource: migrationDatasource)
-    }
-
-    override func tearDown() {
-        sut = nil
-        migrationDatasource = nil
-        super.tearDown()
-    }
-
-    func testNoMigrationSet() async {
+    @Test func `every migration is missing when none was added`() async {
         let missingMigration = await sut.missingMigrations(MigrationType.all)
-        XCTAssertEqual(missingMigration, MigrationType.all)
+        #expect(missingMigration == MigrationType.all)
     }
 
-    func testAddOneMigration() async {
-        await sut.addMigration(.userAppData)
-        let userAppDataMigrationDone =  await sut.hasMigrationOccurred(.userAppData)
-        let missingMigration =  await sut.missingMigrations(MigrationType.all)
-
-        XCTAssertTrue(userAppDataMigrationDone)
-        XCTAssertEqual(missingMigration,
-                       [MigrationType.credentialsAppData,
-                        MigrationType.credentialsForActionExtension])
-    }
-
-    func testRevertAMigration() async {
+    @Test func `an added migration is no longer missing`() async {
         await sut.addMigration(.userAppData)
         let userAppDataMigrationDone = await sut.hasMigrationOccurred(.userAppData)
-        XCTAssertTrue(userAppDataMigrationDone)
+        let missingMigration = await sut.missingMigrations(MigrationType.all)
+
+        #expect(userAppDataMigrationDone)
+        #expect(missingMigration == [MigrationType.credentialsAppData,
+                                     MigrationType.credentialsForActionExtension])
+    }
+
+    @Test func `a reverted migration is missing again`() async {
+        await sut.addMigration(.userAppData)
+        let userAppDataMigrationDone = await sut.hasMigrationOccurred(.userAppData)
+        #expect(userAppDataMigrationDone)
 
         await sut.revertMigration(.userAppData)
         let userAppDataMigrationUnDone = await sut.hasMigrationOccurred(.userAppData)
 
         let missingMigration = await sut.missingMigrations(MigrationType.all)
 
-        XCTAssertFalse(userAppDataMigrationUnDone)
-        XCTAssertEqual(missingMigration, MigrationType.all)
+        #expect(!userAppDataMigrationUnDone)
+        #expect(missingMigration == MigrationType.all)
     }
 }

@@ -25,6 +25,7 @@ import Foundation
 import Testing
 import UseCases
 
+@Suite(.tags(.useCase))
 struct GetFilesToLinkTests {
     let sut: any GetFilesToLinkUseCase
 
@@ -32,8 +33,7 @@ struct GetFilesToLinkTests {
         sut = GetFilesToLink()
     }
 
-    @Test
-    func `Get file to add and remove`() {
+    @Test func `get file to add and remove`() {
         // Given
         let attachedFiles: [ItemFile] = [
             .random(fileID: "attached_0"),

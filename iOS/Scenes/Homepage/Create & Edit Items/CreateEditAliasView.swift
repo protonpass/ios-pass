@@ -126,8 +126,6 @@ private extension CreateEditAliasView {
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
                                                field: .title,
-                                               itemContentType: viewModel.itemContentType,
-                                               isEditMode: viewModel.mode.isEditMode,
                                                onSubmit: {
                                                    if case .create = viewModel.mode, isShowingAdvancedOptions {
                                                        focusedField = .prefix

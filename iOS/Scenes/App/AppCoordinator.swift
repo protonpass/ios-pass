@@ -61,9 +61,9 @@ private enum HomeSceneMode {
 final class AppCoordinator {
     private let window: UIWindow
     private let appStateObserver: AppStateObserver
-    private var isUITest: Bool
 
     private var homepageCoordinator: HomepageCoordinator?
+    // periphery:ignore - keeps the coordinator alive while its flow is on screen
     private var welcomeCoordinator: WelcomeCoordinator?
     private var rootViewController: UIViewController? {
         window.rootViewController
@@ -104,15 +104,10 @@ final class AppCoordinator {
 
     private var task: Task<Void, Never>?
 
-    private var theme: Theme {
-        preferencesManager.sharedPreferences.unwrapped().theme
-    }
-
     init(window: UIWindow) {
         self.window = window
         appStateObserver = .init()
 
-        isUITest = false
         firstRunCheckUp()
         bindAppState()
 
@@ -226,6 +221,7 @@ final class AppCoordinator {
                                       message: #localized("You're logged out from %@", email))
                             }
                             sendMessageToSentry("Invalidated session",
+                                                level: .info,
                                                 userId: userId,
                                                 sessionId: sessionInfos.sessionId)
                         } catch {
@@ -270,8 +266,7 @@ private extension AppCoordinator {
     }
 
     func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.getUnauthApiService(),
-                                                    theme: theme)
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.getUnauthApiService())
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
         homepageCoordinator = nil

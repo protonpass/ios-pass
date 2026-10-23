@@ -26,8 +26,6 @@ struct CreateAliasesFromPendingResponse: Decodable {
 
     struct CreateAliasesData: Decodable {
         let revisionsData: [Item]
-        let total: Int
-        let lastToken: String?
     }
 }
 

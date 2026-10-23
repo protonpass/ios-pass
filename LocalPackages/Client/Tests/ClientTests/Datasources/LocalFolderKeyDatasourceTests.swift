@@ -32,8 +32,7 @@ struct LocalFolderKeyDatasourceTests {
 // MARK: - getAllFolderKeys Tests
 
 extension LocalFolderKeyDatasourceTests {
-    @Test("Get all folder keys returns all keys in database")
-    func getAllFolderKeys() async throws {
+    @Test func `get all folder keys returns all keys in database`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -62,8 +61,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(allFolderIds == expectedFolderIds)
     }
 
-    @Test("Get all folder keys returns empty when no keys exist")
-    func getAllFolderKeysReturnsEmptyWhenNoKeys() async throws {
+    @Test func `get all folder keys returns empty when no keys exist`() async throws {
         // When
         let keys = try await sut.getAllFolderKeys()
 
@@ -75,8 +73,7 @@ extension LocalFolderKeyDatasourceTests {
 // MARK: - getAllFolderKeys(userId:) Tests
 
 extension LocalFolderKeyDatasourceTests {
-    @Test("Get all folder keys by user returns only keys for that user")
-    func getAllFolderKeysByUser() async throws {
+    @Test func `get all folder keys by user returns only keys for that user`() async throws {
         // Given
         let userId = String.random()
         let givenKeys = [
@@ -106,8 +103,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(folderIds == givenFolderIds)
     }
 
-    @Test("Get all folder keys by user returns empty for non-existent user")
-    func getAllFolderKeysByUserReturnsEmptyForNonExistentUser() async throws {
+    @Test func `get all folder keys by user returns empty for non-existent user`() async throws {
         // Given
         try await sut.upsertFolderKeys([.random()])
 
@@ -122,8 +118,7 @@ extension LocalFolderKeyDatasourceTests {
 // MARK: - upsertFolderKeys Tests
 
 extension LocalFolderKeyDatasourceTests {
-    @Test("Insert multiple folder keys")
-    func insertFolderKeys() async throws {
+    @Test func `insert multiple folder keys`() async throws {
         // Given
         let userId = String.random()
         let firstBatch = [
@@ -149,8 +144,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(retrievedFolderIds == allGivenFolderIds)
     }
 
-    @Test("Update existing folder key")
-    func updateFolderKey() async throws {
+    @Test func `update existing folder key`() async throws {
         // Given
         let userId = String.random()
         let folderId = String.random()
@@ -184,8 +178,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(key.keyRotation == 1)
     }
 
-    @Test("Upsert empty array does nothing")
-    func upsertEmptyArray() async throws {
+    @Test func `upsert empty array does nothing`() async throws {
         // When
         try await sut.upsertFolderKeys([])
 
@@ -194,8 +187,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(keys.isEmpty)
     }
 
-    @Test("Upsert keys with same folderId and shareId but different userId")
-    func upsertKeysWithSameFolderIdDifferentUserId() async throws {
+    @Test func `upsert keys with same folderId and shareId but different userId`() async throws {
         // Given
         let folderId = String.random()
         let userId1 = String.random()
@@ -231,8 +223,7 @@ extension LocalFolderKeyDatasourceTests {
 // MARK: - removeAllKeys Tests
 
 extension LocalFolderKeyDatasourceTests {
-    @Test("Remove all keys by userId")
-    func removeAllKeysByUserId() async throws {
+    @Test func `remove all keys by userId`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -265,8 +256,7 @@ extension LocalFolderKeyDatasourceTests {
         #expect(user2Keys.count == 3)
     }
 
-    @Test("Remove all keys for non-existent user does nothing")
-    func removeAllKeysForNonExistentUser() async throws {
+    @Test func `remove all keys for non-existent user does nothing`() async throws {
         // Given
         let userId = String.random()
         let keys = [
@@ -287,8 +277,7 @@ extension LocalFolderKeyDatasourceTests {
 // MARK: - Key Rotation Tests
 
 extension LocalFolderKeyDatasourceTests {
-    @Test("Multiple key rotations for same folder")
-    func multipleKeyRotationsForSameFolder() async throws {
+    @Test func `multiple key rotations for same folder`() async throws {
         // Given
         let userId = String.random()
         let folderId = String.random()

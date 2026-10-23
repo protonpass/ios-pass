@@ -20,24 +20,15 @@
 //
 
 @testable import Client
-import XCTest
+import Testing
 
-final class LocalSpotlightVaultDatasourceTests: XCTestCase {
-    var sut: LocalSpotlightVaultDatasource!
-
-    override func setUp() {
-        super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalSpotlightVaultDatasourceTests {
+    let sut = LocalSpotlightVaultDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalSpotlightVaultDatasourceTests {
-    func testUpdateGetRemoveVaults() async throws {
+    @Test func `vault ids are stored and removed per user`() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -54,8 +45,8 @@ extension LocalSpotlightVaultDatasourceTests {
         // Then
         let user1ShareIds1 = try await sut.getIds(for: userId1)
         let user2ShareIds1 = try await sut.getIds(for: userId2)
-        XCTAssertEqual(Set([shareId1, shareId2, shareId3]), Set(user1ShareIds1))
-        XCTAssertEqual(Set([shareId4]), Set(user2ShareIds1))
+        #expect(Set([shareId1, shareId2, shareId3]) == Set(user1ShareIds1))
+        #expect(Set([shareId4]) == Set(user2ShareIds1))
 
         // When
         try await sut.removeAll(for: userId1)
@@ -63,7 +54,7 @@ extension LocalSpotlightVaultDatasourceTests {
         // Then
         let user1ShareIds2 = try await sut.getIds(for: userId1)
         let user2ShareIds2 = try await sut.getIds(for: userId2)
-        XCTAssertTrue(user1ShareIds2.isEmpty)
-        XCTAssertEqual(Set([shareId4]), Set(user2ShareIds2))
+        #expect(user1ShareIds2.isEmpty)
+        #expect(Set([shareId4]) == Set(user2ShareIds2))
     }
 }

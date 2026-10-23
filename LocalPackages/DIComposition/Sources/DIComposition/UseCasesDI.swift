@@ -80,6 +80,11 @@ private extension UseCasesContainer {
         ServiceContainer.shared.appContentManager()
     }
 
+    @MainActor
+    var fullSyncManager: any FullSyncManagerProtocol {
+        ServiceContainer.shared.fullSyncManager()
+    }
+
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         RepositoryContainer.shared.passMonitorRepository()
     }
@@ -246,11 +251,6 @@ public extension UseCasesContainer {
                                          userManager: self.userManager) }
     }
 
-    var refreshInvitations: Factory<any RefreshInvitationsUseCase> {
-        self { RefreshInvitations(inviteRepository: self.inviteRepository,
-                                  userManager: self.userManager) }
-    }
-
     var rejectInvitation: Factory<any RejectInvitationUseCase> {
         self { RejectInvitation(repository: self.inviteRepository) }
     }
@@ -346,7 +346,10 @@ public extension UseCasesContainer {
     }
 
     var checkVaultCreationAllowance: Factory<any CheckVaultCreationAllowanceUseCase> {
-        self { CheckVaultCreationAllowance() }
+        self { CheckVaultCreationAllowance(userManager: self.userManager,
+                                           accessRepository: self.accessRepository,
+                                           organizationRepository: self.organizationRepository,
+                                           shareRepository: self.shareRepository) }
     }
 }
 
@@ -435,8 +438,7 @@ public extension UseCasesContainer {
 
     var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
         self { CanAddNewAccount(localDatasource: self.localAccessDatasource,
-                                remoteDatasource: RepositoryContainer.shared.remoteAccessDatasource(),
-                                authManager: ToolingContainer.shared.authManager()) }
+                                remoteDatasource: RepositoryContainer.shared.remoteAccessDatasource()) }
     }
 
     @MainActor
@@ -445,9 +447,9 @@ public extension UseCasesContainer {
                                         logOutUser: self.logOutUser()) }
     }
 
-    // periphery:ignore
-    var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
-        self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
+    var verifyPassword: Factory<any VerifyPasswordUseCase> {
+        self { VerifyPassword(userManager: self.userManager,
+                              apiManager: self.apiManager) }
     }
 }
 
@@ -735,7 +737,6 @@ public extension UseCasesContainer {
         self { IndexAllLoginItems(userManager: self.userManager,
                                   itemRepository: self.itemRepository,
                                   shareRepository: self.shareRepository,
-                                  localAccessDatasource: RepositoryContainer.shared.localAccessDatasource(),
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
@@ -762,10 +763,6 @@ public extension UseCasesContainer {
 // MARK: Vault
 
 public extension UseCasesContainer {
-    var processVaultSyncEvent: Factory<any ProcessVaultSyncEventUseCase> {
-        self { ProcessVaultSyncEvent() }
-    }
-
     @MainActor
     var getMainVault: Factory<any GetMainVaultUseCase> {
         self { GetMainVault(appContentManager: self.appContentManager) }
@@ -774,7 +771,7 @@ public extension UseCasesContainer {
     @MainActor
     var fullContentSync: Factory<any FullContentSyncUseCase> {
         self { FullContentSync(syncEventLoop: ServiceContainer.shared.syncEventLoop(),
-                               appContentManager: self.appContentManager) }
+                               fullSyncManager: self.fullSyncManager) }
     }
 }
 
@@ -799,7 +796,6 @@ public extension UseCasesContainer {
     var shouldForceSyncForFolders: Factory<any ShouldForceSyncForFoldersUseCase> {
         self { ShouldForceSyncForFolders(getUserPreferences: self.getUserPreferences(),
                                          getFeatureFlagStatus: self.getFeatureFlagStatus(),
-                                         refreshFeatureFlags: self.refreshFeatureFlags(),
                                          userHasRemoteFolders: self.userHasRemoteFolders(),
                                          updateUserPreferences: self.updateUserPreferences(),
                                          reachability: ServiceContainer.shared
@@ -891,6 +887,7 @@ public extension UseCasesContainer {
                        passMonitorRepository: self.passMonitorRepository,
                        accessRepository: self.accessRepository,
                        appContentManager: self.appContentManager,
+                       fullSyncManager: self.fullSyncManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: ServiceContainer.shared.credentialManager(),
@@ -947,7 +944,8 @@ public extension UseCasesContainer {
 
     var createVaultAndImportLogins: Factory<any CreateVaultAndImportLoginsUseCase> {
         self { CreateVaultAndImportLogins(shareRepository: self.shareRepository,
-                                          itemRepository: self.itemRepository) }
+                                          itemRepository: self.itemRepository,
+                                          checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
     }
 }
 
@@ -966,6 +964,10 @@ public extension UseCasesContainer {
 
     var matchUrls: Factory<any MatchUrlsUseCase> {
         self { MatchUrls(getRootDomain: self.getRootDomain()) }
+    }
+
+    var getParentDomainMatchingExamples: Factory<any GetParentDomainMatchingExamplesUseCase> {
+        self { GetParentDomainMatchingExamples(getRootDomain: self.getRootDomain()) }
     }
 }
 
@@ -1020,7 +1022,6 @@ public extension UseCasesContainer {
         self { SwitchUser(userManager: self.userManager,
                           appContentManager: self.appContentManager,
                           preferencesManager: self.preferencesManager,
-                          apiManager: self.apiManager,
                           syncEventLoop: self.syncEventLoop,
                           refreshFeatureFlags: self.refreshFeatureFlags(),
                           inviteRepository: self.inviteRepository) }
@@ -1030,9 +1031,7 @@ public extension UseCasesContainer {
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
         self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
                                             userManager: self.userManager,
-                                            authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
-                                            apiManager: self.apiManager,
                                             fullContentSync: self.fullContentSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags(),
                                             inviteRepository: self.inviteRepository) }
@@ -1047,7 +1046,7 @@ public extension UseCasesContainer {
                                  featureFlagsRepository: RepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: self.passMonitorRepository,
                                  appContentManager: self.appContentManager,
-                                 apiManager: self.apiManager,
+                                 fullSyncManager: self.fullSyncManager,
                                  authManager: self.authManager,
                                  credentialManager: ServiceContainer.shared.credentialManager(),
                                  keychain: self.keychain) }
@@ -1120,12 +1119,7 @@ public extension UseCasesContainer {
 
     var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
         self { ApplyAppMigration(dataMigrationManager: ServiceContainer.shared.dataMigrationManager(),
-                                 userManager: self.userManager,
                                  authManager: self.authManager,
-                                 itemDatasource: RepositoryContainer.shared.localItemDatasource(),
-                                 searchEntryDatasource: RepositoryContainer.shared
-                                     .localSearchEntryDatasource(),
-                                 shareKeyDatasource: RepositoryContainer.shared.localShareKeyDatasource(),
                                  logManager: self.logManager) }
     }
 }
@@ -1218,5 +1212,29 @@ public extension UseCasesContainer {
 
     var sanitizeFileName: Factory<any SanitizeFileNameUseCase> {
         self { SanitizeFileName() }
+    }
+}
+
+// MARK: - CXP
+
+public extension UseCasesContainer {
+    var parseCxpImport: Factory<any ParseCxpImportUseCase> {
+        self { ParseCxpImport() }
+    }
+
+    var getCxpImportSummary: Factory<any GetCxpImportSummaryUseCase> {
+        self { GetCxpImportSummary() }
+    }
+
+    var importCxpItems: Factory<any ImportCxpItemsUseCase> {
+        self { ImportCxpItems(shareRepository: self.shareRepository,
+                              itemRepository: self.itemRepository,
+                              checkVaultCreationAllowance: self.checkVaultCreationAllowance()) }
+    }
+
+    var cxpExport: Factory<any CxpExportUseCase> {
+        self { CxpExport(userManager: self.userManager,
+                         symmetricKeyProvider: self.symmetricKeyProvider,
+                         itemRepository: self.itemRepository) }
     }
 }

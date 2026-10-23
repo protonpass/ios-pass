@@ -25,7 +25,6 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
     let step: V.Stride
     let minValue: V?
     let maxValue: V?
-    let textColor: Color
     let backgroundColor: Color
     let height: CGFloat
 
@@ -33,14 +32,12 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
                 step: V.Stride,
                 minValue: V? = nil,
                 maxValue: V? = nil,
-                textColor: Color,
                 backgroundColor: Color,
                 height: CGFloat = 44) {
         _value = value
         self.step = step
         self.minValue = minValue
         self.maxValue = maxValue
-        self.textColor = textColor
         self.backgroundColor = backgroundColor
         self.height = height
     }
@@ -61,7 +58,6 @@ public struct CapsuleStepper<V: Strideable>: View where V.Stride: Numeric {
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
         .frame(height: height)
-        .foregroundStyle(PassColor.textNorm)
         .background {
             Capsule()
                 .fill(backgroundColor)

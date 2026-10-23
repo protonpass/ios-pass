@@ -27,7 +27,6 @@ import SwiftUI
 @MainActor
 public protocol FileAttachmentsViewHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: Color { get }
-    var fileAttachmentsSectionSecondaryColor: Color { get }
 
     func retryFetchingAttachments()
     func open(_ file: FileAttachmentUiModel)
@@ -91,8 +90,7 @@ public struct FileAttachmentsViewSection: View {
                                               onSave: { handler.save(file) },
                                               onShare: { handler.share(file) }),
                                   uiModel: file,
-                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
+                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                 if file != files.last {
                     PassDivider()

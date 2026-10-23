@@ -20,24 +20,16 @@
 
 @testable import Client
 import Entities
-import XCTest
+import Testing
 
-final class LocalAccessDatasourceTests: XCTestCase {
-    var sut: LocalAccessDatasourceProtocol!
-
-    override func setUp() {
-        super.setUp()
-        sut = LocalAccessDatasource(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalAccessDatasourceTests {
+    let sut: any LocalAccessDatasourceProtocol =
+        LocalAccessDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalAccessDatasourceTests {
-    func testUpsertGetAndRemove() async throws {
+    @Test func `access can be upserted, updated and removed`() async throws {
         // Given
         let givenUserId = String.random()
         let givenAccess = Access(plan: .init(type: "free",
@@ -59,14 +51,14 @@ extension LocalAccessDatasourceTests {
                                  monitor: .init(protonAddress: .random(), aliases: .random()),
                                  pendingInvites: 1,
                                  waitingNewUserInvites: 2,
-                                 minVersionUpgrade: nil, 
+                                 minVersionUpgrade: nil,
                                  userData: UserAliasSyncData.default)
         let givenUserAccess = UserAccess(userId: givenUserId, access: givenAccess)
         // When
         try await sut.upsert(access: givenUserAccess)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), givenUserAccess)
+        #expect(try await sut.getAccess(userId: givenUserId) == givenUserAccess)
 
         // Given
         let updatedAccess = Access(plan: .init(type: "plus",
@@ -88,23 +80,24 @@ extension LocalAccessDatasourceTests {
                                    monitor: .init(protonAddress: .random(), aliases: .random()),
                                    pendingInvites: 3,
                                    waitingNewUserInvites: 4,
-                                   minVersionUpgrade: nil, userData: UserAliasSyncData.default)
+                                   minVersionUpgrade: nil,
+                                   userData: UserAliasSyncData.default)
         let updatedUserAccess = UserAccess(userId: givenUserId, access: updatedAccess)
 
         // When
         try await sut.upsert(access: updatedUserAccess)
 
         // Then
-        try await XCTAssertEqualAsync(await sut.getAccess(userId: givenUserId), updatedUserAccess)
+        #expect(try await sut.getAccess(userId: givenUserId) == updatedUserAccess)
 
         // When
         try await sut.removeAccess(userId: givenUserId)
 
         // Then
-        try await XCTAssertNilAsync(await sut.getAccess(userId: givenUserId))
+        #expect(try await sut.getAccess(userId: givenUserId) == nil)
     }
 
-    func testGetAllAccess() async throws {
+    @Test func `all accesses are returned`() async throws {
         // Given
         let access1 = UserAccess.random()
         let access2 = UserAccess.random()
@@ -118,10 +111,10 @@ extension LocalAccessDatasourceTests {
         let accesses = try await sut.getAllAccesses()
 
         // Then
-        XCTAssertEqual(accesses.count, 3)
-        XCTAssertTrue(accesses.contains(where: { $0 == access1 }))
-        XCTAssertTrue(accesses.contains(where: { $0 == access2 }))
-        XCTAssertTrue(accesses.contains(where: { $0 == access3 }))
+        #expect(accesses.count == 3)
+        #expect(accesses.contains(access1))
+        #expect(accesses.contains(access2))
+        #expect(accesses.contains(access3))
     }
 }
 
@@ -143,6 +136,7 @@ private extension UserAccess {
                             monitor: .init(protonAddress: .random(), aliases: .random()),
                             pendingInvites: .random(in: 1...100),
                             waitingNewUserInvites: .random(in: 1...100),
-                            minVersionUpgrade: .random(), userData: UserAliasSyncData.default))
+                            minVersionUpgrade: .random(),
+                            userData: UserAliasSyncData.default))
     }
 }

@@ -27,6 +27,8 @@ public extension PassError {
         case noCsvUrl
         case noLoginsFound
         case noCsvContent
+        case vaultLimitReached
+        case vaultCreationNotAllowed
 
         public var debugDescription: String {
             switch self {
@@ -41,6 +43,12 @@ public extension PassError {
 
             case .noCsvContent:
                 "No CSV content"
+
+            case .vaultLimitReached:
+                "Vault limit reached"
+
+            case .vaultCreationNotAllowed:
+                "Vault creation not allowed by organization"
             }
         }
     }

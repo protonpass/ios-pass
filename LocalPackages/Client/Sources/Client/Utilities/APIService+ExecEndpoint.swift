@@ -18,26 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-private actor SessionTask {
-    private var state: State = .ready
+final class SessionTask: Sendable {
+    private let state = SafeMutex(State.ready)
 
     func cancel() {
-        if case let .executing(task) = state {
-            task.cancel()
+        state.withLock { state in
+            if case let .executing(task) = state {
+                task.cancel()
+            }
+            state = .cancelled
         }
-        state = .cancelled
     }
 
     func setTask(_ task: URLSessionDataTask) {
-        if case .cancelled = state {
-            return
+        state.withLock { state in
+            // `cancel()` can run before ProtonCore hands over the data task
+            if case .cancelled = state {
+                task.cancel()
+                return
+            }
+            state = .executing(task)
         }
-        state = .executing(task)
     }
 
     private enum State {
@@ -55,25 +62,18 @@ extension APIService {
                 try await withCheckedThrowingContinuation { continuation in
                     NetworkDebugger.printDebugInfo(endpoint: endpoint)
                     perform(request: endpoint,
-                            onDataTaskCreated: { task in
-                                Task {
-                                    await sessionTask.setTask(task)
-                                }
-                            }, decodableCompletion: { task, result in
+                            callCompletionBlockUsing: .immediateExecutor,
+                            onDataTaskCreated: sessionTask.setTask,
+                            decodableCompletion: { task, result in
                                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                                 continuation.resume(with: result)
                             })
                 }
             } onCancel: {
-                Task { await sessionTask.cancel() }
+                sessionTask.cancel()
             }
-        } catch URLError.cancelled {
+        } catch _ where Task.isCancelled {
             throw CancellationError()
-        } catch {
-            if Task.isCancelled {
-                throw CancellationError()
-            }
-            throw error
         }
     }
 
@@ -91,7 +91,10 @@ extension APIService {
 
         return try await withCheckedThrowingContinuation { continuation in
             NetworkDebugger.printDebugInfo(endpoint: endpoint)
-            performUpload(request: endpoint, files: files, uploadProgress: progress) { task, result in
+            performUpload(request: endpoint,
+                          files: files,
+                          callCompletionBlockUsing: .immediateExecutor,
+                          uploadProgress: progress) { task, result in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint,
                                                task: task,
                                                result: result)
@@ -104,47 +107,16 @@ extension APIService {
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        let sessionTask = SessionTask()
         do {
-            return try await withTaskCancellationHandler {
-                try await withCheckedThrowingContinuation { continuation in
-                    NetworkDebugger.printDebugInfo(endpoint: endpoint)
-
-                    perform(request: endpoint,
-                            onDataTaskCreated: { task in
-                                Task {
-                                    await sessionTask.setTask(task)
-                                }
-                            },
-                            decodableCompletion: { task, result in
-                                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                                switch result {
-                                case .success:
-                                    continuation.resume(throwing: PassError.errorExpected)
-
-                                case let .failure(error):
-                                    if let responseError = error.underlyingError as? SessionResponseError,
-                                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                                        continuation.resume(returning: .init(httpCode: error.httpCode,
-                                                                             protonCode: error.responseCode,
-                                                                             data: body))
-                                        return
-                                    }
-                                    continuation.resume(throwing: PassError.unexpectedError)
-                                }
-                            })
-                }
-            } onCancel: {
-                Task { await sessionTask.cancel() }
+            _ = try await exec(endpoint: endpoint)
+        } catch let error as ResponseError {
+            guard let responseError = error.underlyingError as? SessionResponseError,
+                  case let .responseBodyIsNotADecodableObject(body, _) = responseError else {
+                throw PassError.unexpectedError
             }
-        } catch URLError.cancelled {
-            throw CancellationError()
-        } catch {
-            if Task.isCancelled {
-                throw CancellationError()
-            }
-            throw error
+            return .init(httpCode: error.httpCode, protonCode: error.responseCode, data: body)
         }
+        throw PassError.errorExpected
     }
 }
 

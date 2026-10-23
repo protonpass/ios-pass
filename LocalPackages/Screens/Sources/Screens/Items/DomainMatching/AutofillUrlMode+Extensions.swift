@@ -52,4 +52,14 @@ public extension AutofillUrlMode {
             nil
         }
     }
+
+    var autofillWarning: String? {
+        switch self {
+        case .exactPath, .pattern, .regularExpression, .startWith:
+            #localized("This URL will be skipped for autofill", bundle: .module)
+
+        case .default, .exact, .never, .unrecognized:
+            nil
+        }
+    }
 }

@@ -18,32 +18,43 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// swiftlint:disable force_try
 @testable import Core
-import XCTest
+import Testing
 
-final class URLUtilsPlusSanitizerTests: XCTestCase {
-    func testSanitization() {
-        // Invalid URLs
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("a b c"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ftp/example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ftp//example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("ssh:/example"))
-        XCTAssertNil(URLUtils.Sanitizer.sanitize("https:/example"))
+@Suite(.tags(.utilities))
+struct URLUtilsPlusSanitizerTests {
+    @Test(arguments: ["", "a b c", "ftp/example", "ftp//example", "ssh:/example", "https:/example"])
+    func `invalid urls are not sanitized`(input: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == nil)
+    }
 
-        // Valid URLs
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("https://example/a?param=1"),
-                       "https://example/a?param=1")
+    @Test(arguments: ["example", "https://example/a?param=1", "https://intranet", "http://[::1]"])
+    func `urls whose host has a single label are rejected even with an explicit scheme`(input: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == nil)
+    }
 
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com/path?param=true"),
-                       "https://example.com/path?param=true")
+    @Test(arguments: ["https://something.", "something.", "https://.com", "https://a..com"])
+    func `urls whose host has an empty label are rejected`(input: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == nil)
+    }
 
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("http://example.com/path?param=true"),
-                       "http://example.com/path?param=true")
+    @Test(arguments: zip(["localhost:3000", "http://localhost:8080/admin", "https://LOCALHOST"],
+                         ["https://localhost:3000", "http://localhost:8080/admin", "https://LOCALHOST"]))
+    func `localhost is accepted despite having a single label`(input: String, expected: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == expected)
+    }
 
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("ssh://example.com/test?abc="),
-                       "ssh://example.com/test?abc=")
-
-        XCTAssertEqual(URLUtils.Sanitizer.sanitize("example.com"), "https://example.com")
+    @Test(arguments: zip(["http://192.168.1.1",
+                          "example.com/path?param=true",
+                          "http://example.com/path?param=true",
+                          "ssh://example.com/test?abc=",
+                          "example.com"],
+                         ["http://192.168.1.1",
+                          "https://example.com/path?param=true",
+                          "http://example.com/path?param=true",
+                          "ssh://example.com/test?abc=",
+                          "https://example.com"]))
+    func `valid urls keep their scheme or default to https`(input: String, expected: String) {
+        #expect(URLUtils.Sanitizer.sanitize(input) == expected)
     }
 }

@@ -275,3 +275,14 @@ public extension ShareContent {
         }
     }
 }
+
+public extension [ShareContent] {
+    /// Visible shares first, then by vault name and creation time.
+    func sortedByHidden() -> Self {
+        sorted { lhs, rhs in
+            let lhsKey = (lhs.share.hidden ? 1 : 0, lhs.share.vaultName ?? "", lhs.share.createTime)
+            let rhsKey = (rhs.share.hidden ? 1 : 0, rhs.share.vaultName ?? "", rhs.share.createTime)
+            return lhsKey < rhsKey
+        }
+    }
+}

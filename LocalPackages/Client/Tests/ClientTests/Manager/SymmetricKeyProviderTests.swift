@@ -21,41 +21,31 @@
 
 @testable import Client
 import CoreMocks
-import ProtonCoreCryptoGoImplementation
-import XCTest
+import Testing
 
-final class SymmetricKeyProviderTests: XCTestCase {
-    var keychainProvider: KeychainProtocolMockProvider!
-    var mainKeyProvider: MainKeyProviderMock!
-    var sut: SymmetricKeyProvider!
+@Suite(.tags(.manager))
+struct SymmetricKeyProviderTests {
+    private let sut: any SymmetricKeyProvider
 
-    override func setUp() {
-        super.setUp()
-        injectDefaultCryptoImplementation()
-        keychainProvider = .init()
+    init() {
+        _ = CryptoSetup.installed
+
+        let keychainProvider = KeychainProtocolMockProvider()
         keychainProvider.setUp()
 
-        mainKeyProvider = .init()
+        let mainKeyProvider = MainKeyProviderMock()
         mainKeyProvider.stubbedMainKey = Array(repeating: .zero, count: 32)
 
         sut = SymmetricKeyProviderImpl(keychain: keychainProvider.getKeychain(),
                                        mainKeyProvider: mainKeyProvider)
     }
 
-    override func tearDown() {
-        keychainProvider = nil
-        sut = nil
-        super.tearDown()
-    }
-}
-
-extension SymmetricKeyProviderTests {
-    func testKeyGeneration() async throws {
+    @Test func `the same symmetric key is returned on every call`() async throws {
         let key1 = try await sut.getSymmetricKey()
         let key2 = try await sut.getSymmetricKey()
         let key3 = try await sut.getSymmetricKey()
-        XCTAssertEqual(key1, key2)
-        XCTAssertEqual(key1, key3)
-        XCTAssertEqual(key2, key3)
+        #expect(key1 == key2)
+        #expect(key1 == key3)
+        #expect(key2 == key3)
     }
 }

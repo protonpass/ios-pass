@@ -23,43 +23,51 @@
 import Client
 
 public protocol FullContentSyncUseCase: Sendable {
-    /// We should always stop the event loop before triggering a full sync to avoid data race
-    /// in case the full sync happens in the middle of a sync loop
-    ///
-    /// However, user events system could also trigger a force full refresh,
-    /// this is the only case where we shouldn't stop the event loop because user events happen inside
-    /// event loop, so if we stop the loop, the full sync will be cancelled.
-    /// - Returns: whether the sync completed. Failures are reported on
-    /// `vaultSyncEventStream`, not thrown, so callers that announce the outcome must check this.
+    /// Returns the operation before any work starts, for UI to observe
+    @MainActor
     @discardableResult
-    func execute(userId: String, shouldStopEventLoop: Bool) async -> Bool
+    func callAsFunction(userId: String,
+                        presentation: FullSyncPresentation,
+                        shouldStopEventLoop: Bool) -> FullSyncOperation
 }
 
 public extension FullContentSyncUseCase {
+    /// The event loop skips an account's iterations while it full syncs, but one could already be running
+    /// when the full sync starts. `shouldStopEventLoop` cancels it to avoid a data race.
+    ///
+    /// User events can also require a full sync from inside an iteration. That caller must not stop
+    /// the loop, which would cancel the very iteration waiting for the sync.
+    /// - Returns: whether the sync completed. Failures are not thrown,
+    /// so callers that announce the outcome must check this.
     @discardableResult
     func callAsFunction(userId: String, shouldStopEventLoop: Bool) async -> Bool {
-        await execute(userId: userId, shouldStopEventLoop: shouldStopEventLoop)
+        await callAsFunction(userId: userId, presentation: .sheet, shouldStopEventLoop: shouldStopEventLoop)
+            .result()
+            .isCompleted
     }
 }
 
-public final class FullContentSync: FullContentSyncUseCase {
+public struct FullContentSync: FullContentSyncUseCase {
     private let syncEventLoop: any SyncEventLoopProtocol
-    private let appContentManager: any AppContentManagerProtocol
+    private let fullSyncManager: any FullSyncManagerProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
-                appContentManager: any AppContentManagerProtocol) {
+                fullSyncManager: any FullSyncManagerProtocol) {
         self.syncEventLoop = syncEventLoop
-        self.appContentManager = appContentManager
+        self.fullSyncManager = fullSyncManager
     }
 
-    public func execute(userId: String, shouldStopEventLoop: Bool) async -> Bool {
+    @MainActor
+    public func callAsFunction(userId: String,
+                               presentation: FullSyncPresentation,
+                               shouldStopEventLoop: Bool) -> FullSyncOperation {
+        let operation = fullSyncManager.start(userId: userId, presentation: presentation)
         if shouldStopEventLoop {
+            // Stopping cancels the running iteration, restarting right away is safe because
+            // the account's iterations are skipped until its sync is done
             syncEventLoop.stop()
-        }
-        let succeeded = await appContentManager.fullSync(userId: userId)
-        if shouldStopEventLoop {
             syncEventLoop.start()
         }
-        return succeeded
+        return operation
     }
 }

@@ -25,7 +25,7 @@ import Combine
 import Entities
 
 public protocol ToggleItemMonitoringUseCase: Sendable {
-    func callAsFunction(item: ItemContent, flag: ItemFlag) async throws
+    func callAsFunction(item: ItemContent, flags: [ItemFlag]) async throws
 }
 
 public struct ToggleItemMonitoring: ToggleItemMonitoringUseCase {
@@ -35,8 +35,8 @@ public struct ToggleItemMonitoring: ToggleItemMonitoringUseCase {
         self.itemRepository = itemRepository
     }
 
-    public func callAsFunction(item: ItemContent, flag: ItemFlag) async throws {
-        try await itemRepository.updateItemFlags(flags: [flag],
+    public func callAsFunction(item: ItemContent, flags: [ItemFlag]) async throws {
+        try await itemRepository.updateItemFlags(flags: flags,
                                                  shareId: item.shareId,
                                                  itemId: item.itemId)
     }

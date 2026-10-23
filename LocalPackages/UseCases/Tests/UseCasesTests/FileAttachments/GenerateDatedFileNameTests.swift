@@ -23,9 +23,9 @@ import Foundation
 import Testing
 import UseCases
 
+@Suite(.tags(.useCase))
 struct GenerateDatedFileNameTests {
-    @Test
-    func `Generate dated file name`() {
+    @Test func `generate dated file name`() {
         // Given
         let timestamp: Double = 1_732_802_303
         let date = Date(timeIntervalSince1970: timestamp)

@@ -23,7 +23,6 @@ import Core
 import CoreData
 @preconcurrency import CryptoKit
 import Entities
-import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 
 // swiftlint:disable function_parameter_count
@@ -64,7 +63,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Full sync for a given `shareId`
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws
 
     func refreshItem(userId: String, shareId: String, itemId: String, eventToken: String) async throws
 
@@ -123,8 +122,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws
-
     func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws
 
     func updateCachedAliasInfo(userId: String,
@@ -165,6 +162,11 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func resetHistory(_ item: any ItemIdentifiable) async throws
 
     func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws
+
+    func importItems(userId: String,
+                     shareId: String,
+                     contents: [ItemContentProtobuf],
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -205,9 +207,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let localDatasource: any LocalItemDatasourceProtocol
     private let remoteDatasource: any RemoteItemDatasourceProtocol
     private let localShareDatasource: any LocalShareDatasourceProtocol
-    private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
-    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
+    private let isFeatureEnabled: @Sendable (FeatureFlagType) -> Bool
     private let logger: Logger
 
     public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
@@ -219,17 +220,15 @@ public actor ItemRepository: ItemRepositoryProtocol {
                 localDatasource: any LocalItemDatasourceProtocol,
                 remoteDatasource: any RemoteItemDatasourceProtocol,
                 localShareDatasource: any LocalShareDatasourceProtocol,
-                shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
-                featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
+                isFeatureEnabled: @escaping @Sendable (FeatureFlagType) -> Bool,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.localShareDatasource = localShareDatasource
-        self.shareEventIDRepository = shareEventIDRepository
         self.passKeyManager = passKeyManager
-        self.featureFlagsRepository = featureFlagsRepository
+        self.isFeatureEnabled = isFeatureEnabled
         self.userManager = userManager
         logger = .init(manager: logManager)
         // swiftlint:disable:next todo
@@ -317,7 +316,7 @@ public extension ItemRepository {
 
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
+                      eventStream: AsyncStream<VaultSyncProgressEvent>.Continuation?) async throws {
         logger.trace("Refreshing items for share \(shareId)")
         let itemRevisions = try await remoteDatasource.getItems(userId: userId,
                                                                 shareId: shareId,
@@ -335,9 +334,9 @@ public extension ItemRepository {
                                                                    shareId: shareId,
                                                                    userId: userId,
                                                                    symmetricKey: symmetricKey)
-                eventStream?.send(.decryptItems(.init(shareId: shareId,
-                                                      total: itemRevisions.count,
-                                                      decrypted: index + 1)))
+                eventStream?.yield(.decryptItems(.init(shareId: shareId,
+                                                       total: itemRevisions.count,
+                                                       decrypted: index + 1)))
                 encryptedItems.append(encryptedItem)
             } catch {
                 failedItemDecryption.append(itemRevision)
@@ -357,11 +356,6 @@ public extension ItemRepository {
         logger.trace("Saving \(encryptedItems.count) remote item revisions to local database")
         try await localDatasource.upsertItems(encryptedItems)
         logger.trace("Saved \(encryptedItems.count) remote item revisions to local database")
-
-        logger.trace("Refreshing last event ID for share \(shareId)")
-        try await shareEventIDRepository.getLastEventId(forceRefresh: true,
-                                                        userId: userId,
-                                                        shareId: shareId)
 
         try await refreshPinnedItemDataStream()
         logger.trace("Refreshed last event ID for share \(shareId)")
@@ -728,13 +722,6 @@ public extension ItemRepository {
         try await refreshPinnedItemDataStream()
     }
 
-    func update(lastUseItems: [LastUseItem], shareId: String) async throws {
-        logger.trace("Updating \(lastUseItems.count) lastUseItem for share \(shareId)")
-        try await localDatasource.update(lastUseItems: lastUseItems, shareId: shareId)
-        itemsWereUpdated.send()
-        logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
-    }
-
     func updateLastUseTime(userId: String,
                            item: any ItemIdentifiable,
                            date: Date) async throws {
@@ -826,38 +813,52 @@ public extension ItemRepository {
     }
 
     func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws {
-        logger.trace("Importing \(logins.count) logins for user \(userId)")
+        let contents = logins.map { login in
+            let loginData = ItemContentData.login(.init(email: login.email,
+                                                        username: login.username,
+                                                        password: login.password,
+                                                        totpUri: "",
+                                                        urls: [login.url],
+                                                        autofillUrls: [AutofillUrl(url: login.url,
+                                                                                   mode: .default)],
+                                                        allowedAndroidApps: [],
+                                                        passkeys: []))
+            return ItemContentProtobuf(name: login.name,
+                                       note: login.note,
+                                       itemUuid: UUID().uuidString,
+                                       data: loginData,
+                                       customFields: [])
+        }
+        try await importItems(userId: userId, shareId: shareId, contents: contents, onProgress: nil)
+    }
+
+    func importItems(userId: String,
+                     shareId: String,
+                     contents: [ItemContentProtobuf],
+                     onProgress: (@Sendable (_ importedCount: Int) async -> Void)?) async throws {
+        logger.trace("Importing \(contents.count) items for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
-        let chunks = logins.chunked(into: 100)
         let isDomainMatchingSupported = domainMatchingSupported
-        for chunk in chunks {
-            let itemsToImport: [ItemToImport] = try chunk.map { login in
-                let loginData = ItemContentData.login(.init(email: login.email,
-                                                            username: login.username,
-                                                            password: login.password,
-                                                            totpUri: "",
-                                                            urls: [login.url],
-                                                            autofillUrls: [AutofillUrl(url: login.url,
-                                                                                       mode: .default)],
-                                                            allowedAndroidApps: [],
-                                                            passkeys: []))
-                let content = ItemContentProtobuf(name: login.name,
-                                                  note: login.note,
-                                                  itemUuid: UUID().uuidString,
-                                                  data: loginData,
-                                                  customFields: [])
-                return try .init(containerKey: vaultKey,
-                                 itemContent: content,
-                                 domainMatchingSupported: isDomainMatchingSupported)
+        var importedCount = 0
+        for chunk in contents.chunked(into: 100) {
+            let itemsToImport: [ItemToImport] = try chunk.map { content in
+                try .init(containerKey: vaultKey,
+                          itemContent: content,
+                          domainMatchingSupported: isDomainMatchingSupported)
             }
-            logger.debug("Bulk importing \(itemsToImport.count) logins")
+            let token = UUID().uuidString
+            logger.debug("Bulk importing \(itemsToImport.count) items with token \(token)")
             let items = try await remoteDatasource.importItems(userId: userId,
                                                                shareId: shareId,
                                                                items: itemsToImport)
+            logger.debug("Bulk imported remotely \(itemsToImport.count) items with token \(token)")
             try await upsertItems(userId: userId, items: items, shareId: shareId)
+            logger.debug("Bulk imported locally \(itemsToImport.count) items with token \(token)")
+            importedCount += items.count
+            await onProgress?(importedCount)
         }
         itemsWereUpdated.send()
-        logger.info("Imported \(logins.count) logins for user \(userId)")
+        logger.info("Imported \(contents.count) items for user \(userId)")
     }
 }
 
@@ -936,15 +937,8 @@ public extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
-    /// Mirrors `GetFeatureFlagStatus`, which lives in `UseCases` and so is not reachable from
-    /// `Client`. Duplicated rather than threaded down as a parameter through four call layers.
     var domainMatchingSupported: Bool {
-        let flag = FeatureFlagType.passAutofillUrlAdvancedModes
-        if Bundle.main.isQaBuild, kSharedUserDefaults.bool(forKey: flag.rawValue) {
-            return true
-        }
-
-        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
+        isFeatureEnabled(.passAutofillUrlAdvancedModes)
     }
 
     func getSymmetricKey() async throws -> SymmetricKey {

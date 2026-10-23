@@ -26,48 +26,37 @@ import CoreMocks
 import CryptoKit
 import Entities
 import Foundation
-import XCTest
+import Testing
 import TestingToolkit
 
-final class LocalSharedPreferencesDatasourceTests: XCTestCase {
-    var keychainMockProvider: KeychainProtocolMockProvider!
-    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
-    var sut: LocalSharedPreferencesDatasourceProtocol!
+@Suite(.tags(.localDatasource))
+struct LocalSharedPreferencesDatasourceTests {
+    let sut: any LocalSharedPreferencesDatasourceProtocol
 
-    override func setUp() {
-        super.setUp()
-        keychainMockProvider = .init()
+    init() {
+        let keychainMockProvider = KeychainProtocolMockProvider()
         keychainMockProvider.setUp()
-        symmetricKeyProviderMockFactory = .init()
+        let symmetricKeyProviderMockFactory = SymmetricKeyProviderMockFactory()
         symmetricKeyProviderMockFactory.setUp()
         sut = LocalSharedPreferencesDatasource(symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                                keychain: keychainMockProvider.getKeychain())
     }
 
-    override func tearDown() {
-        keychainMockProvider = nil
-        symmetricKeyProviderMockFactory = nil
-        sut = nil
-        super.tearDown()
-    }
-}
-
-extension LocalSharedPreferencesDatasourceTests {
-    func testGetAndUpsertPreferences() async throws {
-        try await XCTAssertNilAsync(await sut.getPreferences())
+    @Test func `preferences can be upserted, updated and removed`() async throws {
+        #expect(try await sut.getPreferences() == nil)
 
         let givenPrefs = SharedPreferences.random()
         try await sut.upsertPreferences(givenPrefs)
 
-        let result1 = try await XCTUnwrapAsync(await sut.getPreferences())
-        XCTAssertEqual(result1, givenPrefs)
+        let result1 = try #require(await sut.getPreferences())
+        #expect(result1 == givenPrefs)
 
         let updatedPrefs = SharedPreferences.random()
         try await sut.upsertPreferences(updatedPrefs)
-        let result2 = try await XCTUnwrapAsync(await sut.getPreferences())
-        XCTAssertEqual(result2, updatedPrefs)
+        let result2 = try #require(await sut.getPreferences())
+        #expect(result2 == updatedPrefs)
 
         try sut.removePreferences()
-        try await XCTAssertNilAsync(await sut.getPreferences())
+        #expect(try await sut.getPreferences() == nil)
     }
 }

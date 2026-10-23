@@ -33,7 +33,6 @@ import SwiftUI
 final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresenting {
     deinit { print(deinitMessage) }
 
-    let isShownAsSheet: Bool
     private let favIconRepository = dependency(\RepositoryContainer.favIconRepository)
     let logger = dependency(\ToolingContainer.logger)
     private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
@@ -78,9 +77,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresen
         getSharedPreferences().clipboardExpiration
     }
 
-    init(isShownAsSheet: Bool) {
-        self.isShownAsSheet = isShownAsSheet
-
+    init() {
         let sharedPreferences = getSharedPreferences()
         let userPreferences = getUserPreferences()
 
@@ -103,6 +100,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable, FullSyncPresen
 // MARK: - Public APIs
 
 extension SettingsViewModel {
+    func goBack() {
+        router.action(.back(isShownAsSheet: false))
+    }
+
     func update(browser: Browser) {
         Task { [weak self] in
             guard let self else { return }
@@ -261,9 +262,9 @@ extension SettingsViewModel {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                await presentFullSync(userId: userId,
-                                      shouldStopEventLoop: true,
-                                      reason: "settings")
+                await runFullSync(userId: userId,
+                                  shouldStopEventLoop: true,
+                                  reason: "settings")
             } catch {
                 handle(error)
             }
@@ -274,7 +275,7 @@ extension SettingsViewModel {
         do {
             let manager = FileManager.default
             let url = manager.temporaryDirectory.appending(path: Constants.Attachment.rootDirectoryName)
-            if manager.fileExists(atPath: url.path()) {
+            if manager.fileExists(atPath: url.path(percentEncoded: false)) {
                 try manager.removeItem(at: url)
             }
             router.display(element: .successMessage(#localized("Downloaded files cleared")))

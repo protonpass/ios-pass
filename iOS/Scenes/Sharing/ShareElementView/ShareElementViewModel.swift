@@ -35,7 +35,6 @@ final class ShareElementViewModel: ObservableObject {
 
     let share: Share
     let itemContent: ItemContent
-    let itemCount: Int?
 
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = dependency(\UseCasesContainer.setShareInviteVault)
@@ -56,10 +55,9 @@ final class ShareElementViewModel: ObservableObject {
         !itemContent.isAlias && share.shareRole == .manager
     }
 
-    init(share: Share, itemContent: ItemContent, itemCount: Int?) {
+    init(share: Share, itemContent: ItemContent) {
         self.share = share
         self.itemContent = itemContent
-        self.itemCount = itemCount
         applyOrganizationSettings()
         checkIfFreeUser()
     }

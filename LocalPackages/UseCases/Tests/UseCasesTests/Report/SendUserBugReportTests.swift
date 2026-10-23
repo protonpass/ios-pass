@@ -18,44 +18,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import UseCases
 import ClientMocks
 import CoreMocks
+import Foundation
+import Testing
+import UseCases
 import UseCasesMocks
-import XCTest
 
-// import Proton_Pass
+@Suite(.tags(.useCase))
+struct SendUserBugReportTests {
+    private let sut: any SendUserBugReportUseCase
+    private let repositoryMock = ReportRepositoryProtocolMock()
+    private let extractToFileMock = ExtractLogsToFileUseCaseMock()
+    private let getLogsMock = GetLogEntriesUseCaseMock()
 
-final class SendUserBugReportTests: XCTestCase {
-    var sut: SendUserBugReportUseCase!
-    var repositoryMock: ReportRepositoryProtocolMock!
-    var extractToFileMock: ExtractLogsToFileUseCaseMock!
-    var getLogsMock: GetLogEntriesUseCaseMock!
-
-    override func setUp() {
-        super.setUp()
-        repositoryMock = ReportRepositoryProtocolMock()
-        extractToFileMock = ExtractLogsToFileUseCaseMock()
-        getLogsMock = GetLogEntriesUseCaseMock()
+    init() {
         sut = SendUserBugReport(reportRepository: repositoryMock,
                                 createLogsFile: CreateLogsFile(extractLogsToFile: extractToFileMock,
                                                                getLogEntries: getLogsMock))
     }
 
-    func testSendBugReport() async throws {
+    @Test func `a bug report is sent with the host app and autofill log files`() async throws {
         repositoryMock.stubbedSendBugResult = true
         getLogsMock.stubbedExecuteResult = [LogEntryFactory.createMock()]
         extractToFileMock.stubbedExecuteResult = URL(string: "ThisIsFake")
-        let response = try await sut(with: "Test bug", and: "Bug description",
-                                     shouldSendLogs: true)
-        XCTAssertTrue(response)
-        let params = try XCTUnwrap(repositoryMock.invokedSendBugParameters)
-        XCTAssertEqual(params.0, "Test bug")
-        XCTAssertEqual(params.1, "Bug description")
-        XCTAssertEqual(params.2,
-                       try [
-                           "File0": XCTUnwrap(extractToFileMock.stubbedExecuteResult),
-                           "File1": XCTUnwrap(extractToFileMock.stubbedExecuteResult)
-                       ])
+        let response = try await sut(with: "Test bug", and: "Bug description", shouldSendLogs: true)
+        #expect(response)
+        let params = try #require(repositoryMock.invokedSendBugParameters)
+        #expect(params.0 == "Test bug")
+        #expect(params.1 == "Bug description")
+        let logFile = try #require(extractToFileMock.stubbedExecuteResult)
+        #expect(params.2 == ["File0": logFile, "File1": logFile])
     }
 }

@@ -20,7 +20,8 @@
 
 @testable import Client
 import Core
-import XCTest
+import Foundation
+import Testing
 
 private let kMockedDate = Date.now
 
@@ -35,80 +36,50 @@ final class TelemetryThresholdProviderMock: @unchecked Sendable, TelemetryThresh
         telemetryThreshold
     }
 
-    func setThreshold(_ threshold: TimeInterval?) async throws {
+    func setThreshold(_ threshold: TimeInterval?) {
         telemetryThreshold = threshold
     }
 }
 
-final class TelemetrySchedulerTests: XCTestCase {
-    var sut: TelemetryScheduler!
-    var thresholdProvider: TelemetryThresholdProviderMock!
+@Suite(.tags(.repository))
+struct TelemetrySchedulerTests {
+    private let thresholdProvider = TelemetryThresholdProviderMock()
+    private let sut: TelemetryScheduler
 
-    override func setUp() {
-        super.setUp()
-        thresholdProvider = TelemetryThresholdProviderMock()
+    init() {
         sut = TelemetryScheduler(currentDateProvider: MockedCurrentDateProvider(),
                                  thresholdProvider: thresholdProvider)
-    }
-
-    override func tearDown() {
-        sut = nil
-        thresholdProvider = nil
-        super.tearDown()
     }
 }
 
 extension TelemetrySchedulerTests {
-    func testThresholdGetterAndSetter() {
-        // When
-        thresholdProvider.telemetryThreshold = nil
-        // Then
-        XCTAssertNil(thresholdProvider.telemetryThreshold)
-
-        // When
-        let date = Date.now
-        thresholdProvider.telemetryThreshold = date.timeIntervalSince1970
-        // Then
-        XCTAssertEqual(thresholdProvider.telemetryThreshold, date.timeIntervalSince1970)
-    }
-
-    func testShouldSendEventsWhenCurrentDateIsAfterThresholdDate() async throws {
-        // Given
+    @Test func `events are sent once the threshold date has passed`() async throws {
         thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: -1).timeIntervalSince1970
 
-        // Then
         let result = try await sut.shouldSendEvents()
-        XCTAssertTrue(result)
+        #expect(result)
     }
 
-    func testShouldNotSendEventsWhenCurrentDateIsBeforeThresholdDate() async throws {
-        // Given
+    @Test func `events are not sent before the threshold date`() async throws {
         thresholdProvider.telemetryThreshold = kMockedDate.adding(component: .minute, value: 1).timeIntervalSince1970
 
-        // Then
         let result = try await sut.shouldSendEvents()
-
-        XCTAssertFalse(result)
+        #expect(!result)
     }
 
-    func testRandomNextThresholdDate() async throws {
-        // Given
-        let givenThreshold = Date.now
+    @Test func `the next threshold is randomly picked within the allowed interval`() async throws {
+        let givenThreshold = kMockedDate
         thresholdProvider.telemetryThreshold = givenThreshold.timeIntervalSince1970
 
-        // When
         try await sut.randomNextThreshold()
-        let threshhold = await sut.getThreshold()
-        let newThreshhold = try XCTUnwrap(threshhold)
-        let difference = Calendar.current.dateComponents([.hour],
-                                                         from: givenThreshold,
-                                                         to: newThreshhold)
+        let newThreshold = try #require(await sut.getThreshold())
+        // Rounded rather than truncated: the threshold is stored as seconds since 1970, and that
+        // round trip can land a few nanoseconds short of a whole hour.
+        let differenceInHours = Int((newThreshold.timeIntervalSince(givenThreshold) / 3600).rounded())
 
-        // Then
-        let differenceInHours = try XCTUnwrap(difference.hour)
         let min = await sut.minIntervalInHours
         let max = await sut.maxIntervalInHours
-        XCTAssertTrue(differenceInHours >= min)
-        XCTAssertTrue(differenceInHours <= max)
+        #expect(differenceInHours >= min)
+        #expect(differenceInHours <= max)
     }
 }

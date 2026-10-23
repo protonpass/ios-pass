@@ -19,24 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
-import XCTest
+import Testing
 
-final class LocalShareDatasourceTests: XCTestCase {
-    var sut: LocalShareDatasource!
-
-    override func setUp() {
-        super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+@Suite(.tags(.localDatasource))
+struct LocalShareDatasourceTests {
+    let sut = LocalShareDatasource(databaseService: DatabaseService(inMemory: true))
 }
 
 extension LocalShareDatasourceTests {
-    func testGetAllSharesByUserId() async throws {
+    @Test func `shares are fetched by user id`() async throws {
         // Given
         let givenShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
         let givenUserId = String.random()
@@ -53,10 +44,10 @@ extension LocalShareDatasourceTests {
         let shares = try await sut.getAllShares(userId: givenUserId)
         let shareIds = Set(shares.map(\.share.shareID))
         let givenShareIds = Set(givenShares.map(\.share.shareID))
-        XCTAssertEqual(shareIds, givenShareIds)
+        #expect(shareIds == givenShareIds)
     }
 
-    func testGetAllSharesByVaultId() async throws {
+    @Test func `shares are fetched by vault id`() async throws {
         // Given
         let vaultId1 = String.random()
         let vaultId2 = String.random()
@@ -82,19 +73,19 @@ extension LocalShareDatasourceTests {
         let batch3 = try await sut.getAllShares(vaultId: .random())
 
         // Then
-        XCTAssertEqual(batch1.count, 2)
-        XCTAssertTrue(batch1.contains(share1))
-        XCTAssertTrue(batch1.contains(share2))
+        #expect(batch1.count == 2)
+        #expect(batch1.contains(share1))
+        #expect(batch1.contains(share2))
 
-        XCTAssertEqual(batch2.count, 3)
-        XCTAssertTrue(batch2.contains(share3))
-        XCTAssertTrue(batch2.contains(share4))
-        XCTAssertTrue(batch2.contains(share5))
+        #expect(batch2.count == 3)
+        #expect(batch2.contains(share3))
+        #expect(batch2.contains(share4))
+        #expect(batch2.contains(share5))
 
-        XCTAssertTrue(batch3.isEmpty)
+        #expect(batch3.isEmpty)
     }
 
-    func testGetShare() async throws {
+    @Test func `a share is fetched by user and share id`() async throws {
         // Given
         let givenUserId = String.random()
         let givenInsertedShare = try await sut.givenInsertedShare(userId: givenUserId)
@@ -106,11 +97,11 @@ extension LocalShareDatasourceTests {
 
         let optionalShares = try await sut.getShare(userId: givenUserId,
                                                     shareId: givenInsertedShare.share.shareID)
-        let share = try await XCTUnwrapAsync(optionalShares)
-        XCTAssertEqual(share, givenInsertedShare)
+        let share = try #require(optionalShares)
+        #expect(share == givenInsertedShare)
     }
 
-    func testInsertShares() async throws {
+    @Test func `inserted shares are all returned`() async throws {
         // Given
         let firstShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
         let secondShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
@@ -125,14 +116,14 @@ extension LocalShareDatasourceTests {
 
         // Then
         let shares = try await sut.getAllShares(userId: givenUserId)
-        XCTAssertEqual(shares.count, givenShares.count)
+        #expect(shares.count == givenShares.count)
 
         let shareIds = Set(shares.map(\.share.shareID))
         let givenShareIds = Set(givenShares.map(\.share.shareID))
-        XCTAssertEqual(shareIds, givenShareIds)
+        #expect(shareIds == givenShareIds)
     }
 
-    func testUpdateShares() async throws {
+    @Test func `upserting a share with an existing id replaces it`() async throws {
         // Given
         let givenUserId = String.random()
         let insertedShare = try await sut.givenInsertedShare(userId: givenUserId)
@@ -145,13 +136,13 @@ extension LocalShareDatasourceTests {
 
         // Then
         let shares = try await sut.getAllShares(userId: givenUserId)
-        XCTAssertEqual(shares.count, 1)
+        #expect(shares.count == 1)
 
-        let share = try XCTUnwrap(shares.first)
-        XCTAssertEqual(share, updatedShare)
+        let share = try #require(shares.first)
+        #expect(share == updatedShare)
     }
 
-    func testRemoveShare() async throws {
+    @Test func `a single share can be removed`() async throws {
         // Given
         let userId = String.random()
         let firstShare = SymmetricallyEncryptedShare.random()
@@ -164,12 +155,12 @@ extension LocalShareDatasourceTests {
 
         // Then
         let shares = try await sut.getAllShares(userId: userId)
-        XCTAssertEqual(shares.count, 2)
-        XCTAssertTrue(shares.contains(where: { $0.share.shareID == firstShare.share.shareID }))
-        XCTAssertTrue(shares.contains(where: { $0.share.shareID == thirdShare.share.shareID }))
+        #expect(shares.count == 2)
+        #expect(shares.contains(where: { $0.share.shareID == firstShare.share.shareID }))
+        #expect(shares.contains(where: { $0.share.shareID == thirdShare.share.shareID }))
     }
 
-    func testRemoveAllShares() async throws {
+    @Test func `removing all shares of a user keeps other users intact`() async throws {
         // Given
         let givenFirstUserId = String.random()
         let givenFirstUserShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
@@ -183,20 +174,20 @@ extension LocalShareDatasourceTests {
 
         // Then
         let firstUserSharesFirstGet = try await sut.getAllShares(userId: givenFirstUserId)
-        XCTAssertEqual(firstUserSharesFirstGet.count, givenFirstUserShares.count)
+        #expect(firstUserSharesFirstGet.count == givenFirstUserShares.count)
 
         let secondUserSharesFirstGet = try await sut.getAllShares(userId: givenSecondUserId)
-        XCTAssertEqual(secondUserSharesFirstGet.count, givenSecondUserShares.count)
+        #expect(secondUserSharesFirstGet.count == givenSecondUserShares.count)
 
         // When
         try await sut.removeAllShares(userId: givenFirstUserId)
 
         // Then
         let firstUserSharesSecondGet = try await sut.getAllShares(userId: givenFirstUserId)
-        XCTAssertTrue(firstUserSharesSecondGet.isEmpty)
+        #expect(firstUserSharesSecondGet.isEmpty)
 
         let secondUserSharesSecondGet = try await sut.getAllShares(userId: givenSecondUserId)
-        XCTAssertEqual(secondUserSharesSecondGet.count, givenSecondUserShares.count)
+        #expect(secondUserSharesSecondGet.count == givenSecondUserShares.count)
     }
 }
 

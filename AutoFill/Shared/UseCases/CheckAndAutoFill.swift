@@ -56,10 +56,8 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
-    private let userManager: any UserManagerProtocol
 
     init(credentialProvider: any AuthManagerProtocol,
-         userManager: any UserManagerProtocol,
          canSkipLocalAuthentication: any CanSkipLocalAuthenticationUseCase,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
@@ -69,7 +67,6 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
-        self.userManager = userManager
     }
 
     func execute(_ request: AutoFillRequest,

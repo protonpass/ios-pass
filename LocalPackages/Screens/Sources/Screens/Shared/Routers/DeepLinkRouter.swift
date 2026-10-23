@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import AuthenticationServices
 import Core
 import CoreSpotlight
 import Foundation
@@ -88,7 +89,10 @@ struct DeepLinkRouter: DeepLinkRouterProtocol {
                 }
 
             default:
-                break
+                if #available(iOS 26.0, *),
+                   let token = activity.userInfo?[ASCredentialImportToken] as? UUID {
+                    router.requestDeeplink(.credentialsImport(token))
+                }
             }
         }
     }

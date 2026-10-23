@@ -37,6 +37,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
     @State private var addCustomFieldTypePayload: AddCustomFieldTypePayload?
     @State private var customFieldTitle = ""
+    // periphery:ignore - read through its binding
     @State private var customSectionTitle = ""
 
     func body(content: Content) -> some View {

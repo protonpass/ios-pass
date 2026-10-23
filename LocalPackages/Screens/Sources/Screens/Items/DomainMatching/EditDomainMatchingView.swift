@@ -43,14 +43,17 @@ public struct EditDomainMatchingView: View {
     @State private var selectedType: DomainMatchingType
     @State private var selectedMode: AutofillUrlMode
     private let url: IdentifiableObject<AutofillUrl>
+    private let parentDomainExamples: [DomainMatchingExample]
     private let itemContentType: ItemContentType = .login
     private let onSave: (AutofillUrlMode) -> Void
 
     public init(url: IdentifiableObject<AutofillUrl>,
+                parentDomainExamples: [DomainMatchingExample],
                 onSave: @escaping (AutofillUrlMode) -> Void) {
         self.url = url
         _selectedType = .init(initialValue: url.value.mode.isBasic ? .basic : .advanced)
         _selectedMode = .init(initialValue: url.value.mode)
+        self.parentDomainExamples = parentDomainExamples
         self.onSave = onSave
     }
 
@@ -86,20 +89,26 @@ private extension EditDomainMatchingView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 descriptionText
 
-                SegmentedPicker(selection: $selectedType,
-                                options: [
-                                    .init(value: .basic, title: DomainMatchingType.basic.title),
-                                    .init(value: .advanced, title: DomainMatchingType.advanced.title)
-                                ],
-                                mainColor: itemContentType.normMajor1Color,
-                                backgroundColor: itemContentType.normMinor1Color)
-
-                switch selectedType {
-                case .basic:
+                if url.value.mode.isBasic {
                     basicContent
+                } else {
+                    SegmentedPicker(selection: $selectedType,
+                                    options: [
+                                        .init(value: .basic, title: DomainMatchingType.basic.title),
+                                        .init(value: .advanced, title: DomainMatchingType.advanced.title)
+                                    ],
+                                    textColor: itemContentType.normMajor2Color,
+                                    highlightTextColor: PassColor.textInvert,
+                                    mainColor: itemContentType.normMajor1Color,
+                                    backgroundColor: itemContentType.normMinor1Color)
 
-                case .advanced:
-                    advancedContent
+                    switch selectedType {
+                    case .basic:
+                        basicContent
+
+                    case .advanced:
+                        advancedContent
+                    }
                 }
 
                 Spacer()
@@ -143,8 +152,10 @@ private extension EditDomainMatchingView {
             row(for: .default)
             row(for: .never)
             row(for: .exact)
-            // swiftlint:disable:next line_length
-            unavailableText("Exact subdomain rule is not available on iOS due to limitations in the operating system APIs.")
+
+            if selectedMode == .default, !parentDomainExamples.isEmpty {
+                suggestionExamples
+            }
         }
     }
 
@@ -207,6 +218,37 @@ private extension EditDomainMatchingView {
         }
     }
 
+    var suggestionExamples: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            HStack {
+                Text("URL", bundle: .module)
+                Spacer()
+                Text("Suggested", bundle: .module)
+            }
+            .font(.caption)
+            .foregroundStyle(PassColor.textWeak)
+
+            ForEach(parentDomainExamples, id: \.url) { example in
+                HStack {
+                    Text(verbatim: example.url)
+                        .font(.body.monospaced())
+                        .foregroundStyle(PassColor.textNorm)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    Image(uiImage: example.suggested ?
+                        IconProvider.checkmarkCircleFilled : IconProvider.crossCircleFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20)
+                        .foregroundStyle(example.suggested ? PassColor.signalSuccess : PassColor.signalDanger)
+                }
+            }
+        }
+        .padding()
+        .background(PassColor.inputBackgroundNorm)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
     func unavailableText(_ text: LocalizedStringKey) -> some View {
         Text(text, bundle: .module)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -226,9 +268,6 @@ private extension AutofillUrlMode {
     }
 
     var isSupported: Bool {
-        switch self {
-        case .default, .never: true
-        default: false
-        }
+        isBasic
     }
 }

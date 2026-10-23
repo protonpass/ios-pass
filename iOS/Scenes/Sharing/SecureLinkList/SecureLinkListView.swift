@@ -27,9 +27,12 @@ import Screens
 import SwiftUI
 
 struct SecureLinkListView: View {
-    @StateObject private var viewModel = SecureLinkListViewModel()
-    @Environment(\.dismiss) private var dismiss
+    @StateObject private var viewModel: SecureLinkListViewModel
     @Namespace private var animation
+
+    init(isShownAsSheet: Bool) {
+        _viewModel = .init(wrappedValue: .init(isShownAsSheet: isShownAsSheet))
+    }
 
     private let columns = [GridItem](repeating: .init(.flexible()),
                                      count: UIDevice.current.isIpad ? 3 : 2)
@@ -325,11 +328,11 @@ private extension SecureLinkListView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Close") {
-                dismiss()
+                         accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back") {
+                viewModel.goBack()
             }
         }
 

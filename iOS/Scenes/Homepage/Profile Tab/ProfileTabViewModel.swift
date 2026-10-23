@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import LocalAuthentication
+import Macro
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
@@ -32,12 +33,6 @@ import ProtonCoreServices
 import Screens
 import SwiftUI
 import UseCases
-
-@MainActor
-protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowSettingsMenu()
-    func profileTabViewModelWantsToShowFeedback()
-}
 
 struct StorageUiModel {
     let used: Int
@@ -77,6 +72,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.switchUser) private var switchUser
     @LazyInjected(\UseCasesContainer.getOrganizationSettings)
     private var getOrganizationSettings
+    @LazyInjected(\RepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -128,8 +125,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     private var currentUserTask: Task<Void, Never>?
     private var accessesTask: Task<Void, Never>?
+    private var exportFlowTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
-    weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isChromeInstalled: Bool {
         #if DEBUG
@@ -198,6 +195,8 @@ extension ProfileTabViewModel {
                 aliasesAllowed = settings.aliasCreateMode != .nobody
             }
         } catch {
+            // Cancelled when the active user changes, e.g. while switching accounts
+            guard !(error is CancellationError) else { return }
             logger.error(error)
         }
     }
@@ -309,7 +308,7 @@ extension ProfileTabViewModel {
     }
 
     func showSettingsMenu() {
-        delegate?.profileTabViewModelWantsToShowSettingsMenu()
+        router.present(for: .settings)
     }
 
     func showAliasSyncConfiguration() {
@@ -332,12 +331,37 @@ extension ProfileTabViewModel {
         router.navigate(to: .urlPage(urlString: ProtonLink.howToImport))
     }
 
+    func beginExportFlow() {
+        guard exportFlowTask == nil else { return }
+        exportFlowTask = Task { [weak self] in
+            guard let self else { return }
+            defer { exportFlowTask = nil }
+            do {
+                let access = try await accessRepository.getAccess(userId: nil)
+                if access.access.plan.isBusinessUser,
+                   let organization = try await organizationRepository.getOrganization(userId: access.userId),
+                   !organization.exportAllowed {
+                    let message = #localized("Your organization doesn't allow exporting data")
+                    router.display(element: .errorMessage(message))
+                    return
+                }
+                router.present(for: .cxpExport)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
     func showTutorial() {
         router.present(for: .tutorial)
     }
 
-    func showFeedback() {
-        delegate?.profileTabViewModelWantsToShowFeedback()
+    func open(urlString: String) {
+        router.navigate(to: .urlPage(urlString: urlString))
+    }
+
+    func showReportSuccessMessage() {
+        router.display(element: .successMessage(#localized("Report successfully sent")))
     }
 
     func `switch`(to account: AccountCellDetail) {
@@ -349,7 +373,7 @@ extension ProfileTabViewModel {
             do {
                 try await switchUser(userId: account.id)
 
-                if UIDevice.current.isIpad, !UIApplication.shared.isSplitOrSlideOver {
+                if UIDevice.current.isIpad, !UIApplication.shared.hasRegularWidth {
                     router.action(.manage(userId: account.id))
                 }
             } catch {
@@ -379,7 +403,7 @@ extension ProfileTabViewModel {
     }
 
     func showSecureLinkList() {
-        router.present(for: .secureLinks)
+        router.present(for: .secureLinks(asSheet: false))
     }
 
     func upsell(entryPoint: UpsellEntry) {
@@ -464,16 +488,7 @@ private extension ProfileTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 guard let self else { return }
-                currentActiveUser = user
-                currentUserTask?.cancel()
-                currentUserTask = nil
-                currentUserTask = Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await refreshPlan()
-                    await fetchSecureLinks()
-                }
+                activeUserDidChange(user)
             }
             .store(in: &cancellables)
 
@@ -504,6 +519,20 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
+    }
+
+    func activeUserDidChange(_ user: UserData?) {
+        currentActiveUser = user
+        currentUserTask?.cancel()
+        currentUserTask = nil
+        guard user != nil else { return }
+        currentUserTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await refreshPlan()
+            await fetchSecureLinks()
+        }
     }
 
     func refreshLocalAuthenticationMethod() {
