@@ -136,33 +136,41 @@ private extension CredentialProviderCoordinator {
         self.mode = mode
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
+            logger.info("Starting show all logins mode with \(identifiers.count) service identifiers")
             handleShowAllLoginsMode(mode: .passwords,
                                     users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: requestParams)
 
         case let .checkAndAutoFill(request):
-            handleCheckAndAutoFill(request)
+            logger.info("Starting check and autofill mode")
+            await handleCheckAndAutoFill(request)
 
         case let .authenticateAndAutofill(request):
+            logger.info("Starting authenticate and autofill mode")
             handleAuthenticateAndAutofill(request)
 
         case .configuration:
+            logger.info("Starting configuration mode")
             configureExtension()
 
         case let .passkeyRegistration(request):
+            logger.info("Starting passkey registration mode")
             handlePasskeyRegistration(users: users, request: request)
 
         case let .showOneTimeCodes(identifiers):
+            logger.info("Starting show one-time codes mode with \(identifiers.count) service identifiers")
             handleShowAllLoginsMode(mode: .oneTimeCodes,
                                     users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: nil)
 
         case .arbitraryTextInsertion:
+            logger.info("Starting arbitrary text insertion mode")
             handleArbitraryTextInsertion(users: users)
 
         case let .generatePasswords(rules, withUI):
+            logger.info("Starting generate passwords mode, with UI: \(withUI)")
             if #available(iOS 26.2, *) {
                 await handleGeneratePasswords(rules, withUI)
             }
@@ -206,30 +214,32 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func handleCheckAndAutoFill(_ request: AutoFillRequest) {
-        Task { [weak self] in
-            guard let self, let context else { return }
-            do {
-                guard let recordIdentifier = request.recordIdentifier else {
-                    throw ASExtensionError(.credentialIdentityNotFound)
-                }
-
-                let ids = try IDs.deserializeBase64(recordIdentifier)
-                guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
-                    throw ASExtensionError(.credentialIdentityNotFound)
-                }
-
-                let prefs = getSharedPreferences()
-                try await checkAndAutoFill(request,
-                                           userId: item.userId,
-                                           context: context,
-                                           localAuthenticationMethod: prefs.localAuthenticationMethod,
-                                           appLockTime: prefs.appLockTime,
-                                           lastActiveTimestamp: prefs.lastActiveTimestamp)
-            } catch {
-                logger.error(error)
-                cancelAutoFill(reason: .failed, context: context)
+    func handleCheckAndAutoFill(_ request: AutoFillRequest) async {
+        guard let context else { return }
+        do {
+            guard let recordIdentifier = request.recordIdentifier else {
+                throw ASExtensionError(.credentialIdentityNotFound)
             }
+
+            let ids = try IDs.deserializeBase64(recordIdentifier)
+            guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
+                throw ASExtensionError(.credentialIdentityNotFound)
+            }
+
+            let prefs = getSharedPreferences()
+            try await checkAndAutoFill(request,
+                                       userId: item.userId,
+                                       context: context,
+                                       localAuthenticationMethod: prefs.localAuthenticationMethod,
+                                       appLockTime: prefs.appLockTime,
+                                       lastActiveTimestamp: prefs.lastActiveTimestamp)
+        } catch {
+            guard !Task.isCancelled else {
+                logger.info("Check and autofill superseded by a newer request")
+                return
+            }
+            logger.error(error)
+            cancelAutoFill(reason: .failed, context: context)
         }
     }
 
@@ -279,10 +289,7 @@ private extension CredentialProviderCoordinator {
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
     func handleGeneratePasswords(_ rules: PasswordRules?, _ withUI: Bool) async {
-        guard let context else {
-            logger.warning("Generate passwords dropped: no extension context")
-            return
-        }
+        guard let context else { return }
 
         if withUI {
             handleGeneratePasswordsWithUI(context)
@@ -291,7 +298,6 @@ private extension CredentialProviderCoordinator {
 
         do {
             let passwords = try await generatePasswords(rules: rules).map { ASGeneratedPassword($0) }
-            // `setUpAndStart` cancelled this run for a newer request, which now owns the context
             guard !Task.isCancelled else {
                 logger.info("Generate passwords superseded by a newer request")
                 return
@@ -301,7 +307,7 @@ private extension CredentialProviderCoordinator {
                 cancelAutoFill(reason: .failed, context: context)
             } else {
                 logger.info("Completing generate passwords with kinds \(passwords.map(\.kind.rawValue))")
-                context.completeGeneratePasswordRequest(results: passwords) { _ in }
+                await context.completeGeneratePasswordRequest(results: passwords)
             }
         } catch {
             logger.error(error)
@@ -314,22 +320,26 @@ private extension CredentialProviderCoordinator {
             guard let self else { return }
             switch result {
             case let .success(password):
-                logger.info("Completing generate passwords from UI")
                 context.completeGeneratePasswordRequest(results: [ASGeneratedPassword(password)])
 
             case let .failure(error):
                 handle(error: error)
             }
         }
+        let handleCancellation: () -> Void = { [weak self] in
+            guard let self else { return }
+            cancelAutoFill(reason: .userCanceled, context: context)
+        }
+        let handleAuthenticationFailure: (String?) -> Void = { [weak self] errorMessage in
+            guard let self else { return }
+            handle(error: PassError.credentialProvider(.failedToAuthenticate(errorMessage)))
+        }
         let view = PasswordGeneratorView(mode: .autofill,
                                          onResult: handleResult,
-                                         onClose: { [weak self] in
-                                             guard let self else { return }
-                                             logger.info("Generate passwords UI closed by user")
-                                             cancelAutoFill(reason: .userCanceled,
-                                                            context: context)
-                                         })
-        logger.info("Showing password generator UI")
+                                         onClose: handleCancellation)
+            .localAuthentication(delayed: true,
+                                 logOutButtonMode: .topBarTrailing(onClose: handleCancellation),
+                                 onFailure: handleAuthenticationFailure)
         showView(view)
     }
 }
