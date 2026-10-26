@@ -24,6 +24,7 @@ import ClientMocks
 import Core
 import CoreMocks
 import os
+import ProtonCoreNetworking
 import Testing
 import TestingToolkit
 import Entities
@@ -291,6 +292,23 @@ private extension UserEventsSynchronizerTests {
         }
         #expect(!localUserEventIdDatasource.invokedUpsertLastEventIdfunction)
     }
+
+    @Test(arguments: [
+        UserEvents.make(lastEventID: "Stored", itemsUpdated: .random(count: 3)),
+        UserEvents.make(lastEventID: "Stored", sharesCreated: .random(count: 2)),
+        UserEvents.make(lastEventID: "Stored", sharesUpdated: .random(count: 3))
+    ])
+    func `losing access to a share still advances the last event ID`(events: UserEvents) async throws {
+        await slNoteSynchronizer.stubResults()
+        localUserEventIdDatasource.stubbedGetLastEventIdResult = .random()
+        itemRepository.refreshItemUserIdShareIdItemIdEventTokenThrowableError13 = disabledShareError()
+        await shareRepository.stubRefreshShareDisabledShare()
+        remoteUserEventsDatasource.stubbedGetUserEventsResult = events
+
+        _ = try await sut.sync(userId: .random())
+
+        #expect(localUserEventIdDatasource.invokedUpsertLastEventIdParameters?.lastEventId == "Stored")
+    }
 }
 
 extension ItemEvent: Randomable {
@@ -302,6 +320,19 @@ extension ItemEvent: Randomable {
 extension ShareEvent: Randomable {
     public static func random() -> Self {
         .init(shareID: .random(),  eventToken: .random())
+    }
+}
+
+private func disabledShareError() -> ResponseError {
+    .init(httpCode: nil,
+          responseCode: PassApiError.disabledShare.rawValue,
+          userFacingMessage: nil,
+          underlyingError: nil)
+}
+
+private extension ShareRepositoryProtocolMock {
+    func stubRefreshShareDisabledShare() {
+        refreshShareUserIdShareIdEventTokenThrowableError9 = disabledShareError()
     }
 }
 
