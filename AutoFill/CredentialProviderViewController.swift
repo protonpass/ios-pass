@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
+import DIComposition
 import FactoryKit
 import ProtonCoreCryptoGoImplementation
 
@@ -26,6 +27,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     private lazy var coordinator: CredentialProviderCoordinator = .init(rootViewController: self,
                                                                         context: extensionContext)
     private let resetFactory = dependency(\AutoFillUseCaseContainer.resetFactory)
+    private let logger = dependency(\ToolingContainer.logger)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,10 +85,14 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 @available(iOS 26.2, *)
 extension CredentialProviderViewController {
     override func performWithoutUserInteraction(generatePasswordsRequest request: ASGeneratePasswordsRequest) {
-        coordinator.setUpAndStart(mode: .generatePasswords(request.passwordRules))
+        let rules = request.passwordRules
+        logger.info("Generate passwords requested without UI, has site rules: \(rules != nil)")
+        coordinator.setUpAndStart(mode: .generatePasswords(rules))
     }
 
     override func prepareInterface(for request: ASGeneratePasswordsRequest) {
-        coordinator.setUpAndStart(mode: .generatePasswords(request.passwordRules, withUI: true))
+        let rules = request.passwordRules
+        logger.info("Generate passwords requested with UI, has site rules: \(rules != nil)")
+        coordinator.setUpAndStart(mode: .generatePasswords(rules, withUI: true))
     }
 }
