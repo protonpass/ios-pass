@@ -114,11 +114,11 @@ struct GenerateAutofillPasswordsTests {
     }
 
     @Test(arguments: [
-        (true, [AutoFillPasswordSuggestion.Kind.passphrase, .strong]),
+        (true, [GeneratedPassword.Kind.passphrase, .strong]),
         (false, [.passphrase, .alphanumeric])
     ])
     func `the policy symbols flag picks the random kinds`(mustIncludeSymbols: Bool,
-                                                          expected: [AutoFillPasswordSuggestion
+                                                          expected: [GeneratedPassword
                                                               .Kind]) async throws {
         let sut = makeSut(policy: policy(symbols: mustIncludeSymbols))
 

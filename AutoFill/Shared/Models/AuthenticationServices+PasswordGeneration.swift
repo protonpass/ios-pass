@@ -32,12 +32,12 @@ extension ASGeneratePasswordsRequest {
 
 @available(iOS 26.2, *)
 extension ASGeneratedPassword {
-    convenience init(_ suggestion: AutoFillPasswordSuggestion) {
-        let kind: ASGeneratedPassword.Kind = switch suggestion.kind {
+    convenience init(_ password: GeneratedPassword) {
+        let kind: ASGeneratedPassword.Kind = switch password.kind {
         case .strong: .strong
         case .alphanumeric: .alphanumeric
         case .passphrase: .passphrase
         }
-        self.init(kind: kind, value: suggestion.value)
+        self.init(kind: kind, value: password.value)
     }
 }
