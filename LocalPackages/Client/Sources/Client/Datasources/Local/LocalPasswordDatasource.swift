@@ -26,7 +26,7 @@ public protocol LocalPasswordDatasourceProtocol: Sendable {
                         id: String,
                         symmetricallyEncryptedValue: String,
                         creationTime: TimeInterval) async throws
-    func getAllPasswords(userId: String) async throws -> [GeneratedPassword]
+    func getAllPasswords(userId: String) async throws -> [PasswordHistoryEntry]
     func getEncryptedPassword(id: String) async throws -> String?
     func deleteAllPasswords(userId: String) async throws
     func deletePassword(id: String) async throws
@@ -55,13 +55,13 @@ public extension LocalPasswordDatasource {
                          })
     }
 
-    func getAllPasswords(userId: String) async throws -> [GeneratedPassword] {
+    func getAllPasswords(userId: String) async throws -> [PasswordHistoryEntry] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = PasswordEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         fetchRequest.sortDescriptors = [.init(key: "creationTime", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return entities.map(\.toGeneratedPassword)
+        return entities.map(\.toPasswordHistoryEntry)
     }
 
     func getEncryptedPassword(id: String) async throws -> String? {

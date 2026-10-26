@@ -25,7 +25,7 @@ import Foundation
 
 public protocol PasswordHistoryRepositoryProtocol: Sendable {
     func insertPassword(_ clearPassword: String) async throws
-    func getAllPasswords() async throws -> [GeneratedPasswordUiModel]
+    func getAllPasswords() async throws -> [PasswordHistoryEntryUiModel]
     func getClearPassword(id: String) async throws -> String?
     func deletePassword(id: String) async throws
     func deleteAllPasswords() async throws
@@ -69,7 +69,7 @@ public extension PasswordHistoryRepository {
         logger.debug("Inserted password for user \(userId)")
     }
 
-    func getAllPasswords() async throws -> [GeneratedPasswordUiModel] {
+    func getAllPasswords() async throws -> [PasswordHistoryEntryUiModel] {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all passwords for user \(userId)")
         let passwords = try await datasource.getAllPasswords(userId: userId)

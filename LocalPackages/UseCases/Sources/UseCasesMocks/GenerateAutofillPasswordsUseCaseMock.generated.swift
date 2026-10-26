@@ -34,9 +34,9 @@ public final class GenerateAutofillPasswordsUseCaseMock: @unchecked Sendable, Ge
     public var invokedCallAsFunctionCount = 0
     public var invokedCallAsFunctionParameters: (rules: PasswordRules?, Void)?
     public var invokedCallAsFunctionParametersList = [(rules: PasswordRules?, Void)]()
-    public nonisolated(unsafe) var stubbedCallAsFunctionResult: [AutoFillPasswordSuggestion]!
+    public nonisolated(unsafe) var stubbedCallAsFunctionResult: [GeneratedPassword]!
 
-    public func callAsFunction(rules: PasswordRules?) async throws -> [AutoFillPasswordSuggestion] {
+    public func callAsFunction(rules: PasswordRules?) async throws -> [GeneratedPassword] {
         invokedCallAsFunctionfunction = true
         invokedCallAsFunctionCount += 1
         invokedCallAsFunctionParameters = (rules, ())

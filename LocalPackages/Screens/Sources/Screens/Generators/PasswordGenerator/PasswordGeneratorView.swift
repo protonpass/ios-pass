@@ -32,7 +32,7 @@ public struct PasswordGeneratorView: View {
     private let onClose: () -> Void
 
     public init(mode: PasswordGeneratorMode,
-                onResult: @escaping (Result<String, any Error>) -> Void,
+                onResult: @escaping (Result<GeneratedPassword, any Error>) -> Void,
                 onClose: @escaping () -> Void = {},
                 onHeightChanged: ((Double) -> Void)? = nil) {
         _viewModel = .init(wrappedValue: .init(mode: mode, onResult: onResult))

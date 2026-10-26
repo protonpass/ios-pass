@@ -25,7 +25,7 @@ import Entities
 // sourcery: AutoMockable
 public protocol GenerateAutofillPasswordsUseCase: Sendable {
     /// Site `rules` are ignored when they contradict the organization's password policy.
-    func callAsFunction(rules: PasswordRules?) async throws -> [AutoFillPasswordSuggestion]
+    func callAsFunction(rules: PasswordRules?) async throws -> [GeneratedPassword]
 }
 
 public struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
@@ -56,7 +56,7 @@ public struct GenerateAutofillPasswords: GenerateAutofillPasswordsUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func callAsFunction(rules: PasswordRules?) async throws -> [AutoFillPasswordSuggestion] {
+    public func callAsFunction(rules: PasswordRules?) async throws -> [GeneratedPassword] {
         let policy = await passwordPolicy()
         let preferences = preferences(applying: policy)
         let organizationRules = policy.map(PasswordRules.init(randomPasswordPolicy:)) ?? PasswordRules()
@@ -119,10 +119,10 @@ private extension GenerateAutofillPasswords {
 
     /// Without site rules, the Rust generator is used: the resolved preferences already express the
     /// organization policy through its options.
-    func randomPassword(kind: AutoFillPasswordSuggestion.Kind,
+    func randomPassword(kind: GeneratedPassword.Kind,
                         rules: PasswordRules?,
                         hasSiteRules: Bool,
-                        preferences: PasswordPreferences) throws -> AutoFillPasswordSuggestion? {
+                        preferences: PasswordPreferences) throws -> GeneratedPassword? {
         let symbols = kind == .strong
         let kindRules: PasswordRules = symbols ? .requiringSpecial : .alphanumeric
         guard let rules = rules?.intersected(with: kindRules) else { return nil }
@@ -139,7 +139,7 @@ private extension GenerateAutofillPasswords {
     }
 
     func memorablePassword(preferences: PasswordPreferences,
-                           siteRules: PasswordRules?) throws -> AutoFillPasswordSuggestion? {
+                           siteRules: PasswordRules?) throws -> GeneratedPassword? {
         let words = try generateRandomWords(wordCount: preferences.wordCount)
         let passphrase = try generatePassphrase(words: words,
                                                 separator: preferences.wordSeparator,

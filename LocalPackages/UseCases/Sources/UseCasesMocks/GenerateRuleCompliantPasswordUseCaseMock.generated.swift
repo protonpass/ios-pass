@@ -21,6 +21,7 @@
 import UseCases
 import Core
 import Entities
+import Security
 
 public final class GenerateRuleCompliantPasswordUseCaseMock: @unchecked Sendable, GenerateRuleCompliantPasswordUseCase {
 

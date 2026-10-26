@@ -310,13 +310,12 @@ private extension CredentialProviderCoordinator {
     }
 
     func handleGeneratePasswordsWithUI(_ context: ASCredentialProviderExtensionContext) {
-        let handleResult: (Result<String, any Error>) -> Void = { [weak self] result in
+        let handleResult: (Result<GeneratedPassword, any Error>) -> Void = { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(password):
                 logger.info("Completing generate passwords from UI")
-                let result = ASGeneratedPassword(kind: .strong, value: password)
-                context.completeGeneratePasswordRequest(results: [result])
+                context.completeGeneratePasswordRequest(results: [ASGeneratedPassword(password)])
 
             case let .failure(error):
                 handle(error: error)

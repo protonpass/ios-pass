@@ -24,7 +24,6 @@ import Core
 import CoreData
 import CryptoKit
 import Entities
-import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 
 public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemRepositoryProtocol {
