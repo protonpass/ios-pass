@@ -52,7 +52,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let completeConfiguration = dependency(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = dependency(\AutoFillUseCaseContainer.cancelAutoFill)
     private let sendErrorToSentry = dependency(\UseCasesContainer.sendErrorToSentry)
-    private let generatePasswords = dependency(\AutoFillUseCaseContainer.generateAutofillPasswords)
 
     // Lazily injected because some use cases are dependent on repositories
     // which are not registered when the user is not logged in
@@ -62,6 +61,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
+    @LazyInjected(\AutoFillUseCaseContainer.generateAutofillPasswords) private var generatePasswords
     @LazyInjected(\UIComponentsContainer.bannerManager) private var bannerManager
     @LazyInjected(\ServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\ServiceContainer.appContentManager) private var appContentManager
@@ -279,7 +279,10 @@ private extension CredentialProviderCoordinator {
 @available(iOS 26.2, *)
 private extension CredentialProviderCoordinator {
     func handleGeneratePasswords(_ rules: PasswordRules?, _ withUI: Bool) async {
-        guard let context else { return }
+        guard let context else {
+            logger.warning("Generate passwords dropped: no extension context")
+            return
+        }
 
         if withUI {
             let view = PasswordGeneratorView(mode: .autofill,
@@ -288,6 +291,7 @@ private extension CredentialProviderCoordinator {
 
                                                  switch result {
                                                  case let .success(password):
+                                                     logger.info("Completing generate passwords from UI")
                                                      var results = [ASGeneratedPassword]()
                                                      results.append(ASGeneratedPassword(kind: .strong,
                                                                                         value: password))
@@ -301,8 +305,10 @@ private extension CredentialProviderCoordinator {
                                              },
                                              onClose: { [weak self] in
                                                  guard let self else { return }
+                                                 logger.info("Generate passwords UI closed by user")
                                                  cancelAutoFill(reason: .userCanceled, context: context)
                                              })
+            logger.info("Showing password generator UI")
             showView(view)
             return
         }
@@ -310,10 +316,15 @@ private extension CredentialProviderCoordinator {
         do {
             let passwords = try await generatePasswords(rules: rules).map { ASGeneratedPassword($0) }
             // `setUpAndStart` cancelled this run for a newer request, which now owns the context
-            guard !Task.isCancelled else { return }
+            guard !Task.isCancelled else {
+                logger.info("Generate passwords superseded by a newer request")
+                return
+            }
             if passwords.isEmpty {
+                logger.warning("Generate passwords produced no password satisfying the rules")
                 cancelAutoFill(reason: .failed, context: context)
             } else {
+                logger.info("Completing generate passwords with kinds \(passwords.map(\.kind.rawValue))")
                 context.completeGeneratePasswordRequest(results: passwords) { _ in }
             }
         } catch {
