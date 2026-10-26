@@ -115,6 +115,14 @@ struct PasswordRulesTests {
         #expect(PasswordRules(rules) == nil)
     }
 
+    // MARK: - Apple's quirks
+
+    @Test(arguments: Self.quirks)
+    func `a real site's rules parse into exactly what they declare`(rules: String,
+                                                                    expected: PasswordRules) {
+        #expect(PasswordRules(rules) == expected)
+    }
+
     // MARK: - Source precedence
 
     @Test func `the quirks take precedence over the password fields`() {
@@ -227,4 +235,93 @@ private extension PasswordRulesTests {
                        memorablePasswordMustCapitalize: nil,
                        memorablePasswordMustIncludeNumbers: nil)
     }
+}
+
+private extension PasswordRulesTests {
+    /// From https://github.com/apple/password-manager-resources/blob/main/quirks/password-rules.json
+    static let quirks: [(String, PasswordRules)] = [
+        // walmart.com
+        (#"allowed: lower, upper, digit, [-(~!@#$%^&*_+=`|(){}[:;"'<>,.?]];"#,
+         PasswordRules(allowed: .alphanumeric.union(#"-(~!@#$%^&*_+=`|(){}[:;"'<>,.?]"#))),
+        // google.com
+        (##"minlength: 8; allowed: lower, upper, digit, [-!"#$%&'()*+,./:;<=>?@[^_{|}~]];"##,
+         PasswordRules(allowed: .alphanumeric.union(##"-!"#$%&'()*+,./:;<=>?@[^_{|}~]"##),
+                       minLength: 8)),
+        // verizonwireless.com
+        ("minlength: 8; maxlength: 20; required: lower, upper; required: digit; allowed: unicode;",
+         PasswordRules(requiredSets: [Set.lower.union(Set.upper), .digit],
+                       allowed: .asciiPrintable,
+                       minLength: 8,
+                       maxLength: 20)),
+        // aeon.co.jp
+        ("minlength: 8; maxlength: 8; max-consecutive: 3; required: digit; required: upper,lower,[#$+./:=?@[^_|~]];",
+         PasswordRules(requiredSets: [.digit, Set.upper.union(Set.lower).union("#$+./:=?@[^_|~]")],
+                       allowed: .alphanumeric.union("#$+./:=?@[^_|~]"),
+                       minLength: 8,
+                       maxLength: 8,
+                       maxConsecutive: 3)),
+        // posteo.de, whose `’` is dropped for not being ASCII
+        (#"minlength: 8; required: lower; required: upper; required: digit, [-~!#$%&_+=|(){}[:;"’<>,.? ]];"#,
+         PasswordRules(requiredSets: [.lower, .upper, Set.digit.union(#"-~!#$%&_+=|(){}[:;"<>,.? ]"#)],
+                       allowed: .alphanumeric.union(#"-~!#$%&_+=|(){}[:;"<>,.? ]"#),
+                       minLength: 8)),
+        // walgreens.com
+        ("minlength: 8; required: lower; required: digit; allowed: [!#$%&*@^]",
+         PasswordRules(requiredSets: [.lower, .digit],
+                       allowed: Set.lower.union(Set.digit).union("!#$%&*@^"),
+                       minLength: 8)),
+        // vivo.com.br
+        ("maxlength: 6; max-consecutive: 3; allowed: digit;",
+         PasswordRules(allowed: .digit, maxLength: 6, maxConsecutive: 3)),
+        // extraspace.com
+        ("minlength: 8; maxlength: 20; allowed: lower; required: upper, digit, [!#$%&*?@];",
+         PasswordRules(requiredSets: [Set.upper.union(Set.digit).union("!#$%&*?@")],
+                       allowed: .alphanumeric.union("!#$%&*?@"),
+                       minLength: 8,
+                       maxLength: 20)),
+        // zdf.de
+        ("minlength: 8; required: upper; required: digit; allowed: lower, special;",
+         PasswordRules(requiredSets: [.upper, .digit],
+                       allowed: .alphanumeric.union(Set.special),
+                       minLength: 8)),
+        // amnh.org
+        ("minlength: 8; maxlength: 16; required: digit; required: upper,lower; allowed: ascii-printable;",
+         PasswordRules(requiredSets: [.digit, Set.upper.union(Set.lower)],
+                       allowed: .asciiPrintable,
+                       minLength: 8,
+                       maxLength: 16)),
+        // samsung.com
+        ("max-consecutive: 2; required: lower, upper; required: digit; required: special;",
+         PasswordRules(requiredSets: [Set.lower.union(Set.upper), .digit, .special],
+                       allowed: .asciiPrintable,
+                       maxConsecutive: 2)),
+        // capitalone.com
+        (#"minlength: 8; maxlength: 32; required: lower, upper; required: digit; allowed: [-_./\@$*&!#];"#,
+         PasswordRules(requiredSets: [Set.lower.union(Set.upper), .digit],
+                       allowed: .alphanumeric.union(#"-_./\@$*&!#"#),
+                       minLength: 8,
+                       maxLength: 32)),
+        // kundenportal.edeka-smart.de, whose `§` is dropped for not being ASCII
+        (#"minlength: 8; maxlength: 16; required: digit; required: upper, lower; required: [!"§$%&#];"#,
+         PasswordRules(requiredSets: [.digit, Set.upper.union(Set.lower), Set(#"!"$%&#"#)],
+                       allowed: .alphanumeric.union(#"!"$%&#"#),
+                       minLength: 8,
+                       maxLength: 16)),
+        // twitter.com
+        ("minlength: 8;", PasswordRules(minLength: 8)),
+        // bhphotovideo.com
+        ("maxlength: 15;", PasswordRules(maxLength: 15)),
+        // ototoy.jp
+        ("minlength: 8; allowed: upper,lower,digit,[- .=_];",
+         PasswordRules(allowed: .alphanumeric.union("- .=_"), minLength: 8))
+    ]
+}
+
+private extension Set<Character> {
+    static var upper: Self { PasswordRules.CharacterClass.upper.characters }
+    static var lower: Self { PasswordRules.CharacterClass.lower.characters }
+    static var digit: Self { PasswordRules.CharacterClass.digit.characters }
+    static var special: Self { PasswordRules.CharacterClass.special.characters }
+    static var alphanumeric: Self { upper.union(lower).union(digit) }
+    static var asciiPrintable: Self { PasswordRules.CharacterClass.asciiPrintable.characters }
 }

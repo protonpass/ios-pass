@@ -224,100 +224,90 @@ private struct Builder {
 }
 
 private struct Scanner {
-    private let characters: [Character]
-    private var index = 0
+    private var remaining: Substring
 
     init(_ string: String) {
-        characters = Array(string)
+        remaining = Substring(string)
     }
 
     var isAtEnd: Bool {
-        index >= characters.count
+        remaining.isEmpty
     }
 
     var isAtPropertyEnd: Bool {
-        isAtEnd || current == ";"
-    }
-
-    private var current: Character? {
-        isAtEnd ? nil : characters[index]
+        isAtEnd || remaining.first == ";"
     }
 
     mutating func skipWhitespace() {
-        while let current, current.isRulesWhitespace {
-            index += 1
-        }
+        remaining = remaining.drop(while: \.isRulesWhitespace)
     }
 
     mutating func consume(_ character: Character) -> Bool {
-        guard current == character else { return false }
-        index += 1
+        guard remaining.first == character else { return false }
+        remaining.removeFirst()
         return true
     }
 
     mutating func identifier() -> String {
-        let start = index
-        while let current, current.isIdentifierCharacter {
-            index += 1
-        }
-        return String(characters[start..<index])
+        String(take(while: \.isIdentifierCharacter))
     }
 
     /// `nil` when there is no digit or the value overflows, since the input comes from untrusted web pages.
     mutating func integer() -> Int? {
-        var value: Int?
-        while let ascii = current?.asciiValue, (0x30...0x39).contains(ascii) {
-            let (shifted, shiftOverflow) = (value ?? 0).multipliedReportingOverflow(by: 10)
-            let (sum, sumOverflow) = shifted.addingReportingOverflow(Int(ascii - 0x30))
-            guard !shiftOverflow, !sumOverflow else { return nil }
-            value = sum
-            index += 1
-        }
-        return value
+        Int(take(while: \.isASCIIDigit))
     }
 
     mutating func characterClasses() -> Set<Character>? {
         var result = Set<Character>()
         repeat {
             skipWhitespace()
-            if let current, current.isIdentifierCharacter {
-                let name = identifier().lowercased()
-                // Passwords are generated from ASCII only, so `unicode` narrows to ASCII printable
-                let rawValue = name == "unicode" ? PasswordRules.CharacterClass.asciiPrintable.rawValue : name
-                guard let characterClass = PasswordRules.CharacterClass(rawValue: rawValue) else {
-                    return nil
-                }
-                result.formUnion(characterClass.characters)
-            } else if current == "[" {
-                guard let custom = customCharacterClass() else { return nil }
-                result.formUnion(custom)
-            } else {
-                return nil
-            }
+            let characters = remaining.first == "[" ? customCharacterClass() : namedCharacterClass()
+            guard let characters else { return nil }
+            result.formUnion(characters)
             skipWhitespace()
         } while consume(",")
         return result
+    }
+
+    private mutating func take(while predicate: (Character) -> Bool) -> Substring {
+        let prefix = remaining.prefix(while: predicate)
+        remaining = remaining[prefix.endIndex...]
+        return prefix
+    }
+
+    private mutating func namedCharacterClass() -> Set<Character>? {
+        let name = identifier().lowercased()
+        // Passwords are generated from ASCII only, so `unicode` narrows to ASCII printable
+        let characterClass: PasswordRules.CharacterClass? = name == "unicode"
+            ? .asciiPrintable
+            : PasswordRules.CharacterClass(rawValue: name)
+        return characterClass?.characters
     }
 
     /// A `-` is only valid as the first character and is ignored elsewhere. A literal `]` must come last,
     /// written `]]`.
     private mutating func customCharacterClass() -> Set<Character>? {
         guard consume("[") else { return nil }
-        let start = index
         var result = Set<Character>()
-        while let character = current {
-            index += 1
-            guard character.isASCIIPrintable else { continue }
-            if character == "-", index - 1 > start {
-                continue
-            }
-            if character == "]" {
+        if consume("-") {
+            result.insert("-")
+        }
+        while let character = remaining.popFirst() {
+            switch character {
+            case "]":
                 if consume("]") {
                     result.insert("]")
                 }
                 return result
+
+            case "-":
+                continue
+
+            default:
+                if character.isASCIIPrintable {
+                    result.insert(character)
+                }
             }
-            result.insert(character)
         }
         return nil
     }
@@ -330,6 +320,10 @@ private extension Character {
 
     var isIdentifierCharacter: Bool {
         isASCII && (isLetter || self == "-")
+    }
+
+    var isASCIIDigit: Bool {
+        isASCII && isNumber
     }
 
     var isASCIIPrintable: Bool {
