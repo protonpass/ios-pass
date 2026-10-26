@@ -225,11 +225,13 @@ private extension UserEventsSynchronizer {
         for batch in updatedItems.chunked(into: maxConcurrentItemRefreshes) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for updatedItem in batch {
-                    taskGroup.addTask { [itemRepository, userId] in
-                        try await itemRepository.refreshItem(userId: userId,
-                                                             shareId: updatedItem.shareID,
-                                                             itemId: updatedItem.itemID,
-                                                             eventToken: updatedItem.eventToken)
+                    taskGroup.addTask { [self] in
+                        try await skippingDisabledShare(updatedItem.shareID) {
+                            try await itemRepository.refreshItem(userId: userId,
+                                                                 shareId: updatedItem.shareID,
+                                                                 itemId: updatedItem.itemID,
+                                                                 eventToken: updatedItem.eventToken)
+                        }
                     }
                 }
                 try await taskGroup.waitForAll()
@@ -266,10 +268,12 @@ private extension UserEventsSynchronizer {
         for batch in updatedShares.chunked(into: maxConcurrentItemRefreshes) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for updatedShare in batch {
-                    taskGroup.addTask { [shareRepository, userId] in
-                        try await shareRepository.refreshShare(userId: userId,
-                                                               shareId: updatedShare.shareID,
-                                                               eventToken: updatedShare.eventToken)
+                    taskGroup.addTask { [self] in
+                        try await skippingDisabledShare(updatedShare.shareID) {
+                            _ = try await shareRepository.refreshShare(userId: userId,
+                                                                       shareId: updatedShare.shareID,
+                                                                       eventToken: updatedShare.eventToken)
+                        }
                     }
                 }
                 try await taskGroup.waitForAll()
@@ -287,19 +291,32 @@ private extension UserEventsSynchronizer {
         for batch in createdShares.chunked(into: maxConcurrentShareCreations) {
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 for newShare in batch {
-                    taskGroup.addTask { [shareRepository, folderRepository, itemRepository, userId] in
-                        let share = try await shareRepository.refreshShare(userId: userId,
-                                                                           shareId: newShare.shareID,
-                                                                           eventToken: newShare.eventToken)
-                        if share.shareType == .vault {
-                            try await folderRepository.refreshFolders(userId: userId,
-                                                                      shareId: newShare.shareID)
+                    taskGroup.addTask { [self] in
+                        try await skippingDisabledShare(newShare.shareID) {
+                            let share = try await shareRepository.refreshShare(userId: userId,
+                                                                               shareId: newShare.shareID,
+                                                                               eventToken: newShare.eventToken)
+                            if share.shareType == .vault {
+                                try await folderRepository.refreshFolders(userId: userId,
+                                                                          shareId: newShare.shareID)
+                            }
+                            try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                         }
-                        try await itemRepository.refreshItems(userId: userId, shareId: newShare.shareID)
                     }
                 }
                 try await taskGroup.waitForAll()
             }
+        }
+    }
+
+    /// The event cursor only advances once the whole batch is applied, so a share the user lost access to
+    /// (e.g. its deletion is in the same batch or a later page) would otherwise make the batch replay forever.
+    func skippingDisabledShare(_ shareId: String, _ operation: () async throws -> Void) async throws {
+        do {
+            try await operation()
+        } catch {
+            guard error.asPassApiError == .disabledShare else { throw error }
+            logger.warning("Skipping share \(shareId), access to it is gone")
         }
     }
 
