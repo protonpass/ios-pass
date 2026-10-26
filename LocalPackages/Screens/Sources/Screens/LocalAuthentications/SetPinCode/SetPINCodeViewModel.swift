@@ -35,7 +35,7 @@ final class SetPINCodeViewModel: DeinitPrintable {
     private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
     private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
     private(set) var isSaving = false
-    private var failedAttempt: Attempt?
+    private var rejectedConfirmedPIN: String?
 
     enum State {
         case definition, confirmation
@@ -45,13 +45,8 @@ final class SetPINCodeViewModel: DeinitPrintable {
         case notMatched
     }
 
-    private struct Attempt: Equatable {
-        let defined: String
-        let confirmed: String
-    }
-
     var error: ValidationError? {
-        failedAttempt == currentAttempt ? .notMatched : nil
+        rejectedConfirmedPIN == confirmedPIN ? .notMatched : nil
     }
 
     var actionNotAllowed: Bool {
@@ -64,10 +59,6 @@ final class SetPINCodeViewModel: DeinitPrintable {
         case .confirmation:
             isInvalid(pin: confirmedPIN)
         }
-    }
-
-    private var currentAttempt: Attempt {
-        Attempt(defined: definedPIN, confirmed: confirmedPIN)
     }
 
     deinit { print(deinitMessage) }
@@ -83,7 +74,7 @@ extension SetPINCodeViewModel {
             if confirmedPIN == definedPIN {
                 set(pinCode: definedPIN)
             } else {
-                failedAttempt = currentAttempt
+                rejectedConfirmedPIN = confirmedPIN
             }
         }
     }
