@@ -78,7 +78,7 @@ enum AutoFillMode {
     /// Users want to manually pick an arbitrary field of any item types to autofill
     case arbitraryTextInsertion
 
-    case generatePasswords(PasswordRules?, withUI: Bool = false)
+    case generatePasswords(PasswordRules?, withUI: Bool)
 
     var isArbitraryTextInsertion: Bool {
         if case .arbitraryTextInsertion = self {

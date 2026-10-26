@@ -87,7 +87,7 @@ extension CredentialProviderViewController {
     override func performWithoutUserInteraction(generatePasswordsRequest request: ASGeneratePasswordsRequest) {
         let rules = request.passwordRules
         logger.info("Generate passwords requested without UI, has site rules: \(rules != nil)")
-        coordinator.setUpAndStart(mode: .generatePasswords(rules))
+        coordinator.setUpAndStart(mode: .generatePasswords(rules, withUI: false))
     }
 
     override func prepareInterface(for request: ASGeneratePasswordsRequest) {

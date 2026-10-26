@@ -162,7 +162,7 @@ private extension CredentialProviderCoordinator {
         case .arbitraryTextInsertion:
             handleArbitraryTextInsertion(users: users)
 
-        case let .generatePasswords(rules, withUI: withUI):
+        case let .generatePasswords(rules, withUI):
             if #available(iOS 26.2, *) {
                 await handleGeneratePasswords(rules, withUI)
             }
@@ -285,31 +285,7 @@ private extension CredentialProviderCoordinator {
         }
 
         if withUI {
-            let view = PasswordGeneratorView(mode: .autofill,
-                                             onResult: { [weak self] result in
-                                                 guard let self else { return }
-
-                                                 switch result {
-                                                 case let .success(password):
-                                                     logger.info("Completing generate passwords from UI")
-                                                     var results = [ASGeneratedPassword]()
-                                                     results.append(ASGeneratedPassword(kind: .strong,
-                                                                                        value: password))
-                                                     context
-                                                         .completeGeneratePasswordRequest(results: results) { _ in
-                                                         }
-
-                                                 case let .failure(error):
-                                                     handle(error: error)
-                                                 }
-                                             },
-                                             onClose: { [weak self] in
-                                                 guard let self else { return }
-                                                 logger.info("Generate passwords UI closed by user")
-                                                 cancelAutoFill(reason: .userCanceled, context: context)
-                                             })
-            logger.info("Showing password generator UI")
-            showView(view)
+            handleGeneratePasswordsWithUI(context)
             return
         }
 
@@ -331,6 +307,31 @@ private extension CredentialProviderCoordinator {
             logger.error(error)
             cancelAutoFill(reason: .failed, context: context)
         }
+    }
+
+    func handleGeneratePasswordsWithUI(_ context: ASCredentialProviderExtensionContext) {
+        let handleResult: (Result<String, any Error>) -> Void = { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(password):
+                logger.info("Completing generate passwords from UI")
+                let result = ASGeneratedPassword(kind: .strong, value: password)
+                context.completeGeneratePasswordRequest(results: [result])
+
+            case let .failure(error):
+                handle(error: error)
+            }
+        }
+        let view = PasswordGeneratorView(mode: .autofill,
+                                         onResult: handleResult,
+                                         onClose: { [weak self] in
+                                             guard let self else { return }
+                                             logger.info("Generate passwords UI closed by user")
+                                             cancelAutoFill(reason: .userCanceled,
+                                                            context: context)
+                                         })
+        logger.info("Showing password generator UI")
+        showView(view)
     }
 }
 
