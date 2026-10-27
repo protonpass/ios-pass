@@ -190,6 +190,7 @@ private extension ItemsTabView {
         .frame(width: 60, height: 60)
         .tint(PassColor.interactionNorm)
         .buttonStyle(.glassProminent)
+        .accessibilityLabel(HomepageTab.itemCreation.hint)
         .padding(.bottom)
         .padding(.trailing, 22)
     }

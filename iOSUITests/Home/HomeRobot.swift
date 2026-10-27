@@ -26,7 +26,7 @@ import XCTest
 
 private let emptyViewText = "Your vault is empty"
 private let burgerMenuButtonIdentifier = "Button.BurgerMenu"
-private let profileTab = "Profile tab"
+private let profileTab = "profile"
 
 public final class HomeRobot: CoreElements {
     public let verify = Verify()
