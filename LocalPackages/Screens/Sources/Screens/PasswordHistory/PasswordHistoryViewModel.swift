@@ -29,7 +29,7 @@ import Foundation
 @Observable
 final class PasswordHistoryViewModel {
     private(set) var loading = false
-    private(set) var passwords = [GeneratedPasswordUiModel]()
+    private(set) var passwords = [PasswordHistoryEntryUiModel]()
     private(set) var error: (any Error)?
 
     private let repository = dependency(\RepositoryContainer.passwordHistoryRepository)
@@ -48,7 +48,7 @@ extension PasswordHistoryViewModel {
         }
     }
 
-    func getClearPassword(for password: GeneratedPasswordUiModel) async -> String? {
+    func getClearPassword(for password: PasswordHistoryEntryUiModel) async -> String? {
         if case let .unmasked(clearPassword) = password.visibility {
             return clearPassword
         }
@@ -60,7 +60,7 @@ extension PasswordHistoryViewModel {
         }
     }
 
-    func toggleVisibility(for password: GeneratedPasswordUiModel) {
+    func toggleVisibility(for password: PasswordHistoryEntryUiModel) {
         guard let index = passwords.firstIndex(where: { $0.id == password.id }) else {
             assertionFailure("No password found for id \(password.id)")
             return
@@ -96,7 +96,7 @@ extension PasswordHistoryViewModel {
         }
     }
 
-    func delete(_ password: GeneratedPasswordUiModel) {
+    func delete(_ password: PasswordHistoryEntryUiModel) {
         Task { [weak self] in
             guard let self else { return }
             do {

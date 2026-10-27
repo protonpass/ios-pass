@@ -109,10 +109,10 @@ final class PasswordGeneratorViewModel {
     private let logger: Logger
 
     @ObservationIgnored
-    private let onResult: (Result<String, any Error>) -> Void
+    private let onResult: (Result<GeneratedPassword, any Error>) -> Void
 
     init(mode: PasswordGeneratorMode,
-         onResult: @escaping (Result<String, any Error>) -> Void) {
+         onResult: @escaping (Result<GeneratedPassword, any Error>) -> Void) {
         self.mode = mode
         showingPenalties = mode == .autofill
         logger = .init(manager: logManager)
@@ -190,7 +190,7 @@ final class PasswordGeneratorViewModel {
         Task {
             do {
                 try await passwordHistoryRepository.insertPassword(password)
-                onResult(.success(password))
+                onResult(.success(.init(kind: preferences.generatedPasswordKind, value: password)))
             } catch {
                 onResult(.failure(error))
             }
