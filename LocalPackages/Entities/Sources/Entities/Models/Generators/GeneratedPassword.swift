@@ -1,7 +1,7 @@
 //
 // GeneratedPassword.swift
-// Proton Pass - Created on 09/04/2025.
-// Copyright (c) 2025 Proton Technologies AG
+// Proton Pass - Created on 14/10/2026.
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,39 +20,25 @@
 
 import Foundation
 
-public struct GeneratedPassword: Sendable {
-    public let id: String
-    public let creationTimestamp: Int
+public struct GeneratedPassword: Sendable, Equatable {
+    public enum Kind: Sendable {
+        case strong, alphanumeric, passphrase
+    }
 
-    public init(id: String, creationTimestamp: Int) {
-        self.id = id
-        self.creationTimestamp = creationTimestamp
+    public let kind: Kind
+    public let value: String
+
+    public init(kind: Kind, value: String) {
+        self.kind = kind
+        self.value = value
     }
 }
 
-public struct GeneratedPasswordUiModel: Sendable, Identifiable, Equatable {
-    public let id: String
-    public let relativeCreationDate: String
-    public var visibility: Visibility
-
-    public enum Visibility: Sendable, Equatable {
-        case masked
-        case unmasked(String)
-        /// Should never happen in practice where the value of password is not found for a given password ID
-        case failedToUnmask
-
-        public var isUnmasked: Bool {
-            if case .unmasked = self {
-                true
-            } else {
-                false
-            }
+public extension PasswordPreferences {
+    var generatedPasswordKind: GeneratedPassword.Kind {
+        switch passwordType {
+        case .memorable: .passphrase
+        case .random: hasSpecialCharacters ? .strong : .alphanumeric
         }
-    }
-
-    public init(id: String, relativeCreationDate: String, visibility: Visibility) {
-        self.id = id
-        self.relativeCreationDate = relativeCreationDate
-        self.visibility = visibility
     }
 }

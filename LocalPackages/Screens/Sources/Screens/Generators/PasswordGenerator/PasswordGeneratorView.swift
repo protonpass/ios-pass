@@ -29,17 +29,20 @@ public struct PasswordGeneratorView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: PasswordGeneratorViewModel
     private let onHeightChanged: ((Double) -> Void)?
+    private let onClose: () -> Void
 
     public init(mode: PasswordGeneratorMode,
-                onResult: @escaping (Result<String, any Error>) -> Void,
+                onResult: @escaping (Result<GeneratedPassword, any Error>) -> Void,
+                onClose: @escaping () -> Void = {},
                 onHeightChanged: ((Double) -> Void)? = nil) {
         _viewModel = .init(wrappedValue: .init(mode: mode, onResult: onResult))
         self.onHeightChanged = onHeightChanged
+        self.onClose = onClose
     }
 
     public var body: some View {
         VStack {
-            PasswordGeneratorTopBar(viewModel: viewModel)
+            PasswordGeneratorTopBar(viewModel: viewModel, onClose: onClose)
 
             if viewModel.mode.fullScreen {
                 Text("Customize password", bundle: .module)
@@ -113,8 +116,8 @@ public struct PasswordGeneratorView: View {
 // MARK: - Top bar
 
 private struct PasswordGeneratorTopBar: View {
-    @Environment(\.dismiss) private var dismiss
     let viewModel: PasswordGeneratorViewModel
+    let onClose: () -> Void
 
     var body: some View {
         switch viewModel.mode {
@@ -134,7 +137,7 @@ private struct PasswordGeneratorTopBar: View {
                              iconColor: PassColor.loginInteractionNormMajor2,
                              backgroundColor: PassColor.loginInteractionNormMinor1,
                              accessibilityLabel: "Close",
-                             action: dismiss.callAsFunction)
+                             action: { onClose() })
 
                 Spacer()
 

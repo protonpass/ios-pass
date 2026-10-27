@@ -43,10 +43,16 @@ public final class GetOrganizationSettings: GetOrganizationSettingsUseCase {
     }
 
     public func execute() async throws -> Organization.Settings? {
-        if let access = accessRepository.access.value, access.access.plan.planType == .business,
-           let organization = try await organizationRepository.getOrganization(userId: access.userId) {
-            return organization.settings
+        // `access` is only published once something loads it, which the extensions never do
+        let access = if let access = accessRepository.access.value {
+            access
+        } else {
+            try await accessRepository.getAccess(userId: nil)
         }
-        return nil
+        guard access.access.plan.planType == .business,
+              let organization = try await organizationRepository.getOrganization(userId: access.userId) else {
+            return nil
+        }
+        return organization.settings
     }
 }
