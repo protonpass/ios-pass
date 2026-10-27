@@ -85,6 +85,6 @@ private struct SecureRandomNumberGenerator: RandomNumberGenerator {
 private extension Array {
     /// Callers guarantee non-emptiness; an empty array traps instead of silently shortening the password.
     func uniformElement(using generator: inout some RandomNumberGenerator) -> Element {
-        self[Int.random(in: indices, using: &generator)]
+        self[Int(generator.next(upperBound: UInt64(count)))]
     }
 }
