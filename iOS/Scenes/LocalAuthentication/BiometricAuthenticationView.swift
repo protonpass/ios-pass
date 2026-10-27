@@ -31,19 +31,9 @@ struct BiometricAuthenticationView: View {
 
                 passLogo
 
-                switch viewModel.state {
-                case .noAttempts:
-                    EmptyView()
-
-                case .lastAttempt:
-                    Text("This is your last attempt. You will be logged out after failing to authenticate again.")
+                if let failureMessage = viewModel.failureMessage {
+                    Text(failureMessage)
                         .multilineTextAlignment(.center)
-                        .foregroundStyle(PassColor.textNorm)
-                    retryButton
-                        .padding(.top)
-
-                case let .remainingAttempts(count):
-                    Text("\(count) remaining attempt(s)")
                         .foregroundStyle(PassColor.textNorm)
                     retryButton
                         .padding(.top)
