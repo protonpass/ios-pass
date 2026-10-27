@@ -113,7 +113,7 @@ private extension ItemsForTextInsertionView {
                         .padding(.horizontal)
                 }
 
-                if viewModel.isFreeUser {
+                if viewModel.showMainVaultsOnlyBanner {
                     MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
                         .padding([.horizontal, .top])
                 }
