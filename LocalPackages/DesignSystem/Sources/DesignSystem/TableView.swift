@@ -70,17 +70,20 @@ final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
 public struct TableViewConfiguration {
     let showSectionIndexTitles: Bool
     let rowSpacing: CGFloat
+    let bottomInset: CGFloat
     let sectionIndexColor: UIColor
     let backgroundColor: UIColor
     let separatorColor: UIColor
 
     public init(showSectionIndexTitles: Bool = false,
                 rowSpacing: CGFloat = 0,
+                bottomInset: CGFloat = 0,
                 sectionIndexColor: UIColor = PassUIColor.interactionNorm,
                 backgroundColor: UIColor = .clear,
                 separatorColor: UIColor = .clear) {
         self.showSectionIndexTitles = showSectionIndexTitles
         self.rowSpacing = rowSpacing
+        self.bottomInset = bottomInset
         self.sectionIndexColor = sectionIndexColor
         self.backgroundColor = backgroundColor
         self.separatorColor = separatorColor
@@ -161,6 +164,9 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     }
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
+        if tableView.contentInset.bottom != configuration.bottomInset {
+            tableView.contentInset.bottom = configuration.bottomInset
+        }
         context.coordinator.updateTable(with: sections,
                                         configuration: configuration,
                                         id: id)
