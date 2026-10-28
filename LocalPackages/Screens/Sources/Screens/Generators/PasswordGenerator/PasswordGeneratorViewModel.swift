@@ -83,8 +83,8 @@ final class PasswordGeneratorViewModel {
     @ObservationIgnored
     private var persistTask: Task<Void, Never>?
 
-    /// Never reset: every caller ends the presentation after a result, so a second CTA tap
-    /// (the AutoFill button stays on screen) must not store or deliver the password again.
+    /// A second CTA tap (the AutoFill button stays on screen) must not store or deliver the password
+    /// again. Cleared on failure so the user can retry.
     @ObservationIgnored
     private var hasSubmitted = false
 
@@ -199,6 +199,7 @@ final class PasswordGeneratorViewModel {
                 try await passwordHistoryRepository.insertPassword(password)
                 onResult(.success(.init(kind: preferences.generatedPasswordKind, value: password)))
             } catch {
+                hasSubmitted = false
                 onResult(.failure(error))
             }
         }

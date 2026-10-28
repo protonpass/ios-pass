@@ -41,7 +41,7 @@ struct PasswordGeneratorViewModelTests {
         let sut = makeSut()
 
         sut.handleCta()
-        await recorder.waitForFirstResult()
+        await recorder.waitForResults()
 
         #expect(history.insertedPasswords == [sut.password])
         let result = try #require(recorder.results.first)
@@ -53,7 +53,7 @@ struct PasswordGeneratorViewModelTests {
 
         sut.handleCta()
         sut.handleCta()
-        await recorder.waitForFirstResult()
+        await recorder.waitForResults()
 
         #expect(history.insertedPasswords.count == 1)
         #expect(recorder.results.count == 1)
@@ -64,11 +64,26 @@ struct PasswordGeneratorViewModelTests {
         let sut = makeSut()
 
         sut.handleCta()
-        await recorder.waitForFirstResult()
+        await recorder.waitForResults()
 
         #expect(history.insertedPasswords.isEmpty)
         let result = try #require(recorder.results.first)
         #expect(throws: PassError.self) { try result.get() }
+    }
+
+    @Test func `confirming again after a failed history insert stores and delivers the password`() async throws {
+        history.insertError = PassError.unexpectedError
+        let sut = makeSut()
+        sut.handleCta()
+        await recorder.waitForResults()
+
+        history.insertError = nil
+        sut.handleCta()
+        await recorder.waitForResults(count: 2)
+
+        #expect(history.insertedPasswords == [sut.password])
+        let result = try #require(recorder.results.last)
+        #expect(try result.get().value == sut.password)
     }
 }
 
@@ -84,7 +99,7 @@ private extension PasswordGeneratorViewModelTests {
 }
 
 /// Every job here runs on the main actor in FIFO order, so a second `handleCta` task (if one were
-/// started) has finished by the time `waitForFirstResult()` resumes.
+/// started) has finished by the time `waitForResults()` resumes.
 @MainActor
 private final class ResultRecorder {
     private(set) var results = [Result<String, any Error>]()
@@ -96,9 +111,10 @@ private final class ResultRecorder {
         waiter = nil
     }
 
-    func waitForFirstResult() async {
-        guard results.isEmpty else { return }
-        await withCheckedContinuation { waiter = $0 }
+    func waitForResults(count: Int = 1) async {
+        while results.count < count {
+            await withCheckedContinuation { waiter = $0 }
+        }
     }
 }
 
