@@ -50,6 +50,6 @@ public struct SecureLinkListUIModel: Identifiable, Hashable, Equatable, @uncheck
         let expirationDate = Date(timeIntervalSince1970: Double(secureLink.expirationTime))
         formatter.unitsStyle = .full
 
-        return formatter.localizedString(for: expirationDate, relativeTo: currentDate)
+        return formatter.localizedStringPreferringDays(for: expirationDate, relativeTo: currentDate)
     }
 }

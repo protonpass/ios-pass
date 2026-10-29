@@ -23,9 +23,8 @@ import Entities
 import FactoryKit
 import Foundation
 import Macro
-import Screens
 
-struct SecureLinkDetailUiModel {
+public struct SecureLinkDetailUiModel {
     let secureLinkID: String
     let itemContent: ItemContent
     let url: String
@@ -34,7 +33,7 @@ struct SecureLinkDetailUiModel {
     let maxReadCount: Int?
     let mode: Mode
 
-    enum Mode {
+    public enum Mode {
         case create, edit
     }
 
@@ -47,26 +46,42 @@ struct SecureLinkDetailUiModel {
         formatter.unitsStyle = .full
 
         let currentDate = Date()
-        return formatter.localizedString(for: expirationDate, relativeTo: currentDate)
+        return formatter.localizedStringPreferringDays(for: expirationDate, relativeTo: currentDate)
+    }
+
+    public init(secureLinkID: String,
+                itemContent: ItemContent,
+                url: String,
+                expirationTime: Int?,
+                readCount: Int?,
+                maxReadCount: Int?,
+                mode: Mode) {
+        self.secureLinkID = secureLinkID
+        self.itemContent = itemContent
+        self.url = url
+        self.expirationTime = expirationTime
+        self.readCount = readCount
+        self.maxReadCount = maxReadCount
+        self.mode = mode
     }
 
     var readTitle: String {
         switch mode {
         case .create:
-            #localized("Can be viewed:")
+            #localized("Can be viewed:", bundle: .module)
 
         case .edit:
-            #localized("Opened:")
+            #localized("Opened:", bundle: .module)
         }
     }
 
     var linkActionTitle: String {
         switch mode {
         case .create:
-            #localized("View all your secure links")
+            #localized("View all your secure links", bundle: .module)
 
         case .edit:
-            #localized("Remove link")
+            #localized("Remove link", bundle: .module)
         }
     }
 
@@ -74,9 +89,9 @@ struct SecureLinkDetailUiModel {
         switch mode {
         case .create:
             if let maxReadCount {
-                return #localized("%lld time(s)", maxReadCount)
+                return #localized("%lld time(s)", bundle: .module, maxReadCount)
             }
-            return #localized("Unlimited")
+            return #localized("Unlimited", bundle: .module)
 
         case .edit:
             let readCountString = if let readCount {
@@ -86,9 +101,9 @@ struct SecureLinkDetailUiModel {
             }
 
             let maxReadCountString = if let maxReadCount {
-                #localized("%lld time(s)", maxReadCount)
+                #localized("%lld time(s)", bundle: .module, maxReadCount)
             } else {
-                #localized("Unlimited")
+                #localized("Unlimited", bundle: .module)
             }
 
             return "\(readCountString)/\(maxReadCountString)"
@@ -97,7 +112,7 @@ struct SecureLinkDetailUiModel {
 }
 
 @MainActor
-final class SecureLinkDetailViewModel: ObservableObject {
+public final class SecureLinkDetailViewModel: ObservableObject {
     @Published private(set) var loading = false
     @Published private(set) var finishedDeleting = false
 
@@ -106,7 +121,7 @@ final class SecureLinkDetailViewModel: ObservableObject {
 
     let uiModel: SecureLinkDetailUiModel
 
-    init(uiModel: SecureLinkDetailUiModel) {
+    public init(uiModel: SecureLinkDetailUiModel) {
         self.uiModel = uiModel
     }
 
@@ -134,6 +149,6 @@ final class SecureLinkDetailViewModel: ObservableObject {
 
     func copyLink() {
         router.action(.copyToClipboard(text: uiModel.url,
-                                       message: #localized("Secure link copied")))
+                                       message: #localized("Secure link copied", bundle: .module)))
     }
 }
