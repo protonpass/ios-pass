@@ -167,13 +167,14 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         if tableView.contentInset.bottom != configuration.bottomInset {
             tableView.contentInset.bottom = configuration.bottomInset
         }
+        context.coordinator.parent = self
         context.coordinator.updateTable(with: sections,
                                         configuration: configuration,
                                         id: id)
     }
 
     public final class Coordinator: NSObject, UITableViewDelegate {
-        let parent: TableView
+        var parent: TableView
         // swiftlint:disable:next implicitly_unwrapped_optional
         private var dataSource: PassDiffableDataSource<PassSectionIdentifier, Item>!
         private var configuration: TableViewConfiguration
