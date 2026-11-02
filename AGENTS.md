@@ -93,6 +93,12 @@ Views and view models are moving from the app target into the Screens package.
 - Assertion mapping and tag list: `docs/claude/testing.md`
 </important>
 
+<important if="you are building or changing a feature that touches view models in the Screens package">
+
+- Cover the view-model behaviour you add or change with tests in `ScreensTests`, using the per-test container traits (`ScreensTests/Utils/ContainerTraits.swift`, details in `docs/claude/testing.md`)
+- This is an extra layer, not a replacement: keep writing tests first (TDD) for use cases, repositories and entities in their own packages as before, and test in Screens only what lives in the view model
+</important>
+
 <important if="you are writing or editing code comments or doc comments">
 
 Default to zero comments. A file with no comments is a normal, complete outcome. Comment only when a senior engineer could not recover the information from the code, and only after renaming, extracting a function, or encoding the rule in a type has failed.

@@ -33,10 +33,10 @@ import ProtonCorePaymentsV2
 
 /// Contain tools shared between main iOS app and extensions
 public final class ToolingContainer: SharedContainer, AutoRegistering {
-    public static let shared = ToolingContainer()
+    @TaskLocal public static var shared = ToolingContainer()
     public let manager = ContainerManager()
 
-    private init() {
+    init() {
         Self.setUpContext()
     }
 

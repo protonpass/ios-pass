@@ -26,7 +26,7 @@ import ProtonCoreAuthentication
 import Stores
 
 public final class ServiceContainer: SharedContainer, AutoRegistering {
-    public static let shared = ServiceContainer()
+    @TaskLocal public static var shared = ServiceContainer()
     public let manager = ContainerManager()
 
     public func autoRegister() {

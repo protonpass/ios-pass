@@ -67,6 +67,13 @@
         "identifier" : "CoreTests",
         "name" : "CoreTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:LocalPackages\/Screens",
+        "identifier" : "ScreensTests",
+        "name" : "ScreensTests"
+      }
     }
   ],
   "version" : 1
