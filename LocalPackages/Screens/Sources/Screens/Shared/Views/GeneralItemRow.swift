@@ -20,10 +20,9 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
-import Screens
 import SwiftUI
 
-struct GeneralItemRow<ThumbnailView: View>: View {
+public struct GeneralItemRow<ThumbnailView: View>: View {
     @Environment(\.isEnabled) private var isEnabled
     let thumbnailView: ThumbnailView
     let title: String
@@ -37,17 +36,17 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let showTitleDiscovery: Bool
     let verticalPadding: CGFloat
 
-    init(@ViewBuilder thumbnailView: () -> ThumbnailView,
-         title: String,
-         titleLineLimit: Int = 1,
-         description: String?,
-         descriptionLineLimit: Int = 1,
-         secondaryTitle: String? = nil,
-         secondaryTitleColor: Color? = nil,
-         hasTotp: Bool = false,
-         isShared: Bool = false,
-         showTitleDiscovery: Bool = false,
-         verticalPadding: CGFloat = 6) {
+    public init(@ViewBuilder thumbnailView: () -> ThumbnailView,
+                title: String,
+                titleLineLimit: Int = 1,
+                description: String?,
+                descriptionLineLimit: Int = 1,
+                secondaryTitle: String? = nil,
+                secondaryTitleColor: Color? = nil,
+                hasTotp: Bool = false,
+                isShared: Bool = false,
+                showTitleDiscovery: Bool = false,
+                verticalPadding: CGFloat = 6) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.titleLineLimit = titleLineLimit
@@ -61,7 +60,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.verticalPadding = verticalPadding
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack {
                 Spacer()
@@ -72,7 +71,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    Text(titleTexts)
+                    Text(titleTexts) // ignore:missing_bundle
                         .lineLimit(titleLineLimit)
                         .multilineTextAlignment(.leading)
                         .truncationMode(secondaryTitle == nil ? .tail : .middle)
@@ -99,7 +98,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 }
 
                 if let description, !description.isEmpty {
-                    Text(description)
+                    Text(verbatim: description)
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
@@ -117,12 +116,12 @@ struct GeneralItemRow<ThumbnailView: View>: View {
 
     var titleTexts: [Text] {
         var result = [Text]()
-        let titleText = Text(title)
+        let titleText = Text(verbatim: title)
             .foregroundStyle(isEnabled ? PassColor.textNorm : PassColor.textWeak)
         result.append(titleText)
         if let secondaryTitle {
             result.append(Text(verbatim: " "))
-            let secondaryText = Text(secondaryTitle)
+            let secondaryText = Text(verbatim: secondaryTitle)
                 .foregroundStyle(isEnabled ?
                     (secondaryTitleColor ?? PassColor.textNorm) : PassColor.textWeak)
             result.append(secondaryText)

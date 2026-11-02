@@ -29,6 +29,9 @@ import Stores
 import SwiftUI
 import TipKit
 
+private let kFloatingCreateButtonSize: CGFloat = 60
+private let kFloatingCreateButtonBottomPadding: CGFloat = 16
+
 struct ItemsTabView: View {
     // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: ItemsTabViewModel
@@ -166,8 +169,8 @@ struct ItemsTabView: View {
         }
         .animation(.default, value: viewModel.isEditMode)
         .overlay(alignment: .bottomTrailing) {
-            if #available(iOS 26.0, *), viewModel.canCreateItem, !viewModel.isEditMode {
-                createButton
+            if #available(iOS 26.0, *), showFloatingCreateButton {
+                floatingCreateButton
             }
         }
         .searchScreen(searchMode: $viewModel.searchMode,
@@ -176,8 +179,20 @@ struct ItemsTabView: View {
 }
 
 private extension ItemsTabView {
+    var showFloatingCreateButton: Bool {
+        viewModel.canCreateItem && !viewModel.isEditMode
+    }
+
+    var floatingCreateButtonClearance: CGFloat {
+        if #available(iOS 26.0, *), showFloatingCreateButton {
+            kFloatingCreateButtonSize + kFloatingCreateButtonBottomPadding
+        } else {
+            0
+        }
+    }
+
     @available(iOS 26.0, *)
-    var createButton: some View {
+    var floatingCreateButton: some View {
         Button(action: viewModel.createNewItem) {
             ZStack {
                 IconProvider.plus
@@ -187,11 +202,11 @@ private extension ItemsTabView {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: 60, height: 60)
+        .frame(width: kFloatingCreateButtonSize, height: kFloatingCreateButtonSize)
         .tint(PassColor.interactionNorm)
         .buttonStyle(.glassProminent)
         .accessibilityLabel(HomepageTab.itemCreation.hint)
-        .padding(.bottom)
+        .padding(.bottom, kFloatingCreateButtonBottomPadding)
         .padding(.trailing, 22)
     }
 
@@ -246,6 +261,7 @@ private extension ItemsTabView {
         if useSwiftUIList {
             ScrollViewReader { proxy in
                 ItemListView(safeAreaInsets: safeAreaInsets,
+                             bottomInset: floatingCreateButtonClearance,
                              content: {
                                  ForEach(sections) { section in
                                      Section(content: {
@@ -281,7 +297,8 @@ private extension ItemsTabView {
             TableView(sections: sections,
                       configuration: .init(showSectionIndexTitles: viewModel.selectedSortType
                           .isAlphabetical,
-                          rowSpacing: 8),
+                          rowSpacing: 8,
+                          bottomInset: floatingCreateButtonClearance),
                       // Force reload rows when bulk selecting
                       id: viewModel.currentSelectedItems.value.hashValue,
                       itemView: { itemRow($0) },
@@ -457,15 +474,18 @@ private extension ItemsTabView {
 
 private struct ItemListView<Content: View>: View {
     let safeAreaInsets: EdgeInsets
+    let bottomInset: CGFloat
     let showScrollIndicators: Bool
     let content: () -> Content
     let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
+         bottomInset: CGFloat = 0,
          showScrollIndicators: Bool = true,
          @ViewBuilder content: @escaping () -> Content,
          onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
+        self.bottomInset = bottomInset
         self.showScrollIndicators = showScrollIndicators
         self.content = content
         self.onRefresh = onRefresh
@@ -474,11 +494,9 @@ private struct ItemListView<Content: View>: View {
     var body: some View {
         List {
             content()
-            Spacer()
-                .frame(height: safeAreaInsets.bottom)
-                .plainListRow()
         }
         .listStyle(.plain)
+        .contentMargins(.bottom, safeAreaInsets.bottom + bottomInset, for: .scrollContent)
         .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
     }

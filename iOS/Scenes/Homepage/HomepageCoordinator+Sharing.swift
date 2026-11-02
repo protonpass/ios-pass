@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Foundation
+import Screens
 import SwiftUI
 
 extension HomepageCoordinator {
