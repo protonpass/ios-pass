@@ -19,15 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
 /// Not to be used directly but via `localAuthentication` view modifier
-struct LocalAuthenticationView: View {
+public struct LocalAuthenticationView: View {
     @State private var viewModel: LocalAuthenticationViewModel
     private let logOutButtonMode: LogOutButtonMode
 
-    enum LogOutButtonMode {
+    public enum LogOutButtonMode {
         case topBarTrailing(onClose: () -> Void)
         case topRight
 
@@ -40,13 +41,30 @@ struct LocalAuthenticationView: View {
         }
     }
 
-    init(mode: LocalAuthenticationViewModel.Mode,
-         delayed: Bool = false,
-         manuallyAvoidKeyboard: Bool = false,
-         logOutButtonMode: LogOutButtonMode = .topRight,
-         onAuth: @escaping () -> Void,
-         onSuccess: @escaping () async throws -> Void,
-         onFailure: @escaping (String?) -> Void) {
+    public enum Mode: Sendable {
+        case biometric, pin
+
+        public init?(_ method: LocalAuthenticationMethod) {
+            switch method {
+            case .biometric:
+                self = .biometric
+
+            case .pin:
+                self = .pin
+
+            case .none:
+                return nil
+            }
+        }
+    }
+
+    public init(mode: Mode,
+                delayed: Bool = false,
+                manuallyAvoidKeyboard: Bool = false,
+                logOutButtonMode: LogOutButtonMode = .topRight,
+                onAuth: @escaping () -> Void,
+                onSuccess: @escaping () async throws -> Void,
+                onFailure: @escaping (String?) -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
                                                manuallyAvoidKeyboard: manuallyAvoidKeyboard,
@@ -56,7 +74,19 @@ struct LocalAuthenticationView: View {
         self.logOutButtonMode = logOutButtonMode
     }
 
-    var body: some View {
+    public var body: some View {
+        if logOutButtonMode.isTopBarTrailing {
+            content
+                .toolbar { toolbarContent }
+                .navigationStackEmbeded()
+        } else {
+            content
+        }
+    }
+}
+
+private extension LocalAuthenticationView {
+    var content: some View {
         ZStack(alignment: .topTrailing) {
             PassColor.backgroundNorm
                 .ignoresSafeArea()
@@ -74,42 +104,39 @@ struct LocalAuthenticationView: View {
                     .padding()
             }
         }
-        .if(logOutButtonMode.isTopBarTrailing) { view in
-            view
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        CircleButton(icon: IconProvider.cross,
-                                     iconColor: PassColor.interactionNormMajor2,
-                                     backgroundColor: PassColor.interactionNormMinor1,
-                                     accessibilityLabel: "Cancel",
-                                     action: {
-                                         if case let .topBarTrailing(onClose) = logOutButtonMode {
-                                             onClose()
-                                         }
-                                     })
-                    }
-
-                    ToolbarItem(placement: .topBarTrailing) {
-                        logOutButton
-                    }
-                }
-                .navigationStackEmbeded()
-        }
+        .onAppear(perform: viewModel.logOutIfAttemptsExhausted)
         .onChange(of: viewModel.state) {
             if let message = viewModel.failureMessage {
                 AccessibilityNotification.Announcement(message).post()
             }
         }
     }
-}
 
-private extension LocalAuthenticationView {
+    @ToolbarContentBuilder
+    var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.interactionNormMajor2,
+                         backgroundColor: PassColor.interactionNormMinor1,
+                         accessibilityLabel: "Cancel",
+                         action: {
+                             if case let .topBarTrailing(onClose) = logOutButtonMode {
+                                 onClose()
+                             }
+                         })
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            logOutButton
+        }
+    }
+
     var logOutButton: some View {
         Button { viewModel.logOut() } label: {
             IconProvider.arrowOutFromRectangle
                 .foregroundStyle(PassColor.textNorm)
                 .padding()
         }
-        .accessibilityLabel("Sign out")
+        .accessibilityLabel(Text("Sign out", bundle: .module))
     }
 }

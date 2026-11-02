@@ -22,34 +22,36 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-struct LocalAuthenticationMethodsView: View {
+public struct LocalAuthenticationMethodsView: View {
     private let selectedMethod: LocalAuthenticationMethod
     private let uiModels: [LocalAuthenticationMethodUiModel]
     private let onSelect: (LocalAuthenticationMethodUiModel) -> Void
 
-    init(selectedMethod: LocalAuthenticationMethod,
-         supportedMethods: [LocalAuthenticationMethodUiModel],
-         onSelect: @escaping (LocalAuthenticationMethodUiModel) -> Void) {
+    public init(selectedMethod: LocalAuthenticationMethod,
+                supportedMethods: [LocalAuthenticationMethodUiModel],
+                onSelect: @escaping (LocalAuthenticationMethodUiModel) -> Void) {
         self.selectedMethod = selectedMethod
         uiModels = supportedMethods
         self.onSelect = onSelect
     }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             VStack {
-                ForEach(uiModels, id: \.method) { uiModel in
+                ForEach(uiModels) { uiModel in
                     let isSelected = uiModel.method == selectedMethod
                     SelectableOptionRow(action: { onSelect(uiModel) },
                                         height: .compact,
                                         content: {
-                                            Text(uiModel.title)
+                                            Text(verbatim: uiModel.title)
                                                 .foregroundStyle(isSelected ?
                                                     PassColor.interactionNormMajor2 : PassColor
                                                     .textNorm)
                                         },
                                         isSelected: isSelected)
-                    PassSectionDivider()
+                    if uiModel != uiModels.last {
+                        PassSectionDivider()
+                    }
                 }
 
                 Spacer()
@@ -60,7 +62,7 @@ struct LocalAuthenticationMethodsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Unlock with")
+                    Text("Unlock with", bundle: .module)
                         .navigationTitleText()
                 }
             }

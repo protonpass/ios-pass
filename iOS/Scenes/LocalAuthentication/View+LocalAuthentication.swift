@@ -25,6 +25,7 @@ import DIComposition
 import Entities
 import FactoryKit
 import ProtonCoreKeymaker
+import Screens
 import SwiftUI
 
 extension Notification.Name {
@@ -112,7 +113,7 @@ struct LocalAuthenticationModifier: ViewModifier {
         .accessibilityHidden(isLocked)
         .disabled(isLocked)
         .overlay {
-            if isLocked {
+            if isLocked, let mode = LocalAuthenticationView.Mode(method) {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
@@ -120,7 +121,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                     successMode = .default
                 }
 
-                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                LocalAuthenticationView(mode: mode,
                                         delayed: delayed,
                                         manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                         logOutButtonMode: logOutButtonMode,

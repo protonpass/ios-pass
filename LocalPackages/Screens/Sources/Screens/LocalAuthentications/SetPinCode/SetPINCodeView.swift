@@ -22,19 +22,21 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SetPINCodeView: View {
+public struct SetPINCodeView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
-    @StateObject private var viewModel = SetPINCodeViewModel()
+    @State private var viewModel = SetPINCodeViewModel()
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 12) {
-                Text(viewModel.state.title)
+                Text(verbatim: viewModel.state.title)
                     .font(.largeTitle.bold())
                     .foregroundStyle(PassColor.textNorm)
 
-                Text(viewModel.state.description)
+                Text(verbatim: viewModel.state.description)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)
 
@@ -47,8 +49,8 @@ struct SetPINCodeView: View {
                     .padding(.top, 50)
                     .focused($isFocused)
 
-                if let error = viewModel.error {
-                    Text(error.description)
+                if viewModel.pinsNotMatched {
+                    Text("PINs not matched", bundle: .module)
                         .foregroundStyle(PassColor.signalDanger)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -57,7 +59,7 @@ struct SetPINCodeView: View {
             }
             .padding()
             .background(PassColor.backgroundNorm)
-            .animation(.default, value: viewModel.error)
+            .animation(.default, value: viewModel.pinsNotMatched)
             .toolbar { toolbarContent }
             .onAppear {
                 isFocused = true

@@ -37,13 +37,13 @@ struct PinAuthenticationView: View {
                 .scaledToFit()
                 .frame(maxWidth: 160)
 
-            Text("Enter your PIN code")
+            Text("Enter your PIN code", bundle: .module)
                 .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
 
             Spacer()
 
-            SecureField("PIN code", text: $pinCode)
+            SecureField(#localized("PIN code", bundle: .module), text: $pinCode)
                 .labelsHidden()
                 .foregroundStyle(PassColor.textNorm)
                 .font(.title.bold())
@@ -54,19 +54,20 @@ struct PinAuthenticationView: View {
             Spacer()
 
             if let failureMessage = viewModel.failureMessage {
-                Text(failureMessage)
+                Text(verbatim: failureMessage)
                     .foregroundStyle(PassColor.signalDanger)
                     .multilineTextAlignment(.center)
             }
 
             Spacer()
 
-            DisablableCapsuleTextButton(title: #localized("Unlock"),
+            DisablableCapsuleTextButton(title: #localized("Unlock", bundle: .module),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textInvert,
                                         backgroundColor: PassColor.interactionNormMajor1,
                                         disableBackgroundColor: PassColor.interactionNormMajor1.opacity(0.3),
-                                        disabled: pinCode.count < Constants.PINCode.minLength,
+                                        disabled: pinCode.count < Constants.PINCode.minLength
+                                            || viewModel.isCheckingPinCode,
                                         height: 60,
                                         action: {
                                             viewModel.checkPinCode(pinCode)
@@ -83,14 +84,10 @@ struct PinAuthenticationView: View {
         .accentColor(PassColor.interactionNorm)
         .tint(PassColor.interactionNorm)
         .animation(.default, value: viewModel.state)
-        .onAppear {
-            let notifyAuthProcessAndFocus: () -> Void = {
-                viewModel.onAuth()
-                isFocused = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
-                notifyAuthProcessAndFocus()
-            }
+        .task {
+            guard await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
+            viewModel.onAuth()
+            isFocused = true
         }
     }
 }

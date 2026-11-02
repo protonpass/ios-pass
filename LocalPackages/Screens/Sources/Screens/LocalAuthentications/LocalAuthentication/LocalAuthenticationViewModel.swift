@@ -24,67 +24,70 @@ import DIComposition
 import Entities
 import FactoryKit
 import Foundation
+import LocalAuthentication
 import Macro
-
-enum LocalAuthenticationState: Equatable {
-    case noAttempts
-    case remainingAttempts(Int)
-    case lastAttempt
-}
 
 @Observable
 @MainActor
 final class LocalAuthenticationViewModel: DeinitPrintable {
-    deinit { print(deinitMessage) }
+    private(set) var state: LocalAuthenticationState = .noAttempts
+
+    /// Error code of the last biometric attempt that ended without a verdict, so no attempt was consumed.
+    private(set) var noVerdictErrorCode: LAError.Code?
+
+    // Automatic keyboard avoidance is broken in the app cover, so the view pads for the keyboard itself
+    let manuallyAvoidKeyboard: Bool
+    let mode: LocalAuthenticationView.Mode
+    let onAuth: () -> Void
 
     private let delayed: Bool
-    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
-    private let logger = dependency(\ToolingContainer.logger)
     private let onSuccess: () async throws -> Void
     private let onFailure: (String?) -> Void
-    private var cancellables = Set<AnyCancellable>()
+
     private let authenticate = dependency(\UseCasesContainer.authenticateBiometrically)
     private let getSharedPreferences = dependency(\UseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
-    let mode: Mode
+    private let preferencesManager = dependency(\ToolingContainer.preferencesManager)
+    private let logger = dependency(\ToolingContainer.logger)
 
-    // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier
-    // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
-    // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
-    let manuallyAvoidKeyboard: Bool
-    let onAuth: () -> Void
+    private let maxAttemptCount = 3
 
-    private(set) var state: LocalAuthenticationState = .noAttempts
+    @ObservationIgnored
+    private var cancellables = Set<AnyCancellable>()
+    @ObservationIgnored
+    private var biometricCheckTask: Task<Void, Never>?
+    @ObservationIgnored
+    private var becameActiveDuringPrompt = false
+    private var pinCheckTask: Task<Void, Never>?
 
-    var delayedTime: DispatchTimeInterval {
+    var isCheckingPinCode: Bool {
+        pinCheckTask != nil
+    }
+
+    var delayedTime: ContinuousClock.Instant.Duration {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
     var failureMessage: String? {
         switch state {
-        case .noAttempts:
+        case .exhausted, .noAttempts:
             return nil
 
         case let .remainingAttempts(count):
-            let remaining = #localized("%lld remaining attempt(s)", count)
-            return mode == .pin ? #localized("Incorrect PIN code.") + " " + remaining : remaining
+            let remaining = #localized("%lld remaining attempt(s)", bundle: .module, count)
+            return mode == .pin ? #localized("Incorrect PIN code.", bundle: .module) + " " + remaining : remaining
 
         case .lastAttempt:
-            return #localized("This is your last attempt. You will be logged out after failing to authenticate again.")
+            return #localized("This is your last attempt. You will be logged out after failing to authenticate again.",
+                              bundle: .module)
         }
     }
-
-    enum Mode: String {
-        case biometric, pin
-    }
-
-    private let maxAttemptCount = 3
 
     private var failedAttemptCount: Int {
         preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
     }
 
-    init(mode: Mode,
+    init(mode: LocalAuthenticationView.Mode,
          delayed: Bool,
          manuallyAvoidKeyboard: Bool,
          onAuth: @escaping () -> Void,
@@ -96,7 +99,8 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
-        updateStateBasedOnFailedAttemptCount()
+
+        state = .init(failedAttemptCount: failedAttemptCount, maxAttemptCount: maxAttemptCount)
 
         preferencesManager
             .sharedPreferencesUpdates
@@ -109,21 +113,38 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
             .store(in: &cancellables)
     }
 
+    deinit { print(deinitMessage) }
+
     func biometricallyAuthenticate() {
-        Task { [weak self] in
+        guard biometricCheckTask == nil else { return }
+        biometricCheckTask = Task { [weak self] in
             guard let self else { return }
+            defer {
+                let retry = becameActiveDuringPrompt && noVerdictErrorCode == .notInteractive
+                becameActiveDuringPrompt = false
+                biometricCheckTask = nil
+                if retry {
+                    biometricallyAuthenticate()
+                }
+            }
+            noVerdictErrorCode = nil
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
-                                                           reason: #localized("Please authenticate"))
+                                                           reason: #localized("Please authenticate",
+                                                                              bundle: .module))
                 if authenticated {
-                    try await recordSuccess()
+                    await recordSuccess()
                 } else {
                     await recordFailure(nil)
                 }
             } catch PassError.biometricChange {
                 // swiftlint:disable:next line_length
-                onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
+                onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
+                                     bundle: .module))
+            } catch let error as LAError where error.reachedNoVerdict {
+                noVerdictErrorCode = error.code
+                logger.warning("\(mode) prompt dismissed without a verdict. \(error)")
             } catch {
                 await recordFailure(error)
             }
@@ -131,8 +152,12 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        Task { [weak self] in
+        guard pinCheckTask == nil else { return }
+        pinCheckTask = Task { [weak self] in
             guard let self else { return }
+            defer {
+                pinCheckTask = nil
+            }
             guard let currentPIN = getSharedPreferences().pinCode else {
                 // No PIN code is set before, can't do anything but logging out
                 let message = "Can not check PIN code. No PIN code set."
@@ -142,14 +167,21 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 return
             }
             if currentPIN == enteredPinCode {
-                do {
-                    try await recordSuccess()
-                } catch {
-                    await recordFailure(error)
-                }
+                await recordSuccess()
             } else {
                 await recordFailure(nil)
             }
+        }
+    }
+
+    func handleAppDidBecomeActive() {
+        guard case .noAttempts = state else { return }
+        guard biometricCheckTask == nil else {
+            becameActiveDuringPrompt = true
+            return
+        }
+        if noVerdictErrorCode != nil {
+            biometricallyAuthenticate()
         }
     }
 
@@ -157,32 +189,25 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         logger.debug("Manual log out")
         onFailure(nil)
     }
+
+    func logOutIfAttemptsExhausted() {
+        if case .exhausted = state {
+            onFailure(nil)
+        }
+    }
 }
 
 private extension LocalAuthenticationViewModel {
     func updateStateBasedOnFailedAttemptCount() {
-        switch failedAttemptCount {
-        case 0:
-            state = .noAttempts
-
-        case maxAttemptCount - 1:
-            state = .lastAttempt
-
-        default:
-            let remainingAttempts = maxAttemptCount - failedAttemptCount
-            if remainingAttempts >= 1 {
-                state = .remainingAttempts(remainingAttempts)
-            } else {
-                onFailure(nil)
-            }
-        }
+        state = .init(failedAttemptCount: failedAttemptCount, maxAttemptCount: maxAttemptCount)
+        logOutIfAttemptsExhausted()
     }
 
     func recordFailure(_ error: (any Error)?) async {
         do {
             try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-            let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+            let logMessage = "\(mode) authentication failed. Increased failed attempt count."
             if let error {
                 logger.error(logMessage + " Reason \(error)")
             } else {
@@ -194,8 +219,13 @@ private extension LocalAuthenticationViewModel {
         }
     }
 
-    func recordSuccess() async throws {
-        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
-        try await onSuccess()
+    func recordSuccess() async {
+        do {
+            try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+            try await onSuccess()
+        } catch {
+            logger.error("\(mode) authentication succeeded but could not be completed. \(error)")
+            onFailure(error.localizedDescription)
+        }
     }
 }

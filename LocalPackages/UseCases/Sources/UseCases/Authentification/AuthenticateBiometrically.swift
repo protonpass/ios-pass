@@ -22,14 +22,9 @@ import Core
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
+// sourcery: AutoMockable
 public protocol AuthenticateBiometricallyUseCase: Sendable {
-    func execute(policy: LAPolicy, reason: String) async throws -> Bool
-}
-
-public extension AuthenticateBiometricallyUseCase {
-    func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
-        try await execute(policy: policy, reason: reason)
-    }
+    func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool
 }
 
 /**
@@ -39,29 +34,25 @@ public extension AuthenticateBiometricallyUseCase {
  multiple times on a same `LAContext` always succeed without repeating authentication
  (maybe the result is cached but found no info in the docs)
  */
-public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
+public struct AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
 
     public init(keychainService: any KeychainProtocol) {
         self.keychainService = keychainService
     }
 
-    public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
+    public func callAsFunction(policy: LAPolicy, reason: String) async throws -> Bool {
         let context = LAContext()
-        do {
-            // swiftlint:disable:next todo
-            // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
-            // Think about other way to make biometric change detection future proof
-            /*
-             if try checkIfUserBiometricsSettingsChanged(context: context) {
-                 throw PassError.biometricChange
-             }
-             */
+        // swiftlint:disable:next todo
+        // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
+        // Think about other way to make biometric change detection future proof
+        /*
+         if try checkIfUserBiometricsSettingsChanged(context: context) {
+             throw PassError.biometricChange
+         }
+         */
 
-            return try await context.evaluatePolicy(policy, localizedReason: reason)
-        } catch {
-            throw error
-        }
+        return try await context.evaluatePolicy(policy, localizedReason: reason)
     }
 
     // periphery:ignore

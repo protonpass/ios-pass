@@ -18,59 +18,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Core
 import DIComposition
 import Entities
 import FactoryKit
 import Foundation
 import Macro
-import Screens
 
+@Observable
 @MainActor
-final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+final class SetPINCodeViewModel: DeinitPrintable {
+    private(set) var state: State = .definition
+    var definedPIN = ""
+    var confirmedPIN = ""
+
+    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
+    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
+    private(set) var isSaving = false
+    private var rejectedConfirmedPIN: String?
 
     enum State {
         case definition, confirmation
     }
 
-    enum ValidationError: Error {
-        case notMatched
+    var pinsNotMatched: Bool {
+        rejectedConfirmedPIN == confirmedPIN
     }
 
-    @Published private(set) var state: SetPINCodeViewModel.State = .definition
-    @Published private(set) var error: ValidationError?
-    @Published var definedPIN = ""
-    @Published var confirmedPIN = ""
-
-    private let router = dependency(\RouterContainer.mainUIKitSwiftUIRouter)
-    private let updateSharedPreferences = dependency(\UseCasesContainer.updateSharedPreferences)
-    private var cancellables = Set<AnyCancellable>()
-
     var actionNotAllowed: Bool {
-        // Always disallow when error occurs
-        guard error == nil else { return true }
-        switch state {
+        guard !pinsNotMatched, !isSaving else { return true }
+        return switch state {
         case .definition:
-            return isInvalid(pin: definedPIN)
+            isInvalid(pin: definedPIN)
 
         case .confirmation:
-            return isInvalid(pin: confirmedPIN)
+            isInvalid(pin: confirmedPIN)
         }
     }
 
-    init() {
-        // Remove error as soon as users edit something
-        Publishers
-            .CombineLatest($definedPIN, $confirmedPIN)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                error = nil
-            }
-            .store(in: &cancellables)
-    }
+    deinit { print(deinitMessage) }
 }
 
 extension SetPINCodeViewModel {
@@ -83,7 +69,7 @@ extension SetPINCodeViewModel {
             if confirmedPIN == definedPIN {
                 set(pinCode: definedPIN)
             } else {
-                error = .notMatched
+                rejectedConfirmedPIN = confirmedPIN
             }
         }
     }
@@ -97,12 +83,18 @@ private extension SetPINCodeViewModel {
     }
 
     func set(pinCode: String) {
+        // Store the PIN before switching the method, so a failed second write can't leave
+        // PIN auth enabled with no PIN stored.
+        guard !isSaving else { return }
+        isSaving = true
         Task { [weak self] in
             guard let self else { return }
+            defer { isSaving = false }
+
             do {
-                try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
                 try await updateSharedPreferences(\.pinCode, value: pinCode)
-                router.display(element: .successMessage(#localized("PIN code set"),
+                try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
+                router.display(element: .successMessage(#localized("PIN code set", bundle: .module),
                                                         config: .init(dismissBeforeShowing: true)))
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -115,49 +107,40 @@ extension SetPINCodeViewModel.State {
     var title: String {
         switch self {
         case .definition:
-            #localized("Set PIN code")
+            #localized("Set PIN code", bundle: .module)
 
         case .confirmation:
-            #localized("Repeat PIN code")
+            #localized("Repeat PIN code", bundle: .module)
         }
     }
 
     var description: String {
         switch self {
         case .definition:
-            #localized("Unlock the app with this code")
+            #localized("Unlock the app with this code", bundle: .module)
 
         case .confirmation:
-            #localized("Type your PIN again to confirm")
+            #localized("Type your PIN again to confirm", bundle: .module)
         }
     }
 
     var placeholder: String {
         switch self {
         case .definition:
-            #localized("Enter PIN code")
+            #localized("Enter PIN code", bundle: .module)
 
         case .confirmation:
-            #localized("Repeat PIN code")
+            #localized("Repeat PIN code", bundle: .module)
         }
     }
 
     var actionTitle: String {
         switch self {
         case .definition:
-            #localized("Continue")
+            #localized("Continue", bundle: .module)
 
         case .confirmation:
-            #localized("Set PIN code")
-        }
-    }
-}
-
-extension SetPINCodeViewModel.ValidationError {
-    var description: String {
-        switch self {
-        case .notMatched:
-            #localized("PINs not matched")
+            #localized("Set PIN code", bundle: .module)
         }
     }
 }
