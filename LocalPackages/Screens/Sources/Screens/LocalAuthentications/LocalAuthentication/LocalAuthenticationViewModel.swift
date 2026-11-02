@@ -99,8 +99,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure
-        // SwiftUI builds and discards a view model on every parent re-render, so init must not call
-        // `onFailure`: see `logOutIfAttemptsExhausted`.
+
         state = .init(failedAttemptCount: failedAttemptCount, maxAttemptCount: maxAttemptCount)
 
         preferencesManager
