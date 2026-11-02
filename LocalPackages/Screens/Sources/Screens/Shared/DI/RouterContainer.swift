@@ -41,8 +41,8 @@ public extension RouterContainer {
 
 // MARK: - Deeplink
 
+@MainActor
 public extension RouterContainer {
-    @MainActor
     var deepLinkRoutingService: Factory<any DeepLinkRouterProtocol> {
         self { DeepLinkRouter(router: self.mainUIKitSwiftUIRouter(),
                               getItemContentFromBase64IDs: UseCasesContainer.shared

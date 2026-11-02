@@ -205,8 +205,8 @@ private extension LocalAuthenticationModifier {
     }
 }
 
+@MainActor
 extension View {
-    @MainActor
     func localAuthentication(delayed: Bool = false,
                              manuallyAvoidKeyboard: Bool = false,
                              logOutButtonMode: LocalAuthenticationView.LogOutButtonMode = .topRight,

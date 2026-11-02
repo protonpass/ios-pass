@@ -24,8 +24,8 @@ import Macro
 import Screens
 import SwiftUI
 
+@MainActor
 extension PasswordStrength? {
-    @MainActor
     var sectionTitle: String {
         if let self {
             #localized("Password") + " • " + self.title
@@ -34,7 +34,6 @@ extension PasswordStrength? {
         }
     }
 
-    @MainActor
     var sectionTitleColor: Color {
         // swiftlint:disable:next discouraged_optional_self
         self?.color ?? PassColor.textWeak

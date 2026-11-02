@@ -57,12 +57,9 @@ extension SymmetricallyEncryptedShareKey: SymmetricallyEncryptedKeyProtocol {
 
 public extension [SymmetricallyEncryptedShareKey] {
     func latestKey() throws -> SymmetricallyEncryptedShareKey {
-        guard !isEmpty else {
-            throw PassError.crypto(.missingKeys)
-        }
-
-        guard let latestKey =
-            sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
+        guard !isEmpty,
+              let latestKey =
+              sorted(by: { $0.shareKey.keyRotation < $1.shareKey.keyRotation }).last else {
             throw PassError.crypto(.missingKeys)
         }
         return latestKey

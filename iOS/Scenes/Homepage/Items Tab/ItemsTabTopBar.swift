@@ -307,8 +307,8 @@ private struct VautlSelectionUiModel {
     let backgroundColor: Color
 }
 
+@MainActor
 private extension ShareSelection {
-    @MainActor
     var uiModel: VautlSelectionUiModel {
         switch self {
         case .all:

@@ -199,12 +199,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if emailUsernameExpanded {
                 finalEmail = email
                 finalUsername = username
+            } else if validateEmail(email: emailOrUsername) {
+                finalEmail = emailOrUsername
             } else {
-                if validateEmail(email: emailOrUsername) {
-                    finalEmail = emailOrUsername
-                } else {
-                    finalUsername = emailOrUsername
-                }
+                finalUsername = emailOrUsername
             }
 
             let logInData = ItemContentData.login(.init(email: finalEmail,

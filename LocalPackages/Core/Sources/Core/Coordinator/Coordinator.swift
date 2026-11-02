@@ -136,16 +136,12 @@ public extension CoordinatorProtocol {
                                         constant: -16)
                     ])
                 }
-            } else {
-                if let floatingView = tabBarController.view.viewWithTag(viewTag.rawValue) {
-                    // Remove the floating view if present
-                    floatingView.removeFromSuperview()
-                }
-            }
-        } else {
-            if let floatingView = rootViewController.view.window?.viewWithTag(viewTag.rawValue) {
+            } else if let floatingView = tabBarController.view.viewWithTag(viewTag.rawValue) {
+                // Remove the floating view if present
                 floatingView.removeFromSuperview()
             }
+        } else if let floatingView = rootViewController.view.window?.viewWithTag(viewTag.rawValue) {
+            floatingView.removeFromSuperview()
         }
     }
 

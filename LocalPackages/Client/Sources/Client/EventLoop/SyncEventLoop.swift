@@ -129,8 +129,7 @@ public extension SyncEventLoop {
     /// Start looping
     func start() {
         queue.sync { [weak self] in
-            guard let self else { return }
-            guard timerTask == nil else {
+            guard let self, timerTask == nil else {
                 return
             }
 

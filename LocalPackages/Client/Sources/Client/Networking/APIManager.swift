@@ -134,7 +134,7 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         let credentials = authManager.getCredential(userId: userId)
         if let credentials,
            let service = allCurrentApiServices
-           .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
+               .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
             return service.apiService
         }
 

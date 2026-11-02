@@ -69,8 +69,8 @@ final class CompletePasskeyRegistration: CompletePasskeyRegistrationUseCase {
     }
 }
 
+@available(iOS 18.0, *)
 private extension CreatePasskeyResponse {
-    @available(iOS 18.0, *)
     var prfOutput: ASAuthorizationPublicKeyCredentialPRFRegistrationOutput? {
         guard let prf, prf.supported else {
             return nil

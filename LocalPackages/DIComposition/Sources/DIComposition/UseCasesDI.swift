@@ -762,13 +762,12 @@ public extension UseCasesContainer {
 
 // MARK: Vault
 
+@MainActor
 public extension UseCasesContainer {
-    @MainActor
     var getMainVault: Factory<any GetMainVaultUseCase> {
         self { GetMainVault(appContentManager: self.appContentManager) }
     }
 
-    @MainActor
     var fullContentSync: Factory<any FullContentSyncUseCase> {
         self { FullContentSync(syncEventLoop: ServiceContainer.shared.syncEventLoop(),
                                fullSyncManager: self.fullSyncManager) }

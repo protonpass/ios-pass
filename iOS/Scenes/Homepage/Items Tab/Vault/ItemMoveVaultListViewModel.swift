@@ -72,7 +72,7 @@ final class ItemMoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
         if let fromShareId,
            let shareContent = appContentManager
-           .getShareContent(for: fromShareId) {
+               .getShareContent(for: fromShareId) {
             selectedContainer = ShareSelectionPayload(share: shareContent.share, folder: nil)
         }
 
