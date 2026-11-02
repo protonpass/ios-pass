@@ -140,7 +140,7 @@ private extension PasswordHistoryView {
 }
 
 private extension PasswordHistoryView {
-    func handleAction(password: GeneratedPasswordUiModel, action: GeneratedPasswordRowAction) {
+    func handleAction(password: PasswordHistoryEntryUiModel, action: PasswordHistoryRowAction) {
         switch action {
         case .copy:
             handleCopy(for: password)
@@ -156,7 +156,7 @@ private extension PasswordHistoryView {
         }
     }
 
-    func handleLoginCreation(for password: GeneratedPasswordUiModel) {
+    func handleLoginCreation(for password: PasswordHistoryEntryUiModel) {
         Task {
             if let clearPassword = await viewModel.getClearPassword(for: password) {
                 action(.create(clearPassword))
@@ -164,7 +164,7 @@ private extension PasswordHistoryView {
         }
     }
 
-    func handleCopy(for password: GeneratedPasswordUiModel) {
+    func handleCopy(for password: PasswordHistoryEntryUiModel) {
         Task {
             if let clearPassword = await viewModel.getClearPassword(for: password) {
                 action(.copy(clearPassword))
@@ -173,7 +173,7 @@ private extension PasswordHistoryView {
     }
 }
 
-private enum GeneratedPasswordRowAction {
+private enum PasswordHistoryRowAction {
     case copy
     case toggleVisibility
     case createLogin
@@ -181,8 +181,8 @@ private enum GeneratedPasswordRowAction {
 }
 
 private struct GeneratedPasswordRow: View {
-    let password: GeneratedPasswordUiModel
-    let action: (GeneratedPasswordRowAction) -> Void
+    let password: PasswordHistoryEntryUiModel
+    let action: (PasswordHistoryRowAction) -> Void
 
     var body: some View {
         HStack {

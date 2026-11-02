@@ -209,8 +209,8 @@ private extension HomepageCoordinator {
                 return
             }
             Task { [weak self] in
-                guard let self else { return }
-                guard await authenticated,
+                guard let self,
+                      await authenticated,
                       let destination = await router.getDeeplink() else { return }
                 // Resolve before handling because handling can outlive the next timer tick
                 await router.resolveDeeplink()
@@ -402,8 +402,8 @@ private extension HomepageCoordinator {
         defer { checkingFolderForceSync = false }
 
         do {
-            guard try await shouldForceSyncForFolders(userId: userId) else { return }
-            guard !fullSyncManager.isFullSyncing(userId: userId) else { return }
+            guard try await shouldForceSyncForFolders(userId: userId),
+                  !fullSyncManager.isFullSyncing(userId: userId) else { return }
             await runFullSync(userId: userId,
                               shouldStopEventLoop: true,
                               reason: "folders migration")
@@ -1172,7 +1172,7 @@ extension HomepageCoordinator {
                                          onResult: { [weak self] result in
                                              guard let self else { return }
                                              switch result {
-                                             case let .success(password): copyPassword(password)
+                                             case let .success(password): copyPassword(password.value)
 
                                              case let .failure(error): handle(error: error)
                                              }

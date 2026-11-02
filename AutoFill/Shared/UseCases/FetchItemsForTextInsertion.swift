@@ -99,7 +99,7 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
         }
 
         return .init(userId: userId,
-                     vaults: applicableVaults,
+                     vaults: vaults,
                      history: historyItems,
                      searchableItems: searchableItems,
                      items: items)

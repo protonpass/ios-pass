@@ -253,7 +253,7 @@ private extension CredentialsViewModel {
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
            let notMatchedItem = notMatchedItems
-           .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
+               .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
             notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
                                                                       url: schemeAndHost)
             return

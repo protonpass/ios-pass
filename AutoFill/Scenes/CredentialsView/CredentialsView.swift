@@ -116,7 +116,7 @@ private extension CredentialsView {
                         .padding(.horizontal)
                 }
 
-                if viewModel.isFreeUser {
+                if viewModel.showMainVaultsOnlyBanner {
                     MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
                         .padding([.horizontal, .top])
                 }

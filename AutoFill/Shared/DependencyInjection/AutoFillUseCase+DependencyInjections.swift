@@ -219,4 +219,18 @@ extension AutoFillUseCaseContainer {
             CanSkipLocalAuthentication(currentDateProvider: ToolingContainer.shared.currentDateProvider())
         }
     }
+
+    var generateAutofillPasswords: Factory<any GenerateAutofillPasswordsUseCase> {
+        self { GenerateAutofillPasswords(generatePassword: UseCasesContainer.shared.generatePassword(),
+                                         generateRandomWords: UseCasesContainer.shared.generateRandomWords(),
+                                         generatePassphrase: UseCasesContainer.shared.generatePassphrase(),
+                                         generateRuleCompliantPassword: GenerateRuleCompliantPassword(),
+                                         resolvePasswordPolicy: UseCasesContainer.shared.resolvePasswordPolicy(),
+                                         getOrganizationSettings: UseCasesContainer.shared
+                                             .getOrganizationSettings(),
+                                         localDataSource: RepositoryContainer.shared
+                                             .localPasswordPreferencesDatasource(),
+                                         logManager: self.logManager)
+        }
+    }
 }

@@ -79,8 +79,12 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         }
     }
 
-    var isFreeUser: Bool {
-        selectedUser?.plan.isFreeUser == true
+    var showMainVaultsOnlyBanner: Bool {
+        guard let selectedUser, selectedUser.plan.isFreeUser,
+              let result = results.first(where: { $0.userId == selectedUser.id }) else {
+            return false
+        }
+        return result.vaults.representingVaults.count > 2
     }
 
     var searchBarPlaceholder: String {

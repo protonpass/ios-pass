@@ -21,15 +21,18 @@
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 import SwiftUI
 
-struct SecureLinkDetailView: View {
+public struct SecureLinkDetailView: View {
     // swiftlint:disable:next private_swiftui_state
     @StateObject var viewModel: SecureLinkDetailViewModel
     @Environment(\.dismiss) private var dismiss
 
-    var body: some View {
+    public init(viewModel: SecureLinkDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
+    public var body: some View {
         let uiModel = viewModel.uiModel
         VStack(spacing: DesignConstant.sectionPadding) {
             HStack {
@@ -50,7 +53,7 @@ struct SecureLinkDetailView: View {
             .padding(.top, 45)
 
             HStack {
-                infoCell(title: #localized("Expires in:"),
+                infoCell(title: #localized("Expires in:", bundle: .module),
                          description: uiModel.relativeTimeRemaining ?? "",
                          icon: IconProvider.clock)
 
@@ -71,14 +74,14 @@ struct SecureLinkDetailView: View {
                 .background(PassColor.interactionNormMinor1)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            CapsuleTextButton(title: #localized("Copy link"),
+            CapsuleTextButton(title: #localized("Copy link", bundle: .module),
                               titleColor: PassColor.interactionNormMinor1,
                               backgroundColor: PassColor.interactionNormMajor2,
                               height: 48,
                               action: { viewModel.copyLink() })
 
             ShareLink(item: uiModel.url) {
-                CapsuleTextButton(title: #localized("Share link"),
+                CapsuleTextButton(title: #localized("Share link", bundle: .module),
                                   titleColor: PassColor.interactionNormMajor2,
                                   backgroundColor: PassColor.interactionNormMinor1,
                                   height: 48)
@@ -92,7 +95,7 @@ struct SecureLinkDetailView: View {
                     viewModel.deleteLink(link: uiModel)
                 }
             } label: {
-                Text(uiModel.linkActionTitle)
+                Text(verbatim: uiModel.linkActionTitle)
                     .foregroundStyle(uiModel.mode == .create ? PassColor.interactionNormMajor2 : PassColor
                         .passwordInteractionNormMajor2)
             }.frame(height: 48)
@@ -121,10 +124,10 @@ private extension SecureLinkDetailView {
                 Spacer()
             }
             VStack(alignment: .leading) {
-                Text(title)
+                Text(verbatim: title)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak)
-                Text(description)
+                Text(verbatim: description)
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm)
             }

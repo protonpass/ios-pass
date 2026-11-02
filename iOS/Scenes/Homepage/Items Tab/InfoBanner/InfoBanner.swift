@@ -42,8 +42,8 @@ enum InfoBanner: Equatable, Hashable {
     }
 }
 
+@MainActor
 private extension InfoBannerDetail {
-    @MainActor
     static var `default`: InfoBannerDetail {
         .init(title: "",
               description: "",
@@ -54,8 +54,8 @@ private extension InfoBannerDetail {
     }
 }
 
+@MainActor
 private extension Invite {
-    @MainActor
     var infoBannerDetail: InfoBannerDetail {
         switch self {
         case let .user(invite):

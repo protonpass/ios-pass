@@ -199,12 +199,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if emailUsernameExpanded {
                 finalEmail = email
                 finalUsername = username
+            } else if validateEmail(email: emailOrUsername) {
+                finalEmail = emailOrUsername
             } else {
-                if validateEmail(email: emailOrUsername) {
-                    finalEmail = emailOrUsername
-                } else {
-                    finalUsername = emailOrUsername
-                }
+                finalUsername = emailOrUsername
             }
 
             let logInData = ItemContentData.login(.init(email: finalEmail,
@@ -386,10 +384,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
 
-    func handlePasswordResult(_ result: Result<String, any Error>) {
+    func handlePasswordResult(_ result: Result<GeneratedPassword, any Error>) {
         switch result {
-        case let .success(password):
-            self.password = password
+        case let .success(generated):
+            password = generated.value
 
         case let .failure(error):
             handle(error)

@@ -57,7 +57,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         do {
             guard let vaultData = invite.vaultData,
                   let intermediateVaultKey = invite.keys
-                  .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
+                      .first(where: { $0.keyRotation == vaultData.contentKeyRotation }) else {
                 throw PassError.sharing(.invalidKey)
             }
 

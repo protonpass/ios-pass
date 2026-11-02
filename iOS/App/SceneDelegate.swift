@@ -40,8 +40,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             UIComponentsContainer.shared.window.register { window }
         }
         Task { [weak self] in
-            guard let self else { return }
-            guard await appCoordinator.setUpAndStart() else {
+            guard let self, await appCoordinator.setUpAndStart() else {
                 return
             }
 

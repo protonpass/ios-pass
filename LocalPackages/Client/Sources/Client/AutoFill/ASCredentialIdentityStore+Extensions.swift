@@ -68,8 +68,8 @@ private extension PasswordCredentialIdentity {
     }
 }
 
+@available(iOS 18.0, *)
 private extension OneTimeCodeIdentity {
-    @available(iOS 18.0, *)
     func toASOneTimeCodeCredentialIdentity() throws -> ASOneTimeCodeCredentialIdentity {
         let identifier = ASCredentialServiceIdentifier(identifier: url, type: .URL)
         let identity = try ASOneTimeCodeCredentialIdentity(serviceIdentifier: identifier,

@@ -33,34 +33,20 @@ struct BiometricAuthenticationView: View {
 
                 passLogo
 
-                switch viewModel.state {
-                case .noAttempts:
-                    if viewModel.promptDismissal != nil || viewModel.completionFailed {
-                        Text(verbatim: statusMessage ?? #localized("Please authenticate", bundle: .module))
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(PassColor.textNorm)
-                        retryButton
-                            .padding(.top)
-                    }
-
-                case .lastAttempt:
-                    Text("This is your last attempt. You will be logged out after failing to authenticate again.",
-                         bundle: .module)
+                if let failureMessage = viewModel.failureMessage {
+                    Text(verbatim: failureMessage)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
                     UnavailabilityMessage(message: statusMessage)
                     retryButton
                         .padding(.top)
-
-                case let .remainingAttempts(count):
-                    Text("\(count) remaining attempt(s)", bundle: .module)
+                } else if viewModel.state == .noAttempts,
+                          viewModel.promptDismissal != nil || viewModel.completionFailed {
+                    Text(verbatim: statusMessage ?? #localized("Please authenticate", bundle: .module))
+                        .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
-                    UnavailabilityMessage(message: statusMessage)
                     retryButton
                         .padding(.top)
-
-                case .exhausted:
-                    EmptyView()
                 }
 
                 Spacer()
@@ -69,10 +55,8 @@ struct BiometricAuthenticationView: View {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .task {
-                guard case .noAttempts = viewModel.state else {
-                    return
-                }
-                guard await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
+                guard case .noAttempts = viewModel.state,
+                      await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
                 viewModel.onAuth()
                 viewModel.biometricallyAuthenticate()
             }

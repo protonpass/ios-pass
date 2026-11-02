@@ -162,8 +162,8 @@ private extension CustomItemTemplatesList {
     }
 }
 
+@MainActor
 private extension CustomItemTemplate {
-    @MainActor
     var uiModel: CustomItemTemplateUiModel {
         switch self {
         case .fromScratch:

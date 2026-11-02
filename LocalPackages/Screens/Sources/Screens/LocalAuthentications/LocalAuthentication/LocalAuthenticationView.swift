@@ -105,6 +105,11 @@ private extension LocalAuthenticationView {
             }
         }
         .onAppear(perform: viewModel.logOutIfAttemptsExhausted)
+        .onChange(of: viewModel.state) {
+            if let message = viewModel.failureMessage {
+                AccessibilityNotification.Announcement(message).post()
+            }
+        }
     }
 
     @ToolbarContentBuilder

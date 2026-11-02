@@ -39,7 +39,7 @@ extension PasswordEntity {
 }
 
 extension PasswordEntity {
-    var toGeneratedPassword: GeneratedPassword {
+    var toPasswordHistoryEntry: PasswordHistoryEntry {
         .init(id: id, creationTimestamp: Int(creationTime))
     }
 

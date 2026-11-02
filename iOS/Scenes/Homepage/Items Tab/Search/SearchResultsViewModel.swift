@@ -60,7 +60,7 @@ final class SearchResultsViewModel: ObservableObject {
     let fullResults: SearchDataDisplayContainer
 
     var isTrash: Bool {
-        mode.shareSelection == .trash
+        mode.shareSelection == .trash && vaultSearchSelection == .current
     }
 
     var currentSelectionTitle: String {

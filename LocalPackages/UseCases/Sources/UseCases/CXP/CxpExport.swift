@@ -61,9 +61,9 @@ public struct CxpExport: CxpExportUseCase {
     }
 }
 
+@available(iOS 26.0, *)
 private extension CxpExport {
     /// Decrypts and serializes every exported item, so keep it off the main actor
-    @available(iOS 26.0, *)
     @concurrent
     func exportedCredentialData(shares: [Entities.Share]) async throws -> ASExportedCredentialData {
         let userId = try await userManager.getActiveUserId()

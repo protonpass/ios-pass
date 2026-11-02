@@ -105,12 +105,15 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
+        let isLocked = !authenticated && method != .none
         GeometryReader { proxy in
             content
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
+        .accessibilityHidden(isLocked)
+        .disabled(isLocked)
         .overlay {
-            if !authenticated, let mode = LocalAuthenticationView.Mode(method) {
+            if isLocked, let mode = LocalAuthenticationView.Mode(method) {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
@@ -203,8 +206,8 @@ private extension LocalAuthenticationModifier {
     }
 }
 
+@MainActor
 extension View {
-    @MainActor
     func localAuthentication(delayed: Bool = false,
                              manuallyAvoidKeyboard: Bool = false,
                              logOutButtonMode: LocalAuthenticationView.LogOutButtonMode = .topRight,

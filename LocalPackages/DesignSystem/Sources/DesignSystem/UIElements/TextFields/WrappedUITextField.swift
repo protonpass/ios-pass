@@ -97,10 +97,10 @@ public struct WrappedUITextField: UIViewRepresentable {
         if !text.replacingOccurrences(of: " ", with: "").count.isMultiple(of: 2), !deleting {
             refPosition += 1
         }
-        if refPosition <= uiView.cursorCurrentPosition {
-            if let newPosition = uiView.position(from: uiView.beginningOfDocument, offset: refPosition) {
-                uiView.selectedTextRange = uiView.textRange(from: newPosition, to: newPosition)
-            }
+        if refPosition <= uiView.cursorCurrentPosition,
+           let newPosition = uiView.position(from: uiView.beginningOfDocument,
+                                             offset: refPosition) {
+            uiView.selectedTextRange = uiView.textRange(from: newPosition, to: newPosition)
         }
     }
 

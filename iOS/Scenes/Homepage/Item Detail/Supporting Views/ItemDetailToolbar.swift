@@ -58,12 +58,21 @@ private extension ItemDetailToolbar {
         ToolbarItem(placement: .topBarTrailing) {
             if viewModel.isAllowedToEdit,
                case .active = viewModel.itemContent.item.itemState {
-                CapsuleLabelButton(icon: IconProvider.pencil,
-                                   title: #localized("Edit"),
-                                   titleColor: PassColor.textInvert,
-                                   backgroundColor: itemContentType.normMajor1Color,
-                                   isDisabled: !viewModel.isAllowedToEdit,
-                                   action: { viewModel.edit() })
+                ViewThatFits(in: .horizontal) {
+                    CapsuleLabelButton(icon: IconProvider.pencil,
+                                       title: #localized("Edit"),
+                                       titleColor: PassColor.textInvert,
+                                       backgroundColor: itemContentType.normMajor1Color,
+                                       isDisabled: !viewModel.isAllowedToEdit,
+                                       action: { viewModel.edit() })
+
+                    CircleButton(icon: IconProvider.pencil,
+                                 iconColor: PassColor.textInvert,
+                                 backgroundColor: itemContentType.normMajor1Color,
+                                 accessibilityLabel: "Edit",
+                                 action: { viewModel.edit() })
+                        .disabled(!viewModel.isAllowedToEdit)
+                }
             }
         }
     }

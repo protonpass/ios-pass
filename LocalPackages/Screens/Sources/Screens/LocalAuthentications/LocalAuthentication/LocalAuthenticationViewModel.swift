@@ -71,6 +71,22 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
+    var failureMessage: String? {
+        switch state {
+        case .exhausted, .noAttempts:
+            return nil
+
+        case let .remainingAttempts(count):
+            let remaining = #localized("%lld remaining attempt(s)", bundle: .module, count)
+            guard mode == .pin, !completionFailed else { return remaining }
+            return #localized("Incorrect PIN code.", bundle: .module) + " " + remaining
+
+        case .lastAttempt:
+            return #localized("This is your last attempt. You will be logged out after failing to authenticate again.",
+                              bundle: .module)
+        }
+    }
+
     private var failedAttemptCount: Int {
         preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
     }
