@@ -494,11 +494,9 @@ private struct ItemListView<Content: View>: View {
     var body: some View {
         List {
             content()
-            Spacer()
-                .frame(height: safeAreaInsets.bottom + bottomInset)
-                .plainListRow()
         }
         .listStyle(.plain)
+        .contentMargins(.bottom, safeAreaInsets.bottom + bottomInset, for: .scrollContent)
         .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
     }
