@@ -201,7 +201,7 @@ final class PasswordGeneratorViewModel {
         do {
             let passwordPolicy: PasswordPolicy? = if qaPasswordPolicyOverride,
                                                      let string = UserDefaults.standard
-                                                     .string(forKey: Constants.QA.passwordPolicy) {
+                                                         .string(forKey: Constants.QA.passwordPolicy) {
                 PasswordPolicy(rawValue: string)
             } else if let newPasswordPolicy = try await getOrganizationSettings()?.passwordPolicy {
                 newPasswordPolicy

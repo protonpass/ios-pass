@@ -128,7 +128,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func loadPinnedItems() async {
         guard let symmetricKey = try? await symmetricKeyProvider.getSymmetricKey(),
               let newPinnedItems = try? await getAllPinnedItems()
-              .compactMap({ try? $0.toItemUiModel(symmetricKey) })
+                  .compactMap({ try? $0.toItemUiModel(symmetricKey) })
         else { return }
         pinnedItems = Array(newPinnedItems.prefix(5))
     }

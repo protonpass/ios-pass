@@ -208,10 +208,8 @@ private extension SearchableItem {
 
         var detail = [SearchResultEither]()
 
-        if let aliasEmail {
-            if let result = SearchUtils.search(query: term, in: aliasEmail) {
-                detail.append(.matched(result))
-            }
+        if let aliasEmail, let result = SearchUtils.search(query: term, in: aliasEmail) {
+            detail.append(.matched(result))
         }
 
         if let result = SearchUtils.search(query: term, in: note) {

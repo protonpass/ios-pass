@@ -48,7 +48,7 @@ public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerf
     public func execute(for vault: Share) -> Bool {
         if isFreeUser,
            !appContentManager.currentShares.value.autofillAllowedVaults
-           .contains(where: { $0.id == vault.id }) {
+               .contains(where: { $0.id == vault.id }) {
             return false
         }
         return vault.canEdit

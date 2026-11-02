@@ -177,8 +177,8 @@ private extension CounterChip {
     }
 }
 
+@MainActor
 private extension ItemContentType {
-    @MainActor
     var toConfiguration: CounterChip.Configuration {
         .init(title: filterTitle,
               icon: regularIcon,

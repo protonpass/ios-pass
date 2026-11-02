@@ -27,7 +27,7 @@ public extension VerifiedData {
         get throws {
             switch self {
             case let .verified(content):
-                return content
+                content
 
             case let .unverified(_, error):
                 throw PassError.crypto(.failedToVerifyContent(error.localizedDescription))
@@ -41,7 +41,7 @@ public extension VerifiedString {
         get throws {
             switch self {
             case let .verified(content):
-                return content
+                content
 
             case let .unverified(_, error):
                 throw PassError.crypto(.failedToVerifyContent(error.localizedDescription))

@@ -30,10 +30,10 @@ public protocol ChildCoordinatorDelegate: AnyObject {
     func childCoordinatorDidFailLocalAuthentication()
 }
 
+@MainActor
 public extension ChildCoordinatorDelegate {
     /// Overloaded method of `childCoordinatorWantsToPresent(viewController:viewOption:presentationOption)`
     /// Conviently pass `some View` instead of `UIViewController`
-    @MainActor
     func childCoordinatorWantsToPresent(view: some View,
                                         viewOption: ChildCoordinatorViewOption,
                                         presentationOption: ChildCoordinatorPresentationOption) {

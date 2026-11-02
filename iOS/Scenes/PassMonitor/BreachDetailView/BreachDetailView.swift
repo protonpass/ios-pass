@@ -43,8 +43,8 @@ struct BreachDetailView: View {
     }
 }
 
+@MainActor
 private extension BreachDetailView {
-    @MainActor
     var mainContainer: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             headerInfo
