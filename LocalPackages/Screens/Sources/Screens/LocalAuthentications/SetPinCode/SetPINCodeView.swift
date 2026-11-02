@@ -49,8 +49,8 @@ public struct SetPINCodeView: View {
                     .padding(.top, 50)
                     .focused($isFocused)
 
-                if let error = viewModel.error {
-                    Text(verbatim: error.description)
+                if viewModel.pinsNotMatched {
+                    Text("PINs not matched", bundle: .module)
                         .foregroundStyle(PassColor.signalDanger)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -59,7 +59,7 @@ public struct SetPINCodeView: View {
             }
             .padding()
             .background(PassColor.backgroundNorm)
-            .animation(.default, value: viewModel.error)
+            .animation(.default, value: viewModel.pinsNotMatched)
             .toolbar { toolbarContent }
             .onAppear {
                 isFocused = true

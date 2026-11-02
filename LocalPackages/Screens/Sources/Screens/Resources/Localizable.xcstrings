@@ -17622,22 +17622,22 @@
         }
       }
     },
-    "Biometrics are not available. Allow them for Proton Pass in Settings, then try again." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biometrics are not available. Allow them for Proton Pass in Settings, then try again."
-          }
-        }
-      }
-    },
     "Biometrics are not set up on this device. Set them up in Settings, then try again." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometrics are not set up on this device. Set them up in Settings, then try again."
+          }
+        }
+      }
+    },
+    "Biometrics are unavailable on this device or have been turned off for Proton Pass in Settings." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrics are unavailable on this device or have been turned off for Proton Pass in Settings."
           }
         }
       }

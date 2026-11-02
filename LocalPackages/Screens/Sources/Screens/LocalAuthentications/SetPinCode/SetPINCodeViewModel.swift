@@ -41,17 +41,12 @@ final class SetPINCodeViewModel: DeinitPrintable {
         case definition, confirmation
     }
 
-    enum ValidationError: Error {
-        case notMatched
-    }
-
-    var error: ValidationError? {
-        rejectedConfirmedPIN == confirmedPIN ? .notMatched : nil
+    var pinsNotMatched: Bool {
+        rejectedConfirmedPIN == confirmedPIN
     }
 
     var actionNotAllowed: Bool {
-        // Always disallow when error occurs
-        guard error == nil, !isSaving else { return true }
+        guard !pinsNotMatched, !isSaving else { return true }
         return switch state {
         case .definition:
             isInvalid(pin: definedPIN)
@@ -146,15 +141,6 @@ extension SetPINCodeViewModel.State {
 
         case .confirmation:
             #localized("Set PIN code", bundle: .module)
-        }
-    }
-}
-
-extension SetPINCodeViewModel.ValidationError {
-    var description: String {
-        switch self {
-        case .notMatched:
-            #localized("PINs not matched", bundle: .module)
         }
     }
 }

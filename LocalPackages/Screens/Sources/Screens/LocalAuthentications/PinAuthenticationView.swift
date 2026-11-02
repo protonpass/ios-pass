@@ -53,12 +53,6 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            if viewModel.completionFailed {
-                Text("Error occurred", bundle: .module)
-                    .foregroundStyle(PassColor.signalDanger)
-                    .multilineTextAlignment(.center)
-            }
-
             if let failureMessage = viewModel.failureMessage {
                 Text(verbatim: failureMessage)
                     .foregroundStyle(PassColor.signalDanger)
@@ -90,7 +84,6 @@ struct PinAuthenticationView: View {
         .accentColor(PassColor.interactionNorm)
         .tint(PassColor.interactionNorm)
         .animation(.default, value: viewModel.state)
-        .animation(.default, value: viewModel.completionFailed)
         .task {
             guard await (try? Task.sleep(for: viewModel.delayedTime)) != nil else { return }
             viewModel.onAuth()

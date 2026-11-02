@@ -32,11 +32,8 @@ import Macro
 final class LocalAuthenticationViewModel: DeinitPrintable {
     private(set) var state: LocalAuthenticationState = .noAttempts
 
-    /// Why the last prompt was dismissed without reaching a verdict, so no attempt was consumed.
-    private(set) var promptDismissal: LAError.Code?
-
-    /// The credential was right but finishing the unlock failed, so no attempt was consumed.
-    private(set) var completionFailed = false
+    /// Error code of the last biometric attempt that ended without a verdict, so no attempt was consumed.
+    private(set) var noVerdictErrorCode: LAError.Code?
 
     // Automatic keyboard avoidance is broken in the app cover, so the view pads for the keyboard itself
     let manuallyAvoidKeyboard: Bool
@@ -78,8 +75,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
 
         case let .remainingAttempts(count):
             let remaining = #localized("%lld remaining attempt(s)", bundle: .module, count)
-            guard mode == .pin, !completionFailed else { return remaining }
-            return #localized("Incorrect PIN code.", bundle: .module) + " " + remaining
+            return mode == .pin ? #localized("Incorrect PIN code.", bundle: .module) + " " + remaining : remaining
 
         case .lastAttempt:
             return #localized("This is your last attempt. You will be logged out after failing to authenticate again.",
@@ -125,15 +121,14 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         biometricCheckTask = Task { [weak self] in
             guard let self else { return }
             defer {
-                let retry = becameActiveDuringPrompt && promptDismissal == .notInteractive
+                let retry = becameActiveDuringPrompt && noVerdictErrorCode == .notInteractive
                 becameActiveDuringPrompt = false
                 biometricCheckTask = nil
                 if retry {
                     biometricallyAuthenticate()
                 }
             }
-            promptDismissal = nil
-            completionFailed = false
+            noVerdictErrorCode = nil
             do {
                 let policy = getSharedPreferences().localAuthenticationPolicy
                 let authenticated = try await authenticate(policy: policy,
@@ -149,7 +144,7 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out.",
                                      bundle: .module))
             } catch let error as LAError where error.reachedNoVerdict {
-                promptDismissal = error.code
+                noVerdictErrorCode = error.code
                 logger.warning("\(mode) prompt dismissed without a verdict. \(error)")
             } catch {
                 await recordFailure(error)
@@ -164,7 +159,6 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
             defer {
                 pinCheckTask = nil
             }
-            completionFailed = false
             guard let currentPIN = getSharedPreferences().pinCode else {
                 // No PIN code is set before, can't do anything but logging out
                 let message = "Can not check PIN code. No PIN code set."
@@ -181,13 +175,13 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         }
     }
 
-    func appDidBecomeActive() {
+    func handleAppDidBecomeActive() {
         guard case .noAttempts = state else { return }
         guard biometricCheckTask == nil else {
             becameActiveDuringPrompt = true
             return
         }
-        if promptDismissal != nil {
+        if noVerdictErrorCode != nil {
             biometricallyAuthenticate()
         }
     }
@@ -231,9 +225,8 @@ private extension LocalAuthenticationViewModel {
             try await updateSharedPreferences(\.failedAttemptCount, value: 0)
             try await onSuccess()
         } catch {
-            // The credential was right, so neither consume an attempt nor log out: let the user retry
             logger.error("\(mode) authentication succeeded but could not be completed. \(error)")
-            completionFailed = true
+            onFailure(error.localizedDescription)
         }
     }
 }

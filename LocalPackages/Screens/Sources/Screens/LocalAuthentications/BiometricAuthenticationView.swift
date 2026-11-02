@@ -37,12 +37,12 @@ struct BiometricAuthenticationView: View {
                     Text(verbatim: failureMessage)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
-                    UnavailabilityMessage(message: statusMessage)
+                    UnavailabilityMessage(message: viewModel.noVerdictErrorCode?.unavailabilityMessage)
                     retryButton
                         .padding(.top)
-                } else if viewModel.state == .noAttempts,
-                          viewModel.promptDismissal != nil || viewModel.completionFailed {
-                    Text(verbatim: statusMessage ?? #localized("Please authenticate", bundle: .module))
+                } else if viewModel.state == .noAttempts, let noVerdictErrorCode = viewModel.noVerdictErrorCode {
+                    Text(verbatim: noVerdictErrorCode.unavailabilityMessage
+                        ?? #localized("Please authenticate", bundle: .module))
                         .multilineTextAlignment(.center)
                         .foregroundStyle(PassColor.textNorm)
                     retryButton
@@ -61,19 +61,12 @@ struct BiometricAuthenticationView: View {
                 viewModel.biometricallyAuthenticate()
             }
             // Covers -1004 from prompting before we were frontmost
-            .onReceive(UIApplication.didBecomeActiveNotification, perform: viewModel.appDidBecomeActive)
+            .onReceive(UIApplication.didBecomeActiveNotification, perform: viewModel.handleAppDidBecomeActive)
         }
     }
 }
 
 private extension BiometricAuthenticationView {
-    var statusMessage: String? {
-        if viewModel.completionFailed {
-            return #localized("Error occurred", bundle: .module)
-        }
-        return viewModel.promptDismissal?.unavailabilityMessage
-    }
-
     var passLogo: some View {
         PassIcon.passIcon
             .resizable()
@@ -110,7 +103,7 @@ private extension LAError.Code {
                        bundle: .module)
 
         case .biometryNotAvailable:
-            #localized("Biometrics are not available. Allow them for Proton Pass in Settings, then try again.",
+            #localized("Biometrics are unavailable on this device or have been turned off for Proton Pass in Settings.",
                        bundle: .module)
 
         case .biometryNotEnrolled:
