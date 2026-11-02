@@ -5,6 +5,7 @@
 - Secure link expiration times now show the days remaining instead of rounding down to 1 week
 - The "Add item (+)" button no longer blocks the delete action for the last item in the main list
 - The Autofill vault limit banner now appears only when you have more than two vaults
+- Face ID no longer sometimes shows failed attempt screens before scanning your face
 
 Others:
 - Bumped Sentry from 9.30.2 to 9.32.0
