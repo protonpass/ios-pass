@@ -45,7 +45,7 @@ struct PasswordGeneratorViewModelTests {
 
         #expect(history.insertedPasswords == [sut.password])
         let result = try #require(recorder.results.first)
-        #expect(try result.get() == sut.password)
+        #expect(try result.get().value == sut.password)
     }
 
     @Test func `confirming again stores and delivers the password only once`() async {
@@ -102,10 +102,10 @@ private extension PasswordGeneratorViewModelTests {
 /// started) has finished by the time `waitForResults()` resumes.
 @MainActor
 private final class ResultRecorder {
-    private(set) var results = [Result<String, any Error>]()
+    private(set) var results = [Result<GeneratedPassword, any Error>]()
     private var waiter: CheckedContinuation<Void, Never>?
 
-    func record(_ result: Result<String, any Error>) {
+    func record(_ result: Result<GeneratedPassword, any Error>) {
         results.append(result)
         waiter?.resume()
         waiter = nil
@@ -131,7 +131,7 @@ private final class PasswordHistoryRepositoryStub: PasswordHistoryRepositoryProt
         insertedPasswords.append(clearPassword)
     }
 
-    func getAllPasswords() async throws -> [GeneratedPasswordUiModel] {
+    func getAllPasswords() async throws -> [PasswordHistoryEntryUiModel] {
         []
     }
 
