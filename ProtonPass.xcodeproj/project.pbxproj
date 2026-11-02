@@ -4092,7 +4092,6 @@
 				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network. Atlantis uses it to transfer the data from your iOS app to Proxyman macOS for debugging purposes.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
@@ -4456,7 +4455,6 @@
 				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network. Atlantis uses it to transfer the data from your iOS app to Proxyman macOS for debugging purposes.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
@@ -5040,7 +5038,6 @@
 				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network. Atlantis uses it to transfer the data from your iOS app to Proxyman macOS for debugging purposes.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
@@ -5181,7 +5178,6 @@
 				INFOPLIST_KEY_ITSEncryptionExportComplianceCode = "72e333d0-d159-45e3-ad41-39acb89134e8";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Scan 2FA code, credit card, hand-written note and QR code";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Restrict unwelcome access to your Proton Pass account on this device";
-				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Atlantis would use Bonjour Service to discover Proxyman app from your local network. Atlantis uses it to transfer the data from your iOS app to Proxyman macOS for debugging purposes.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = PassLaunchScreen.storyboard;
