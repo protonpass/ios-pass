@@ -1,3 +1,15 @@
+# Version 1.23.1
+- Improved VoiceOver labels for tabs and categories
+- The share button now stays visible for individual items when Display Zoom is enabled on iPhone
+- Items outside Trash no longer show "Restore" and "Permanently Delete" actions after switching a search from "Trash" to "All Vaults"
+- Secure link expiration times now show the days remaining instead of rounding down to 1 week
+- The "Add item (+)" button no longer blocks the delete action for the last item in the main list
+- The Autofill vault limit banner now appears only when you have more than two vaults
+
+Others:
+- Bumped Sentry from 9.30.2 to 9.32.0
+- Bumped Factory from 3.5.1 to 3.5.2
+
 # Version 1.23.0
 - Implemented the Credential Exchange Protocol (CXP) for importing credentials from and exporting them to other password managers
 - Introduced the ability to ignore specific password issues, such as compromised, weak, or reused passwords (behind a feature flag)
