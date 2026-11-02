@@ -95,6 +95,11 @@ struct LocalAuthenticationView: View {
                 }
                 .navigationStackEmbeded()
         }
+        .onChange(of: viewModel.state) {
+            if let message = viewModel.failureMessage {
+                AccessibilityNotification.Announcement(message).post()
+            }
+        }
     }
 }
 
@@ -105,5 +110,6 @@ private extension LocalAuthenticationView {
                 .foregroundStyle(PassColor.textNorm)
                 .padding()
         }
+        .accessibilityLabel("Sign out")
     }
 }

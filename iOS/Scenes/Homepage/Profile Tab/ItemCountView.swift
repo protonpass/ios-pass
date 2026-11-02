@@ -24,6 +24,7 @@ import DesignSystem
 import DIComposition
 import Entities
 import FactoryKit
+import Macro
 import ProtonCoreUIFoundations
 import Stores
 import SwiftUI
@@ -63,7 +64,8 @@ struct ItemCountView: View {
                     CounterChip(configuration: ItemContentType.custom.toConfiguration,
                                 value: itemCount.custom,
                                 onSelect: { onSelectItemType(.custom) })
-                    CounterChip(configuration: .init(icon: IconProvider.lock,
+                    CounterChip(configuration: .init(title: #localized("Logins with 2FA"),
+                                                     icon: IconProvider.lock,
                                                      iconTint: PassColor.passwordInteractionNorm,
                                                      iconBackground: PassColor.passwordInteractionNormMinor1),
                                 value: itemCount.loginWith2fa,
@@ -102,6 +104,7 @@ private struct CounterChip: View {
     let onSelect: () -> Void
 
     struct Configuration {
+        let title: String
         let icon: Image
         let iconTint: Color
         let iconBackground: Color
@@ -128,11 +131,18 @@ private struct CounterChip: View {
                 .buttonStyle(.plain)
             }
         }
+        .accessibilityLabel(configuration.title)
+        .accessibilityValue(spokenCount)
         .padding(.vertical)
     }
 }
 
 private extension CounterChip {
+    var spokenCount: String {
+        guard let maxValue else { return "\(value)" }
+        return #localized("%1$lld of %2$lld", value, maxValue)
+    }
+
     func action() {
         if value > 0 {
             onSelect()
@@ -170,7 +180,8 @@ private extension CounterChip {
 private extension ItemContentType {
     @MainActor
     var toConfiguration: CounterChip.Configuration {
-        .init(icon: regularIcon,
+        .init(title: filterTitle,
+              icon: regularIcon,
               iconTint: thumbnailTintColor,
               iconBackground: thumbnailBackgroundColor)
     }

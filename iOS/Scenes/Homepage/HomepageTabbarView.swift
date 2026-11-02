@@ -54,19 +54,19 @@ enum HomepageTab: String, CaseIterable, Hashable {
     var hint: String {
         switch self {
         case .items:
-            #localized("Homepage tab")
+            #localized("Items")
 
         case .itemCreation:
-            #localized("Create new item button")
+            #localized("Create item")
 
         case .passMonitor:
-            #localized("Pass Monitor tab")
+            #localized("Pass Monitor")
 
         case .profile:
-            #localized("Profile tab")
+            #localized("Profile")
 
         case .search:
-            #localized("Search tab")
+            #localized("Search")
         }
     }
 }
@@ -302,7 +302,6 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                                             UIHostingController(rootView: searchView)
                                         })
             searchTab.automaticallyActivatesSearch = true
-            searchTab.accessibilityLabel = HomepageTab.search.hint
             tabs = [
                 UITab(title: "",
                       image: HomepageTab.items.image,
@@ -324,6 +323,10 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                       }),
                 searchTab
             ]
+            for tab in tabs {
+                tab.accessibilityLabel = HomepageTab(rawValue: tab.identifier)?.hint
+                tab.accessibilityIdentifier = tab.identifier
+            }
         } else {
             viewControllers = controllers
         }

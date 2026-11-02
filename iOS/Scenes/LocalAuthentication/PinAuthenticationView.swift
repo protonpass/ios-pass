@@ -53,19 +53,8 @@ struct PinAuthenticationView: View {
 
             Spacer()
 
-            switch viewModel.state {
-            case .noAttempts:
-                EmptyView()
-
-            case let .remainingAttempts(count):
-                Text("Incorrect PIN code.")
-                    .foregroundStyle(PassColor.signalDanger) +
-                    Text(verbatim: " ") +
-                    Text("\(count) remaining attempt(s)")
-                    .foregroundStyle(PassColor.signalDanger)
-
-            case .lastAttempt:
-                Text("This is your last attempt. You will be logged out after failing to authenticate again.")
+            if let failureMessage = viewModel.failureMessage {
+                Text(failureMessage)
                     .foregroundStyle(PassColor.signalDanger)
                     .multilineTextAlignment(.center)
             }

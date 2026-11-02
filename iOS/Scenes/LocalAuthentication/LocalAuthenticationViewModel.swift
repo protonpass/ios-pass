@@ -60,6 +60,20 @@ final class LocalAuthenticationViewModel: DeinitPrintable {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
+    var failureMessage: String? {
+        switch state {
+        case .noAttempts:
+            return nil
+
+        case let .remainingAttempts(count):
+            let remaining = #localized("%lld remaining attempt(s)", count)
+            return mode == .pin ? #localized("Incorrect PIN code.") + " " + remaining : remaining
+
+        case .lastAttempt:
+            return #localized("This is your last attempt. You will be logged out after failing to authenticate again.")
+        }
+    }
+
     enum Mode: String {
         case biometric, pin
     }

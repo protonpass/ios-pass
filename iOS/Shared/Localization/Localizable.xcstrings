@@ -2121,6 +2121,17 @@
         }
       }
     },
+    "%1$lld of %2$lld" : {
+      "comment" : "VoiceOver value of an item count against its plan limit, e.g. \"3 of 10\"",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld of %2$lld"
+          }
+        }
+      }
+    },
     "%lld aliases" : {
       "localizations" : {
         "be" : {
@@ -47481,6 +47492,16 @@
         }
       }
     },
+    "Create item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create item"
+          }
+        }
+      }
+    },
     "Create login" : {
       "comment" : "AutoFill extension",
       "localizations" : {
@@ -47674,16 +47695,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "創建登入"
-          }
-        }
-      }
-    },
-    "Create new item button" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Create new item button"
           }
         }
       }
@@ -76628,16 +76639,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "持有人姓名"
-          }
-        }
-      }
-    },
-    "Homepage tab" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Homepage tab"
           }
         }
       }
@@ -106649,16 +106650,6 @@
         }
       }
     },
-    "Pass Monitor tab" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pass Monitor tab"
-          }
-        }
-      }
-    },
     "Passkey" : {
       "localizations" : {
         "be" : {
@@ -115923,16 +115914,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "個人檔案"
-          }
-        }
-      }
-    },
-    "Profile tab" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Profile tab"
           }
         }
       }
@@ -129528,16 +129509,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在最舊的 2 個保管庫中搜尋"
-          }
-        }
-      }
-    },
-    "Search tab" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Search tab"
           }
         }
       }
