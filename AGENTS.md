@@ -28,7 +28,7 @@ Pre-commit hooks run SwiftFormat then SwiftLint (strict). Run these before commi
 |---|---|
 | `swiftformat .` | Format code (config: `.swiftformat`) |
 | `swiftlint lint` | Lint (config: `.swiftlint.yml`, custom rules included) |
-| `./scripts/binary/string-catalogs-scanner --allow-needs-review-translations --verbose` | Validate string catalogs |
+| `string-catalogs-scanner --allow-needs-review-translations --verbose` | Validate string catalogs |
 | `MissingBundleScanner --config .missing-bundle-scanner.yml` | Check package strings pass `bundle: .module` |
 | `sourcery` | Regenerate mocks from `// sourcery: AutoMockable` |
 | `periphery scan` | Find unused code |
