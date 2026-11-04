@@ -8,6 +8,7 @@
 - Face ID no longer sometimes shows failed attempt screens before scanning your face
 
 Others:
+- Rust library upgraded from 2.3.1 to 2.3.4
 - Bumped Sentry from 9.30.2 to 9.32.0
 - Bumped Factory from 3.5.1 to 3.5.2
 
