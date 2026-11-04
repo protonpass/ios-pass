@@ -102,13 +102,14 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
 
                 if let description, !description.isEmpty {
                     Text(verbatim: description)
+                        .speechSpellsOutCharacters(spellOutDescription)
+                        .speechAlwaysIncludesPunctuation(spellOutDescription)
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
                         .foregroundStyle(PassColor.textWeak)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxHeight: .infinity)
-                        .if(spellOutDescription) { $0.spellOutForVoiceOver() }
                 }
             }
             .padding(.vertical, verticalPadding)

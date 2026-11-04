@@ -172,6 +172,7 @@ struct AliasDetailView: View {
 
                 Text(AttributedString(viewModel.aliasEmail, attributes: .lineBreakHyphenErasing))
                     .sectionContentText()
+                    .spellOutForVoiceOver()
 
                 Text("Create login")
                     .font(.callout)
@@ -231,6 +232,7 @@ struct AliasDetailView: View {
                         ForEach(mailboxes, id: \.ID) { mailbox in
                             Text(mailbox.email)
                                 .sectionContentText()
+                                .spellOutForVoiceOver()
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .contentShape(.rect)
                                 .contextMenu {

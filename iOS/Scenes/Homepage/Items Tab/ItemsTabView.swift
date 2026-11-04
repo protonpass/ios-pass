@@ -355,7 +355,7 @@ private struct ItemRow: View {
                            },
                            title: item.title,
                            description: item.description,
-                           spellOutDescription: item.type == .login,
+                           spellOutDescription: [.login, .alias].contains(item.type),
                            hasTotp: item.hasTotpUri,
                            isShared: item.shared)
                 .if(!isEditMode) { view in
