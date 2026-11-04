@@ -243,6 +243,7 @@ private extension LogInDetailView {
                 } else {
                     Text(viewModel.username)
                         .sectionContentText()
+                        .spellOutForVoiceOver()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
