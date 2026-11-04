@@ -199,6 +199,7 @@ private extension LogInDetailView {
                 } else {
                     Text(AttributedString(viewModel.email, attributes: .lineBreakHyphenErasing))
                         .sectionContentText()
+                        .spellOutForVoiceOver()
 
                     if viewModel.isAlias {
                         Button { viewModel.showAliasDetail() } label: {
