@@ -102,8 +102,7 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
 
                 if let description, !description.isEmpty {
                     Text(verbatim: description)
-                        .speechSpellsOutCharacters(spellOutDescription)
-                        .speechAlwaysIncludesPunctuation(spellOutDescription)
+                        .spellOutForVoiceOver(spellOutDescription)
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)
