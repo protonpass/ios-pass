@@ -42,6 +42,7 @@ struct GenericCredentialItemRow: View {
                                title: uiModel.title,
                                titleLineLimit: 2,
                                description: uiModel.description,
+                               spellOutDescription: uiModel.type == .login,
                                secondaryTitle: secondaryTitle,
                                secondaryTitleColor: PassColor.textWeak,
                                hasTotp: uiModel.hasTotpUri,

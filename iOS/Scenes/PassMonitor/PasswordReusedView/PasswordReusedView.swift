@@ -70,7 +70,8 @@ private extension PasswordReusedView {
         } label: {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,
-                           description: item.toItemUiModel.description)
+                           description: item.toItemUiModel.description,
+                           spellOutDescription: item.type == .login)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .buttonStyle(.plain)

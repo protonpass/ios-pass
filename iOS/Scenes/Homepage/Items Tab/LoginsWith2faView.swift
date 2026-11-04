@@ -39,7 +39,8 @@ struct LoginsWith2faView: View {
                     } label: {
                         GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                                        title: item.title,
-                                       description: item.description)
+                                       description: item.description,
+                                       spellOutDescription: item.type == .login)
                     }
                     .buttonStyle(.plain)
                 }
