@@ -174,6 +174,7 @@ private extension LoginDetailView {
                 } else {
                     Text(viewModel.email)
                         .sectionContentText()
+                        .spellOutForVoiceOver()
 
                     if viewModel.isAlias {
                         Button { viewModel.viewAlias() } label: {
@@ -207,6 +208,7 @@ private extension LoginDetailView {
                 } else {
                     Text(viewModel.username)
                         .sectionContentText()
+                        .spellOutForVoiceOver()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

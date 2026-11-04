@@ -99,6 +99,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(logItem.email)
+                    .spellOutForVoiceOver()
                     .foregroundStyle(textColor(for: \.loginItem?.email))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -118,6 +119,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 Text(logItem.username)
+                    .spellOutForVoiceOver()
                     .foregroundStyle(textColor(for: \.loginItem?.username))
             }
             .frame(maxWidth: .infinity, alignment: .leading)
