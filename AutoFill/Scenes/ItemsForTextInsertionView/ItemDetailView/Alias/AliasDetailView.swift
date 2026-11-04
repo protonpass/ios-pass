@@ -72,6 +72,7 @@ private extension AliasDetailView {
 
                 Text(viewModel.email)
                     .sectionContentText()
+                    .spellOutForVoiceOver()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -103,6 +104,7 @@ private extension AliasDetailView {
                     ForEach(mailboxes, id: \.ID) { mailbox in
                         Text(mailbox.email)
                             .sectionContentText()
+                            .spellOutForVoiceOver()
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(.rect)
                             .onTapGesture {

@@ -199,7 +199,8 @@ private extension DetailMonitoredItemView {
         Button { viewModel.goToDetailPage(item: uiModel) } label: {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: uiModel.thumbnailData()) },
                            title: uiModel.title,
-                           description: uiModel.description)
+                           description: uiModel.description,
+                           spellOutDescription: uiModel.type == .login)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }

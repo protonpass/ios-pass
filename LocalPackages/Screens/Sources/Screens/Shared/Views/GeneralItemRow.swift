@@ -31,6 +31,7 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
     let secondaryTitleColor: Color?
     let description: String?
     let descriptionLineLimit: Int
+    let spellOutDescription: Bool
     let hasTotp: Bool
     let isShared: Bool
     let showTitleDiscovery: Bool
@@ -41,6 +42,7 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
                 titleLineLimit: Int = 1,
                 description: String?,
                 descriptionLineLimit: Int = 1,
+                spellOutDescription: Bool = false,
                 secondaryTitle: String? = nil,
                 secondaryTitleColor: Color? = nil,
                 hasTotp: Bool = false,
@@ -52,6 +54,7 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
         self.titleLineLimit = titleLineLimit
         self.description = description
         self.descriptionLineLimit = descriptionLineLimit
+        self.spellOutDescription = spellOutDescription
         self.secondaryTitle = secondaryTitle
         self.secondaryTitleColor = secondaryTitleColor
         self.hasTotp = hasTotp
@@ -99,6 +102,7 @@ public struct GeneralItemRow<ThumbnailView: View>: View {
 
                 if let description, !description.isEmpty {
                     Text(verbatim: description)
+                        .spellOutForVoiceOver(spellOutDescription)
                         .font(.callout)
                         .lineLimit(descriptionLineLimit)
                         .minimumScaleFactor(descriptionLineLimit > 1 ? 0.75 : 1.0)

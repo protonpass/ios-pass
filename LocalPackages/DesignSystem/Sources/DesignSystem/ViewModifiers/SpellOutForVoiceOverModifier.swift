@@ -20,17 +20,10 @@
 
 import SwiftUI
 
-private struct SpellOutForVoiceOverModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .speechSpellsOutCharacters()
-            .speechAlwaysIncludesPunctuation()
-    }
-}
-
 public extension View {
-    /// Makes VoiceOver spell out text, including punctuation.
-    func spellOutForVoiceOver() -> some View {
-        modifier(SpellOutForVoiceOverModifier())
+    /// Makes VoiceOver spell out text character by character, including punctuation.
+    func spellOutForVoiceOver(_ isEnabled: Bool = true) -> some View {
+        speechSpellsOutCharacters(isEnabled)
+            .speechAlwaysIncludesPunctuation(isEnabled)
     }
 }

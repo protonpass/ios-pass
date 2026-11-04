@@ -65,6 +65,7 @@ private extension DetailHistoryView {
 
                 Text(item.aliasEmail ?? "")
                     .foregroundStyle(textColor(for: \.aliasEmail))
+                    .spellOutForVoiceOver()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
