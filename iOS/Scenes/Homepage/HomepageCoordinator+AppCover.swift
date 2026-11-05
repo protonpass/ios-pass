@@ -47,6 +47,11 @@ extension HomepageCoordinator {
         }
 
         if let appCoverView {
+            // The keyboard and its toolbar are drawn in a system window above the cover,
+            // so covered screens must resign. The cover is skipped to keep its PIN field focused.
+            for view in window.subviews where view !== appCoverView {
+                view.endEditing(true)
+            }
             window.bringSubviewToFront(appCoverView)
             appCoverView.accessibilityViewIsModal = true
             UIView.animate(withDuration: DesignConstant.animationDuration) {
