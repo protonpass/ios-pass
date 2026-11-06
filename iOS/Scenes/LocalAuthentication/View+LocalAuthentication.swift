@@ -53,6 +53,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     /// autolocker as @State because it needs to be updated
     /// when user changes appLockTime in setting
     @State private var autolocker: Autolocker
+    @State private var countdownRunning = true
 
     @State private var successMode: LocalAuthenticationSuccessMode = .default
 
@@ -116,7 +117,7 @@ struct LocalAuthenticationModifier: ViewModifier {
             if isLocked, let mode = LocalAuthenticationView.Mode(method) {
                 let handleSuccess: () -> Void = {
                     authenticated = true
-                    autolocker.releaseCountdown()
+                    releaseCountdown()
                     onSuccess?(successMode)
                     successMode = .default
                 }
@@ -140,7 +141,7 @@ struct LocalAuthenticationModifier: ViewModifier {
             .receive(on: DispatchQueue.main)
             .filter(\.appLockTime)) { newValue in
                 autolocker = .init(appLockTime: newValue)
-                autolocker.startCountdown()
+                countdownRunning = false
         }
         // Take into account right away method when user updates it
         .onReceive(preferencesManager
@@ -149,8 +150,13 @@ struct LocalAuthenticationModifier: ViewModifier {
             .filter(\.localAuthenticationMethod)) { newValue in
                 method = newValue
         }
-        // Start the timer whenever app is backgrounded
-        .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
+        // willResignActiveNotification could be fired twice when phone is lock
+        // We want to start the timer for the first fire
+        .onReceive(UIApplication.willResignActiveNotification) {
+            guard !countdownRunning else { return }
+            autolocker.startCountdown()
+            countdownRunning = true
+        }
         .onReceive(foregroundEventsPublisher) {
             checkForAuthenticationSubject.send()
         }
@@ -203,6 +209,11 @@ private extension LocalAuthenticationModifier {
         } else if authenticated {
             onAuthSkipped?()
         }
+    }
+
+    func releaseCountdown() {
+        autolocker.releaseCountdown()
+        countdownRunning = false
     }
 }
 
