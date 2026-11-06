@@ -85,6 +85,7 @@ private extension HomepageCoordinator {
                                 onAuth: { [weak self] in
                                     guard let self else { return }
                                     authenticated = false
+                                    coverApp()
                                 },
                                 onAuthSkipped: { [weak self] in
                                     guard let self else { return }
