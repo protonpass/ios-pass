@@ -261,6 +261,24 @@
             }
           }
         },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld medlem)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "(%lld medlemmer)"
+                }
+              }
+            }
+          }
+        },
         "pt" : {
           "variations" : {
             "plural" : {
@@ -4501,6 +4519,24 @@
             }
           }
         },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld elemento importado de %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld elementos importados de %2$@"
+                }
+              }
+            }
+          }
+        },
         "es-419" : {
           "variations" : {
             "plural" : {
@@ -4567,6 +4603,24 @@
             }
           }
         },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld element importert fra %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld elementer importert fra %2$@"
+                }
+              }
+            }
+          }
+        },
         "nl" : {
           "variations" : {
             "plural" : {
@@ -4580,6 +4634,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld items geïmporteerd uit %2$@"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld item importado de %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld itens importados de %2$@"
                 }
               }
             }
@@ -4634,6 +4706,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld položiek importovaných z %2$@"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmeti uvoženi iz %2$@"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmet uvožen iz %2$@"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmetov uvoženih iz %2$@"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld predmeta uvožena iz %2$@"
                 }
               }
             }
@@ -6588,6 +6690,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld druge prijave uporabljajo to geslo."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld druga prijava uporablja to geslo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld drugih prijav uporablja to geslo."
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld drugi prijavi uporabljata to geslo."
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -7376,6 +7508,36 @@
             }
           }
         },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld krát"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld krát"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld krát"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld krát"
+                }
+              }
+            }
+          }
+        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -7520,19 +7682,49 @@
             }
           }
         },
+        "hu" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alkalommal"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alkalommal"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kali"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tempo"
+                  "value" : "%lld volta"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tempi"
+                  "value" : "%lld volte"
                 }
               }
             }
@@ -7556,13 +7748,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld-ჯერ"
+                  "value" : "%lld-ხელ"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ჯერ"
+                  "value" : "%lld-ჯერ"
                 }
               }
             }
@@ -7574,7 +7766,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 번"
+                  "value" : "%lld번"
                 }
               }
             }
@@ -7611,6 +7803,54 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld keer"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld raz"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld razy"
+                }
+              }
+            }
+          }
+        },
+        "pt" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vez"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vezes"
                 }
               }
             }
@@ -7658,13 +7898,43 @@
             }
           }
         },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раза"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раз"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раз"
+                }
+              }
+            }
+          }
+        },
         "sk" : {
           "variations" : {
             "plural" : {
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld-krát"
+                  "value" : "%lld -krát"
                 }
               },
               "many" : {
@@ -7784,7 +8054,31 @@
             }
           }
         },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lần"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 次"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
           "variations" : {
             "plural" : {
               "other" : {
@@ -11273,6 +11567,12 @@
             "value" : "Upravte správanie automatického vypĺňania, aby ste zmenili, kde sa pre %@ navrhujú a vypĺňajú prihlasovacie údaje."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prilagodite delovanje samodejnega izpolnjevanja, da spremenite, kje se za %@ predlagajo in samodejno izpolnjujejo prijavni podatki."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12145,6 +12445,12 @@
             "value" : "オペレーティングシステムの API の制限により、iOS では高度なルールをご利用いただけません。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanserte regler er ikke tilgjengelige på iOS på grunn av begrensninger i operativsystemets API-er."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12167,6 +12473,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokročilé pravidlá nie sú v systéme iOS k dispozícii kvôli obmedzeniam v rozhraniach API operačného systému."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napredna pravila v sistemu iOS niso na voljo zaradi omejitev API vmesnikov operacijskega sistema."
           }
         },
         "tr" : {
@@ -15886,6 +16198,12 @@
             "value" : "Aspoň 13 znakov"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Najmanj 13 znakov"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17559,7 +17877,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Grunnleggende"
+            "value" : "Enkel"
           }
         },
         "nl" : {
@@ -17614,30 +17932,228 @@
     },
     "Biometrics are locked. Unlock your device with your passcode, then try again." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Біяметрыя заблакіравана. Разблакіруйце сваю прыладу пры дапамозе кода доступу, а потым паўтарыце спробу."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometria està bloquejada. Desbloquegeu el vostre dispositiu amb el codi d'accés i torneu-ho a intentar."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er låst. Lås op for din enhed med din adgangskode, og prøv derefter igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die biometrischen Funktionen sind gesperrt. Entsperre dein Gerät mit deinem Passcode und versuche es anschließend erneut."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τα βιομετρικά στοιχεία είναι κλειδωμένα. Ξεκλειδώστε τη συσκευή σας με τον κωδικό πρόσβασης και, στη συνέχεια, δοκιμάστε ξανά."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometrics are locked. Unlock your device with your passcode, then try again."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biométrica está bloqueada. Desbloquee su dispositivo con su código de acceso e intente de nuevo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I dati biometrici sono bloccati. Sblocca il dispositivo con il codice di accesso, quindi riprova."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er låst. Lås opp enheten din med tilgangskoden, deretter prøv igjen."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datele biometrice sunt blocate. Deblocați dispozitivul cu parola, apoi reîncercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometrické údaje sú uzamknuté. Odomknite zariadenie pomocou prístupového kódu a potom to skúste znova."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biyometrik tanıma kilitli. Aygıtınızın kilidini parolanız ile açtıktan sonra yeniden deneyin."
           }
         }
       }
     },
     "Biometrics are not set up on this device. Set them up in Settings, then try again." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Біяметрыя не наладжана на гэтай прыладзе. Задайце яе ў Наладах, а потым паўтарыце спробу."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometria no està configurada en aquest dispositiu. Configureu-la a Preferències i torneu-ho a intentar."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er ikke konfigureret på denne enhed. Aktivér dem i Indstillinger, og prøv derefter igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf diesem Gerät sind keine biometrischen Funktionen eingerichtet. Richte diese in den Einstellungen ein und versuchen Sie es anschließend erneut."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τα βιομετρικά στοιχεία δεν έχουν ρυθμιστεί σε αυτήν τη συσκευή. Ρυθμίστε τα στις Ρυθμίσεις και, στη συνέχεια, δοκιμάστε ξανά."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometrics are not set up on this device. Set them up in Settings, then try again."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biométrica no está configurada en este dispositivo. Configúrela en Ajustes e intente de nuevo."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su questo dispositivo non sono state configurate le impostazioni biometriche. Configurale in “Impostazioni”, quindi riprova."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er ikke konfigurert på denne enheten. Sett det opp i Innstillinger og prøv igjen."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datele biometrice nu sunt configurate pe acest dispozitiv. Configurați-le în Setări, apoi reîncercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na tomto zariadení nie sú nastavené biometrické údaje. Nastavte ich v Nastaveniach a potom to skúste znova."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu aygıt için biyometrik tanıma ayarlanmamış. Ayarlar bölümünden ayarladıktan sonra yeniden deneyin."
           }
         }
       }
     },
     "Biometrics are unavailable on this device or have been turned off for Proton Pass in Settings." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Біяметрыя недаступна на гэтай прыладзе або была выключана для Proton Pass у Наладах."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biometria no està disponible en aquest dispositiu o s'ha desactivat a Preferències per a Proton Pass."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er ikke tilgængelige på denne enhed eller er blevet slået fra for Proton Pass i Indstillinger."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auf diesem Gerät sind keine biometrischen Funktionen verfügbar oder diese wurden in den Einstellungen für Proton Pass deaktiviert."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τα βιομετρικά στοιχεία δεν είναι διαθέσιμα σε αυτή τη συσκευή ή έχουν απενεργοποιηθεί για το Proton Pass στις Ρυθμίσεις."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biometrics are unavailable on this device or have been turned off for Proton Pass in Settings."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La biométrica no está disponible en este dispositivo o fue desactivada para Proton Pass en Ajustes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le funzioni biometriche non sono disponibili su questo dispositivo oppure sono state disattivate per Proton Pass nelle Impostazioni."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biometri er utilgjengelig på denne enheten eller er slått av for Proton Pass i Innstillinger."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datele biometrice nu sunt disponibile pe acest dispozitiv sau au fost dezactivate pentru Proton Pass în Setări."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na tomto zariadení nie sú biometrické údaje k dispozícii alebo boli v nastaveniach pre aplikáciu Proton Pass deaktivované."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu aygıtta biyometrik tanıma kullanılamıyor veya Ayarlar bölümünden Proton Pass için kapatılmış."
           }
         }
       }
@@ -20503,6 +21019,12 @@
             "value" : "Kompromitované heslo"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ogroženo geslo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20597,6 +21119,12 @@
             "value" : "漏洩したパスワードの検出"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kompromittert passordgjenkjenning"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20619,6 +21147,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detekcia kompromitovaných hesiel"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaznavanje ogroženih gesel"
           }
         },
         "tr" : {
@@ -20703,6 +21237,12 @@
             "value" : "漏洩したパスワードの検出は、有料プランでご利用いただけます。アップグレードして、既知のデータ侵害で流出したパスワードを確認しましょう。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppdagelse av kompromittert passord er tilgjengelig med en betalt plan. Oppgrader for å finne passord som er utsatt i kjente datainnbrudd."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20725,6 +21265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Detekcia kompromitovaných hesiel je k dispozícii v rámci plateného plánu. Navýšte plán, aby ste zistili, ktoré vaše heslá boli odhalené v rámci známych únikov údajov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaznavanje ogroženih gesel je na voljo v plačljivem paketu. Nadgradite paket, da poiščete gesla, razkrita v znanih kršitvah varnosti podatkov."
           }
         },
         "tr" : {
@@ -27855,6 +28401,12 @@
             "value" : "Prispôsobiť heslo"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prilagodi geslo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30097,6 +30649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Popis je príliš dlhý. Obmedzte ho na maximálne %lld znakov, prosím."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opis je predolg. Omejite ga na manj kot %lld znakov."
           }
         },
         "sv" : {
@@ -33332,6 +33890,12 @@
             "value" : "Zadajte názov nového priečinka"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vnesite nov naslov mape"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34210,6 +34774,12 @@
             "value" : "完全一致（サブ）ドメイン"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksakt (under)domene"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34232,6 +34802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Presná (sub)doména"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Točna (pod)domena"
           }
         },
         "tr" : {
@@ -34362,6 +34938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Presná zhoda URL"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Natančno ujemanje URL"
           }
         },
         "sv" : {
@@ -34660,6 +35242,12 @@
             "value" : "除外されたアイテム"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekskludert element"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34682,6 +35270,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vylúčená položka"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izključen predmet"
           }
         },
         "sv" : {
@@ -35164,6 +35758,12 @@
             "value" : "エクスポートがキャンセルされました"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksport avbrutt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35186,6 +35786,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export zrušený"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izvoz je preklican"
           }
         },
         "tr" : {
@@ -35270,6 +35876,12 @@
             "value" : "保管庫をエクスポート中 (%1$lld/%2$lld)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eksporter hvelv (%1$lld/%2$lld)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35292,6 +35904,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Export trezorov (%1$lld/%2$lld)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izvozi trezorje (%1$lld/%2$lld)"
           }
         },
         "tr" : {
@@ -38112,6 +38730,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Priečinok « %@ » bol vymazaný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapa « %@ » izbrisana"
           }
         },
         "sv" : {
@@ -44787,6 +45411,12 @@
             "value" : "アイテムをインポート"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer elementer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44809,6 +45439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import položiek"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvozi predmete"
           }
         },
         "tr" : {
@@ -44893,6 +45529,12 @@
             "value" : "アイテムをインポート\n（%@ から）"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer elementer\nfra %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44915,6 +45557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importovať položky\nz %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvozi predmete\niz %@"
           }
         },
         "tr" : {
@@ -45931,6 +46579,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zahrnúť slovesá"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vključi glagole"
           }
         },
         "sv" : {
@@ -48196,6 +48850,12 @@
             "value" : "Leetspeak"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leetspeak"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49912,6 +50572,12 @@
             "value" : "Malé písmená"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Male črke"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50851,6 +51517,12 @@
             "value" : "Chýbajúca 2FA"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manjka 2FA"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51539,6 +52211,12 @@
             "value" : "Nikdy nevypĺňať formuláre na tejto webovej stránke"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na tej spletni strani nikoli ne izpolnjuj samodejno"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52092,6 +52770,12 @@
             "value" : "Žiadne bežné heslá"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brez pogostih gesel"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52632,6 +53316,12 @@
             "value" : "Žiadne opakujúce sa znaky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brez ponavljajočih se znakov"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52778,6 +53468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Žiadne po sebe idúce znaky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brez zaporednih znakov"
           }
         },
         "sv" : {
@@ -53653,6 +54349,12 @@
             "value" : "すべてのアイテムタイプが他のパスワードマネージャーでサポートされているわけではありません。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikke alle elementtyper støttes av andre passordbehandlere."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53675,6 +54377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nie všetky typy položiek podporujú aj iní správcovia hesiel."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drugi upravitelji gesel ne podpirajo vseh vrst predmetov."
           }
         },
         "tr" : {
@@ -53995,6 +54703,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nespokojný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni izpolnjeno"
           }
         },
         "sv" : {
@@ -56483,6 +57197,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jeden alebo viacero súborov prekračuje limit %lld MB. Vyberte menšie súbory, prosím."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ena ali več datotek presega omejitev %lld MB. Prosimo, izberite manjše datoteke."
           }
         },
         "tr" : {
@@ -59847,6 +60567,12 @@
             "value" : "Nadradená doména a subdomény"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadrejena domena in poddomene"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61160,6 +61886,12 @@
             "value" : "Fotografie alebo videá"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotografije ali videi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61254,6 +61986,18 @@
             "value" : "Code PIN"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-kód"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kode PIN"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61290,6 +62034,18 @@
             "value" : "Pincode"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kod PIN"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Código PIN"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61300,6 +62056,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cod PIN"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-код"
           }
         },
         "sk" : {
@@ -61332,10 +62094,22 @@
             "value" : "PIN-код"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mã PIN"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN 码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 碼"
           }
         }
       }
@@ -62002,6 +62776,12 @@
             "value" : "他のアプリへデータをエクスポートするには、バックアップパスワードを確認してください"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekreft reservepassordet for å eksportere data til en annen app"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62024,6 +62804,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Potvrďte, prosím, vaše záložné heslo, aby ste mohli exportovať vaše údaje do inej aplikácie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za izvoz podatkov v drugo aplikacijo potrdite geslo za varnostno kopijo"
           }
         },
         "tr" : {
@@ -62108,6 +62894,12 @@
             "value" : "他のアプリへデータをエクスポートするには、パスワードを確認してください"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekreft passordet for å eksportere data til en annen app"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62130,6 +62922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Potvrďte, prosím, vaše heslo, aby ste mohli exportovať vaše údaje do inej aplikácie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za izvoz podatkov v drugo aplikacijo potrdite geslo."
           }
         },
         "tr" : {
@@ -62588,6 +63386,12 @@
             "value" : "インポートが完了するまで Proton Pass を開いたままにしてください。アプリを終了したりデバイスをロックしたりすると、処理が中断される場合があります。"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold Proton Pass åpent til importen er ferdig. Å forlate appen eller låse enheten din kan avbryte den."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62604,6 +63408,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nechajte aplikáciu Proton Pass otvorenú, kým sa import nedokončí. Opustenie aplikácie alebo uzamknutie zariadenia môže tento proces prerušiť."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pustite aplikacijo Proton Pass odprto, dokler se uvoz ne konča. Če zapustite aplikacijo ali zaklenete napravo, se lahko postopek prekine."
           }
         },
         "tr" : {
@@ -62924,6 +63734,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obmedzte váš výber na %lld súborov, prosím"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prosimo, omejite svoj izbor na %lld datoteke"
           }
         },
         "sv" : {
@@ -65178,6 +65994,12 @@
             "value" : "Proton Sentinel"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Sentinel"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66054,6 +66876,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Regulárny výraz"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regularni izraz"
           }
         },
         "sv" : {
@@ -67760,6 +68588,12 @@
             "value" : "Obnoviť upozornenie"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovi opozorilo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68288,6 +69122,12 @@
             "value" : "Opakovane použité heslo"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponovno uporabljeno geslo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68422,6 +69262,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spokojný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izpolnjeno"
           }
         },
         "sv" : {
@@ -70704,6 +71550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyberte cieľovú lokalitu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite cilj"
           }
         },
         "sv" : {
@@ -73560,6 +74412,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť %@ priečinok"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikaži %@ mapo"
           }
         },
         "sv" : {
@@ -79703,6 +80561,12 @@
             "value" : "Znaky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Simboli"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82353,6 +83217,12 @@
             "value" : "Toto prihlasovacie heslo sa objavilo v súvislosti s únikom údajov. Navštívte danú službu a zmeňte si heslo, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To geslo za prijavo se pojavlja v razkritju podatkov. Obiščite zadevno storitev in spremenite geslo."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82833,6 +83703,12 @@
             "value" : "Questo URL verrà ignorato durante il riempimento automatico"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AutoFyll hopper over denne nettadressen"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82849,6 +83725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto URL adresa bude pri automatickom vypĺňaní preskočená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta URL bo pri samodejnem izpolnjevanju prezrt."
           }
         },
         "tr" : {
@@ -82967,6 +83849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Týmto sa natrvalo odstráni priečinok « %@ » a celý jeho obsah. Zadaním názvu priečinka potvrdíte vymazanie."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S tem boste trajno izbrisali mapo \"%@\" in vso njeno vsebino. Za potrditev izbrisa vnesite ime mape."
           }
         },
         "tr" : {
@@ -83829,6 +84717,12 @@
             "value" : "Codici TOTP"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTP-koder"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83851,6 +84745,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "TOTP kódy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TOTP kode"
           }
         },
         "sv" : {
@@ -84068,7 +84968,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паспрабаваць яшчэ раз"
+            "value" : "Паўтарыце спробу"
           }
         },
         "ca" : {
@@ -88175,6 +89075,12 @@
             "value" : "Esegui l'upgrade del tuo piano per ottenere casseforti sufficiente per questa importazione."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader planen for å få nok hvelv for denne importen."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88197,6 +89103,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zvýšte úrovň svojho plánu, aby ste mali k dispozícii dostatok trezorov pre tento import."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradite svoj paket, da boste imeli za ta uvoz na voljo dovolj trezorjev."
           }
         },
         "tr" : {
@@ -88709,6 +89621,12 @@
             "value" : "Veľké písmená"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velike črke"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -88987,6 +89905,12 @@
             "value" : "Corrispondenza URL"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL-samsvar"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89009,6 +89933,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Porovnávanie URL"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ujemanje URL"
           }
         },
         "sv" : {
@@ -89093,6 +90023,12 @@
             "value" : "Modello wildcard per URL"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "URL-mønster med jokertegn"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89115,6 +90051,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vzor URL so zástupnými znakmi"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzorec URL z nadomestnimi znaki"
           }
         },
         "tr" : {
@@ -97339,6 +98281,12 @@
             "value" : "La tua organizzazione non consente la creazione dei vault necessari per questa importazione."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisasjonen tillater ikke å lage hvelvene denne importen trenger."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97361,6 +98309,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vaša organizácia neumožňuje vytváranie trezorov, ktoré tento import vyžaduje."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaša organizacija ne dovoljuje ustvarjanja trezorjev, ki jih ta uvoz potrebuje."
           }
         },
         "tr" : {

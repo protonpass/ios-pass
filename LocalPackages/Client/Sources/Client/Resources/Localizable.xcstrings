@@ -855,6 +855,12 @@
             "value" : "%@ にインポート済み"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importert: %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -877,6 +883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importované %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvoženo dne %@"
           }
         },
         "sv" : {

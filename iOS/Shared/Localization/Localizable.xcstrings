@@ -1219,6 +1219,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld člani)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld član)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld članov)"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@ (%2$lld člana)"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -4535,6 +4565,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirani"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiran"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiranih"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirana"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -6229,13 +6289,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld videresendte"
+                  "value" : "%lld videresendt"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld videresendte"
+                  "value" : "%lld videresendt"
                 }
               }
             }
@@ -13406,13 +13466,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultat"
+                  "value" : "%lld treff"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld resultater"
+                  "value" : "%lld treff"
                 }
               }
             }
@@ -58747,7 +58807,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send denne e-postadressen på e-post, og den vil se ut til å være sendt fra %@."
+            "value" : "Send en e-post til denne adressen, og den vil se ut til å være sendt fra %@."
           }
         },
         "nl" : {
@@ -86168,7 +86228,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Siste brudd den %@."
+            "value" : "Siste brudd: %@."
           }
         },
         "nl" : {
@@ -114869,6 +114929,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Sentinel"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel"
@@ -172369,7 +172435,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informasjonen din var i et datainnbrudd og funnet den **%@**."
+            "value" : "Informasjonen din var i et datainnbrudd og funnet **%@**."
           }
         },
         "nl" : {
